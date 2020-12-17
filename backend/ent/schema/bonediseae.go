@@ -2,17 +2,17 @@ package schema
 
 import "github.com/facebookincubator/ent"
 
-// Bonediseae holds the schema definition for the Bonediseae entity.
-type Bonediseae struct {
+// Bonediseade holds the schema definition for the Bonediseade entity.
+type Bonediseade struct {
 	ent.Schema
 }
 
-// Fields of the Bonediseae.
-func (Bonediseae) Fields() []ent.Field {
+// Fields of the Bonediseade.
+func (Bonediseade) Fields() []ent.Field {
 	return nil
 }
 
-// Edges of the Bonediseae.
-func (Bonediseae) Edges() []ent.Edge {
+// Edges of the Bonediseade.
+func (Bonediseade) Edges() []ent.Edge {
 	return nil
 }
