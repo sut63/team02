@@ -25,6 +25,9 @@ type config struct {
 // hooks per client, for fast access.
 type hooks struct {
 	Bonedisease           []ent.Hook
+	Checksymptoms         []ent.Hook
+	Disease               []ent.Hook
+	DoctorOrderSheet      []ent.Hook
 	Patient               []ent.Hook
 	Personnel             []ent.Hook
 	Physicaltherapyrecord []ent.Hook

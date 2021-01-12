@@ -45,7 +45,7 @@ const (
 	// It exists in this package in order to avoid circular dependency with the "personnel" package.
 	PersonnelInverseTable = "personnels"
 	// PersonnelColumn is the table column denoting the personnel relation/edge.
-	PersonnelColumn = "Personel_id"
+	PersonnelColumn = "Personnel_id"
 )
 
 // Columns holds all SQL columns for bonedisease fields.
@@ -58,7 +58,7 @@ var Columns = []string{
 // ForeignKeys holds the SQL foreign-keys that are owned by the Bonedisease type.
 var ForeignKeys = []string{
 	"Patient_id",
-	"Personel_id",
+	"Personnel_id",
 	"remedy_id",
 }
 

@@ -488,7 +488,7 @@ func (pq *PhysicaltherapyrecordQuery) sqlAll(ctx context.Context) ([]*Physicalth
 		ids := make([]int, 0, len(nodes))
 		nodeids := make(map[int][]*Physicaltherapyrecord)
 		for i := range nodes {
-			if fk := nodes[i]._Personel_id; fk != nil {
+			if fk := nodes[i]._Personnel_id; fk != nil {
 				ids = append(ids, *fk)
 				nodeids[*fk] = append(nodeids[*fk], nodes[i])
 			}
@@ -501,7 +501,7 @@ func (pq *PhysicaltherapyrecordQuery) sqlAll(ctx context.Context) ([]*Physicalth
 		for _, n := range neighbors {
 			nodes, ok := nodeids[n.ID]
 			if !ok {
-				return nil, fmt.Errorf(`unexpected foreign-key "_Personel_id" returned %v`, n.ID)
+				return nil, fmt.Errorf(`unexpected foreign-key "_Personnel_id" returned %v`, n.ID)
 			}
 			for i := range nodes {
 				nodes[i].Edges.Personnel = n

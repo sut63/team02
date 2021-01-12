@@ -25,10 +25,10 @@ type Bonedisease struct {
 	Advice string `json:"advice,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the BonediseaseQuery when eager-loading is set.
-	Edges        BonediseaseEdges `json:"edges"`
-	_Patient_id  *int
-	_Personel_id *int
-	remedy_id    *int
+	Edges         BonediseaseEdges `json:"edges"`
+	_Patient_id   *int
+	_Personnel_id *int
+	remedy_id     *int
 }
 
 // BonediseaseEdges holds the relations/edges for other nodes in the graph.
@@ -99,7 +99,7 @@ func (*Bonedisease) scanValues(columns []string) ([]interface{}, error) {
 			values[i] = &sql.NullTime{}
 		case bonedisease.ForeignKeys[0]: // _Patient_id
 			values[i] = &sql.NullInt64{}
-		case bonedisease.ForeignKeys[1]: // _Personel_id
+		case bonedisease.ForeignKeys[1]: // _Personnel_id
 			values[i] = &sql.NullInt64{}
 		case bonedisease.ForeignKeys[2]: // remedy_id
 			values[i] = &sql.NullInt64{}
@@ -145,10 +145,10 @@ func (b *Bonedisease) assignValues(columns []string, values []interface{}) error
 			}
 		case bonedisease.ForeignKeys[1]:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for edge-field _Personel_id", value)
+				return fmt.Errorf("unexpected type %T for edge-field _Personnel_id", value)
 			} else if value.Valid {
-				b._Personel_id = new(int)
-				*b._Personel_id = int(value.Int64)
+				b._Personnel_id = new(int)
+				*b._Personnel_id = int(value.Int64)
 			}
 		case bonedisease.ForeignKeys[2]:
 			if value, ok := values[i].(*sql.NullInt64); !ok {

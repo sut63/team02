@@ -25,5 +25,6 @@ func (Patient) Edges() []ent.Edge {
 	return []ent.Edge{
 		edge.To("physicaltherapyrecord", Physicaltherapyrecord.Type).StorageKey(edge.Column("Patient_id")),
 		edge.To("Bonedisease", Bonedisease.Type).StorageKey(edge.Column("Patient_id")),
+		edge.To("Checksymptoms", Checksymptoms.Type).StorageKey(edge.Column("Patient_id")),
 	}
 }

@@ -10,6 +10,7 @@ import (
 	"github.com/facebook/ent/dialect/sql/sqlgraph"
 	"github.com/facebook/ent/schema/field"
 	"github.com/to63/app/ent/bonedisease"
+	"github.com/to63/app/ent/checksymptoms"
 	"github.com/to63/app/ent/patient"
 	"github.com/to63/app/ent/physicaltherapyrecord"
 	"github.com/to63/app/ent/predicate"
@@ -76,6 +77,21 @@ func (pu *PatientUpdate) AddBonedisease(b ...*Bonedisease) *PatientUpdate {
 	return pu.AddBonediseaseIDs(ids...)
 }
 
+// AddChecksymptomIDs adds the "Checksymptoms" edge to the Checksymptoms entity by IDs.
+func (pu *PatientUpdate) AddChecksymptomIDs(ids ...int) *PatientUpdate {
+	pu.mutation.AddChecksymptomIDs(ids...)
+	return pu
+}
+
+// AddChecksymptoms adds the "Checksymptoms" edges to the Checksymptoms entity.
+func (pu *PatientUpdate) AddChecksymptoms(c ...*Checksymptoms) *PatientUpdate {
+	ids := make([]int, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return pu.AddChecksymptomIDs(ids...)
+}
+
 // Mutation returns the PatientMutation object of the builder.
 func (pu *PatientUpdate) Mutation() *PatientMutation {
 	return pu.mutation
@@ -121,6 +137,27 @@ func (pu *PatientUpdate) RemoveBonedisease(b ...*Bonedisease) *PatientUpdate {
 		ids[i] = b[i].ID
 	}
 	return pu.RemoveBonediseaseIDs(ids...)
+}
+
+// ClearChecksymptoms clears all "Checksymptoms" edges to the Checksymptoms entity.
+func (pu *PatientUpdate) ClearChecksymptoms() *PatientUpdate {
+	pu.mutation.ClearChecksymptoms()
+	return pu
+}
+
+// RemoveChecksymptomIDs removes the "Checksymptoms" edge to Checksymptoms entities by IDs.
+func (pu *PatientUpdate) RemoveChecksymptomIDs(ids ...int) *PatientUpdate {
+	pu.mutation.RemoveChecksymptomIDs(ids...)
+	return pu
+}
+
+// RemoveChecksymptoms removes "Checksymptoms" edges to Checksymptoms entities.
+func (pu *PatientUpdate) RemoveChecksymptoms(c ...*Checksymptoms) *PatientUpdate {
+	ids := make([]int, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return pu.RemoveChecksymptomIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -347,6 +384,60 @@ func (pu *PatientUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	if pu.mutation.ChecksymptomsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   patient.ChecksymptomsTable,
+			Columns: []string{patient.ChecksymptomsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: checksymptoms.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := pu.mutation.RemovedChecksymptomsIDs(); len(nodes) > 0 && !pu.mutation.ChecksymptomsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   patient.ChecksymptomsTable,
+			Columns: []string{patient.ChecksymptomsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: checksymptoms.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := pu.mutation.ChecksymptomsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   patient.ChecksymptomsTable,
+			Columns: []string{patient.ChecksymptomsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: checksymptoms.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
 	if n, err = sqlgraph.UpdateNodes(ctx, pu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{patient.Label}
@@ -413,6 +504,21 @@ func (puo *PatientUpdateOne) AddBonedisease(b ...*Bonedisease) *PatientUpdateOne
 	return puo.AddBonediseaseIDs(ids...)
 }
 
+// AddChecksymptomIDs adds the "Checksymptoms" edge to the Checksymptoms entity by IDs.
+func (puo *PatientUpdateOne) AddChecksymptomIDs(ids ...int) *PatientUpdateOne {
+	puo.mutation.AddChecksymptomIDs(ids...)
+	return puo
+}
+
+// AddChecksymptoms adds the "Checksymptoms" edges to the Checksymptoms entity.
+func (puo *PatientUpdateOne) AddChecksymptoms(c ...*Checksymptoms) *PatientUpdateOne {
+	ids := make([]int, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return puo.AddChecksymptomIDs(ids...)
+}
+
 // Mutation returns the PatientMutation object of the builder.
 func (puo *PatientUpdateOne) Mutation() *PatientMutation {
 	return puo.mutation
@@ -458,6 +564,27 @@ func (puo *PatientUpdateOne) RemoveBonedisease(b ...*Bonedisease) *PatientUpdate
 		ids[i] = b[i].ID
 	}
 	return puo.RemoveBonediseaseIDs(ids...)
+}
+
+// ClearChecksymptoms clears all "Checksymptoms" edges to the Checksymptoms entity.
+func (puo *PatientUpdateOne) ClearChecksymptoms() *PatientUpdateOne {
+	puo.mutation.ClearChecksymptoms()
+	return puo
+}
+
+// RemoveChecksymptomIDs removes the "Checksymptoms" edge to Checksymptoms entities by IDs.
+func (puo *PatientUpdateOne) RemoveChecksymptomIDs(ids ...int) *PatientUpdateOne {
+	puo.mutation.RemoveChecksymptomIDs(ids...)
+	return puo
+}
+
+// RemoveChecksymptoms removes "Checksymptoms" edges to Checksymptoms entities.
+func (puo *PatientUpdateOne) RemoveChecksymptoms(c ...*Checksymptoms) *PatientUpdateOne {
+	ids := make([]int, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return puo.RemoveChecksymptomIDs(ids...)
 }
 
 // Save executes the query and returns the updated Patient entity.
@@ -674,6 +801,60 @@ func (puo *PatientUpdateOne) sqlSave(ctx context.Context) (_node *Patient, err e
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
 					Column: bonedisease.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if puo.mutation.ChecksymptomsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   patient.ChecksymptomsTable,
+			Columns: []string{patient.ChecksymptomsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: checksymptoms.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := puo.mutation.RemovedChecksymptomsIDs(); len(nodes) > 0 && !puo.mutation.ChecksymptomsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   patient.ChecksymptomsTable,
+			Columns: []string{patient.ChecksymptomsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: checksymptoms.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := puo.mutation.ChecksymptomsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   patient.ChecksymptomsTable,
+			Columns: []string{patient.ChecksymptomsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: checksymptoms.FieldID,
 				},
 			},
 		}

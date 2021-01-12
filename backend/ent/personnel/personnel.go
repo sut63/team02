@@ -20,6 +20,8 @@ const (
 	EdgePhysicaltherapyrecord = "physicaltherapyrecord"
 	// EdgeBonedisease holds the string denoting the bonedisease edge name in mutations.
 	EdgeBonedisease = "Bonedisease"
+	// EdgeChecksymptoms holds the string denoting the checksymptoms edge name in mutations.
+	EdgeChecksymptoms = "Checksymptoms"
 
 	// Table holds the table name of the personnel in the database.
 	Table = "personnels"
@@ -29,14 +31,21 @@ const (
 	// It exists in this package in order to avoid circular dependency with the "physicaltherapyrecord" package.
 	PhysicaltherapyrecordInverseTable = "physicaltherapyrecords"
 	// PhysicaltherapyrecordColumn is the table column denoting the physicaltherapyrecord relation/edge.
-	PhysicaltherapyrecordColumn = "Personel_id"
+	PhysicaltherapyrecordColumn = "Personnel_id"
 	// BonediseaseTable is the table the holds the Bonedisease relation/edge.
 	BonediseaseTable = "bonediseases"
 	// BonediseaseInverseTable is the table name for the Bonedisease entity.
 	// It exists in this package in order to avoid circular dependency with the "bonedisease" package.
 	BonediseaseInverseTable = "bonediseases"
 	// BonediseaseColumn is the table column denoting the Bonedisease relation/edge.
-	BonediseaseColumn = "Personel_id"
+	BonediseaseColumn = "Personnel_id"
+	// ChecksymptomsTable is the table the holds the Checksymptoms relation/edge.
+	ChecksymptomsTable = "checksymptoms"
+	// ChecksymptomsInverseTable is the table name for the Checksymptoms entity.
+	// It exists in this package in order to avoid circular dependency with the "checksymptoms" package.
+	ChecksymptomsInverseTable = "checksymptoms"
+	// ChecksymptomsColumn is the table column denoting the Checksymptoms relation/edge.
+	ChecksymptomsColumn = "Personnel_id"
 )
 
 // Columns holds all SQL columns for personnel fields.

@@ -26,7 +26,7 @@ type Physicaltherapyrecord struct {
 	// The values are being populated by the PhysicaltherapyrecordQuery when eager-loading is set.
 	Edges                                     PhysicaltherapyrecordEdges `json:"edges"`
 	_Patient_id                               *int
-	_Personel_id                              *int
+	_Personnel_id                             *int
 	physicaltherapyroom_physicaltherapyrecord *int
 	status_physicaltherapyrecord              *int
 }
@@ -113,7 +113,7 @@ func (*Physicaltherapyrecord) scanValues(columns []string) ([]interface{}, error
 			values[i] = &sql.NullTime{}
 		case physicaltherapyrecord.ForeignKeys[0]: // _Patient_id
 			values[i] = &sql.NullInt64{}
-		case physicaltherapyrecord.ForeignKeys[1]: // _Personel_id
+		case physicaltherapyrecord.ForeignKeys[1]: // _Personnel_id
 			values[i] = &sql.NullInt64{}
 		case physicaltherapyrecord.ForeignKeys[2]: // physicaltherapyroom_physicaltherapyrecord
 			values[i] = &sql.NullInt64{}
@@ -155,10 +155,10 @@ func (ph *Physicaltherapyrecord) assignValues(columns []string, values []interfa
 			}
 		case physicaltherapyrecord.ForeignKeys[1]:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for edge-field _Personel_id", value)
+				return fmt.Errorf("unexpected type %T for edge-field _Personnel_id", value)
 			} else if value.Valid {
-				ph._Personel_id = new(int)
-				*ph._Personel_id = int(value.Int64)
+				ph._Personnel_id = new(int)
+				*ph._Personnel_id = int(value.Int64)
 			}
 		case physicaltherapyrecord.ForeignKeys[2]:
 			if value, ok := values[i].(*sql.NullInt64); !ok {

@@ -14,7 +14,7 @@ var (
 		{Name: "added_time", Type: field.TypeTime},
 		{Name: "advice", Type: field.TypeString},
 		{Name: "Patient_id", Type: field.TypeInt, Nullable: true},
-		{Name: "Personel_id", Type: field.TypeInt, Nullable: true},
+		{Name: "Personnel_id", Type: field.TypeInt, Nullable: true},
 		{Name: "remedy_id", Type: field.TypeInt, Nullable: true},
 	}
 	// BonediseasesTable holds the schema information for the "bonediseases" table.
@@ -45,6 +45,75 @@ var (
 				OnDelete:   schema.SetNull,
 			},
 		},
+	}
+	// ChecksymptomsColumns holds the columns for the "checksymptoms" table.
+	ChecksymptomsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "Disease_id", Type: field.TypeInt, Nullable: true},
+		{Name: "DoctorOrderSheet_id", Type: field.TypeInt, Nullable: true},
+		{Name: "Patient_id", Type: field.TypeInt, Nullable: true},
+		{Name: "Personnel_id", Type: field.TypeInt, Nullable: true},
+	}
+	// ChecksymptomsTable holds the schema information for the "checksymptoms" table.
+	ChecksymptomsTable = &schema.Table{
+		Name:       "checksymptoms",
+		Columns:    ChecksymptomsColumns,
+		PrimaryKey: []*schema.Column{ChecksymptomsColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:  "checksymptoms_diseases_Checksymptoms",
+				Columns: []*schema.Column{ChecksymptomsColumns[1]},
+
+				RefColumns: []*schema.Column{DiseasesColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+			{
+				Symbol:  "checksymptoms_doctor_order_sheets_Checksymptoms",
+				Columns: []*schema.Column{ChecksymptomsColumns[2]},
+
+				RefColumns: []*schema.Column{DoctorOrderSheetsColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+			{
+				Symbol:  "checksymptoms_patients_Checksymptoms",
+				Columns: []*schema.Column{ChecksymptomsColumns[3]},
+
+				RefColumns: []*schema.Column{PatientsColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+			{
+				Symbol:  "checksymptoms_personnels_Checksymptoms",
+				Columns: []*schema.Column{ChecksymptomsColumns[4]},
+
+				RefColumns: []*schema.Column{PersonnelsColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+		},
+	}
+	// DiseasesColumns holds the columns for the "diseases" table.
+	DiseasesColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "name", Type: field.TypeString},
+	}
+	// DiseasesTable holds the schema information for the "diseases" table.
+	DiseasesTable = &schema.Table{
+		Name:        "diseases",
+		Columns:     DiseasesColumns,
+		PrimaryKey:  []*schema.Column{DiseasesColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{},
+	}
+	// DoctorOrderSheetsColumns holds the columns for the "doctor_order_sheets" table.
+	DoctorOrderSheetsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "date", Type: field.TypeTime},
+		{Name: "time", Type: field.TypeString},
+	}
+	// DoctorOrderSheetsTable holds the schema information for the "doctor_order_sheets" table.
+	DoctorOrderSheetsTable = &schema.Table{
+		Name:        "doctor_order_sheets",
+		Columns:     DoctorOrderSheetsColumns,
+		PrimaryKey:  []*schema.Column{DoctorOrderSheetsColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{},
 	}
 	// PatientsColumns holds the columns for the "patients" table.
 	PatientsColumns = []*schema.Column{
@@ -80,7 +149,7 @@ var (
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "added_time", Type: field.TypeTime},
 		{Name: "Patient_id", Type: field.TypeInt, Nullable: true},
-		{Name: "Personel_id", Type: field.TypeInt, Nullable: true},
+		{Name: "Personnel_id", Type: field.TypeInt, Nullable: true},
 		{Name: "physicaltherapyroom_physicaltherapyrecord", Type: field.TypeInt, Unique: true, Nullable: true},
 		{Name: "status_physicaltherapyrecord", Type: field.TypeInt, Unique: true, Nullable: true},
 	}
@@ -159,6 +228,9 @@ var (
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
 		BonediseasesTable,
+		ChecksymptomsTable,
+		DiseasesTable,
+		DoctorOrderSheetsTable,
 		PatientsTable,
 		PersonnelsTable,
 		PhysicaltherapyrecordsTable,
@@ -172,6 +244,10 @@ func init() {
 	BonediseasesTable.ForeignKeys[0].RefTable = PatientsTable
 	BonediseasesTable.ForeignKeys[1].RefTable = PersonnelsTable
 	BonediseasesTable.ForeignKeys[2].RefTable = RemediesTable
+	ChecksymptomsTable.ForeignKeys[0].RefTable = DiseasesTable
+	ChecksymptomsTable.ForeignKeys[1].RefTable = DoctorOrderSheetsTable
+	ChecksymptomsTable.ForeignKeys[2].RefTable = PatientsTable
+	ChecksymptomsTable.ForeignKeys[3].RefTable = PersonnelsTable
 	PhysicaltherapyrecordsTable.ForeignKeys[0].RefTable = PatientsTable
 	PhysicaltherapyrecordsTable.ForeignKeys[1].RefTable = PersonnelsTable
 	PhysicaltherapyrecordsTable.ForeignKeys[2].RefTable = PhysicaltherapyroomsTable

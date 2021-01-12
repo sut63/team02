@@ -27,7 +27,7 @@ const (
 	// It exists in this package in order to avoid circular dependency with the "personnel" package.
 	PersonnelInverseTable = "personnels"
 	// PersonnelColumn is the table column denoting the personnel relation/edge.
-	PersonnelColumn = "Personel_id"
+	PersonnelColumn = "Personnel_id"
 	// PatientTable is the table the holds the patient relation/edge.
 	PatientTable = "physicaltherapyrecords"
 	// PatientInverseTable is the table name for the Patient entity.
@@ -60,7 +60,7 @@ var Columns = []string{
 // ForeignKeys holds the SQL foreign-keys that are owned by the Physicaltherapyrecord type.
 var ForeignKeys = []string{
 	"Patient_id",
-	"Personel_id",
+	"Personnel_id",
 	"physicaltherapyroom_physicaltherapyrecord",
 	"status_physicaltherapyrecord",
 }

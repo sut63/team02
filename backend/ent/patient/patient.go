@@ -18,6 +18,8 @@ const (
 	EdgePhysicaltherapyrecord = "physicaltherapyrecord"
 	// EdgeBonedisease holds the string denoting the bonedisease edge name in mutations.
 	EdgeBonedisease = "Bonedisease"
+	// EdgeChecksymptoms holds the string denoting the checksymptoms edge name in mutations.
+	EdgeChecksymptoms = "Checksymptoms"
 
 	// Table holds the table name of the patient in the database.
 	Table = "patients"
@@ -35,6 +37,13 @@ const (
 	BonediseaseInverseTable = "bonediseases"
 	// BonediseaseColumn is the table column denoting the Bonedisease relation/edge.
 	BonediseaseColumn = "Patient_id"
+	// ChecksymptomsTable is the table the holds the Checksymptoms relation/edge.
+	ChecksymptomsTable = "checksymptoms"
+	// ChecksymptomsInverseTable is the table name for the Checksymptoms entity.
+	// It exists in this package in order to avoid circular dependency with the "checksymptoms" package.
+	ChecksymptomsInverseTable = "checksymptoms"
+	// ChecksymptomsColumn is the table column denoting the Checksymptoms relation/edge.
+	ChecksymptomsColumn = "Patient_id"
 )
 
 // Columns holds all SQL columns for patient fields.
