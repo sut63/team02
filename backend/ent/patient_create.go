@@ -11,6 +11,7 @@ import (
 	"github.com/facebook/ent/schema/field"
 	"github.com/to63/app/ent/bonedisease"
 	"github.com/to63/app/ent/patient"
+	"github.com/to63/app/ent/physicaltherapyrecord"
 )
 
 // PatientCreate is the builder for creating a Patient entity.
@@ -36,6 +37,21 @@ func (pc *PatientCreate) SetBirthday(s string) *PatientCreate {
 func (pc *PatientCreate) SetGender(s string) *PatientCreate {
 	pc.mutation.SetGender(s)
 	return pc
+}
+
+// AddPhysicaltherapyrecordIDs adds the "physicaltherapyrecord" edge to the Physicaltherapyrecord entity by IDs.
+func (pc *PatientCreate) AddPhysicaltherapyrecordIDs(ids ...int) *PatientCreate {
+	pc.mutation.AddPhysicaltherapyrecordIDs(ids...)
+	return pc
+}
+
+// AddPhysicaltherapyrecord adds the "physicaltherapyrecord" edges to the Physicaltherapyrecord entity.
+func (pc *PatientCreate) AddPhysicaltherapyrecord(p ...*Physicaltherapyrecord) *PatientCreate {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return pc.AddPhysicaltherapyrecordIDs(ids...)
 }
 
 // AddBonediseaseIDs adds the "Bonedisease" edge to the Bonedisease entity by IDs.
@@ -178,6 +194,25 @@ func (pc *PatientCreate) createSpec() (*Patient, *sqlgraph.CreateSpec) {
 			Column: patient.FieldGender,
 		})
 		_node.Gender = value
+	}
+	if nodes := pc.mutation.PhysicaltherapyrecordIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   patient.PhysicaltherapyrecordTable,
+			Columns: []string{patient.PhysicaltherapyrecordColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: physicaltherapyrecord.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
 	}
 	if nodes := pc.mutation.BonediseaseIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{

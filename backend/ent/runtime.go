@@ -8,8 +8,10 @@ import (
 	"github.com/to63/app/ent/bonedisease"
 	"github.com/to63/app/ent/patient"
 	"github.com/to63/app/ent/personnel"
+	"github.com/to63/app/ent/physicaltherapyroom"
 	"github.com/to63/app/ent/remedy"
 	"github.com/to63/app/ent/schema"
+	"github.com/to63/app/ent/status"
 )
 
 // The init function reads all schema descriptors with runtime code
@@ -58,10 +60,22 @@ func init() {
 	personnelDescPassword := personnelFields[3].Descriptor()
 	// personnel.PasswordValidator is a validator for the "password" field. It is called by the builders before save.
 	personnel.PasswordValidator = personnelDescPassword.Validators[0].(func(string) error)
+	physicaltherapyroomFields := schema.Physicaltherapyroom{}.Fields()
+	_ = physicaltherapyroomFields
+	// physicaltherapyroomDescPhysicalTherapyRoomName is the schema descriptor for physical_therapy_room_name field.
+	physicaltherapyroomDescPhysicalTherapyRoomName := physicaltherapyroomFields[0].Descriptor()
+	// physicaltherapyroom.PhysicalTherapyRoomNameValidator is a validator for the "physical_therapy_room_name" field. It is called by the builders before save.
+	physicaltherapyroom.PhysicalTherapyRoomNameValidator = physicaltherapyroomDescPhysicalTherapyRoomName.Validators[0].(func(string) error)
 	remedyFields := schema.Remedy{}.Fields()
 	_ = remedyFields
 	// remedyDescRemedy is the schema descriptor for remedy field.
 	remedyDescRemedy := remedyFields[0].Descriptor()
 	// remedy.RemedyValidator is a validator for the "remedy" field. It is called by the builders before save.
 	remedy.RemedyValidator = remedyDescRemedy.Validators[0].(func(string) error)
+	statusFields := schema.Status{}.Fields()
+	_ = statusFields
+	// statusDescStatusName is the schema descriptor for status_name field.
+	statusDescStatusName := statusFields[0].Descriptor()
+	// status.StatusNameValidator is a validator for the "status_name" field. It is called by the builders before save.
+	status.StatusNameValidator = statusDescStatusName.Validators[0].(func(string) error)
 }

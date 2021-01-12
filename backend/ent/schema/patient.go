@@ -23,7 +23,7 @@ func (Patient) Fields() []ent.Field {
 // Edges of the Patient.
 func (Patient) Edges() []ent.Edge {
 	return []ent.Edge{
+		edge.To("physicaltherapyrecord", Physicaltherapyrecord.Type).StorageKey(edge.Column("Patient_id")),
 		edge.To("Bonedisease", Bonedisease.Type).StorageKey(edge.Column("Patient_id")),
-		
 	}
 }

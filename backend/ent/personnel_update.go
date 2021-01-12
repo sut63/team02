@@ -11,6 +11,7 @@ import (
 	"github.com/facebook/ent/schema/field"
 	"github.com/to63/app/ent/bonedisease"
 	"github.com/to63/app/ent/personnel"
+	"github.com/to63/app/ent/physicaltherapyrecord"
 	"github.com/to63/app/ent/predicate"
 )
 
@@ -51,6 +52,21 @@ func (pu *PersonnelUpdate) SetPassword(s string) *PersonnelUpdate {
 	return pu
 }
 
+// AddPhysicaltherapyrecordIDs adds the "physicaltherapyrecord" edge to the Physicaltherapyrecord entity by IDs.
+func (pu *PersonnelUpdate) AddPhysicaltherapyrecordIDs(ids ...int) *PersonnelUpdate {
+	pu.mutation.AddPhysicaltherapyrecordIDs(ids...)
+	return pu
+}
+
+// AddPhysicaltherapyrecord adds the "physicaltherapyrecord" edges to the Physicaltherapyrecord entity.
+func (pu *PersonnelUpdate) AddPhysicaltherapyrecord(p ...*Physicaltherapyrecord) *PersonnelUpdate {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return pu.AddPhysicaltherapyrecordIDs(ids...)
+}
+
 // AddBonediseaseIDs adds the "Bonedisease" edge to the Bonedisease entity by IDs.
 func (pu *PersonnelUpdate) AddBonediseaseIDs(ids ...int) *PersonnelUpdate {
 	pu.mutation.AddBonediseaseIDs(ids...)
@@ -69,6 +85,27 @@ func (pu *PersonnelUpdate) AddBonedisease(b ...*Bonedisease) *PersonnelUpdate {
 // Mutation returns the PersonnelMutation object of the builder.
 func (pu *PersonnelUpdate) Mutation() *PersonnelMutation {
 	return pu.mutation
+}
+
+// ClearPhysicaltherapyrecord clears all "physicaltherapyrecord" edges to the Physicaltherapyrecord entity.
+func (pu *PersonnelUpdate) ClearPhysicaltherapyrecord() *PersonnelUpdate {
+	pu.mutation.ClearPhysicaltherapyrecord()
+	return pu
+}
+
+// RemovePhysicaltherapyrecordIDs removes the "physicaltherapyrecord" edge to Physicaltherapyrecord entities by IDs.
+func (pu *PersonnelUpdate) RemovePhysicaltherapyrecordIDs(ids ...int) *PersonnelUpdate {
+	pu.mutation.RemovePhysicaltherapyrecordIDs(ids...)
+	return pu
+}
+
+// RemovePhysicaltherapyrecord removes "physicaltherapyrecord" edges to Physicaltherapyrecord entities.
+func (pu *PersonnelUpdate) RemovePhysicaltherapyrecord(p ...*Physicaltherapyrecord) *PersonnelUpdate {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return pu.RemovePhysicaltherapyrecordIDs(ids...)
 }
 
 // ClearBonedisease clears all "Bonedisease" edges to the Bonedisease entity.
@@ -220,6 +257,60 @@ func (pu *PersonnelUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: personnel.FieldPassword,
 		})
 	}
+	if pu.mutation.PhysicaltherapyrecordCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   personnel.PhysicaltherapyrecordTable,
+			Columns: []string{personnel.PhysicaltherapyrecordColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: physicaltherapyrecord.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := pu.mutation.RemovedPhysicaltherapyrecordIDs(); len(nodes) > 0 && !pu.mutation.PhysicaltherapyrecordCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   personnel.PhysicaltherapyrecordTable,
+			Columns: []string{personnel.PhysicaltherapyrecordColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: physicaltherapyrecord.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := pu.mutation.PhysicaltherapyrecordIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   personnel.PhysicaltherapyrecordTable,
+			Columns: []string{personnel.PhysicaltherapyrecordColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: physicaltherapyrecord.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
 	if pu.mutation.BonediseaseCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
@@ -316,6 +407,21 @@ func (puo *PersonnelUpdateOne) SetPassword(s string) *PersonnelUpdateOne {
 	return puo
 }
 
+// AddPhysicaltherapyrecordIDs adds the "physicaltherapyrecord" edge to the Physicaltherapyrecord entity by IDs.
+func (puo *PersonnelUpdateOne) AddPhysicaltherapyrecordIDs(ids ...int) *PersonnelUpdateOne {
+	puo.mutation.AddPhysicaltherapyrecordIDs(ids...)
+	return puo
+}
+
+// AddPhysicaltherapyrecord adds the "physicaltherapyrecord" edges to the Physicaltherapyrecord entity.
+func (puo *PersonnelUpdateOne) AddPhysicaltherapyrecord(p ...*Physicaltherapyrecord) *PersonnelUpdateOne {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return puo.AddPhysicaltherapyrecordIDs(ids...)
+}
+
 // AddBonediseaseIDs adds the "Bonedisease" edge to the Bonedisease entity by IDs.
 func (puo *PersonnelUpdateOne) AddBonediseaseIDs(ids ...int) *PersonnelUpdateOne {
 	puo.mutation.AddBonediseaseIDs(ids...)
@@ -334,6 +440,27 @@ func (puo *PersonnelUpdateOne) AddBonedisease(b ...*Bonedisease) *PersonnelUpdat
 // Mutation returns the PersonnelMutation object of the builder.
 func (puo *PersonnelUpdateOne) Mutation() *PersonnelMutation {
 	return puo.mutation
+}
+
+// ClearPhysicaltherapyrecord clears all "physicaltherapyrecord" edges to the Physicaltherapyrecord entity.
+func (puo *PersonnelUpdateOne) ClearPhysicaltherapyrecord() *PersonnelUpdateOne {
+	puo.mutation.ClearPhysicaltherapyrecord()
+	return puo
+}
+
+// RemovePhysicaltherapyrecordIDs removes the "physicaltherapyrecord" edge to Physicaltherapyrecord entities by IDs.
+func (puo *PersonnelUpdateOne) RemovePhysicaltherapyrecordIDs(ids ...int) *PersonnelUpdateOne {
+	puo.mutation.RemovePhysicaltherapyrecordIDs(ids...)
+	return puo
+}
+
+// RemovePhysicaltherapyrecord removes "physicaltherapyrecord" edges to Physicaltherapyrecord entities.
+func (puo *PersonnelUpdateOne) RemovePhysicaltherapyrecord(p ...*Physicaltherapyrecord) *PersonnelUpdateOne {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return puo.RemovePhysicaltherapyrecordIDs(ids...)
 }
 
 // ClearBonedisease clears all "Bonedisease" edges to the Bonedisease entity.
@@ -482,6 +609,60 @@ func (puo *PersonnelUpdateOne) sqlSave(ctx context.Context) (_node *Personnel, e
 			Value:  value,
 			Column: personnel.FieldPassword,
 		})
+	}
+	if puo.mutation.PhysicaltherapyrecordCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   personnel.PhysicaltherapyrecordTable,
+			Columns: []string{personnel.PhysicaltherapyrecordColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: physicaltherapyrecord.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := puo.mutation.RemovedPhysicaltherapyrecordIDs(); len(nodes) > 0 && !puo.mutation.PhysicaltherapyrecordCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   personnel.PhysicaltherapyrecordTable,
+			Columns: []string{personnel.PhysicaltherapyrecordColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: physicaltherapyrecord.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := puo.mutation.PhysicaltherapyrecordIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   personnel.PhysicaltherapyrecordTable,
+			Columns: []string{personnel.PhysicaltherapyrecordColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: physicaltherapyrecord.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	if puo.mutation.BonediseaseCleared() {
 		edge := &sqlgraph.EdgeSpec{

@@ -15,5 +15,14 @@ type Patient func(*sql.Selector)
 // Personnel is the predicate function for personnel builders.
 type Personnel func(*sql.Selector)
 
+// Physicaltherapyrecord is the predicate function for physicaltherapyrecord builders.
+type Physicaltherapyrecord func(*sql.Selector)
+
+// Physicaltherapyroom is the predicate function for physicaltherapyroom builders.
+type Physicaltherapyroom func(*sql.Selector)
+
 // Remedy is the predicate function for remedy builders.
 type Remedy func(*sql.Selector)
+
+// Status is the predicate function for status builders.
+type Status func(*sql.Selector)

@@ -28,17 +28,28 @@ type Patient struct {
 
 // PatientEdges holds the relations/edges for other nodes in the graph.
 type PatientEdges struct {
+	// Physicaltherapyrecord holds the value of the physicaltherapyrecord edge.
+	Physicaltherapyrecord []*Physicaltherapyrecord
 	// Bonedisease holds the value of the Bonedisease edge.
 	Bonedisease []*Bonedisease
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [1]bool
+	loadedTypes [2]bool
+}
+
+// PhysicaltherapyrecordOrErr returns the Physicaltherapyrecord value or an error if the edge
+// was not loaded in eager-loading.
+func (e PatientEdges) PhysicaltherapyrecordOrErr() ([]*Physicaltherapyrecord, error) {
+	if e.loadedTypes[0] {
+		return e.Physicaltherapyrecord, nil
+	}
+	return nil, &NotLoadedError{edge: "physicaltherapyrecord"}
 }
 
 // BonediseaseOrErr returns the Bonedisease value or an error if the edge
 // was not loaded in eager-loading.
 func (e PatientEdges) BonediseaseOrErr() ([]*Bonedisease, error) {
-	if e.loadedTypes[0] {
+	if e.loadedTypes[1] {
 		return e.Bonedisease, nil
 	}
 	return nil, &NotLoadedError{edge: "Bonedisease"}
@@ -95,6 +106,11 @@ func (pa *Patient) assignValues(columns []string, values []interface{}) error {
 		}
 	}
 	return nil
+}
+
+// QueryPhysicaltherapyrecord queries the "physicaltherapyrecord" edge of the Patient entity.
+func (pa *Patient) QueryPhysicaltherapyrecord() *PhysicaltherapyrecordQuery {
+	return (&PatientClient{config: pa.config}).QueryPhysicaltherapyrecord(pa)
 }
 
 // QueryBonedisease queries the "Bonedisease" edge of the Patient entity.

@@ -16,11 +16,20 @@ const (
 	// FieldPassword holds the string denoting the password field in the database.
 	FieldPassword = "password"
 
+	// EdgePhysicaltherapyrecord holds the string denoting the physicaltherapyrecord edge name in mutations.
+	EdgePhysicaltherapyrecord = "physicaltherapyrecord"
 	// EdgeBonedisease holds the string denoting the bonedisease edge name in mutations.
 	EdgeBonedisease = "Bonedisease"
 
 	// Table holds the table name of the personnel in the database.
 	Table = "personnels"
+	// PhysicaltherapyrecordTable is the table the holds the physicaltherapyrecord relation/edge.
+	PhysicaltherapyrecordTable = "physicaltherapyrecords"
+	// PhysicaltherapyrecordInverseTable is the table name for the Physicaltherapyrecord entity.
+	// It exists in this package in order to avoid circular dependency with the "physicaltherapyrecord" package.
+	PhysicaltherapyrecordInverseTable = "physicaltherapyrecords"
+	// PhysicaltherapyrecordColumn is the table column denoting the physicaltherapyrecord relation/edge.
+	PhysicaltherapyrecordColumn = "Personel_id"
 	// BonediseaseTable is the table the holds the Bonedisease relation/edge.
 	BonediseaseTable = "bonediseases"
 	// BonediseaseInverseTable is the table name for the Bonedisease entity.

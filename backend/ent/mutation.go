@@ -11,8 +11,11 @@ import (
 	"github.com/to63/app/ent/bonedisease"
 	"github.com/to63/app/ent/patient"
 	"github.com/to63/app/ent/personnel"
+	"github.com/to63/app/ent/physicaltherapyrecord"
+	"github.com/to63/app/ent/physicaltherapyroom"
 	"github.com/to63/app/ent/predicate"
 	"github.com/to63/app/ent/remedy"
+	"github.com/to63/app/ent/status"
 
 	"github.com/facebook/ent"
 )
@@ -26,10 +29,13 @@ const (
 	OpUpdateOne = ent.OpUpdateOne
 
 	// Node types.
-	TypeBonedisease = "Bonedisease"
-	TypePatient     = "Patient"
-	TypePersonnel   = "Personnel"
-	TypeRemedy      = "Remedy"
+	TypeBonedisease           = "Bonedisease"
+	TypePatient               = "Patient"
+	TypePersonnel             = "Personnel"
+	TypePhysicaltherapyrecord = "Physicaltherapyrecord"
+	TypePhysicaltherapyroom   = "Physicaltherapyroom"
+	TypeRemedy                = "Remedy"
+	TypeStatus                = "Status"
 )
 
 // BonediseaseMutation represents an operation that mutates the Bonedisease nodes in the graph.
@@ -563,19 +569,22 @@ func (m *BonediseaseMutation) ResetEdge(name string) error {
 // PatientMutation represents an operation that mutates the Patient nodes in the graph.
 type PatientMutation struct {
 	config
-	op                  Op
-	typ                 string
-	id                  *int
-	name                *string
-	birthday            *string
-	gender              *string
-	clearedFields       map[string]struct{}
-	_Bonedisease        map[int]struct{}
-	removed_Bonedisease map[int]struct{}
-	cleared_Bonedisease bool
-	done                bool
-	oldValue            func(context.Context) (*Patient, error)
-	predicates          []predicate.Patient
+	op                           Op
+	typ                          string
+	id                           *int
+	name                         *string
+	birthday                     *string
+	gender                       *string
+	clearedFields                map[string]struct{}
+	physicaltherapyrecord        map[int]struct{}
+	removedphysicaltherapyrecord map[int]struct{}
+	clearedphysicaltherapyrecord bool
+	_Bonedisease                 map[int]struct{}
+	removed_Bonedisease          map[int]struct{}
+	cleared_Bonedisease          bool
+	done                         bool
+	oldValue                     func(context.Context) (*Patient, error)
+	predicates                   []predicate.Patient
 }
 
 var _ ent.Mutation = (*PatientMutation)(nil)
@@ -763,6 +772,59 @@ func (m *PatientMutation) OldGender(ctx context.Context) (v string, err error) {
 // ResetGender resets all changes to the "gender" field.
 func (m *PatientMutation) ResetGender() {
 	m.gender = nil
+}
+
+// AddPhysicaltherapyrecordIDs adds the "physicaltherapyrecord" edge to the Physicaltherapyrecord entity by ids.
+func (m *PatientMutation) AddPhysicaltherapyrecordIDs(ids ...int) {
+	if m.physicaltherapyrecord == nil {
+		m.physicaltherapyrecord = make(map[int]struct{})
+	}
+	for i := range ids {
+		m.physicaltherapyrecord[ids[i]] = struct{}{}
+	}
+}
+
+// ClearPhysicaltherapyrecord clears the "physicaltherapyrecord" edge to the Physicaltherapyrecord entity.
+func (m *PatientMutation) ClearPhysicaltherapyrecord() {
+	m.clearedphysicaltherapyrecord = true
+}
+
+// PhysicaltherapyrecordCleared returns if the "physicaltherapyrecord" edge to the Physicaltherapyrecord entity was cleared.
+func (m *PatientMutation) PhysicaltherapyrecordCleared() bool {
+	return m.clearedphysicaltherapyrecord
+}
+
+// RemovePhysicaltherapyrecordIDs removes the "physicaltherapyrecord" edge to the Physicaltherapyrecord entity by IDs.
+func (m *PatientMutation) RemovePhysicaltherapyrecordIDs(ids ...int) {
+	if m.removedphysicaltherapyrecord == nil {
+		m.removedphysicaltherapyrecord = make(map[int]struct{})
+	}
+	for i := range ids {
+		m.removedphysicaltherapyrecord[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedPhysicaltherapyrecord returns the removed IDs of the "physicaltherapyrecord" edge to the Physicaltherapyrecord entity.
+func (m *PatientMutation) RemovedPhysicaltherapyrecordIDs() (ids []int) {
+	for id := range m.removedphysicaltherapyrecord {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// PhysicaltherapyrecordIDs returns the "physicaltherapyrecord" edge IDs in the mutation.
+func (m *PatientMutation) PhysicaltherapyrecordIDs() (ids []int) {
+	for id := range m.physicaltherapyrecord {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetPhysicaltherapyrecord resets all changes to the "physicaltherapyrecord" edge.
+func (m *PatientMutation) ResetPhysicaltherapyrecord() {
+	m.physicaltherapyrecord = nil
+	m.clearedphysicaltherapyrecord = false
+	m.removedphysicaltherapyrecord = nil
 }
 
 // AddBonediseaseIDs adds the "Bonedisease" edge to the Bonedisease entity by ids.
@@ -965,7 +1027,10 @@ func (m *PatientMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *PatientMutation) AddedEdges() []string {
-	edges := make([]string, 0, 1)
+	edges := make([]string, 0, 2)
+	if m.physicaltherapyrecord != nil {
+		edges = append(edges, patient.EdgePhysicaltherapyrecord)
+	}
 	if m._Bonedisease != nil {
 		edges = append(edges, patient.EdgeBonedisease)
 	}
@@ -976,6 +1041,12 @@ func (m *PatientMutation) AddedEdges() []string {
 // name in this mutation.
 func (m *PatientMutation) AddedIDs(name string) []ent.Value {
 	switch name {
+	case patient.EdgePhysicaltherapyrecord:
+		ids := make([]ent.Value, 0, len(m.physicaltherapyrecord))
+		for id := range m.physicaltherapyrecord {
+			ids = append(ids, id)
+		}
+		return ids
 	case patient.EdgeBonedisease:
 		ids := make([]ent.Value, 0, len(m._Bonedisease))
 		for id := range m._Bonedisease {
@@ -988,7 +1059,10 @@ func (m *PatientMutation) AddedIDs(name string) []ent.Value {
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *PatientMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 1)
+	edges := make([]string, 0, 2)
+	if m.removedphysicaltherapyrecord != nil {
+		edges = append(edges, patient.EdgePhysicaltherapyrecord)
+	}
 	if m.removed_Bonedisease != nil {
 		edges = append(edges, patient.EdgeBonedisease)
 	}
@@ -999,6 +1073,12 @@ func (m *PatientMutation) RemovedEdges() []string {
 // the given name in this mutation.
 func (m *PatientMutation) RemovedIDs(name string) []ent.Value {
 	switch name {
+	case patient.EdgePhysicaltherapyrecord:
+		ids := make([]ent.Value, 0, len(m.removedphysicaltherapyrecord))
+		for id := range m.removedphysicaltherapyrecord {
+			ids = append(ids, id)
+		}
+		return ids
 	case patient.EdgeBonedisease:
 		ids := make([]ent.Value, 0, len(m.removed_Bonedisease))
 		for id := range m.removed_Bonedisease {
@@ -1011,7 +1091,10 @@ func (m *PatientMutation) RemovedIDs(name string) []ent.Value {
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *PatientMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 1)
+	edges := make([]string, 0, 2)
+	if m.clearedphysicaltherapyrecord {
+		edges = append(edges, patient.EdgePhysicaltherapyrecord)
+	}
 	if m.cleared_Bonedisease {
 		edges = append(edges, patient.EdgeBonedisease)
 	}
@@ -1022,6 +1105,8 @@ func (m *PatientMutation) ClearedEdges() []string {
 // was cleared in this mutation.
 func (m *PatientMutation) EdgeCleared(name string) bool {
 	switch name {
+	case patient.EdgePhysicaltherapyrecord:
+		return m.clearedphysicaltherapyrecord
 	case patient.EdgeBonedisease:
 		return m.cleared_Bonedisease
 	}
@@ -1040,6 +1125,9 @@ func (m *PatientMutation) ClearEdge(name string) error {
 // It returns an error if the edge is not defined in the schema.
 func (m *PatientMutation) ResetEdge(name string) error {
 	switch name {
+	case patient.EdgePhysicaltherapyrecord:
+		m.ResetPhysicaltherapyrecord()
+		return nil
 	case patient.EdgeBonedisease:
 		m.ResetBonedisease()
 		return nil
@@ -1050,20 +1138,23 @@ func (m *PatientMutation) ResetEdge(name string) error {
 // PersonnelMutation represents an operation that mutates the Personnel nodes in the graph.
 type PersonnelMutation struct {
 	config
-	op                  Op
-	typ                 string
-	id                  *int
-	name                *string
-	department          *string
-	user                *string
-	password            *string
-	clearedFields       map[string]struct{}
-	_Bonedisease        map[int]struct{}
-	removed_Bonedisease map[int]struct{}
-	cleared_Bonedisease bool
-	done                bool
-	oldValue            func(context.Context) (*Personnel, error)
-	predicates          []predicate.Personnel
+	op                           Op
+	typ                          string
+	id                           *int
+	name                         *string
+	department                   *string
+	user                         *string
+	password                     *string
+	clearedFields                map[string]struct{}
+	physicaltherapyrecord        map[int]struct{}
+	removedphysicaltherapyrecord map[int]struct{}
+	clearedphysicaltherapyrecord bool
+	_Bonedisease                 map[int]struct{}
+	removed_Bonedisease          map[int]struct{}
+	cleared_Bonedisease          bool
+	done                         bool
+	oldValue                     func(context.Context) (*Personnel, error)
+	predicates                   []predicate.Personnel
 }
 
 var _ ent.Mutation = (*PersonnelMutation)(nil)
@@ -1289,6 +1380,59 @@ func (m *PersonnelMutation) ResetPassword() {
 	m.password = nil
 }
 
+// AddPhysicaltherapyrecordIDs adds the "physicaltherapyrecord" edge to the Physicaltherapyrecord entity by ids.
+func (m *PersonnelMutation) AddPhysicaltherapyrecordIDs(ids ...int) {
+	if m.physicaltherapyrecord == nil {
+		m.physicaltherapyrecord = make(map[int]struct{})
+	}
+	for i := range ids {
+		m.physicaltherapyrecord[ids[i]] = struct{}{}
+	}
+}
+
+// ClearPhysicaltherapyrecord clears the "physicaltherapyrecord" edge to the Physicaltherapyrecord entity.
+func (m *PersonnelMutation) ClearPhysicaltherapyrecord() {
+	m.clearedphysicaltherapyrecord = true
+}
+
+// PhysicaltherapyrecordCleared returns if the "physicaltherapyrecord" edge to the Physicaltherapyrecord entity was cleared.
+func (m *PersonnelMutation) PhysicaltherapyrecordCleared() bool {
+	return m.clearedphysicaltherapyrecord
+}
+
+// RemovePhysicaltherapyrecordIDs removes the "physicaltherapyrecord" edge to the Physicaltherapyrecord entity by IDs.
+func (m *PersonnelMutation) RemovePhysicaltherapyrecordIDs(ids ...int) {
+	if m.removedphysicaltherapyrecord == nil {
+		m.removedphysicaltherapyrecord = make(map[int]struct{})
+	}
+	for i := range ids {
+		m.removedphysicaltherapyrecord[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedPhysicaltherapyrecord returns the removed IDs of the "physicaltherapyrecord" edge to the Physicaltherapyrecord entity.
+func (m *PersonnelMutation) RemovedPhysicaltherapyrecordIDs() (ids []int) {
+	for id := range m.removedphysicaltherapyrecord {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// PhysicaltherapyrecordIDs returns the "physicaltherapyrecord" edge IDs in the mutation.
+func (m *PersonnelMutation) PhysicaltherapyrecordIDs() (ids []int) {
+	for id := range m.physicaltherapyrecord {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetPhysicaltherapyrecord resets all changes to the "physicaltherapyrecord" edge.
+func (m *PersonnelMutation) ResetPhysicaltherapyrecord() {
+	m.physicaltherapyrecord = nil
+	m.clearedphysicaltherapyrecord = false
+	m.removedphysicaltherapyrecord = nil
+}
+
 // AddBonediseaseIDs adds the "Bonedisease" edge to the Bonedisease entity by ids.
 func (m *PersonnelMutation) AddBonediseaseIDs(ids ...int) {
 	if m._Bonedisease == nil {
@@ -1506,7 +1650,10 @@ func (m *PersonnelMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *PersonnelMutation) AddedEdges() []string {
-	edges := make([]string, 0, 1)
+	edges := make([]string, 0, 2)
+	if m.physicaltherapyrecord != nil {
+		edges = append(edges, personnel.EdgePhysicaltherapyrecord)
+	}
 	if m._Bonedisease != nil {
 		edges = append(edges, personnel.EdgeBonedisease)
 	}
@@ -1517,6 +1664,12 @@ func (m *PersonnelMutation) AddedEdges() []string {
 // name in this mutation.
 func (m *PersonnelMutation) AddedIDs(name string) []ent.Value {
 	switch name {
+	case personnel.EdgePhysicaltherapyrecord:
+		ids := make([]ent.Value, 0, len(m.physicaltherapyrecord))
+		for id := range m.physicaltherapyrecord {
+			ids = append(ids, id)
+		}
+		return ids
 	case personnel.EdgeBonedisease:
 		ids := make([]ent.Value, 0, len(m._Bonedisease))
 		for id := range m._Bonedisease {
@@ -1529,7 +1682,10 @@ func (m *PersonnelMutation) AddedIDs(name string) []ent.Value {
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *PersonnelMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 1)
+	edges := make([]string, 0, 2)
+	if m.removedphysicaltherapyrecord != nil {
+		edges = append(edges, personnel.EdgePhysicaltherapyrecord)
+	}
 	if m.removed_Bonedisease != nil {
 		edges = append(edges, personnel.EdgeBonedisease)
 	}
@@ -1540,6 +1696,12 @@ func (m *PersonnelMutation) RemovedEdges() []string {
 // the given name in this mutation.
 func (m *PersonnelMutation) RemovedIDs(name string) []ent.Value {
 	switch name {
+	case personnel.EdgePhysicaltherapyrecord:
+		ids := make([]ent.Value, 0, len(m.removedphysicaltherapyrecord))
+		for id := range m.removedphysicaltherapyrecord {
+			ids = append(ids, id)
+		}
+		return ids
 	case personnel.EdgeBonedisease:
 		ids := make([]ent.Value, 0, len(m.removed_Bonedisease))
 		for id := range m.removed_Bonedisease {
@@ -1552,7 +1714,10 @@ func (m *PersonnelMutation) RemovedIDs(name string) []ent.Value {
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *PersonnelMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 1)
+	edges := make([]string, 0, 2)
+	if m.clearedphysicaltherapyrecord {
+		edges = append(edges, personnel.EdgePhysicaltherapyrecord)
+	}
 	if m.cleared_Bonedisease {
 		edges = append(edges, personnel.EdgeBonedisease)
 	}
@@ -1563,6 +1728,8 @@ func (m *PersonnelMutation) ClearedEdges() []string {
 // was cleared in this mutation.
 func (m *PersonnelMutation) EdgeCleared(name string) bool {
 	switch name {
+	case personnel.EdgePhysicaltherapyrecord:
+		return m.clearedphysicaltherapyrecord
 	case personnel.EdgeBonedisease:
 		return m.cleared_Bonedisease
 	}
@@ -1581,11 +1748,903 @@ func (m *PersonnelMutation) ClearEdge(name string) error {
 // It returns an error if the edge is not defined in the schema.
 func (m *PersonnelMutation) ResetEdge(name string) error {
 	switch name {
+	case personnel.EdgePhysicaltherapyrecord:
+		m.ResetPhysicaltherapyrecord()
+		return nil
 	case personnel.EdgeBonedisease:
 		m.ResetBonedisease()
 		return nil
 	}
 	return fmt.Errorf("unknown Personnel edge %s", name)
+}
+
+// PhysicaltherapyrecordMutation represents an operation that mutates the Physicaltherapyrecord nodes in the graph.
+type PhysicaltherapyrecordMutation struct {
+	config
+	op                         Op
+	typ                        string
+	id                         *int
+	added_time                 *time.Time
+	clearedFields              map[string]struct{}
+	personnel                  *int
+	clearedpersonnel           bool
+	patient                    *int
+	clearedpatient             bool
+	physicaltherapyroom        *int
+	clearedphysicaltherapyroom bool
+	status                     *int
+	clearedstatus              bool
+	done                       bool
+	oldValue                   func(context.Context) (*Physicaltherapyrecord, error)
+	predicates                 []predicate.Physicaltherapyrecord
+}
+
+var _ ent.Mutation = (*PhysicaltherapyrecordMutation)(nil)
+
+// physicaltherapyrecordOption allows management of the mutation configuration using functional options.
+type physicaltherapyrecordOption func(*PhysicaltherapyrecordMutation)
+
+// newPhysicaltherapyrecordMutation creates new mutation for the Physicaltherapyrecord entity.
+func newPhysicaltherapyrecordMutation(c config, op Op, opts ...physicaltherapyrecordOption) *PhysicaltherapyrecordMutation {
+	m := &PhysicaltherapyrecordMutation{
+		config:        c,
+		op:            op,
+		typ:           TypePhysicaltherapyrecord,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withPhysicaltherapyrecordID sets the ID field of the mutation.
+func withPhysicaltherapyrecordID(id int) physicaltherapyrecordOption {
+	return func(m *PhysicaltherapyrecordMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *Physicaltherapyrecord
+		)
+		m.oldValue = func(ctx context.Context) (*Physicaltherapyrecord, error) {
+			once.Do(func() {
+				if m.done {
+					err = fmt.Errorf("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().Physicaltherapyrecord.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withPhysicaltherapyrecord sets the old Physicaltherapyrecord of the mutation.
+func withPhysicaltherapyrecord(node *Physicaltherapyrecord) physicaltherapyrecordOption {
+	return func(m *PhysicaltherapyrecordMutation) {
+		m.oldValue = func(context.Context) (*Physicaltherapyrecord, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m PhysicaltherapyrecordMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m PhysicaltherapyrecordMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, fmt.Errorf("ent: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// ID returns the ID value in the mutation. Note that the ID
+// is only available if it was provided to the builder.
+func (m *PhysicaltherapyrecordMutation) ID() (id int, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// SetAddedTime sets the "added_time" field.
+func (m *PhysicaltherapyrecordMutation) SetAddedTime(t time.Time) {
+	m.added_time = &t
+}
+
+// AddedTime returns the value of the "added_time" field in the mutation.
+func (m *PhysicaltherapyrecordMutation) AddedTime() (r time.Time, exists bool) {
+	v := m.added_time
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldAddedTime returns the old "added_time" field's value of the Physicaltherapyrecord entity.
+// If the Physicaltherapyrecord object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *PhysicaltherapyrecordMutation) OldAddedTime(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldAddedTime is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldAddedTime requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldAddedTime: %w", err)
+	}
+	return oldValue.AddedTime, nil
+}
+
+// ResetAddedTime resets all changes to the "added_time" field.
+func (m *PhysicaltherapyrecordMutation) ResetAddedTime() {
+	m.added_time = nil
+}
+
+// SetPersonnelID sets the "personnel" edge to the Personnel entity by id.
+func (m *PhysicaltherapyrecordMutation) SetPersonnelID(id int) {
+	m.personnel = &id
+}
+
+// ClearPersonnel clears the "personnel" edge to the Personnel entity.
+func (m *PhysicaltherapyrecordMutation) ClearPersonnel() {
+	m.clearedpersonnel = true
+}
+
+// PersonnelCleared returns if the "personnel" edge to the Personnel entity was cleared.
+func (m *PhysicaltherapyrecordMutation) PersonnelCleared() bool {
+	return m.clearedpersonnel
+}
+
+// PersonnelID returns the "personnel" edge ID in the mutation.
+func (m *PhysicaltherapyrecordMutation) PersonnelID() (id int, exists bool) {
+	if m.personnel != nil {
+		return *m.personnel, true
+	}
+	return
+}
+
+// PersonnelIDs returns the "personnel" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// PersonnelID instead. It exists only for internal usage by the builders.
+func (m *PhysicaltherapyrecordMutation) PersonnelIDs() (ids []int) {
+	if id := m.personnel; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetPersonnel resets all changes to the "personnel" edge.
+func (m *PhysicaltherapyrecordMutation) ResetPersonnel() {
+	m.personnel = nil
+	m.clearedpersonnel = false
+}
+
+// SetPatientID sets the "patient" edge to the Patient entity by id.
+func (m *PhysicaltherapyrecordMutation) SetPatientID(id int) {
+	m.patient = &id
+}
+
+// ClearPatient clears the "patient" edge to the Patient entity.
+func (m *PhysicaltherapyrecordMutation) ClearPatient() {
+	m.clearedpatient = true
+}
+
+// PatientCleared returns if the "patient" edge to the Patient entity was cleared.
+func (m *PhysicaltherapyrecordMutation) PatientCleared() bool {
+	return m.clearedpatient
+}
+
+// PatientID returns the "patient" edge ID in the mutation.
+func (m *PhysicaltherapyrecordMutation) PatientID() (id int, exists bool) {
+	if m.patient != nil {
+		return *m.patient, true
+	}
+	return
+}
+
+// PatientIDs returns the "patient" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// PatientID instead. It exists only for internal usage by the builders.
+func (m *PhysicaltherapyrecordMutation) PatientIDs() (ids []int) {
+	if id := m.patient; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetPatient resets all changes to the "patient" edge.
+func (m *PhysicaltherapyrecordMutation) ResetPatient() {
+	m.patient = nil
+	m.clearedpatient = false
+}
+
+// SetPhysicaltherapyroomID sets the "physicaltherapyroom" edge to the Physicaltherapyroom entity by id.
+func (m *PhysicaltherapyrecordMutation) SetPhysicaltherapyroomID(id int) {
+	m.physicaltherapyroom = &id
+}
+
+// ClearPhysicaltherapyroom clears the "physicaltherapyroom" edge to the Physicaltherapyroom entity.
+func (m *PhysicaltherapyrecordMutation) ClearPhysicaltherapyroom() {
+	m.clearedphysicaltherapyroom = true
+}
+
+// PhysicaltherapyroomCleared returns if the "physicaltherapyroom" edge to the Physicaltherapyroom entity was cleared.
+func (m *PhysicaltherapyrecordMutation) PhysicaltherapyroomCleared() bool {
+	return m.clearedphysicaltherapyroom
+}
+
+// PhysicaltherapyroomID returns the "physicaltherapyroom" edge ID in the mutation.
+func (m *PhysicaltherapyrecordMutation) PhysicaltherapyroomID() (id int, exists bool) {
+	if m.physicaltherapyroom != nil {
+		return *m.physicaltherapyroom, true
+	}
+	return
+}
+
+// PhysicaltherapyroomIDs returns the "physicaltherapyroom" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// PhysicaltherapyroomID instead. It exists only for internal usage by the builders.
+func (m *PhysicaltherapyrecordMutation) PhysicaltherapyroomIDs() (ids []int) {
+	if id := m.physicaltherapyroom; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetPhysicaltherapyroom resets all changes to the "physicaltherapyroom" edge.
+func (m *PhysicaltherapyrecordMutation) ResetPhysicaltherapyroom() {
+	m.physicaltherapyroom = nil
+	m.clearedphysicaltherapyroom = false
+}
+
+// SetStatusID sets the "status" edge to the Status entity by id.
+func (m *PhysicaltherapyrecordMutation) SetStatusID(id int) {
+	m.status = &id
+}
+
+// ClearStatus clears the "status" edge to the Status entity.
+func (m *PhysicaltherapyrecordMutation) ClearStatus() {
+	m.clearedstatus = true
+}
+
+// StatusCleared returns if the "status" edge to the Status entity was cleared.
+func (m *PhysicaltherapyrecordMutation) StatusCleared() bool {
+	return m.clearedstatus
+}
+
+// StatusID returns the "status" edge ID in the mutation.
+func (m *PhysicaltherapyrecordMutation) StatusID() (id int, exists bool) {
+	if m.status != nil {
+		return *m.status, true
+	}
+	return
+}
+
+// StatusIDs returns the "status" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// StatusID instead. It exists only for internal usage by the builders.
+func (m *PhysicaltherapyrecordMutation) StatusIDs() (ids []int) {
+	if id := m.status; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetStatus resets all changes to the "status" edge.
+func (m *PhysicaltherapyrecordMutation) ResetStatus() {
+	m.status = nil
+	m.clearedstatus = false
+}
+
+// Op returns the operation name.
+func (m *PhysicaltherapyrecordMutation) Op() Op {
+	return m.op
+}
+
+// Type returns the node type of this mutation (Physicaltherapyrecord).
+func (m *PhysicaltherapyrecordMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during this mutation. Note that in
+// order to get all numeric fields that were incremented/decremented, call
+// AddedFields().
+func (m *PhysicaltherapyrecordMutation) Fields() []string {
+	fields := make([]string, 0, 1)
+	if m.added_time != nil {
+		fields = append(fields, physicaltherapyrecord.FieldAddedTime)
+	}
+	return fields
+}
+
+// Field returns the value of a field with the given name. The second boolean
+// return value indicates that this field was not set, or was not defined in the
+// schema.
+func (m *PhysicaltherapyrecordMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case physicaltherapyrecord.FieldAddedTime:
+		return m.AddedTime()
+	}
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database. An error is
+// returned if the mutation operation is not UpdateOne, or the query to the
+// database failed.
+func (m *PhysicaltherapyrecordMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case physicaltherapyrecord.FieldAddedTime:
+		return m.OldAddedTime(ctx)
+	}
+	return nil, fmt.Errorf("unknown Physicaltherapyrecord field %s", name)
+}
+
+// SetField sets the value of a field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *PhysicaltherapyrecordMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	case physicaltherapyrecord.FieldAddedTime:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetAddedTime(v)
+		return nil
+	}
+	return fmt.Errorf("unknown Physicaltherapyrecord field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented/decremented during
+// this mutation.
+func (m *PhysicaltherapyrecordMutation) AddedFields() []string {
+	return nil
+}
+
+// AddedField returns the numeric value that was incremented/decremented on a field
+// with the given name. The second boolean return value indicates that this field
+// was not set, or was not defined in the schema.
+func (m *PhysicaltherapyrecordMutation) AddedField(name string) (ent.Value, bool) {
+	return nil, false
+}
+
+// AddField adds the value to the field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *PhysicaltherapyrecordMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	}
+	return fmt.Errorf("unknown Physicaltherapyrecord numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared during this
+// mutation.
+func (m *PhysicaltherapyrecordMutation) ClearedFields() []string {
+	return nil
+}
+
+// FieldCleared returns a boolean indicating if a field with the given name was
+// cleared in this mutation.
+func (m *PhysicaltherapyrecordMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value of the field with the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *PhysicaltherapyrecordMutation) ClearField(name string) error {
+	return fmt.Errorf("unknown Physicaltherapyrecord nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation for the field with the given name.
+// It returns an error if the field is not defined in the schema.
+func (m *PhysicaltherapyrecordMutation) ResetField(name string) error {
+	switch name {
+	case physicaltherapyrecord.FieldAddedTime:
+		m.ResetAddedTime()
+		return nil
+	}
+	return fmt.Errorf("unknown Physicaltherapyrecord field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this mutation.
+func (m *PhysicaltherapyrecordMutation) AddedEdges() []string {
+	edges := make([]string, 0, 4)
+	if m.personnel != nil {
+		edges = append(edges, physicaltherapyrecord.EdgePersonnel)
+	}
+	if m.patient != nil {
+		edges = append(edges, physicaltherapyrecord.EdgePatient)
+	}
+	if m.physicaltherapyroom != nil {
+		edges = append(edges, physicaltherapyrecord.EdgePhysicaltherapyroom)
+	}
+	if m.status != nil {
+		edges = append(edges, physicaltherapyrecord.EdgeStatus)
+	}
+	return edges
+}
+
+// AddedIDs returns all IDs (to other nodes) that were added for the given edge
+// name in this mutation.
+func (m *PhysicaltherapyrecordMutation) AddedIDs(name string) []ent.Value {
+	switch name {
+	case physicaltherapyrecord.EdgePersonnel:
+		if id := m.personnel; id != nil {
+			return []ent.Value{*id}
+		}
+	case physicaltherapyrecord.EdgePatient:
+		if id := m.patient; id != nil {
+			return []ent.Value{*id}
+		}
+	case physicaltherapyrecord.EdgePhysicaltherapyroom:
+		if id := m.physicaltherapyroom; id != nil {
+			return []ent.Value{*id}
+		}
+	case physicaltherapyrecord.EdgeStatus:
+		if id := m.status; id != nil {
+			return []ent.Value{*id}
+		}
+	}
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this mutation.
+func (m *PhysicaltherapyrecordMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 4)
+	return edges
+}
+
+// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
+// the given name in this mutation.
+func (m *PhysicaltherapyrecordMutation) RemovedIDs(name string) []ent.Value {
+	switch name {
+	}
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this mutation.
+func (m *PhysicaltherapyrecordMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 4)
+	if m.clearedpersonnel {
+		edges = append(edges, physicaltherapyrecord.EdgePersonnel)
+	}
+	if m.clearedpatient {
+		edges = append(edges, physicaltherapyrecord.EdgePatient)
+	}
+	if m.clearedphysicaltherapyroom {
+		edges = append(edges, physicaltherapyrecord.EdgePhysicaltherapyroom)
+	}
+	if m.clearedstatus {
+		edges = append(edges, physicaltherapyrecord.EdgeStatus)
+	}
+	return edges
+}
+
+// EdgeCleared returns a boolean which indicates if the edge with the given name
+// was cleared in this mutation.
+func (m *PhysicaltherapyrecordMutation) EdgeCleared(name string) bool {
+	switch name {
+	case physicaltherapyrecord.EdgePersonnel:
+		return m.clearedpersonnel
+	case physicaltherapyrecord.EdgePatient:
+		return m.clearedpatient
+	case physicaltherapyrecord.EdgePhysicaltherapyroom:
+		return m.clearedphysicaltherapyroom
+	case physicaltherapyrecord.EdgeStatus:
+		return m.clearedstatus
+	}
+	return false
+}
+
+// ClearEdge clears the value of the edge with the given name. It returns an error
+// if that edge is not defined in the schema.
+func (m *PhysicaltherapyrecordMutation) ClearEdge(name string) error {
+	switch name {
+	case physicaltherapyrecord.EdgePersonnel:
+		m.ClearPersonnel()
+		return nil
+	case physicaltherapyrecord.EdgePatient:
+		m.ClearPatient()
+		return nil
+	case physicaltherapyrecord.EdgePhysicaltherapyroom:
+		m.ClearPhysicaltherapyroom()
+		return nil
+	case physicaltherapyrecord.EdgeStatus:
+		m.ClearStatus()
+		return nil
+	}
+	return fmt.Errorf("unknown Physicaltherapyrecord unique edge %s", name)
+}
+
+// ResetEdge resets all changes to the edge with the given name in this mutation.
+// It returns an error if the edge is not defined in the schema.
+func (m *PhysicaltherapyrecordMutation) ResetEdge(name string) error {
+	switch name {
+	case physicaltherapyrecord.EdgePersonnel:
+		m.ResetPersonnel()
+		return nil
+	case physicaltherapyrecord.EdgePatient:
+		m.ResetPatient()
+		return nil
+	case physicaltherapyrecord.EdgePhysicaltherapyroom:
+		m.ResetPhysicaltherapyroom()
+		return nil
+	case physicaltherapyrecord.EdgeStatus:
+		m.ResetStatus()
+		return nil
+	}
+	return fmt.Errorf("unknown Physicaltherapyrecord edge %s", name)
+}
+
+// PhysicaltherapyroomMutation represents an operation that mutates the Physicaltherapyroom nodes in the graph.
+type PhysicaltherapyroomMutation struct {
+	config
+	op                           Op
+	typ                          string
+	id                           *int
+	physical_therapy_room_name   *string
+	clearedFields                map[string]struct{}
+	physicaltherapyrecord        *int
+	clearedphysicaltherapyrecord bool
+	done                         bool
+	oldValue                     func(context.Context) (*Physicaltherapyroom, error)
+	predicates                   []predicate.Physicaltherapyroom
+}
+
+var _ ent.Mutation = (*PhysicaltherapyroomMutation)(nil)
+
+// physicaltherapyroomOption allows management of the mutation configuration using functional options.
+type physicaltherapyroomOption func(*PhysicaltherapyroomMutation)
+
+// newPhysicaltherapyroomMutation creates new mutation for the Physicaltherapyroom entity.
+func newPhysicaltherapyroomMutation(c config, op Op, opts ...physicaltherapyroomOption) *PhysicaltherapyroomMutation {
+	m := &PhysicaltherapyroomMutation{
+		config:        c,
+		op:            op,
+		typ:           TypePhysicaltherapyroom,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withPhysicaltherapyroomID sets the ID field of the mutation.
+func withPhysicaltherapyroomID(id int) physicaltherapyroomOption {
+	return func(m *PhysicaltherapyroomMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *Physicaltherapyroom
+		)
+		m.oldValue = func(ctx context.Context) (*Physicaltherapyroom, error) {
+			once.Do(func() {
+				if m.done {
+					err = fmt.Errorf("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().Physicaltherapyroom.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withPhysicaltherapyroom sets the old Physicaltherapyroom of the mutation.
+func withPhysicaltherapyroom(node *Physicaltherapyroom) physicaltherapyroomOption {
+	return func(m *PhysicaltherapyroomMutation) {
+		m.oldValue = func(context.Context) (*Physicaltherapyroom, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m PhysicaltherapyroomMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m PhysicaltherapyroomMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, fmt.Errorf("ent: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// ID returns the ID value in the mutation. Note that the ID
+// is only available if it was provided to the builder.
+func (m *PhysicaltherapyroomMutation) ID() (id int, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// SetPhysicalTherapyRoomName sets the "physical_therapy_room_name" field.
+func (m *PhysicaltherapyroomMutation) SetPhysicalTherapyRoomName(s string) {
+	m.physical_therapy_room_name = &s
+}
+
+// PhysicalTherapyRoomName returns the value of the "physical_therapy_room_name" field in the mutation.
+func (m *PhysicaltherapyroomMutation) PhysicalTherapyRoomName() (r string, exists bool) {
+	v := m.physical_therapy_room_name
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPhysicalTherapyRoomName returns the old "physical_therapy_room_name" field's value of the Physicaltherapyroom entity.
+// If the Physicaltherapyroom object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *PhysicaltherapyroomMutation) OldPhysicalTherapyRoomName(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldPhysicalTherapyRoomName is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldPhysicalTherapyRoomName requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPhysicalTherapyRoomName: %w", err)
+	}
+	return oldValue.PhysicalTherapyRoomName, nil
+}
+
+// ResetPhysicalTherapyRoomName resets all changes to the "physical_therapy_room_name" field.
+func (m *PhysicaltherapyroomMutation) ResetPhysicalTherapyRoomName() {
+	m.physical_therapy_room_name = nil
+}
+
+// SetPhysicaltherapyrecordID sets the "physicaltherapyrecord" edge to the Physicaltherapyrecord entity by id.
+func (m *PhysicaltherapyroomMutation) SetPhysicaltherapyrecordID(id int) {
+	m.physicaltherapyrecord = &id
+}
+
+// ClearPhysicaltherapyrecord clears the "physicaltherapyrecord" edge to the Physicaltherapyrecord entity.
+func (m *PhysicaltherapyroomMutation) ClearPhysicaltherapyrecord() {
+	m.clearedphysicaltherapyrecord = true
+}
+
+// PhysicaltherapyrecordCleared returns if the "physicaltherapyrecord" edge to the Physicaltherapyrecord entity was cleared.
+func (m *PhysicaltherapyroomMutation) PhysicaltherapyrecordCleared() bool {
+	return m.clearedphysicaltherapyrecord
+}
+
+// PhysicaltherapyrecordID returns the "physicaltherapyrecord" edge ID in the mutation.
+func (m *PhysicaltherapyroomMutation) PhysicaltherapyrecordID() (id int, exists bool) {
+	if m.physicaltherapyrecord != nil {
+		return *m.physicaltherapyrecord, true
+	}
+	return
+}
+
+// PhysicaltherapyrecordIDs returns the "physicaltherapyrecord" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// PhysicaltherapyrecordID instead. It exists only for internal usage by the builders.
+func (m *PhysicaltherapyroomMutation) PhysicaltherapyrecordIDs() (ids []int) {
+	if id := m.physicaltherapyrecord; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetPhysicaltherapyrecord resets all changes to the "physicaltherapyrecord" edge.
+func (m *PhysicaltherapyroomMutation) ResetPhysicaltherapyrecord() {
+	m.physicaltherapyrecord = nil
+	m.clearedphysicaltherapyrecord = false
+}
+
+// Op returns the operation name.
+func (m *PhysicaltherapyroomMutation) Op() Op {
+	return m.op
+}
+
+// Type returns the node type of this mutation (Physicaltherapyroom).
+func (m *PhysicaltherapyroomMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during this mutation. Note that in
+// order to get all numeric fields that were incremented/decremented, call
+// AddedFields().
+func (m *PhysicaltherapyroomMutation) Fields() []string {
+	fields := make([]string, 0, 1)
+	if m.physical_therapy_room_name != nil {
+		fields = append(fields, physicaltherapyroom.FieldPhysicalTherapyRoomName)
+	}
+	return fields
+}
+
+// Field returns the value of a field with the given name. The second boolean
+// return value indicates that this field was not set, or was not defined in the
+// schema.
+func (m *PhysicaltherapyroomMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case physicaltherapyroom.FieldPhysicalTherapyRoomName:
+		return m.PhysicalTherapyRoomName()
+	}
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database. An error is
+// returned if the mutation operation is not UpdateOne, or the query to the
+// database failed.
+func (m *PhysicaltherapyroomMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case physicaltherapyroom.FieldPhysicalTherapyRoomName:
+		return m.OldPhysicalTherapyRoomName(ctx)
+	}
+	return nil, fmt.Errorf("unknown Physicaltherapyroom field %s", name)
+}
+
+// SetField sets the value of a field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *PhysicaltherapyroomMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	case physicaltherapyroom.FieldPhysicalTherapyRoomName:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPhysicalTherapyRoomName(v)
+		return nil
+	}
+	return fmt.Errorf("unknown Physicaltherapyroom field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented/decremented during
+// this mutation.
+func (m *PhysicaltherapyroomMutation) AddedFields() []string {
+	return nil
+}
+
+// AddedField returns the numeric value that was incremented/decremented on a field
+// with the given name. The second boolean return value indicates that this field
+// was not set, or was not defined in the schema.
+func (m *PhysicaltherapyroomMutation) AddedField(name string) (ent.Value, bool) {
+	return nil, false
+}
+
+// AddField adds the value to the field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *PhysicaltherapyroomMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	}
+	return fmt.Errorf("unknown Physicaltherapyroom numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared during this
+// mutation.
+func (m *PhysicaltherapyroomMutation) ClearedFields() []string {
+	return nil
+}
+
+// FieldCleared returns a boolean indicating if a field with the given name was
+// cleared in this mutation.
+func (m *PhysicaltherapyroomMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value of the field with the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *PhysicaltherapyroomMutation) ClearField(name string) error {
+	return fmt.Errorf("unknown Physicaltherapyroom nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation for the field with the given name.
+// It returns an error if the field is not defined in the schema.
+func (m *PhysicaltherapyroomMutation) ResetField(name string) error {
+	switch name {
+	case physicaltherapyroom.FieldPhysicalTherapyRoomName:
+		m.ResetPhysicalTherapyRoomName()
+		return nil
+	}
+	return fmt.Errorf("unknown Physicaltherapyroom field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this mutation.
+func (m *PhysicaltherapyroomMutation) AddedEdges() []string {
+	edges := make([]string, 0, 1)
+	if m.physicaltherapyrecord != nil {
+		edges = append(edges, physicaltherapyroom.EdgePhysicaltherapyrecord)
+	}
+	return edges
+}
+
+// AddedIDs returns all IDs (to other nodes) that were added for the given edge
+// name in this mutation.
+func (m *PhysicaltherapyroomMutation) AddedIDs(name string) []ent.Value {
+	switch name {
+	case physicaltherapyroom.EdgePhysicaltherapyrecord:
+		if id := m.physicaltherapyrecord; id != nil {
+			return []ent.Value{*id}
+		}
+	}
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this mutation.
+func (m *PhysicaltherapyroomMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 1)
+	return edges
+}
+
+// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
+// the given name in this mutation.
+func (m *PhysicaltherapyroomMutation) RemovedIDs(name string) []ent.Value {
+	switch name {
+	}
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this mutation.
+func (m *PhysicaltherapyroomMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 1)
+	if m.clearedphysicaltherapyrecord {
+		edges = append(edges, physicaltherapyroom.EdgePhysicaltherapyrecord)
+	}
+	return edges
+}
+
+// EdgeCleared returns a boolean which indicates if the edge with the given name
+// was cleared in this mutation.
+func (m *PhysicaltherapyroomMutation) EdgeCleared(name string) bool {
+	switch name {
+	case physicaltherapyroom.EdgePhysicaltherapyrecord:
+		return m.clearedphysicaltherapyrecord
+	}
+	return false
+}
+
+// ClearEdge clears the value of the edge with the given name. It returns an error
+// if that edge is not defined in the schema.
+func (m *PhysicaltherapyroomMutation) ClearEdge(name string) error {
+	switch name {
+	case physicaltherapyroom.EdgePhysicaltherapyrecord:
+		m.ClearPhysicaltherapyrecord()
+		return nil
+	}
+	return fmt.Errorf("unknown Physicaltherapyroom unique edge %s", name)
+}
+
+// ResetEdge resets all changes to the edge with the given name in this mutation.
+// It returns an error if the edge is not defined in the schema.
+func (m *PhysicaltherapyroomMutation) ResetEdge(name string) error {
+	switch name {
+	case physicaltherapyroom.EdgePhysicaltherapyrecord:
+		m.ResetPhysicaltherapyrecord()
+		return nil
+	}
+	return fmt.Errorf("unknown Physicaltherapyroom edge %s", name)
 }
 
 // RemedyMutation represents an operation that mutates the Remedy nodes in the graph.
@@ -1965,4 +3024,360 @@ func (m *RemedyMutation) ResetEdge(name string) error {
 		return nil
 	}
 	return fmt.Errorf("unknown Remedy edge %s", name)
+}
+
+// StatusMutation represents an operation that mutates the Status nodes in the graph.
+type StatusMutation struct {
+	config
+	op                           Op
+	typ                          string
+	id                           *int
+	status_name                  *string
+	clearedFields                map[string]struct{}
+	physicaltherapyrecord        *int
+	clearedphysicaltherapyrecord bool
+	done                         bool
+	oldValue                     func(context.Context) (*Status, error)
+	predicates                   []predicate.Status
+}
+
+var _ ent.Mutation = (*StatusMutation)(nil)
+
+// statusOption allows management of the mutation configuration using functional options.
+type statusOption func(*StatusMutation)
+
+// newStatusMutation creates new mutation for the Status entity.
+func newStatusMutation(c config, op Op, opts ...statusOption) *StatusMutation {
+	m := &StatusMutation{
+		config:        c,
+		op:            op,
+		typ:           TypeStatus,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withStatusID sets the ID field of the mutation.
+func withStatusID(id int) statusOption {
+	return func(m *StatusMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *Status
+		)
+		m.oldValue = func(ctx context.Context) (*Status, error) {
+			once.Do(func() {
+				if m.done {
+					err = fmt.Errorf("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().Status.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withStatus sets the old Status of the mutation.
+func withStatus(node *Status) statusOption {
+	return func(m *StatusMutation) {
+		m.oldValue = func(context.Context) (*Status, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m StatusMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m StatusMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, fmt.Errorf("ent: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// ID returns the ID value in the mutation. Note that the ID
+// is only available if it was provided to the builder.
+func (m *StatusMutation) ID() (id int, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// SetStatusName sets the "status_name" field.
+func (m *StatusMutation) SetStatusName(s string) {
+	m.status_name = &s
+}
+
+// StatusName returns the value of the "status_name" field in the mutation.
+func (m *StatusMutation) StatusName() (r string, exists bool) {
+	v := m.status_name
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldStatusName returns the old "status_name" field's value of the Status entity.
+// If the Status object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *StatusMutation) OldStatusName(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldStatusName is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldStatusName requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldStatusName: %w", err)
+	}
+	return oldValue.StatusName, nil
+}
+
+// ResetStatusName resets all changes to the "status_name" field.
+func (m *StatusMutation) ResetStatusName() {
+	m.status_name = nil
+}
+
+// SetPhysicaltherapyrecordID sets the "physicaltherapyrecord" edge to the Physicaltherapyrecord entity by id.
+func (m *StatusMutation) SetPhysicaltherapyrecordID(id int) {
+	m.physicaltherapyrecord = &id
+}
+
+// ClearPhysicaltherapyrecord clears the "physicaltherapyrecord" edge to the Physicaltherapyrecord entity.
+func (m *StatusMutation) ClearPhysicaltherapyrecord() {
+	m.clearedphysicaltherapyrecord = true
+}
+
+// PhysicaltherapyrecordCleared returns if the "physicaltherapyrecord" edge to the Physicaltherapyrecord entity was cleared.
+func (m *StatusMutation) PhysicaltherapyrecordCleared() bool {
+	return m.clearedphysicaltherapyrecord
+}
+
+// PhysicaltherapyrecordID returns the "physicaltherapyrecord" edge ID in the mutation.
+func (m *StatusMutation) PhysicaltherapyrecordID() (id int, exists bool) {
+	if m.physicaltherapyrecord != nil {
+		return *m.physicaltherapyrecord, true
+	}
+	return
+}
+
+// PhysicaltherapyrecordIDs returns the "physicaltherapyrecord" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// PhysicaltherapyrecordID instead. It exists only for internal usage by the builders.
+func (m *StatusMutation) PhysicaltherapyrecordIDs() (ids []int) {
+	if id := m.physicaltherapyrecord; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetPhysicaltherapyrecord resets all changes to the "physicaltherapyrecord" edge.
+func (m *StatusMutation) ResetPhysicaltherapyrecord() {
+	m.physicaltherapyrecord = nil
+	m.clearedphysicaltherapyrecord = false
+}
+
+// Op returns the operation name.
+func (m *StatusMutation) Op() Op {
+	return m.op
+}
+
+// Type returns the node type of this mutation (Status).
+func (m *StatusMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during this mutation. Note that in
+// order to get all numeric fields that were incremented/decremented, call
+// AddedFields().
+func (m *StatusMutation) Fields() []string {
+	fields := make([]string, 0, 1)
+	if m.status_name != nil {
+		fields = append(fields, status.FieldStatusName)
+	}
+	return fields
+}
+
+// Field returns the value of a field with the given name. The second boolean
+// return value indicates that this field was not set, or was not defined in the
+// schema.
+func (m *StatusMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case status.FieldStatusName:
+		return m.StatusName()
+	}
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database. An error is
+// returned if the mutation operation is not UpdateOne, or the query to the
+// database failed.
+func (m *StatusMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case status.FieldStatusName:
+		return m.OldStatusName(ctx)
+	}
+	return nil, fmt.Errorf("unknown Status field %s", name)
+}
+
+// SetField sets the value of a field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *StatusMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	case status.FieldStatusName:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetStatusName(v)
+		return nil
+	}
+	return fmt.Errorf("unknown Status field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented/decremented during
+// this mutation.
+func (m *StatusMutation) AddedFields() []string {
+	return nil
+}
+
+// AddedField returns the numeric value that was incremented/decremented on a field
+// with the given name. The second boolean return value indicates that this field
+// was not set, or was not defined in the schema.
+func (m *StatusMutation) AddedField(name string) (ent.Value, bool) {
+	return nil, false
+}
+
+// AddField adds the value to the field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *StatusMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	}
+	return fmt.Errorf("unknown Status numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared during this
+// mutation.
+func (m *StatusMutation) ClearedFields() []string {
+	return nil
+}
+
+// FieldCleared returns a boolean indicating if a field with the given name was
+// cleared in this mutation.
+func (m *StatusMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value of the field with the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *StatusMutation) ClearField(name string) error {
+	return fmt.Errorf("unknown Status nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation for the field with the given name.
+// It returns an error if the field is not defined in the schema.
+func (m *StatusMutation) ResetField(name string) error {
+	switch name {
+	case status.FieldStatusName:
+		m.ResetStatusName()
+		return nil
+	}
+	return fmt.Errorf("unknown Status field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this mutation.
+func (m *StatusMutation) AddedEdges() []string {
+	edges := make([]string, 0, 1)
+	if m.physicaltherapyrecord != nil {
+		edges = append(edges, status.EdgePhysicaltherapyrecord)
+	}
+	return edges
+}
+
+// AddedIDs returns all IDs (to other nodes) that were added for the given edge
+// name in this mutation.
+func (m *StatusMutation) AddedIDs(name string) []ent.Value {
+	switch name {
+	case status.EdgePhysicaltherapyrecord:
+		if id := m.physicaltherapyrecord; id != nil {
+			return []ent.Value{*id}
+		}
+	}
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this mutation.
+func (m *StatusMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 1)
+	return edges
+}
+
+// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
+// the given name in this mutation.
+func (m *StatusMutation) RemovedIDs(name string) []ent.Value {
+	switch name {
+	}
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this mutation.
+func (m *StatusMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 1)
+	if m.clearedphysicaltherapyrecord {
+		edges = append(edges, status.EdgePhysicaltherapyrecord)
+	}
+	return edges
+}
+
+// EdgeCleared returns a boolean which indicates if the edge with the given name
+// was cleared in this mutation.
+func (m *StatusMutation) EdgeCleared(name string) bool {
+	switch name {
+	case status.EdgePhysicaltherapyrecord:
+		return m.clearedphysicaltherapyrecord
+	}
+	return false
+}
+
+// ClearEdge clears the value of the edge with the given name. It returns an error
+// if that edge is not defined in the schema.
+func (m *StatusMutation) ClearEdge(name string) error {
+	switch name {
+	case status.EdgePhysicaltherapyrecord:
+		m.ClearPhysicaltherapyrecord()
+		return nil
+	}
+	return fmt.Errorf("unknown Status unique edge %s", name)
+}
+
+// ResetEdge resets all changes to the edge with the given name in this mutation.
+// It returns an error if the edge is not defined in the schema.
+func (m *StatusMutation) ResetEdge(name string) error {
+	switch name {
+	case status.EdgePhysicaltherapyrecord:
+		m.ResetPhysicaltherapyrecord()
+		return nil
+	}
+	return fmt.Errorf("unknown Status edge %s", name)
 }

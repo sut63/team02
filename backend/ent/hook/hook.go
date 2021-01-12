@@ -48,6 +48,32 @@ func (f PersonnelFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, e
 	return f(ctx, mv)
 }
 
+// The PhysicaltherapyrecordFunc type is an adapter to allow the use of ordinary
+// function as Physicaltherapyrecord mutator.
+type PhysicaltherapyrecordFunc func(context.Context, *ent.PhysicaltherapyrecordMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f PhysicaltherapyrecordFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	mv, ok := m.(*ent.PhysicaltherapyrecordMutation)
+	if !ok {
+		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.PhysicaltherapyrecordMutation", m)
+	}
+	return f(ctx, mv)
+}
+
+// The PhysicaltherapyroomFunc type is an adapter to allow the use of ordinary
+// function as Physicaltherapyroom mutator.
+type PhysicaltherapyroomFunc func(context.Context, *ent.PhysicaltherapyroomMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f PhysicaltherapyroomFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	mv, ok := m.(*ent.PhysicaltherapyroomMutation)
+	if !ok {
+		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.PhysicaltherapyroomMutation", m)
+	}
+	return f(ctx, mv)
+}
+
 // The RemedyFunc type is an adapter to allow the use of ordinary
 // function as Remedy mutator.
 type RemedyFunc func(context.Context, *ent.RemedyMutation) (ent.Value, error)
@@ -57,6 +83,19 @@ func (f RemedyFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, erro
 	mv, ok := m.(*ent.RemedyMutation)
 	if !ok {
 		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.RemedyMutation", m)
+	}
+	return f(ctx, mv)
+}
+
+// The StatusFunc type is an adapter to allow the use of ordinary
+// function as Status mutator.
+type StatusFunc func(context.Context, *ent.StatusMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f StatusFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	mv, ok := m.(*ent.StatusMutation)
+	if !ok {
+		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.StatusMutation", m)
 	}
 	return f(ctx, mv)
 }

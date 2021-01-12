@@ -12,54 +12,52 @@ import (
 	"github.com/facebook/ent/dialect/sql"
 	"github.com/facebook/ent/dialect/sql/sqlgraph"
 	"github.com/facebook/ent/schema/field"
-	"github.com/to63/app/ent/bonedisease"
-	"github.com/to63/app/ent/patient"
 	"github.com/to63/app/ent/physicaltherapyrecord"
+	"github.com/to63/app/ent/physicaltherapyroom"
 	"github.com/to63/app/ent/predicate"
 )
 
-// PatientQuery is the builder for querying Patient entities.
-type PatientQuery struct {
+// PhysicaltherapyroomQuery is the builder for querying Physicaltherapyroom entities.
+type PhysicaltherapyroomQuery struct {
 	config
 	limit      *int
 	offset     *int
 	order      []OrderFunc
 	fields     []string
-	predicates []predicate.Patient
+	predicates []predicate.Physicaltherapyroom
 	// eager-loading edges.
 	withPhysicaltherapyrecord *PhysicaltherapyrecordQuery
-	withBonedisease           *BonediseaseQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
 }
 
-// Where adds a new predicate for the PatientQuery builder.
-func (pq *PatientQuery) Where(ps ...predicate.Patient) *PatientQuery {
+// Where adds a new predicate for the PhysicaltherapyroomQuery builder.
+func (pq *PhysicaltherapyroomQuery) Where(ps ...predicate.Physicaltherapyroom) *PhysicaltherapyroomQuery {
 	pq.predicates = append(pq.predicates, ps...)
 	return pq
 }
 
 // Limit adds a limit step to the query.
-func (pq *PatientQuery) Limit(limit int) *PatientQuery {
+func (pq *PhysicaltherapyroomQuery) Limit(limit int) *PhysicaltherapyroomQuery {
 	pq.limit = &limit
 	return pq
 }
 
 // Offset adds an offset step to the query.
-func (pq *PatientQuery) Offset(offset int) *PatientQuery {
+func (pq *PhysicaltherapyroomQuery) Offset(offset int) *PhysicaltherapyroomQuery {
 	pq.offset = &offset
 	return pq
 }
 
 // Order adds an order step to the query.
-func (pq *PatientQuery) Order(o ...OrderFunc) *PatientQuery {
+func (pq *PhysicaltherapyroomQuery) Order(o ...OrderFunc) *PhysicaltherapyroomQuery {
 	pq.order = append(pq.order, o...)
 	return pq
 }
 
 // QueryPhysicaltherapyrecord chains the current query on the "physicaltherapyrecord" edge.
-func (pq *PatientQuery) QueryPhysicaltherapyrecord() *PhysicaltherapyrecordQuery {
+func (pq *PhysicaltherapyroomQuery) QueryPhysicaltherapyrecord() *PhysicaltherapyrecordQuery {
 	query := &PhysicaltherapyrecordQuery{config: pq.config}
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
 		if err := pq.prepareQuery(ctx); err != nil {
@@ -70,9 +68,9 @@ func (pq *PatientQuery) QueryPhysicaltherapyrecord() *PhysicaltherapyrecordQuery
 			return nil, err
 		}
 		step := sqlgraph.NewStep(
-			sqlgraph.From(patient.Table, patient.FieldID, selector),
+			sqlgraph.From(physicaltherapyroom.Table, physicaltherapyroom.FieldID, selector),
 			sqlgraph.To(physicaltherapyrecord.Table, physicaltherapyrecord.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, patient.PhysicaltherapyrecordTable, patient.PhysicaltherapyrecordColumn),
+			sqlgraph.Edge(sqlgraph.O2O, false, physicaltherapyroom.PhysicaltherapyrecordTable, physicaltherapyroom.PhysicaltherapyrecordColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(pq.driver.Dialect(), step)
 		return fromU, nil
@@ -80,43 +78,21 @@ func (pq *PatientQuery) QueryPhysicaltherapyrecord() *PhysicaltherapyrecordQuery
 	return query
 }
 
-// QueryBonedisease chains the current query on the "Bonedisease" edge.
-func (pq *PatientQuery) QueryBonedisease() *BonediseaseQuery {
-	query := &BonediseaseQuery{config: pq.config}
-	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
-		if err := pq.prepareQuery(ctx); err != nil {
-			return nil, err
-		}
-		selector := pq.sqlQuery()
-		if err := selector.Err(); err != nil {
-			return nil, err
-		}
-		step := sqlgraph.NewStep(
-			sqlgraph.From(patient.Table, patient.FieldID, selector),
-			sqlgraph.To(bonedisease.Table, bonedisease.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, patient.BonediseaseTable, patient.BonediseaseColumn),
-		)
-		fromU = sqlgraph.SetNeighbors(pq.driver.Dialect(), step)
-		return fromU, nil
-	}
-	return query
-}
-
-// First returns the first Patient entity from the query.
-// Returns a *NotFoundError when no Patient was found.
-func (pq *PatientQuery) First(ctx context.Context) (*Patient, error) {
+// First returns the first Physicaltherapyroom entity from the query.
+// Returns a *NotFoundError when no Physicaltherapyroom was found.
+func (pq *PhysicaltherapyroomQuery) First(ctx context.Context) (*Physicaltherapyroom, error) {
 	nodes, err := pq.Limit(1).All(ctx)
 	if err != nil {
 		return nil, err
 	}
 	if len(nodes) == 0 {
-		return nil, &NotFoundError{patient.Label}
+		return nil, &NotFoundError{physicaltherapyroom.Label}
 	}
 	return nodes[0], nil
 }
 
 // FirstX is like First, but panics if an error occurs.
-func (pq *PatientQuery) FirstX(ctx context.Context) *Patient {
+func (pq *PhysicaltherapyroomQuery) FirstX(ctx context.Context) *Physicaltherapyroom {
 	node, err := pq.First(ctx)
 	if err != nil && !IsNotFound(err) {
 		panic(err)
@@ -124,22 +100,22 @@ func (pq *PatientQuery) FirstX(ctx context.Context) *Patient {
 	return node
 }
 
-// FirstID returns the first Patient ID from the query.
-// Returns a *NotFoundError when no Patient ID was found.
-func (pq *PatientQuery) FirstID(ctx context.Context) (id int, err error) {
+// FirstID returns the first Physicaltherapyroom ID from the query.
+// Returns a *NotFoundError when no Physicaltherapyroom ID was found.
+func (pq *PhysicaltherapyroomQuery) FirstID(ctx context.Context) (id int, err error) {
 	var ids []int
 	if ids, err = pq.Limit(1).IDs(ctx); err != nil {
 		return
 	}
 	if len(ids) == 0 {
-		err = &NotFoundError{patient.Label}
+		err = &NotFoundError{physicaltherapyroom.Label}
 		return
 	}
 	return ids[0], nil
 }
 
 // FirstIDX is like FirstID, but panics if an error occurs.
-func (pq *PatientQuery) FirstIDX(ctx context.Context) int {
+func (pq *PhysicaltherapyroomQuery) FirstIDX(ctx context.Context) int {
 	id, err := pq.FirstID(ctx)
 	if err != nil && !IsNotFound(err) {
 		panic(err)
@@ -147,10 +123,10 @@ func (pq *PatientQuery) FirstIDX(ctx context.Context) int {
 	return id
 }
 
-// Only returns a single Patient entity found by the query, ensuring it only returns one.
-// Returns a *NotSingularError when exactly one Patient entity is not found.
-// Returns a *NotFoundError when no Patient entities are found.
-func (pq *PatientQuery) Only(ctx context.Context) (*Patient, error) {
+// Only returns a single Physicaltherapyroom entity found by the query, ensuring it only returns one.
+// Returns a *NotSingularError when exactly one Physicaltherapyroom entity is not found.
+// Returns a *NotFoundError when no Physicaltherapyroom entities are found.
+func (pq *PhysicaltherapyroomQuery) Only(ctx context.Context) (*Physicaltherapyroom, error) {
 	nodes, err := pq.Limit(2).All(ctx)
 	if err != nil {
 		return nil, err
@@ -159,14 +135,14 @@ func (pq *PatientQuery) Only(ctx context.Context) (*Patient, error) {
 	case 1:
 		return nodes[0], nil
 	case 0:
-		return nil, &NotFoundError{patient.Label}
+		return nil, &NotFoundError{physicaltherapyroom.Label}
 	default:
-		return nil, &NotSingularError{patient.Label}
+		return nil, &NotSingularError{physicaltherapyroom.Label}
 	}
 }
 
 // OnlyX is like Only, but panics if an error occurs.
-func (pq *PatientQuery) OnlyX(ctx context.Context) *Patient {
+func (pq *PhysicaltherapyroomQuery) OnlyX(ctx context.Context) *Physicaltherapyroom {
 	node, err := pq.Only(ctx)
 	if err != nil {
 		panic(err)
@@ -174,10 +150,10 @@ func (pq *PatientQuery) OnlyX(ctx context.Context) *Patient {
 	return node
 }
 
-// OnlyID is like Only, but returns the only Patient ID in the query.
-// Returns a *NotSingularError when exactly one Patient ID is not found.
+// OnlyID is like Only, but returns the only Physicaltherapyroom ID in the query.
+// Returns a *NotSingularError when exactly one Physicaltherapyroom ID is not found.
 // Returns a *NotFoundError when no entities are found.
-func (pq *PatientQuery) OnlyID(ctx context.Context) (id int, err error) {
+func (pq *PhysicaltherapyroomQuery) OnlyID(ctx context.Context) (id int, err error) {
 	var ids []int
 	if ids, err = pq.Limit(2).IDs(ctx); err != nil {
 		return
@@ -186,15 +162,15 @@ func (pq *PatientQuery) OnlyID(ctx context.Context) (id int, err error) {
 	case 1:
 		id = ids[0]
 	case 0:
-		err = &NotFoundError{patient.Label}
+		err = &NotFoundError{physicaltherapyroom.Label}
 	default:
-		err = &NotSingularError{patient.Label}
+		err = &NotSingularError{physicaltherapyroom.Label}
 	}
 	return
 }
 
 // OnlyIDX is like OnlyID, but panics if an error occurs.
-func (pq *PatientQuery) OnlyIDX(ctx context.Context) int {
+func (pq *PhysicaltherapyroomQuery) OnlyIDX(ctx context.Context) int {
 	id, err := pq.OnlyID(ctx)
 	if err != nil {
 		panic(err)
@@ -202,8 +178,8 @@ func (pq *PatientQuery) OnlyIDX(ctx context.Context) int {
 	return id
 }
 
-// All executes the query and returns a list of Patients.
-func (pq *PatientQuery) All(ctx context.Context) ([]*Patient, error) {
+// All executes the query and returns a list of Physicaltherapyrooms.
+func (pq *PhysicaltherapyroomQuery) All(ctx context.Context) ([]*Physicaltherapyroom, error) {
 	if err := pq.prepareQuery(ctx); err != nil {
 		return nil, err
 	}
@@ -211,7 +187,7 @@ func (pq *PatientQuery) All(ctx context.Context) ([]*Patient, error) {
 }
 
 // AllX is like All, but panics if an error occurs.
-func (pq *PatientQuery) AllX(ctx context.Context) []*Patient {
+func (pq *PhysicaltherapyroomQuery) AllX(ctx context.Context) []*Physicaltherapyroom {
 	nodes, err := pq.All(ctx)
 	if err != nil {
 		panic(err)
@@ -219,17 +195,17 @@ func (pq *PatientQuery) AllX(ctx context.Context) []*Patient {
 	return nodes
 }
 
-// IDs executes the query and returns a list of Patient IDs.
-func (pq *PatientQuery) IDs(ctx context.Context) ([]int, error) {
+// IDs executes the query and returns a list of Physicaltherapyroom IDs.
+func (pq *PhysicaltherapyroomQuery) IDs(ctx context.Context) ([]int, error) {
 	var ids []int
-	if err := pq.Select(patient.FieldID).Scan(ctx, &ids); err != nil {
+	if err := pq.Select(physicaltherapyroom.FieldID).Scan(ctx, &ids); err != nil {
 		return nil, err
 	}
 	return ids, nil
 }
 
 // IDsX is like IDs, but panics if an error occurs.
-func (pq *PatientQuery) IDsX(ctx context.Context) []int {
+func (pq *PhysicaltherapyroomQuery) IDsX(ctx context.Context) []int {
 	ids, err := pq.IDs(ctx)
 	if err != nil {
 		panic(err)
@@ -238,7 +214,7 @@ func (pq *PatientQuery) IDsX(ctx context.Context) []int {
 }
 
 // Count returns the count of the given query.
-func (pq *PatientQuery) Count(ctx context.Context) (int, error) {
+func (pq *PhysicaltherapyroomQuery) Count(ctx context.Context) (int, error) {
 	if err := pq.prepareQuery(ctx); err != nil {
 		return 0, err
 	}
@@ -246,7 +222,7 @@ func (pq *PatientQuery) Count(ctx context.Context) (int, error) {
 }
 
 // CountX is like Count, but panics if an error occurs.
-func (pq *PatientQuery) CountX(ctx context.Context) int {
+func (pq *PhysicaltherapyroomQuery) CountX(ctx context.Context) int {
 	count, err := pq.Count(ctx)
 	if err != nil {
 		panic(err)
@@ -255,7 +231,7 @@ func (pq *PatientQuery) CountX(ctx context.Context) int {
 }
 
 // Exist returns true if the query has elements in the graph.
-func (pq *PatientQuery) Exist(ctx context.Context) (bool, error) {
+func (pq *PhysicaltherapyroomQuery) Exist(ctx context.Context) (bool, error) {
 	if err := pq.prepareQuery(ctx); err != nil {
 		return false, err
 	}
@@ -263,7 +239,7 @@ func (pq *PatientQuery) Exist(ctx context.Context) (bool, error) {
 }
 
 // ExistX is like Exist, but panics if an error occurs.
-func (pq *PatientQuery) ExistX(ctx context.Context) bool {
+func (pq *PhysicaltherapyroomQuery) ExistX(ctx context.Context) bool {
 	exist, err := pq.Exist(ctx)
 	if err != nil {
 		panic(err)
@@ -271,20 +247,19 @@ func (pq *PatientQuery) ExistX(ctx context.Context) bool {
 	return exist
 }
 
-// Clone returns a duplicate of the PatientQuery builder, including all associated steps. It can be
+// Clone returns a duplicate of the PhysicaltherapyroomQuery builder, including all associated steps. It can be
 // used to prepare common query builders and use them differently after the clone is made.
-func (pq *PatientQuery) Clone() *PatientQuery {
+func (pq *PhysicaltherapyroomQuery) Clone() *PhysicaltherapyroomQuery {
 	if pq == nil {
 		return nil
 	}
-	return &PatientQuery{
+	return &PhysicaltherapyroomQuery{
 		config:                    pq.config,
 		limit:                     pq.limit,
 		offset:                    pq.offset,
 		order:                     append([]OrderFunc{}, pq.order...),
-		predicates:                append([]predicate.Patient{}, pq.predicates...),
+		predicates:                append([]predicate.Physicaltherapyroom{}, pq.predicates...),
 		withPhysicaltherapyrecord: pq.withPhysicaltherapyrecord.Clone(),
-		withBonedisease:           pq.withBonedisease.Clone(),
 		// clone intermediate query.
 		sql:  pq.sql.Clone(),
 		path: pq.path,
@@ -293,23 +268,12 @@ func (pq *PatientQuery) Clone() *PatientQuery {
 
 // WithPhysicaltherapyrecord tells the query-builder to eager-load the nodes that are connected to
 // the "physicaltherapyrecord" edge. The optional arguments are used to configure the query builder of the edge.
-func (pq *PatientQuery) WithPhysicaltherapyrecord(opts ...func(*PhysicaltherapyrecordQuery)) *PatientQuery {
+func (pq *PhysicaltherapyroomQuery) WithPhysicaltherapyrecord(opts ...func(*PhysicaltherapyrecordQuery)) *PhysicaltherapyroomQuery {
 	query := &PhysicaltherapyrecordQuery{config: pq.config}
 	for _, opt := range opts {
 		opt(query)
 	}
 	pq.withPhysicaltherapyrecord = query
-	return pq
-}
-
-// WithBonedisease tells the query-builder to eager-load the nodes that are connected to
-// the "Bonedisease" edge. The optional arguments are used to configure the query builder of the edge.
-func (pq *PatientQuery) WithBonedisease(opts ...func(*BonediseaseQuery)) *PatientQuery {
-	query := &BonediseaseQuery{config: pq.config}
-	for _, opt := range opts {
-		opt(query)
-	}
-	pq.withBonedisease = query
 	return pq
 }
 
@@ -319,17 +283,17 @@ func (pq *PatientQuery) WithBonedisease(opts ...func(*BonediseaseQuery)) *Patien
 // Example:
 //
 //	var v []struct {
-//		Name string `json:"name,omitempty"`
+//		PhysicalTherapyRoomName string `json:"physical_therapy_room_name,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
-//	client.Patient.Query().
-//		GroupBy(patient.FieldName).
+//	client.Physicaltherapyroom.Query().
+//		GroupBy(physicaltherapyroom.FieldPhysicalTherapyRoomName).
 //		Aggregate(ent.Count()).
 //		Scan(ctx, &v)
 //
-func (pq *PatientQuery) GroupBy(field string, fields ...string) *PatientGroupBy {
-	group := &PatientGroupBy{config: pq.config}
+func (pq *PhysicaltherapyroomQuery) GroupBy(field string, fields ...string) *PhysicaltherapyroomGroupBy {
+	group := &PhysicaltherapyroomGroupBy{config: pq.config}
 	group.fields = append([]string{field}, fields...)
 	group.path = func(ctx context.Context) (prev *sql.Selector, err error) {
 		if err := pq.prepareQuery(ctx); err != nil {
@@ -346,21 +310,21 @@ func (pq *PatientQuery) GroupBy(field string, fields ...string) *PatientGroupBy 
 // Example:
 //
 //	var v []struct {
-//		Name string `json:"name,omitempty"`
+//		PhysicalTherapyRoomName string `json:"physical_therapy_room_name,omitempty"`
 //	}
 //
-//	client.Patient.Query().
-//		Select(patient.FieldName).
+//	client.Physicaltherapyroom.Query().
+//		Select(physicaltherapyroom.FieldPhysicalTherapyRoomName).
 //		Scan(ctx, &v)
 //
-func (pq *PatientQuery) Select(field string, fields ...string) *PatientSelect {
+func (pq *PhysicaltherapyroomQuery) Select(field string, fields ...string) *PhysicaltherapyroomSelect {
 	pq.fields = append([]string{field}, fields...)
-	return &PatientSelect{PatientQuery: pq}
+	return &PhysicaltherapyroomSelect{PhysicaltherapyroomQuery: pq}
 }
 
-func (pq *PatientQuery) prepareQuery(ctx context.Context) error {
+func (pq *PhysicaltherapyroomQuery) prepareQuery(ctx context.Context) error {
 	for _, f := range pq.fields {
-		if !patient.ValidColumn(f) {
+		if !physicaltherapyroom.ValidColumn(f) {
 			return &ValidationError{Name: f, err: fmt.Errorf("ent: invalid field %q for query", f)}
 		}
 	}
@@ -374,17 +338,16 @@ func (pq *PatientQuery) prepareQuery(ctx context.Context) error {
 	return nil
 }
 
-func (pq *PatientQuery) sqlAll(ctx context.Context) ([]*Patient, error) {
+func (pq *PhysicaltherapyroomQuery) sqlAll(ctx context.Context) ([]*Physicaltherapyroom, error) {
 	var (
-		nodes       = []*Patient{}
+		nodes       = []*Physicaltherapyroom{}
 		_spec       = pq.querySpec()
-		loadedTypes = [2]bool{
+		loadedTypes = [1]bool{
 			pq.withPhysicaltherapyrecord != nil,
-			pq.withBonedisease != nil,
 		}
 	)
 	_spec.ScanValues = func(columns []string) ([]interface{}, error) {
-		node := &Patient{config: pq.config}
+		node := &Physicaltherapyroom{config: pq.config}
 		nodes = append(nodes, node)
 		return node.scanValues(columns)
 	}
@@ -405,71 +368,41 @@ func (pq *PatientQuery) sqlAll(ctx context.Context) ([]*Patient, error) {
 
 	if query := pq.withPhysicaltherapyrecord; query != nil {
 		fks := make([]driver.Value, 0, len(nodes))
-		nodeids := make(map[int]*Patient)
+		nodeids := make(map[int]*Physicaltherapyroom)
 		for i := range nodes {
 			fks = append(fks, nodes[i].ID)
 			nodeids[nodes[i].ID] = nodes[i]
-			nodes[i].Edges.Physicaltherapyrecord = []*Physicaltherapyrecord{}
 		}
 		query.withFKs = true
 		query.Where(predicate.Physicaltherapyrecord(func(s *sql.Selector) {
-			s.Where(sql.InValues(patient.PhysicaltherapyrecordColumn, fks...))
+			s.Where(sql.InValues(physicaltherapyroom.PhysicaltherapyrecordColumn, fks...))
 		}))
 		neighbors, err := query.All(ctx)
 		if err != nil {
 			return nil, err
 		}
 		for _, n := range neighbors {
-			fk := n._Patient_id
+			fk := n.physicaltherapyroom_physicaltherapyrecord
 			if fk == nil {
-				return nil, fmt.Errorf(`foreign-key "_Patient_id" is nil for node %v`, n.ID)
+				return nil, fmt.Errorf(`foreign-key "physicaltherapyroom_physicaltherapyrecord" is nil for node %v`, n.ID)
 			}
 			node, ok := nodeids[*fk]
 			if !ok {
-				return nil, fmt.Errorf(`unexpected foreign-key "_Patient_id" returned %v for node %v`, *fk, n.ID)
+				return nil, fmt.Errorf(`unexpected foreign-key "physicaltherapyroom_physicaltherapyrecord" returned %v for node %v`, *fk, n.ID)
 			}
-			node.Edges.Physicaltherapyrecord = append(node.Edges.Physicaltherapyrecord, n)
-		}
-	}
-
-	if query := pq.withBonedisease; query != nil {
-		fks := make([]driver.Value, 0, len(nodes))
-		nodeids := make(map[int]*Patient)
-		for i := range nodes {
-			fks = append(fks, nodes[i].ID)
-			nodeids[nodes[i].ID] = nodes[i]
-			nodes[i].Edges.Bonedisease = []*Bonedisease{}
-		}
-		query.withFKs = true
-		query.Where(predicate.Bonedisease(func(s *sql.Selector) {
-			s.Where(sql.InValues(patient.BonediseaseColumn, fks...))
-		}))
-		neighbors, err := query.All(ctx)
-		if err != nil {
-			return nil, err
-		}
-		for _, n := range neighbors {
-			fk := n._Patient_id
-			if fk == nil {
-				return nil, fmt.Errorf(`foreign-key "_Patient_id" is nil for node %v`, n.ID)
-			}
-			node, ok := nodeids[*fk]
-			if !ok {
-				return nil, fmt.Errorf(`unexpected foreign-key "_Patient_id" returned %v for node %v`, *fk, n.ID)
-			}
-			node.Edges.Bonedisease = append(node.Edges.Bonedisease, n)
+			node.Edges.Physicaltherapyrecord = n
 		}
 	}
 
 	return nodes, nil
 }
 
-func (pq *PatientQuery) sqlCount(ctx context.Context) (int, error) {
+func (pq *PhysicaltherapyroomQuery) sqlCount(ctx context.Context) (int, error) {
 	_spec := pq.querySpec()
 	return sqlgraph.CountNodes(ctx, pq.driver, _spec)
 }
 
-func (pq *PatientQuery) sqlExist(ctx context.Context) (bool, error) {
+func (pq *PhysicaltherapyroomQuery) sqlExist(ctx context.Context) (bool, error) {
 	n, err := pq.sqlCount(ctx)
 	if err != nil {
 		return false, fmt.Errorf("ent: check existence: %v", err)
@@ -477,14 +410,14 @@ func (pq *PatientQuery) sqlExist(ctx context.Context) (bool, error) {
 	return n > 0, nil
 }
 
-func (pq *PatientQuery) querySpec() *sqlgraph.QuerySpec {
+func (pq *PhysicaltherapyroomQuery) querySpec() *sqlgraph.QuerySpec {
 	_spec := &sqlgraph.QuerySpec{
 		Node: &sqlgraph.NodeSpec{
-			Table:   patient.Table,
-			Columns: patient.Columns,
+			Table:   physicaltherapyroom.Table,
+			Columns: physicaltherapyroom.Columns,
 			ID: &sqlgraph.FieldSpec{
 				Type:   field.TypeInt,
-				Column: patient.FieldID,
+				Column: physicaltherapyroom.FieldID,
 			},
 		},
 		From:   pq.sql,
@@ -492,9 +425,9 @@ func (pq *PatientQuery) querySpec() *sqlgraph.QuerySpec {
 	}
 	if fields := pq.fields; len(fields) > 0 {
 		_spec.Node.Columns = make([]string, 0, len(fields))
-		_spec.Node.Columns = append(_spec.Node.Columns, patient.FieldID)
+		_spec.Node.Columns = append(_spec.Node.Columns, physicaltherapyroom.FieldID)
 		for i := range fields {
-			if fields[i] != patient.FieldID {
+			if fields[i] != physicaltherapyroom.FieldID {
 				_spec.Node.Columns = append(_spec.Node.Columns, fields[i])
 			}
 		}
@@ -515,26 +448,26 @@ func (pq *PatientQuery) querySpec() *sqlgraph.QuerySpec {
 	if ps := pq.order; len(ps) > 0 {
 		_spec.Order = func(selector *sql.Selector) {
 			for i := range ps {
-				ps[i](selector, patient.ValidColumn)
+				ps[i](selector, physicaltherapyroom.ValidColumn)
 			}
 		}
 	}
 	return _spec
 }
 
-func (pq *PatientQuery) sqlQuery() *sql.Selector {
+func (pq *PhysicaltherapyroomQuery) sqlQuery() *sql.Selector {
 	builder := sql.Dialect(pq.driver.Dialect())
-	t1 := builder.Table(patient.Table)
-	selector := builder.Select(t1.Columns(patient.Columns...)...).From(t1)
+	t1 := builder.Table(physicaltherapyroom.Table)
+	selector := builder.Select(t1.Columns(physicaltherapyroom.Columns...)...).From(t1)
 	if pq.sql != nil {
 		selector = pq.sql
-		selector.Select(selector.Columns(patient.Columns...)...)
+		selector.Select(selector.Columns(physicaltherapyroom.Columns...)...)
 	}
 	for _, p := range pq.predicates {
 		p(selector)
 	}
 	for _, p := range pq.order {
-		p(selector, patient.ValidColumn)
+		p(selector, physicaltherapyroom.ValidColumn)
 	}
 	if offset := pq.offset; offset != nil {
 		// limit is mandatory for offset clause. We start
@@ -547,8 +480,8 @@ func (pq *PatientQuery) sqlQuery() *sql.Selector {
 	return selector
 }
 
-// PatientGroupBy is the group-by builder for Patient entities.
-type PatientGroupBy struct {
+// PhysicaltherapyroomGroupBy is the group-by builder for Physicaltherapyroom entities.
+type PhysicaltherapyroomGroupBy struct {
 	config
 	fields []string
 	fns    []AggregateFunc
@@ -558,13 +491,13 @@ type PatientGroupBy struct {
 }
 
 // Aggregate adds the given aggregation functions to the group-by query.
-func (pgb *PatientGroupBy) Aggregate(fns ...AggregateFunc) *PatientGroupBy {
+func (pgb *PhysicaltherapyroomGroupBy) Aggregate(fns ...AggregateFunc) *PhysicaltherapyroomGroupBy {
 	pgb.fns = append(pgb.fns, fns...)
 	return pgb
 }
 
 // Scan applies the group-by query and scans the result into the given value.
-func (pgb *PatientGroupBy) Scan(ctx context.Context, v interface{}) error {
+func (pgb *PhysicaltherapyroomGroupBy) Scan(ctx context.Context, v interface{}) error {
 	query, err := pgb.path(ctx)
 	if err != nil {
 		return err
@@ -574,7 +507,7 @@ func (pgb *PatientGroupBy) Scan(ctx context.Context, v interface{}) error {
 }
 
 // ScanX is like Scan, but panics if an error occurs.
-func (pgb *PatientGroupBy) ScanX(ctx context.Context, v interface{}) {
+func (pgb *PhysicaltherapyroomGroupBy) ScanX(ctx context.Context, v interface{}) {
 	if err := pgb.Scan(ctx, v); err != nil {
 		panic(err)
 	}
@@ -582,9 +515,9 @@ func (pgb *PatientGroupBy) ScanX(ctx context.Context, v interface{}) {
 
 // Strings returns list of strings from group-by.
 // It is only allowed when executing a group-by query with one field.
-func (pgb *PatientGroupBy) Strings(ctx context.Context) ([]string, error) {
+func (pgb *PhysicaltherapyroomGroupBy) Strings(ctx context.Context) ([]string, error) {
 	if len(pgb.fields) > 1 {
-		return nil, errors.New("ent: PatientGroupBy.Strings is not achievable when grouping more than 1 field")
+		return nil, errors.New("ent: PhysicaltherapyroomGroupBy.Strings is not achievable when grouping more than 1 field")
 	}
 	var v []string
 	if err := pgb.Scan(ctx, &v); err != nil {
@@ -594,7 +527,7 @@ func (pgb *PatientGroupBy) Strings(ctx context.Context) ([]string, error) {
 }
 
 // StringsX is like Strings, but panics if an error occurs.
-func (pgb *PatientGroupBy) StringsX(ctx context.Context) []string {
+func (pgb *PhysicaltherapyroomGroupBy) StringsX(ctx context.Context) []string {
 	v, err := pgb.Strings(ctx)
 	if err != nil {
 		panic(err)
@@ -604,7 +537,7 @@ func (pgb *PatientGroupBy) StringsX(ctx context.Context) []string {
 
 // String returns a single string from a group-by query.
 // It is only allowed when executing a group-by query with one field.
-func (pgb *PatientGroupBy) String(ctx context.Context) (_ string, err error) {
+func (pgb *PhysicaltherapyroomGroupBy) String(ctx context.Context) (_ string, err error) {
 	var v []string
 	if v, err = pgb.Strings(ctx); err != nil {
 		return
@@ -613,15 +546,15 @@ func (pgb *PatientGroupBy) String(ctx context.Context) (_ string, err error) {
 	case 1:
 		return v[0], nil
 	case 0:
-		err = &NotFoundError{patient.Label}
+		err = &NotFoundError{physicaltherapyroom.Label}
 	default:
-		err = fmt.Errorf("ent: PatientGroupBy.Strings returned %d results when one was expected", len(v))
+		err = fmt.Errorf("ent: PhysicaltherapyroomGroupBy.Strings returned %d results when one was expected", len(v))
 	}
 	return
 }
 
 // StringX is like String, but panics if an error occurs.
-func (pgb *PatientGroupBy) StringX(ctx context.Context) string {
+func (pgb *PhysicaltherapyroomGroupBy) StringX(ctx context.Context) string {
 	v, err := pgb.String(ctx)
 	if err != nil {
 		panic(err)
@@ -631,9 +564,9 @@ func (pgb *PatientGroupBy) StringX(ctx context.Context) string {
 
 // Ints returns list of ints from group-by.
 // It is only allowed when executing a group-by query with one field.
-func (pgb *PatientGroupBy) Ints(ctx context.Context) ([]int, error) {
+func (pgb *PhysicaltherapyroomGroupBy) Ints(ctx context.Context) ([]int, error) {
 	if len(pgb.fields) > 1 {
-		return nil, errors.New("ent: PatientGroupBy.Ints is not achievable when grouping more than 1 field")
+		return nil, errors.New("ent: PhysicaltherapyroomGroupBy.Ints is not achievable when grouping more than 1 field")
 	}
 	var v []int
 	if err := pgb.Scan(ctx, &v); err != nil {
@@ -643,7 +576,7 @@ func (pgb *PatientGroupBy) Ints(ctx context.Context) ([]int, error) {
 }
 
 // IntsX is like Ints, but panics if an error occurs.
-func (pgb *PatientGroupBy) IntsX(ctx context.Context) []int {
+func (pgb *PhysicaltherapyroomGroupBy) IntsX(ctx context.Context) []int {
 	v, err := pgb.Ints(ctx)
 	if err != nil {
 		panic(err)
@@ -653,7 +586,7 @@ func (pgb *PatientGroupBy) IntsX(ctx context.Context) []int {
 
 // Int returns a single int from a group-by query.
 // It is only allowed when executing a group-by query with one field.
-func (pgb *PatientGroupBy) Int(ctx context.Context) (_ int, err error) {
+func (pgb *PhysicaltherapyroomGroupBy) Int(ctx context.Context) (_ int, err error) {
 	var v []int
 	if v, err = pgb.Ints(ctx); err != nil {
 		return
@@ -662,15 +595,15 @@ func (pgb *PatientGroupBy) Int(ctx context.Context) (_ int, err error) {
 	case 1:
 		return v[0], nil
 	case 0:
-		err = &NotFoundError{patient.Label}
+		err = &NotFoundError{physicaltherapyroom.Label}
 	default:
-		err = fmt.Errorf("ent: PatientGroupBy.Ints returned %d results when one was expected", len(v))
+		err = fmt.Errorf("ent: PhysicaltherapyroomGroupBy.Ints returned %d results when one was expected", len(v))
 	}
 	return
 }
 
 // IntX is like Int, but panics if an error occurs.
-func (pgb *PatientGroupBy) IntX(ctx context.Context) int {
+func (pgb *PhysicaltherapyroomGroupBy) IntX(ctx context.Context) int {
 	v, err := pgb.Int(ctx)
 	if err != nil {
 		panic(err)
@@ -680,9 +613,9 @@ func (pgb *PatientGroupBy) IntX(ctx context.Context) int {
 
 // Float64s returns list of float64s from group-by.
 // It is only allowed when executing a group-by query with one field.
-func (pgb *PatientGroupBy) Float64s(ctx context.Context) ([]float64, error) {
+func (pgb *PhysicaltherapyroomGroupBy) Float64s(ctx context.Context) ([]float64, error) {
 	if len(pgb.fields) > 1 {
-		return nil, errors.New("ent: PatientGroupBy.Float64s is not achievable when grouping more than 1 field")
+		return nil, errors.New("ent: PhysicaltherapyroomGroupBy.Float64s is not achievable when grouping more than 1 field")
 	}
 	var v []float64
 	if err := pgb.Scan(ctx, &v); err != nil {
@@ -692,7 +625,7 @@ func (pgb *PatientGroupBy) Float64s(ctx context.Context) ([]float64, error) {
 }
 
 // Float64sX is like Float64s, but panics if an error occurs.
-func (pgb *PatientGroupBy) Float64sX(ctx context.Context) []float64 {
+func (pgb *PhysicaltherapyroomGroupBy) Float64sX(ctx context.Context) []float64 {
 	v, err := pgb.Float64s(ctx)
 	if err != nil {
 		panic(err)
@@ -702,7 +635,7 @@ func (pgb *PatientGroupBy) Float64sX(ctx context.Context) []float64 {
 
 // Float64 returns a single float64 from a group-by query.
 // It is only allowed when executing a group-by query with one field.
-func (pgb *PatientGroupBy) Float64(ctx context.Context) (_ float64, err error) {
+func (pgb *PhysicaltherapyroomGroupBy) Float64(ctx context.Context) (_ float64, err error) {
 	var v []float64
 	if v, err = pgb.Float64s(ctx); err != nil {
 		return
@@ -711,15 +644,15 @@ func (pgb *PatientGroupBy) Float64(ctx context.Context) (_ float64, err error) {
 	case 1:
 		return v[0], nil
 	case 0:
-		err = &NotFoundError{patient.Label}
+		err = &NotFoundError{physicaltherapyroom.Label}
 	default:
-		err = fmt.Errorf("ent: PatientGroupBy.Float64s returned %d results when one was expected", len(v))
+		err = fmt.Errorf("ent: PhysicaltherapyroomGroupBy.Float64s returned %d results when one was expected", len(v))
 	}
 	return
 }
 
 // Float64X is like Float64, but panics if an error occurs.
-func (pgb *PatientGroupBy) Float64X(ctx context.Context) float64 {
+func (pgb *PhysicaltherapyroomGroupBy) Float64X(ctx context.Context) float64 {
 	v, err := pgb.Float64(ctx)
 	if err != nil {
 		panic(err)
@@ -729,9 +662,9 @@ func (pgb *PatientGroupBy) Float64X(ctx context.Context) float64 {
 
 // Bools returns list of bools from group-by.
 // It is only allowed when executing a group-by query with one field.
-func (pgb *PatientGroupBy) Bools(ctx context.Context) ([]bool, error) {
+func (pgb *PhysicaltherapyroomGroupBy) Bools(ctx context.Context) ([]bool, error) {
 	if len(pgb.fields) > 1 {
-		return nil, errors.New("ent: PatientGroupBy.Bools is not achievable when grouping more than 1 field")
+		return nil, errors.New("ent: PhysicaltherapyroomGroupBy.Bools is not achievable when grouping more than 1 field")
 	}
 	var v []bool
 	if err := pgb.Scan(ctx, &v); err != nil {
@@ -741,7 +674,7 @@ func (pgb *PatientGroupBy) Bools(ctx context.Context) ([]bool, error) {
 }
 
 // BoolsX is like Bools, but panics if an error occurs.
-func (pgb *PatientGroupBy) BoolsX(ctx context.Context) []bool {
+func (pgb *PhysicaltherapyroomGroupBy) BoolsX(ctx context.Context) []bool {
 	v, err := pgb.Bools(ctx)
 	if err != nil {
 		panic(err)
@@ -751,7 +684,7 @@ func (pgb *PatientGroupBy) BoolsX(ctx context.Context) []bool {
 
 // Bool returns a single bool from a group-by query.
 // It is only allowed when executing a group-by query with one field.
-func (pgb *PatientGroupBy) Bool(ctx context.Context) (_ bool, err error) {
+func (pgb *PhysicaltherapyroomGroupBy) Bool(ctx context.Context) (_ bool, err error) {
 	var v []bool
 	if v, err = pgb.Bools(ctx); err != nil {
 		return
@@ -760,15 +693,15 @@ func (pgb *PatientGroupBy) Bool(ctx context.Context) (_ bool, err error) {
 	case 1:
 		return v[0], nil
 	case 0:
-		err = &NotFoundError{patient.Label}
+		err = &NotFoundError{physicaltherapyroom.Label}
 	default:
-		err = fmt.Errorf("ent: PatientGroupBy.Bools returned %d results when one was expected", len(v))
+		err = fmt.Errorf("ent: PhysicaltherapyroomGroupBy.Bools returned %d results when one was expected", len(v))
 	}
 	return
 }
 
 // BoolX is like Bool, but panics if an error occurs.
-func (pgb *PatientGroupBy) BoolX(ctx context.Context) bool {
+func (pgb *PhysicaltherapyroomGroupBy) BoolX(ctx context.Context) bool {
 	v, err := pgb.Bool(ctx)
 	if err != nil {
 		panic(err)
@@ -776,9 +709,9 @@ func (pgb *PatientGroupBy) BoolX(ctx context.Context) bool {
 	return v
 }
 
-func (pgb *PatientGroupBy) sqlScan(ctx context.Context, v interface{}) error {
+func (pgb *PhysicaltherapyroomGroupBy) sqlScan(ctx context.Context, v interface{}) error {
 	for _, f := range pgb.fields {
-		if !patient.ValidColumn(f) {
+		if !physicaltherapyroom.ValidColumn(f) {
 			return &ValidationError{Name: f, err: fmt.Errorf("invalid field %q for group-by", f)}
 		}
 	}
@@ -795,43 +728,43 @@ func (pgb *PatientGroupBy) sqlScan(ctx context.Context, v interface{}) error {
 	return sql.ScanSlice(rows, v)
 }
 
-func (pgb *PatientGroupBy) sqlQuery() *sql.Selector {
+func (pgb *PhysicaltherapyroomGroupBy) sqlQuery() *sql.Selector {
 	selector := pgb.sql
 	columns := make([]string, 0, len(pgb.fields)+len(pgb.fns))
 	columns = append(columns, pgb.fields...)
 	for _, fn := range pgb.fns {
-		columns = append(columns, fn(selector, patient.ValidColumn))
+		columns = append(columns, fn(selector, physicaltherapyroom.ValidColumn))
 	}
 	return selector.Select(columns...).GroupBy(pgb.fields...)
 }
 
-// PatientSelect is the builder for selecting fields of Patient entities.
-type PatientSelect struct {
-	*PatientQuery
+// PhysicaltherapyroomSelect is the builder for selecting fields of Physicaltherapyroom entities.
+type PhysicaltherapyroomSelect struct {
+	*PhysicaltherapyroomQuery
 	// intermediate query (i.e. traversal path).
 	sql *sql.Selector
 }
 
 // Scan applies the selector query and scans the result into the given value.
-func (ps *PatientSelect) Scan(ctx context.Context, v interface{}) error {
+func (ps *PhysicaltherapyroomSelect) Scan(ctx context.Context, v interface{}) error {
 	if err := ps.prepareQuery(ctx); err != nil {
 		return err
 	}
-	ps.sql = ps.PatientQuery.sqlQuery()
+	ps.sql = ps.PhysicaltherapyroomQuery.sqlQuery()
 	return ps.sqlScan(ctx, v)
 }
 
 // ScanX is like Scan, but panics if an error occurs.
-func (ps *PatientSelect) ScanX(ctx context.Context, v interface{}) {
+func (ps *PhysicaltherapyroomSelect) ScanX(ctx context.Context, v interface{}) {
 	if err := ps.Scan(ctx, v); err != nil {
 		panic(err)
 	}
 }
 
 // Strings returns list of strings from a selector. It is only allowed when selecting one field.
-func (ps *PatientSelect) Strings(ctx context.Context) ([]string, error) {
+func (ps *PhysicaltherapyroomSelect) Strings(ctx context.Context) ([]string, error) {
 	if len(ps.fields) > 1 {
-		return nil, errors.New("ent: PatientSelect.Strings is not achievable when selecting more than 1 field")
+		return nil, errors.New("ent: PhysicaltherapyroomSelect.Strings is not achievable when selecting more than 1 field")
 	}
 	var v []string
 	if err := ps.Scan(ctx, &v); err != nil {
@@ -841,7 +774,7 @@ func (ps *PatientSelect) Strings(ctx context.Context) ([]string, error) {
 }
 
 // StringsX is like Strings, but panics if an error occurs.
-func (ps *PatientSelect) StringsX(ctx context.Context) []string {
+func (ps *PhysicaltherapyroomSelect) StringsX(ctx context.Context) []string {
 	v, err := ps.Strings(ctx)
 	if err != nil {
 		panic(err)
@@ -850,7 +783,7 @@ func (ps *PatientSelect) StringsX(ctx context.Context) []string {
 }
 
 // String returns a single string from a selector. It is only allowed when selecting one field.
-func (ps *PatientSelect) String(ctx context.Context) (_ string, err error) {
+func (ps *PhysicaltherapyroomSelect) String(ctx context.Context) (_ string, err error) {
 	var v []string
 	if v, err = ps.Strings(ctx); err != nil {
 		return
@@ -859,15 +792,15 @@ func (ps *PatientSelect) String(ctx context.Context) (_ string, err error) {
 	case 1:
 		return v[0], nil
 	case 0:
-		err = &NotFoundError{patient.Label}
+		err = &NotFoundError{physicaltherapyroom.Label}
 	default:
-		err = fmt.Errorf("ent: PatientSelect.Strings returned %d results when one was expected", len(v))
+		err = fmt.Errorf("ent: PhysicaltherapyroomSelect.Strings returned %d results when one was expected", len(v))
 	}
 	return
 }
 
 // StringX is like String, but panics if an error occurs.
-func (ps *PatientSelect) StringX(ctx context.Context) string {
+func (ps *PhysicaltherapyroomSelect) StringX(ctx context.Context) string {
 	v, err := ps.String(ctx)
 	if err != nil {
 		panic(err)
@@ -876,9 +809,9 @@ func (ps *PatientSelect) StringX(ctx context.Context) string {
 }
 
 // Ints returns list of ints from a selector. It is only allowed when selecting one field.
-func (ps *PatientSelect) Ints(ctx context.Context) ([]int, error) {
+func (ps *PhysicaltherapyroomSelect) Ints(ctx context.Context) ([]int, error) {
 	if len(ps.fields) > 1 {
-		return nil, errors.New("ent: PatientSelect.Ints is not achievable when selecting more than 1 field")
+		return nil, errors.New("ent: PhysicaltherapyroomSelect.Ints is not achievable when selecting more than 1 field")
 	}
 	var v []int
 	if err := ps.Scan(ctx, &v); err != nil {
@@ -888,7 +821,7 @@ func (ps *PatientSelect) Ints(ctx context.Context) ([]int, error) {
 }
 
 // IntsX is like Ints, but panics if an error occurs.
-func (ps *PatientSelect) IntsX(ctx context.Context) []int {
+func (ps *PhysicaltherapyroomSelect) IntsX(ctx context.Context) []int {
 	v, err := ps.Ints(ctx)
 	if err != nil {
 		panic(err)
@@ -897,7 +830,7 @@ func (ps *PatientSelect) IntsX(ctx context.Context) []int {
 }
 
 // Int returns a single int from a selector. It is only allowed when selecting one field.
-func (ps *PatientSelect) Int(ctx context.Context) (_ int, err error) {
+func (ps *PhysicaltherapyroomSelect) Int(ctx context.Context) (_ int, err error) {
 	var v []int
 	if v, err = ps.Ints(ctx); err != nil {
 		return
@@ -906,15 +839,15 @@ func (ps *PatientSelect) Int(ctx context.Context) (_ int, err error) {
 	case 1:
 		return v[0], nil
 	case 0:
-		err = &NotFoundError{patient.Label}
+		err = &NotFoundError{physicaltherapyroom.Label}
 	default:
-		err = fmt.Errorf("ent: PatientSelect.Ints returned %d results when one was expected", len(v))
+		err = fmt.Errorf("ent: PhysicaltherapyroomSelect.Ints returned %d results when one was expected", len(v))
 	}
 	return
 }
 
 // IntX is like Int, but panics if an error occurs.
-func (ps *PatientSelect) IntX(ctx context.Context) int {
+func (ps *PhysicaltherapyroomSelect) IntX(ctx context.Context) int {
 	v, err := ps.Int(ctx)
 	if err != nil {
 		panic(err)
@@ -923,9 +856,9 @@ func (ps *PatientSelect) IntX(ctx context.Context) int {
 }
 
 // Float64s returns list of float64s from a selector. It is only allowed when selecting one field.
-func (ps *PatientSelect) Float64s(ctx context.Context) ([]float64, error) {
+func (ps *PhysicaltherapyroomSelect) Float64s(ctx context.Context) ([]float64, error) {
 	if len(ps.fields) > 1 {
-		return nil, errors.New("ent: PatientSelect.Float64s is not achievable when selecting more than 1 field")
+		return nil, errors.New("ent: PhysicaltherapyroomSelect.Float64s is not achievable when selecting more than 1 field")
 	}
 	var v []float64
 	if err := ps.Scan(ctx, &v); err != nil {
@@ -935,7 +868,7 @@ func (ps *PatientSelect) Float64s(ctx context.Context) ([]float64, error) {
 }
 
 // Float64sX is like Float64s, but panics if an error occurs.
-func (ps *PatientSelect) Float64sX(ctx context.Context) []float64 {
+func (ps *PhysicaltherapyroomSelect) Float64sX(ctx context.Context) []float64 {
 	v, err := ps.Float64s(ctx)
 	if err != nil {
 		panic(err)
@@ -944,7 +877,7 @@ func (ps *PatientSelect) Float64sX(ctx context.Context) []float64 {
 }
 
 // Float64 returns a single float64 from a selector. It is only allowed when selecting one field.
-func (ps *PatientSelect) Float64(ctx context.Context) (_ float64, err error) {
+func (ps *PhysicaltherapyroomSelect) Float64(ctx context.Context) (_ float64, err error) {
 	var v []float64
 	if v, err = ps.Float64s(ctx); err != nil {
 		return
@@ -953,15 +886,15 @@ func (ps *PatientSelect) Float64(ctx context.Context) (_ float64, err error) {
 	case 1:
 		return v[0], nil
 	case 0:
-		err = &NotFoundError{patient.Label}
+		err = &NotFoundError{physicaltherapyroom.Label}
 	default:
-		err = fmt.Errorf("ent: PatientSelect.Float64s returned %d results when one was expected", len(v))
+		err = fmt.Errorf("ent: PhysicaltherapyroomSelect.Float64s returned %d results when one was expected", len(v))
 	}
 	return
 }
 
 // Float64X is like Float64, but panics if an error occurs.
-func (ps *PatientSelect) Float64X(ctx context.Context) float64 {
+func (ps *PhysicaltherapyroomSelect) Float64X(ctx context.Context) float64 {
 	v, err := ps.Float64(ctx)
 	if err != nil {
 		panic(err)
@@ -970,9 +903,9 @@ func (ps *PatientSelect) Float64X(ctx context.Context) float64 {
 }
 
 // Bools returns list of bools from a selector. It is only allowed when selecting one field.
-func (ps *PatientSelect) Bools(ctx context.Context) ([]bool, error) {
+func (ps *PhysicaltherapyroomSelect) Bools(ctx context.Context) ([]bool, error) {
 	if len(ps.fields) > 1 {
-		return nil, errors.New("ent: PatientSelect.Bools is not achievable when selecting more than 1 field")
+		return nil, errors.New("ent: PhysicaltherapyroomSelect.Bools is not achievable when selecting more than 1 field")
 	}
 	var v []bool
 	if err := ps.Scan(ctx, &v); err != nil {
@@ -982,7 +915,7 @@ func (ps *PatientSelect) Bools(ctx context.Context) ([]bool, error) {
 }
 
 // BoolsX is like Bools, but panics if an error occurs.
-func (ps *PatientSelect) BoolsX(ctx context.Context) []bool {
+func (ps *PhysicaltherapyroomSelect) BoolsX(ctx context.Context) []bool {
 	v, err := ps.Bools(ctx)
 	if err != nil {
 		panic(err)
@@ -991,7 +924,7 @@ func (ps *PatientSelect) BoolsX(ctx context.Context) []bool {
 }
 
 // Bool returns a single bool from a selector. It is only allowed when selecting one field.
-func (ps *PatientSelect) Bool(ctx context.Context) (_ bool, err error) {
+func (ps *PhysicaltherapyroomSelect) Bool(ctx context.Context) (_ bool, err error) {
 	var v []bool
 	if v, err = ps.Bools(ctx); err != nil {
 		return
@@ -1000,15 +933,15 @@ func (ps *PatientSelect) Bool(ctx context.Context) (_ bool, err error) {
 	case 1:
 		return v[0], nil
 	case 0:
-		err = &NotFoundError{patient.Label}
+		err = &NotFoundError{physicaltherapyroom.Label}
 	default:
-		err = fmt.Errorf("ent: PatientSelect.Bools returned %d results when one was expected", len(v))
+		err = fmt.Errorf("ent: PhysicaltherapyroomSelect.Bools returned %d results when one was expected", len(v))
 	}
 	return
 }
 
 // BoolX is like Bool, but panics if an error occurs.
-func (ps *PatientSelect) BoolX(ctx context.Context) bool {
+func (ps *PhysicaltherapyroomSelect) BoolX(ctx context.Context) bool {
 	v, err := ps.Bool(ctx)
 	if err != nil {
 		panic(err)
@@ -1016,7 +949,7 @@ func (ps *PatientSelect) BoolX(ctx context.Context) bool {
 	return v
 }
 
-func (ps *PatientSelect) sqlScan(ctx context.Context, v interface{}) error {
+func (ps *PhysicaltherapyroomSelect) sqlScan(ctx context.Context, v interface{}) error {
 	rows := &sql.Rows{}
 	query, args := ps.sqlQuery().Query()
 	if err := ps.driver.Query(ctx, query, args, rows); err != nil {
@@ -1026,7 +959,7 @@ func (ps *PatientSelect) sqlScan(ctx context.Context, v interface{}) error {
 	return sql.ScanSlice(rows, v)
 }
 
-func (ps *PatientSelect) sqlQuery() sql.Querier {
+func (ps *PhysicaltherapyroomSelect) sqlQuery() sql.Querier {
 	selector := ps.sql
 	selector.Select(selector.Columns(ps.fields...)...)
 	return selector

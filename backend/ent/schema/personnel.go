@@ -24,6 +24,7 @@ func (Personnel) Fields() []ent.Field {
 // Edges of the Personnel.
 func (Personnel) Edges() []ent.Edge {
 	return []ent.Edge{
+		edge.To("physicaltherapyrecord",Physicaltherapyrecord.Type).StorageKey(edge.Column("Personel_id")),
 		edge.To("Bonedisease", Bonedisease.Type).StorageKey(edge.Column("Personel_id")),
 	}
 }

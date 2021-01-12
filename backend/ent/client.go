@@ -12,7 +12,10 @@ import (
 	"github.com/to63/app/ent/bonedisease"
 	"github.com/to63/app/ent/patient"
 	"github.com/to63/app/ent/personnel"
+	"github.com/to63/app/ent/physicaltherapyrecord"
+	"github.com/to63/app/ent/physicaltherapyroom"
 	"github.com/to63/app/ent/remedy"
+	"github.com/to63/app/ent/status"
 
 	"github.com/facebook/ent/dialect"
 	"github.com/facebook/ent/dialect/sql"
@@ -30,8 +33,14 @@ type Client struct {
 	Patient *PatientClient
 	// Personnel is the client for interacting with the Personnel builders.
 	Personnel *PersonnelClient
+	// Physicaltherapyrecord is the client for interacting with the Physicaltherapyrecord builders.
+	Physicaltherapyrecord *PhysicaltherapyrecordClient
+	// Physicaltherapyroom is the client for interacting with the Physicaltherapyroom builders.
+	Physicaltherapyroom *PhysicaltherapyroomClient
 	// Remedy is the client for interacting with the Remedy builders.
 	Remedy *RemedyClient
+	// Status is the client for interacting with the Status builders.
+	Status *StatusClient
 }
 
 // NewClient creates a new client configured with the given options.
@@ -48,7 +57,10 @@ func (c *Client) init() {
 	c.Bonedisease = NewBonediseaseClient(c.config)
 	c.Patient = NewPatientClient(c.config)
 	c.Personnel = NewPersonnelClient(c.config)
+	c.Physicaltherapyrecord = NewPhysicaltherapyrecordClient(c.config)
+	c.Physicaltherapyroom = NewPhysicaltherapyroomClient(c.config)
 	c.Remedy = NewRemedyClient(c.config)
+	c.Status = NewStatusClient(c.config)
 }
 
 // Open opens a database/sql.DB specified by the driver name and
@@ -79,12 +91,15 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 	}
 	cfg := config{driver: tx, log: c.log, debug: c.debug, hooks: c.hooks}
 	return &Tx{
-		ctx:         ctx,
-		config:      cfg,
-		Bonedisease: NewBonediseaseClient(cfg),
-		Patient:     NewPatientClient(cfg),
-		Personnel:   NewPersonnelClient(cfg),
-		Remedy:      NewRemedyClient(cfg),
+		ctx:                   ctx,
+		config:                cfg,
+		Bonedisease:           NewBonediseaseClient(cfg),
+		Patient:               NewPatientClient(cfg),
+		Personnel:             NewPersonnelClient(cfg),
+		Physicaltherapyrecord: NewPhysicaltherapyrecordClient(cfg),
+		Physicaltherapyroom:   NewPhysicaltherapyroomClient(cfg),
+		Remedy:                NewRemedyClient(cfg),
+		Status:                NewStatusClient(cfg),
 	}, nil
 }
 
@@ -99,11 +114,14 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 	}
 	cfg := config{driver: &txDriver{tx: tx, drv: c.driver}, log: c.log, debug: c.debug, hooks: c.hooks}
 	return &Tx{
-		config:      cfg,
-		Bonedisease: NewBonediseaseClient(cfg),
-		Patient:     NewPatientClient(cfg),
-		Personnel:   NewPersonnelClient(cfg),
-		Remedy:      NewRemedyClient(cfg),
+		config:                cfg,
+		Bonedisease:           NewBonediseaseClient(cfg),
+		Patient:               NewPatientClient(cfg),
+		Personnel:             NewPersonnelClient(cfg),
+		Physicaltherapyrecord: NewPhysicaltherapyrecordClient(cfg),
+		Physicaltherapyroom:   NewPhysicaltherapyroomClient(cfg),
+		Remedy:                NewRemedyClient(cfg),
+		Status:                NewStatusClient(cfg),
 	}, nil
 }
 
@@ -135,7 +153,10 @@ func (c *Client) Use(hooks ...Hook) {
 	c.Bonedisease.Use(hooks...)
 	c.Patient.Use(hooks...)
 	c.Personnel.Use(hooks...)
+	c.Physicaltherapyrecord.Use(hooks...)
+	c.Physicaltherapyroom.Use(hooks...)
 	c.Remedy.Use(hooks...)
+	c.Status.Use(hooks...)
 }
 
 // BonediseaseClient is a client for the Bonedisease schema.
@@ -357,6 +378,22 @@ func (c *PatientClient) GetX(ctx context.Context, id int) *Patient {
 	return obj
 }
 
+// QueryPhysicaltherapyrecord queries the physicaltherapyrecord edge of a Patient.
+func (c *PatientClient) QueryPhysicaltherapyrecord(pa *Patient) *PhysicaltherapyrecordQuery {
+	query := &PhysicaltherapyrecordQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := pa.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(patient.Table, patient.FieldID, id),
+			sqlgraph.To(physicaltherapyrecord.Table, physicaltherapyrecord.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, patient.PhysicaltherapyrecordTable, patient.PhysicaltherapyrecordColumn),
+		)
+		fromV = sqlgraph.Neighbors(pa.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
 // QueryBonedisease queries the Bonedisease edge of a Patient.
 func (c *PatientClient) QueryBonedisease(pa *Patient) *BonediseaseQuery {
 	query := &BonediseaseQuery{config: c.config}
@@ -461,6 +498,22 @@ func (c *PersonnelClient) GetX(ctx context.Context, id int) *Personnel {
 	return obj
 }
 
+// QueryPhysicaltherapyrecord queries the physicaltherapyrecord edge of a Personnel.
+func (c *PersonnelClient) QueryPhysicaltherapyrecord(pe *Personnel) *PhysicaltherapyrecordQuery {
+	query := &PhysicaltherapyrecordQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := pe.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(personnel.Table, personnel.FieldID, id),
+			sqlgraph.To(physicaltherapyrecord.Table, physicaltherapyrecord.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, personnel.PhysicaltherapyrecordTable, personnel.PhysicaltherapyrecordColumn),
+		)
+		fromV = sqlgraph.Neighbors(pe.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
 // QueryBonedisease queries the Bonedisease edge of a Personnel.
 func (c *PersonnelClient) QueryBonedisease(pe *Personnel) *BonediseaseQuery {
 	query := &BonediseaseQuery{config: c.config}
@@ -480,6 +533,262 @@ func (c *PersonnelClient) QueryBonedisease(pe *Personnel) *BonediseaseQuery {
 // Hooks returns the client hooks.
 func (c *PersonnelClient) Hooks() []Hook {
 	return c.hooks.Personnel
+}
+
+// PhysicaltherapyrecordClient is a client for the Physicaltherapyrecord schema.
+type PhysicaltherapyrecordClient struct {
+	config
+}
+
+// NewPhysicaltherapyrecordClient returns a client for the Physicaltherapyrecord from the given config.
+func NewPhysicaltherapyrecordClient(c config) *PhysicaltherapyrecordClient {
+	return &PhysicaltherapyrecordClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `physicaltherapyrecord.Hooks(f(g(h())))`.
+func (c *PhysicaltherapyrecordClient) Use(hooks ...Hook) {
+	c.hooks.Physicaltherapyrecord = append(c.hooks.Physicaltherapyrecord, hooks...)
+}
+
+// Create returns a create builder for Physicaltherapyrecord.
+func (c *PhysicaltherapyrecordClient) Create() *PhysicaltherapyrecordCreate {
+	mutation := newPhysicaltherapyrecordMutation(c.config, OpCreate)
+	return &PhysicaltherapyrecordCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of Physicaltherapyrecord entities.
+func (c *PhysicaltherapyrecordClient) CreateBulk(builders ...*PhysicaltherapyrecordCreate) *PhysicaltherapyrecordCreateBulk {
+	return &PhysicaltherapyrecordCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for Physicaltherapyrecord.
+func (c *PhysicaltherapyrecordClient) Update() *PhysicaltherapyrecordUpdate {
+	mutation := newPhysicaltherapyrecordMutation(c.config, OpUpdate)
+	return &PhysicaltherapyrecordUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *PhysicaltherapyrecordClient) UpdateOne(ph *Physicaltherapyrecord) *PhysicaltherapyrecordUpdateOne {
+	mutation := newPhysicaltherapyrecordMutation(c.config, OpUpdateOne, withPhysicaltherapyrecord(ph))
+	return &PhysicaltherapyrecordUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *PhysicaltherapyrecordClient) UpdateOneID(id int) *PhysicaltherapyrecordUpdateOne {
+	mutation := newPhysicaltherapyrecordMutation(c.config, OpUpdateOne, withPhysicaltherapyrecordID(id))
+	return &PhysicaltherapyrecordUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for Physicaltherapyrecord.
+func (c *PhysicaltherapyrecordClient) Delete() *PhysicaltherapyrecordDelete {
+	mutation := newPhysicaltherapyrecordMutation(c.config, OpDelete)
+	return &PhysicaltherapyrecordDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a delete builder for the given entity.
+func (c *PhysicaltherapyrecordClient) DeleteOne(ph *Physicaltherapyrecord) *PhysicaltherapyrecordDeleteOne {
+	return c.DeleteOneID(ph.ID)
+}
+
+// DeleteOneID returns a delete builder for the given id.
+func (c *PhysicaltherapyrecordClient) DeleteOneID(id int) *PhysicaltherapyrecordDeleteOne {
+	builder := c.Delete().Where(physicaltherapyrecord.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &PhysicaltherapyrecordDeleteOne{builder}
+}
+
+// Query returns a query builder for Physicaltherapyrecord.
+func (c *PhysicaltherapyrecordClient) Query() *PhysicaltherapyrecordQuery {
+	return &PhysicaltherapyrecordQuery{config: c.config}
+}
+
+// Get returns a Physicaltherapyrecord entity by its id.
+func (c *PhysicaltherapyrecordClient) Get(ctx context.Context, id int) (*Physicaltherapyrecord, error) {
+	return c.Query().Where(physicaltherapyrecord.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *PhysicaltherapyrecordClient) GetX(ctx context.Context, id int) *Physicaltherapyrecord {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// QueryPersonnel queries the personnel edge of a Physicaltherapyrecord.
+func (c *PhysicaltherapyrecordClient) QueryPersonnel(ph *Physicaltherapyrecord) *PersonnelQuery {
+	query := &PersonnelQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := ph.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(physicaltherapyrecord.Table, physicaltherapyrecord.FieldID, id),
+			sqlgraph.To(personnel.Table, personnel.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, physicaltherapyrecord.PersonnelTable, physicaltherapyrecord.PersonnelColumn),
+		)
+		fromV = sqlgraph.Neighbors(ph.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryPatient queries the patient edge of a Physicaltherapyrecord.
+func (c *PhysicaltherapyrecordClient) QueryPatient(ph *Physicaltherapyrecord) *PatientQuery {
+	query := &PatientQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := ph.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(physicaltherapyrecord.Table, physicaltherapyrecord.FieldID, id),
+			sqlgraph.To(patient.Table, patient.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, physicaltherapyrecord.PatientTable, physicaltherapyrecord.PatientColumn),
+		)
+		fromV = sqlgraph.Neighbors(ph.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryPhysicaltherapyroom queries the physicaltherapyroom edge of a Physicaltherapyrecord.
+func (c *PhysicaltherapyrecordClient) QueryPhysicaltherapyroom(ph *Physicaltherapyrecord) *PhysicaltherapyroomQuery {
+	query := &PhysicaltherapyroomQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := ph.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(physicaltherapyrecord.Table, physicaltherapyrecord.FieldID, id),
+			sqlgraph.To(physicaltherapyroom.Table, physicaltherapyroom.FieldID),
+			sqlgraph.Edge(sqlgraph.O2O, true, physicaltherapyrecord.PhysicaltherapyroomTable, physicaltherapyrecord.PhysicaltherapyroomColumn),
+		)
+		fromV = sqlgraph.Neighbors(ph.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryStatus queries the status edge of a Physicaltherapyrecord.
+func (c *PhysicaltherapyrecordClient) QueryStatus(ph *Physicaltherapyrecord) *StatusQuery {
+	query := &StatusQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := ph.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(physicaltherapyrecord.Table, physicaltherapyrecord.FieldID, id),
+			sqlgraph.To(status.Table, status.FieldID),
+			sqlgraph.Edge(sqlgraph.O2O, true, physicaltherapyrecord.StatusTable, physicaltherapyrecord.StatusColumn),
+		)
+		fromV = sqlgraph.Neighbors(ph.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *PhysicaltherapyrecordClient) Hooks() []Hook {
+	return c.hooks.Physicaltherapyrecord
+}
+
+// PhysicaltherapyroomClient is a client for the Physicaltherapyroom schema.
+type PhysicaltherapyroomClient struct {
+	config
+}
+
+// NewPhysicaltherapyroomClient returns a client for the Physicaltherapyroom from the given config.
+func NewPhysicaltherapyroomClient(c config) *PhysicaltherapyroomClient {
+	return &PhysicaltherapyroomClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `physicaltherapyroom.Hooks(f(g(h())))`.
+func (c *PhysicaltherapyroomClient) Use(hooks ...Hook) {
+	c.hooks.Physicaltherapyroom = append(c.hooks.Physicaltherapyroom, hooks...)
+}
+
+// Create returns a create builder for Physicaltherapyroom.
+func (c *PhysicaltherapyroomClient) Create() *PhysicaltherapyroomCreate {
+	mutation := newPhysicaltherapyroomMutation(c.config, OpCreate)
+	return &PhysicaltherapyroomCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of Physicaltherapyroom entities.
+func (c *PhysicaltherapyroomClient) CreateBulk(builders ...*PhysicaltherapyroomCreate) *PhysicaltherapyroomCreateBulk {
+	return &PhysicaltherapyroomCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for Physicaltherapyroom.
+func (c *PhysicaltherapyroomClient) Update() *PhysicaltherapyroomUpdate {
+	mutation := newPhysicaltherapyroomMutation(c.config, OpUpdate)
+	return &PhysicaltherapyroomUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *PhysicaltherapyroomClient) UpdateOne(ph *Physicaltherapyroom) *PhysicaltherapyroomUpdateOne {
+	mutation := newPhysicaltherapyroomMutation(c.config, OpUpdateOne, withPhysicaltherapyroom(ph))
+	return &PhysicaltherapyroomUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *PhysicaltherapyroomClient) UpdateOneID(id int) *PhysicaltherapyroomUpdateOne {
+	mutation := newPhysicaltherapyroomMutation(c.config, OpUpdateOne, withPhysicaltherapyroomID(id))
+	return &PhysicaltherapyroomUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for Physicaltherapyroom.
+func (c *PhysicaltherapyroomClient) Delete() *PhysicaltherapyroomDelete {
+	mutation := newPhysicaltherapyroomMutation(c.config, OpDelete)
+	return &PhysicaltherapyroomDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a delete builder for the given entity.
+func (c *PhysicaltherapyroomClient) DeleteOne(ph *Physicaltherapyroom) *PhysicaltherapyroomDeleteOne {
+	return c.DeleteOneID(ph.ID)
+}
+
+// DeleteOneID returns a delete builder for the given id.
+func (c *PhysicaltherapyroomClient) DeleteOneID(id int) *PhysicaltherapyroomDeleteOne {
+	builder := c.Delete().Where(physicaltherapyroom.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &PhysicaltherapyroomDeleteOne{builder}
+}
+
+// Query returns a query builder for Physicaltherapyroom.
+func (c *PhysicaltherapyroomClient) Query() *PhysicaltherapyroomQuery {
+	return &PhysicaltherapyroomQuery{config: c.config}
+}
+
+// Get returns a Physicaltherapyroom entity by its id.
+func (c *PhysicaltherapyroomClient) Get(ctx context.Context, id int) (*Physicaltherapyroom, error) {
+	return c.Query().Where(physicaltherapyroom.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *PhysicaltherapyroomClient) GetX(ctx context.Context, id int) *Physicaltherapyroom {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// QueryPhysicaltherapyrecord queries the physicaltherapyrecord edge of a Physicaltherapyroom.
+func (c *PhysicaltherapyroomClient) QueryPhysicaltherapyrecord(ph *Physicaltherapyroom) *PhysicaltherapyrecordQuery {
+	query := &PhysicaltherapyrecordQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := ph.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(physicaltherapyroom.Table, physicaltherapyroom.FieldID, id),
+			sqlgraph.To(physicaltherapyrecord.Table, physicaltherapyrecord.FieldID),
+			sqlgraph.Edge(sqlgraph.O2O, false, physicaltherapyroom.PhysicaltherapyrecordTable, physicaltherapyroom.PhysicaltherapyrecordColumn),
+		)
+		fromV = sqlgraph.Neighbors(ph.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *PhysicaltherapyroomClient) Hooks() []Hook {
+	return c.hooks.Physicaltherapyroom
 }
 
 // RemedyClient is a client for the Remedy schema.
@@ -584,4 +893,108 @@ func (c *RemedyClient) QueryBonedisease(r *Remedy) *BonediseaseQuery {
 // Hooks returns the client hooks.
 func (c *RemedyClient) Hooks() []Hook {
 	return c.hooks.Remedy
+}
+
+// StatusClient is a client for the Status schema.
+type StatusClient struct {
+	config
+}
+
+// NewStatusClient returns a client for the Status from the given config.
+func NewStatusClient(c config) *StatusClient {
+	return &StatusClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `status.Hooks(f(g(h())))`.
+func (c *StatusClient) Use(hooks ...Hook) {
+	c.hooks.Status = append(c.hooks.Status, hooks...)
+}
+
+// Create returns a create builder for Status.
+func (c *StatusClient) Create() *StatusCreate {
+	mutation := newStatusMutation(c.config, OpCreate)
+	return &StatusCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of Status entities.
+func (c *StatusClient) CreateBulk(builders ...*StatusCreate) *StatusCreateBulk {
+	return &StatusCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for Status.
+func (c *StatusClient) Update() *StatusUpdate {
+	mutation := newStatusMutation(c.config, OpUpdate)
+	return &StatusUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *StatusClient) UpdateOne(s *Status) *StatusUpdateOne {
+	mutation := newStatusMutation(c.config, OpUpdateOne, withStatus(s))
+	return &StatusUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *StatusClient) UpdateOneID(id int) *StatusUpdateOne {
+	mutation := newStatusMutation(c.config, OpUpdateOne, withStatusID(id))
+	return &StatusUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for Status.
+func (c *StatusClient) Delete() *StatusDelete {
+	mutation := newStatusMutation(c.config, OpDelete)
+	return &StatusDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a delete builder for the given entity.
+func (c *StatusClient) DeleteOne(s *Status) *StatusDeleteOne {
+	return c.DeleteOneID(s.ID)
+}
+
+// DeleteOneID returns a delete builder for the given id.
+func (c *StatusClient) DeleteOneID(id int) *StatusDeleteOne {
+	builder := c.Delete().Where(status.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &StatusDeleteOne{builder}
+}
+
+// Query returns a query builder for Status.
+func (c *StatusClient) Query() *StatusQuery {
+	return &StatusQuery{config: c.config}
+}
+
+// Get returns a Status entity by its id.
+func (c *StatusClient) Get(ctx context.Context, id int) (*Status, error) {
+	return c.Query().Where(status.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *StatusClient) GetX(ctx context.Context, id int) *Status {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// QueryPhysicaltherapyrecord queries the physicaltherapyrecord edge of a Status.
+func (c *StatusClient) QueryPhysicaltherapyrecord(s *Status) *PhysicaltherapyrecordQuery {
+	query := &PhysicaltherapyrecordQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := s.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(status.Table, status.FieldID, id),
+			sqlgraph.To(physicaltherapyrecord.Table, physicaltherapyrecord.FieldID),
+			sqlgraph.Edge(sqlgraph.O2O, false, status.PhysicaltherapyrecordTable, status.PhysicaltherapyrecordColumn),
+		)
+		fromV = sqlgraph.Neighbors(s.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *StatusClient) Hooks() []Hook {
+	return c.hooks.Status
 }

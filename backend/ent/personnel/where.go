@@ -563,6 +563,34 @@ func PasswordContainsFold(v string) predicate.Personnel {
 	})
 }
 
+// HasPhysicaltherapyrecord applies the HasEdge predicate on the "physicaltherapyrecord" edge.
+func HasPhysicaltherapyrecord() predicate.Personnel {
+	return predicate.Personnel(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(PhysicaltherapyrecordTable, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, PhysicaltherapyrecordTable, PhysicaltherapyrecordColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasPhysicaltherapyrecordWith applies the HasEdge predicate on the "physicaltherapyrecord" edge with a given conditions (other predicates).
+func HasPhysicaltherapyrecordWith(preds ...predicate.Physicaltherapyrecord) predicate.Personnel {
+	return predicate.Personnel(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(PhysicaltherapyrecordInverseTable, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, PhysicaltherapyrecordTable, PhysicaltherapyrecordColumn),
+		)
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
 // HasBonedisease applies the HasEdge predicate on the "Bonedisease" edge.
 func HasBonedisease() predicate.Personnel {
 	return predicate.Personnel(func(s *sql.Selector) {

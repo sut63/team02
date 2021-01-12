@@ -75,6 +75,63 @@ var (
 		PrimaryKey:  []*schema.Column{PersonnelsColumns[0]},
 		ForeignKeys: []*schema.ForeignKey{},
 	}
+	// PhysicaltherapyrecordsColumns holds the columns for the "physicaltherapyrecords" table.
+	PhysicaltherapyrecordsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "added_time", Type: field.TypeTime},
+		{Name: "Patient_id", Type: field.TypeInt, Nullable: true},
+		{Name: "Personel_id", Type: field.TypeInt, Nullable: true},
+		{Name: "physicaltherapyroom_physicaltherapyrecord", Type: field.TypeInt, Unique: true, Nullable: true},
+		{Name: "status_physicaltherapyrecord", Type: field.TypeInt, Unique: true, Nullable: true},
+	}
+	// PhysicaltherapyrecordsTable holds the schema information for the "physicaltherapyrecords" table.
+	PhysicaltherapyrecordsTable = &schema.Table{
+		Name:       "physicaltherapyrecords",
+		Columns:    PhysicaltherapyrecordsColumns,
+		PrimaryKey: []*schema.Column{PhysicaltherapyrecordsColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:  "physicaltherapyrecords_patients_physicaltherapyrecord",
+				Columns: []*schema.Column{PhysicaltherapyrecordsColumns[2]},
+
+				RefColumns: []*schema.Column{PatientsColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+			{
+				Symbol:  "physicaltherapyrecords_personnels_physicaltherapyrecord",
+				Columns: []*schema.Column{PhysicaltherapyrecordsColumns[3]},
+
+				RefColumns: []*schema.Column{PersonnelsColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+			{
+				Symbol:  "physicaltherapyrecords_physicaltherapyrooms_physicaltherapyrecord",
+				Columns: []*schema.Column{PhysicaltherapyrecordsColumns[4]},
+
+				RefColumns: []*schema.Column{PhysicaltherapyroomsColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+			{
+				Symbol:  "physicaltherapyrecords_status_physicaltherapyrecord",
+				Columns: []*schema.Column{PhysicaltherapyrecordsColumns[5]},
+
+				RefColumns: []*schema.Column{StatusColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+		},
+	}
+	// PhysicaltherapyroomsColumns holds the columns for the "physicaltherapyrooms" table.
+	PhysicaltherapyroomsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "physical_therapy_room_name", Type: field.TypeString},
+	}
+	// PhysicaltherapyroomsTable holds the schema information for the "physicaltherapyrooms" table.
+	PhysicaltherapyroomsTable = &schema.Table{
+		Name:        "physicaltherapyrooms",
+		Columns:     PhysicaltherapyroomsColumns,
+		PrimaryKey:  []*schema.Column{PhysicaltherapyroomsColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{},
+	}
 	// RemediesColumns holds the columns for the "remedies" table.
 	RemediesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
@@ -87,12 +144,27 @@ var (
 		PrimaryKey:  []*schema.Column{RemediesColumns[0]},
 		ForeignKeys: []*schema.ForeignKey{},
 	}
+	// StatusColumns holds the columns for the "status" table.
+	StatusColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "status_name", Type: field.TypeString},
+	}
+	// StatusTable holds the schema information for the "status" table.
+	StatusTable = &schema.Table{
+		Name:        "status",
+		Columns:     StatusColumns,
+		PrimaryKey:  []*schema.Column{StatusColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{},
+	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
 		BonediseasesTable,
 		PatientsTable,
 		PersonnelsTable,
+		PhysicaltherapyrecordsTable,
+		PhysicaltherapyroomsTable,
 		RemediesTable,
+		StatusTable,
 	}
 )
 
@@ -100,4 +172,8 @@ func init() {
 	BonediseasesTable.ForeignKeys[0].RefTable = PatientsTable
 	BonediseasesTable.ForeignKeys[1].RefTable = PersonnelsTable
 	BonediseasesTable.ForeignKeys[2].RefTable = RemediesTable
+	PhysicaltherapyrecordsTable.ForeignKeys[0].RefTable = PatientsTable
+	PhysicaltherapyrecordsTable.ForeignKeys[1].RefTable = PersonnelsTable
+	PhysicaltherapyrecordsTable.ForeignKeys[2].RefTable = PhysicaltherapyroomsTable
+	PhysicaltherapyrecordsTable.ForeignKeys[3].RefTable = StatusTable
 }

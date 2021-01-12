@@ -14,6 +14,7 @@ import (
 	"github.com/facebook/ent/schema/field"
 	"github.com/to63/app/ent/bonedisease"
 	"github.com/to63/app/ent/personnel"
+	"github.com/to63/app/ent/physicaltherapyrecord"
 	"github.com/to63/app/ent/predicate"
 )
 
@@ -26,7 +27,8 @@ type PersonnelQuery struct {
 	fields     []string
 	predicates []predicate.Personnel
 	// eager-loading edges.
-	withBonedisease *BonediseaseQuery
+	withPhysicaltherapyrecord *PhysicaltherapyrecordQuery
+	withBonedisease           *BonediseaseQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -54,6 +56,28 @@ func (pq *PersonnelQuery) Offset(offset int) *PersonnelQuery {
 func (pq *PersonnelQuery) Order(o ...OrderFunc) *PersonnelQuery {
 	pq.order = append(pq.order, o...)
 	return pq
+}
+
+// QueryPhysicaltherapyrecord chains the current query on the "physicaltherapyrecord" edge.
+func (pq *PersonnelQuery) QueryPhysicaltherapyrecord() *PhysicaltherapyrecordQuery {
+	query := &PhysicaltherapyrecordQuery{config: pq.config}
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := pq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := pq.sqlQuery()
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(personnel.Table, personnel.FieldID, selector),
+			sqlgraph.To(physicaltherapyrecord.Table, physicaltherapyrecord.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, personnel.PhysicaltherapyrecordTable, personnel.PhysicaltherapyrecordColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(pq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
 }
 
 // QueryBonedisease chains the current query on the "Bonedisease" edge.
@@ -254,16 +278,28 @@ func (pq *PersonnelQuery) Clone() *PersonnelQuery {
 		return nil
 	}
 	return &PersonnelQuery{
-		config:          pq.config,
-		limit:           pq.limit,
-		offset:          pq.offset,
-		order:           append([]OrderFunc{}, pq.order...),
-		predicates:      append([]predicate.Personnel{}, pq.predicates...),
-		withBonedisease: pq.withBonedisease.Clone(),
+		config:                    pq.config,
+		limit:                     pq.limit,
+		offset:                    pq.offset,
+		order:                     append([]OrderFunc{}, pq.order...),
+		predicates:                append([]predicate.Personnel{}, pq.predicates...),
+		withPhysicaltherapyrecord: pq.withPhysicaltherapyrecord.Clone(),
+		withBonedisease:           pq.withBonedisease.Clone(),
 		// clone intermediate query.
 		sql:  pq.sql.Clone(),
 		path: pq.path,
 	}
+}
+
+// WithPhysicaltherapyrecord tells the query-builder to eager-load the nodes that are connected to
+// the "physicaltherapyrecord" edge. The optional arguments are used to configure the query builder of the edge.
+func (pq *PersonnelQuery) WithPhysicaltherapyrecord(opts ...func(*PhysicaltherapyrecordQuery)) *PersonnelQuery {
+	query := &PhysicaltherapyrecordQuery{config: pq.config}
+	for _, opt := range opts {
+		opt(query)
+	}
+	pq.withPhysicaltherapyrecord = query
+	return pq
 }
 
 // WithBonedisease tells the query-builder to eager-load the nodes that are connected to
@@ -342,7 +378,8 @@ func (pq *PersonnelQuery) sqlAll(ctx context.Context) ([]*Personnel, error) {
 	var (
 		nodes       = []*Personnel{}
 		_spec       = pq.querySpec()
-		loadedTypes = [1]bool{
+		loadedTypes = [2]bool{
+			pq.withPhysicaltherapyrecord != nil,
 			pq.withBonedisease != nil,
 		}
 	)
@@ -364,6 +401,35 @@ func (pq *PersonnelQuery) sqlAll(ctx context.Context) ([]*Personnel, error) {
 	}
 	if len(nodes) == 0 {
 		return nodes, nil
+	}
+
+	if query := pq.withPhysicaltherapyrecord; query != nil {
+		fks := make([]driver.Value, 0, len(nodes))
+		nodeids := make(map[int]*Personnel)
+		for i := range nodes {
+			fks = append(fks, nodes[i].ID)
+			nodeids[nodes[i].ID] = nodes[i]
+			nodes[i].Edges.Physicaltherapyrecord = []*Physicaltherapyrecord{}
+		}
+		query.withFKs = true
+		query.Where(predicate.Physicaltherapyrecord(func(s *sql.Selector) {
+			s.Where(sql.InValues(personnel.PhysicaltherapyrecordColumn, fks...))
+		}))
+		neighbors, err := query.All(ctx)
+		if err != nil {
+			return nil, err
+		}
+		for _, n := range neighbors {
+			fk := n._Personel_id
+			if fk == nil {
+				return nil, fmt.Errorf(`foreign-key "_Personel_id" is nil for node %v`, n.ID)
+			}
+			node, ok := nodeids[*fk]
+			if !ok {
+				return nil, fmt.Errorf(`unexpected foreign-key "_Personel_id" returned %v for node %v`, *fk, n.ID)
+			}
+			node.Edges.Physicaltherapyrecord = append(node.Edges.Physicaltherapyrecord, n)
+		}
 	}
 
 	if query := pq.withBonedisease; query != nil {
