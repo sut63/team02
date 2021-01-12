@@ -11,6 +11,7 @@ import (
 	"github.com/facebook/ent/schema/field"
 	"github.com/to63/app/ent/bonedisease"
 	"github.com/to63/app/ent/checksymptoms"
+	"github.com/to63/app/ent/dentalappointment"
 	"github.com/to63/app/ent/personnel"
 	"github.com/to63/app/ent/physicaltherapyrecord"
 )
@@ -89,6 +90,21 @@ func (pc *PersonnelCreate) AddChecksymptoms(c ...*Checksymptoms) *PersonnelCreat
 		ids[i] = c[i].ID
 	}
 	return pc.AddChecksymptomIDs(ids...)
+}
+
+// AddDentalappointmentIDs adds the "Dentalappointment" edge to the Dentalappointment entity by IDs.
+func (pc *PersonnelCreate) AddDentalappointmentIDs(ids ...int) *PersonnelCreate {
+	pc.mutation.AddDentalappointmentIDs(ids...)
+	return pc
+}
+
+// AddDentalappointment adds the "Dentalappointment" edges to the Dentalappointment entity.
+func (pc *PersonnelCreate) AddDentalappointment(d ...*Dentalappointment) *PersonnelCreate {
+	ids := make([]int, len(d))
+	for i := range d {
+		ids[i] = d[i].ID
+	}
+	return pc.AddDentalappointmentIDs(ids...)
 }
 
 // Mutation returns the PersonnelMutation object of the builder.
@@ -282,6 +298,25 @@ func (pc *PersonnelCreate) createSpec() (*Personnel, *sqlgraph.CreateSpec) {
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
 					Column: checksymptoms.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := pc.mutation.DentalappointmentIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   personnel.DentalappointmentTable,
+			Columns: []string{personnel.DentalappointmentColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: dentalappointment.FieldID,
 				},
 			},
 		}

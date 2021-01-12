@@ -10,6 +10,8 @@ import (
 
 	"github.com/to63/app/ent/bonedisease"
 	"github.com/to63/app/ent/checksymptoms"
+	"github.com/to63/app/ent/dentalappointment"
+	"github.com/to63/app/ent/dentaltype"
 	"github.com/to63/app/ent/disease"
 	"github.com/to63/app/ent/doctorordersheet"
 	"github.com/to63/app/ent/patient"
@@ -34,6 +36,8 @@ const (
 	// Node types.
 	TypeBonedisease           = "Bonedisease"
 	TypeChecksymptoms         = "Checksymptoms"
+	TypeDentalappointment     = "Dentalappointment"
+	TypeDentaltype            = "Dentaltype"
 	TypeDisease               = "Disease"
 	TypeDoctorOrderSheet      = "DoctorOrderSheet"
 	TypePatient               = "Patient"
@@ -1043,6 +1047,859 @@ func (m *ChecksymptomsMutation) ResetEdge(name string) error {
 	return fmt.Errorf("unknown Checksymptoms edge %s", name)
 }
 
+// DentalappointmentMutation represents an operation that mutates the Dentalappointment nodes in the graph.
+type DentalappointmentMutation struct {
+	config
+	op                 Op
+	typ                string
+	id                 *int
+	appoint_time       *time.Time
+	clearedFields      map[string]struct{}
+	_Personnel         *int
+	cleared_Personnel  bool
+	_Patient           *int
+	cleared_Patient    bool
+	_Dentaltype        *int
+	cleared_Dentaltype bool
+	done               bool
+	oldValue           func(context.Context) (*Dentalappointment, error)
+	predicates         []predicate.Dentalappointment
+}
+
+var _ ent.Mutation = (*DentalappointmentMutation)(nil)
+
+// dentalappointmentOption allows management of the mutation configuration using functional options.
+type dentalappointmentOption func(*DentalappointmentMutation)
+
+// newDentalappointmentMutation creates new mutation for the Dentalappointment entity.
+func newDentalappointmentMutation(c config, op Op, opts ...dentalappointmentOption) *DentalappointmentMutation {
+	m := &DentalappointmentMutation{
+		config:        c,
+		op:            op,
+		typ:           TypeDentalappointment,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withDentalappointmentID sets the ID field of the mutation.
+func withDentalappointmentID(id int) dentalappointmentOption {
+	return func(m *DentalappointmentMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *Dentalappointment
+		)
+		m.oldValue = func(ctx context.Context) (*Dentalappointment, error) {
+			once.Do(func() {
+				if m.done {
+					err = fmt.Errorf("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().Dentalappointment.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withDentalappointment sets the old Dentalappointment of the mutation.
+func withDentalappointment(node *Dentalappointment) dentalappointmentOption {
+	return func(m *DentalappointmentMutation) {
+		m.oldValue = func(context.Context) (*Dentalappointment, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m DentalappointmentMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m DentalappointmentMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, fmt.Errorf("ent: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// ID returns the ID value in the mutation. Note that the ID
+// is only available if it was provided to the builder.
+func (m *DentalappointmentMutation) ID() (id int, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// SetAppointTime sets the "appoint_time" field.
+func (m *DentalappointmentMutation) SetAppointTime(t time.Time) {
+	m.appoint_time = &t
+}
+
+// AppointTime returns the value of the "appoint_time" field in the mutation.
+func (m *DentalappointmentMutation) AppointTime() (r time.Time, exists bool) {
+	v := m.appoint_time
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldAppointTime returns the old "appoint_time" field's value of the Dentalappointment entity.
+// If the Dentalappointment object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *DentalappointmentMutation) OldAppointTime(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldAppointTime is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldAppointTime requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldAppointTime: %w", err)
+	}
+	return oldValue.AppointTime, nil
+}
+
+// ResetAppointTime resets all changes to the "appoint_time" field.
+func (m *DentalappointmentMutation) ResetAppointTime() {
+	m.appoint_time = nil
+}
+
+// SetPersonnelID sets the "Personnel" edge to the Personnel entity by id.
+func (m *DentalappointmentMutation) SetPersonnelID(id int) {
+	m._Personnel = &id
+}
+
+// ClearPersonnel clears the "Personnel" edge to the Personnel entity.
+func (m *DentalappointmentMutation) ClearPersonnel() {
+	m.cleared_Personnel = true
+}
+
+// PersonnelCleared returns if the "Personnel" edge to the Personnel entity was cleared.
+func (m *DentalappointmentMutation) PersonnelCleared() bool {
+	return m.cleared_Personnel
+}
+
+// PersonnelID returns the "Personnel" edge ID in the mutation.
+func (m *DentalappointmentMutation) PersonnelID() (id int, exists bool) {
+	if m._Personnel != nil {
+		return *m._Personnel, true
+	}
+	return
+}
+
+// PersonnelIDs returns the "Personnel" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// PersonnelID instead. It exists only for internal usage by the builders.
+func (m *DentalappointmentMutation) PersonnelIDs() (ids []int) {
+	if id := m._Personnel; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetPersonnel resets all changes to the "Personnel" edge.
+func (m *DentalappointmentMutation) ResetPersonnel() {
+	m._Personnel = nil
+	m.cleared_Personnel = false
+}
+
+// SetPatientID sets the "Patient" edge to the Patient entity by id.
+func (m *DentalappointmentMutation) SetPatientID(id int) {
+	m._Patient = &id
+}
+
+// ClearPatient clears the "Patient" edge to the Patient entity.
+func (m *DentalappointmentMutation) ClearPatient() {
+	m.cleared_Patient = true
+}
+
+// PatientCleared returns if the "Patient" edge to the Patient entity was cleared.
+func (m *DentalappointmentMutation) PatientCleared() bool {
+	return m.cleared_Patient
+}
+
+// PatientID returns the "Patient" edge ID in the mutation.
+func (m *DentalappointmentMutation) PatientID() (id int, exists bool) {
+	if m._Patient != nil {
+		return *m._Patient, true
+	}
+	return
+}
+
+// PatientIDs returns the "Patient" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// PatientID instead. It exists only for internal usage by the builders.
+func (m *DentalappointmentMutation) PatientIDs() (ids []int) {
+	if id := m._Patient; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetPatient resets all changes to the "Patient" edge.
+func (m *DentalappointmentMutation) ResetPatient() {
+	m._Patient = nil
+	m.cleared_Patient = false
+}
+
+// SetDentaltypeID sets the "Dentaltype" edge to the Dentaltype entity by id.
+func (m *DentalappointmentMutation) SetDentaltypeID(id int) {
+	m._Dentaltype = &id
+}
+
+// ClearDentaltype clears the "Dentaltype" edge to the Dentaltype entity.
+func (m *DentalappointmentMutation) ClearDentaltype() {
+	m.cleared_Dentaltype = true
+}
+
+// DentaltypeCleared returns if the "Dentaltype" edge to the Dentaltype entity was cleared.
+func (m *DentalappointmentMutation) DentaltypeCleared() bool {
+	return m.cleared_Dentaltype
+}
+
+// DentaltypeID returns the "Dentaltype" edge ID in the mutation.
+func (m *DentalappointmentMutation) DentaltypeID() (id int, exists bool) {
+	if m._Dentaltype != nil {
+		return *m._Dentaltype, true
+	}
+	return
+}
+
+// DentaltypeIDs returns the "Dentaltype" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// DentaltypeID instead. It exists only for internal usage by the builders.
+func (m *DentalappointmentMutation) DentaltypeIDs() (ids []int) {
+	if id := m._Dentaltype; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetDentaltype resets all changes to the "Dentaltype" edge.
+func (m *DentalappointmentMutation) ResetDentaltype() {
+	m._Dentaltype = nil
+	m.cleared_Dentaltype = false
+}
+
+// Op returns the operation name.
+func (m *DentalappointmentMutation) Op() Op {
+	return m.op
+}
+
+// Type returns the node type of this mutation (Dentalappointment).
+func (m *DentalappointmentMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during this mutation. Note that in
+// order to get all numeric fields that were incremented/decremented, call
+// AddedFields().
+func (m *DentalappointmentMutation) Fields() []string {
+	fields := make([]string, 0, 1)
+	if m.appoint_time != nil {
+		fields = append(fields, dentalappointment.FieldAppointTime)
+	}
+	return fields
+}
+
+// Field returns the value of a field with the given name. The second boolean
+// return value indicates that this field was not set, or was not defined in the
+// schema.
+func (m *DentalappointmentMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case dentalappointment.FieldAppointTime:
+		return m.AppointTime()
+	}
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database. An error is
+// returned if the mutation operation is not UpdateOne, or the query to the
+// database failed.
+func (m *DentalappointmentMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case dentalappointment.FieldAppointTime:
+		return m.OldAppointTime(ctx)
+	}
+	return nil, fmt.Errorf("unknown Dentalappointment field %s", name)
+}
+
+// SetField sets the value of a field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *DentalappointmentMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	case dentalappointment.FieldAppointTime:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetAppointTime(v)
+		return nil
+	}
+	return fmt.Errorf("unknown Dentalappointment field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented/decremented during
+// this mutation.
+func (m *DentalappointmentMutation) AddedFields() []string {
+	return nil
+}
+
+// AddedField returns the numeric value that was incremented/decremented on a field
+// with the given name. The second boolean return value indicates that this field
+// was not set, or was not defined in the schema.
+func (m *DentalappointmentMutation) AddedField(name string) (ent.Value, bool) {
+	return nil, false
+}
+
+// AddField adds the value to the field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *DentalappointmentMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	}
+	return fmt.Errorf("unknown Dentalappointment numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared during this
+// mutation.
+func (m *DentalappointmentMutation) ClearedFields() []string {
+	return nil
+}
+
+// FieldCleared returns a boolean indicating if a field with the given name was
+// cleared in this mutation.
+func (m *DentalappointmentMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value of the field with the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *DentalappointmentMutation) ClearField(name string) error {
+	return fmt.Errorf("unknown Dentalappointment nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation for the field with the given name.
+// It returns an error if the field is not defined in the schema.
+func (m *DentalappointmentMutation) ResetField(name string) error {
+	switch name {
+	case dentalappointment.FieldAppointTime:
+		m.ResetAppointTime()
+		return nil
+	}
+	return fmt.Errorf("unknown Dentalappointment field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this mutation.
+func (m *DentalappointmentMutation) AddedEdges() []string {
+	edges := make([]string, 0, 3)
+	if m._Personnel != nil {
+		edges = append(edges, dentalappointment.EdgePersonnel)
+	}
+	if m._Patient != nil {
+		edges = append(edges, dentalappointment.EdgePatient)
+	}
+	if m._Dentaltype != nil {
+		edges = append(edges, dentalappointment.EdgeDentaltype)
+	}
+	return edges
+}
+
+// AddedIDs returns all IDs (to other nodes) that were added for the given edge
+// name in this mutation.
+func (m *DentalappointmentMutation) AddedIDs(name string) []ent.Value {
+	switch name {
+	case dentalappointment.EdgePersonnel:
+		if id := m._Personnel; id != nil {
+			return []ent.Value{*id}
+		}
+	case dentalappointment.EdgePatient:
+		if id := m._Patient; id != nil {
+			return []ent.Value{*id}
+		}
+	case dentalappointment.EdgeDentaltype:
+		if id := m._Dentaltype; id != nil {
+			return []ent.Value{*id}
+		}
+	}
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this mutation.
+func (m *DentalappointmentMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 3)
+	return edges
+}
+
+// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
+// the given name in this mutation.
+func (m *DentalappointmentMutation) RemovedIDs(name string) []ent.Value {
+	switch name {
+	}
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this mutation.
+func (m *DentalappointmentMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 3)
+	if m.cleared_Personnel {
+		edges = append(edges, dentalappointment.EdgePersonnel)
+	}
+	if m.cleared_Patient {
+		edges = append(edges, dentalappointment.EdgePatient)
+	}
+	if m.cleared_Dentaltype {
+		edges = append(edges, dentalappointment.EdgeDentaltype)
+	}
+	return edges
+}
+
+// EdgeCleared returns a boolean which indicates if the edge with the given name
+// was cleared in this mutation.
+func (m *DentalappointmentMutation) EdgeCleared(name string) bool {
+	switch name {
+	case dentalappointment.EdgePersonnel:
+		return m.cleared_Personnel
+	case dentalappointment.EdgePatient:
+		return m.cleared_Patient
+	case dentalappointment.EdgeDentaltype:
+		return m.cleared_Dentaltype
+	}
+	return false
+}
+
+// ClearEdge clears the value of the edge with the given name. It returns an error
+// if that edge is not defined in the schema.
+func (m *DentalappointmentMutation) ClearEdge(name string) error {
+	switch name {
+	case dentalappointment.EdgePersonnel:
+		m.ClearPersonnel()
+		return nil
+	case dentalappointment.EdgePatient:
+		m.ClearPatient()
+		return nil
+	case dentalappointment.EdgeDentaltype:
+		m.ClearDentaltype()
+		return nil
+	}
+	return fmt.Errorf("unknown Dentalappointment unique edge %s", name)
+}
+
+// ResetEdge resets all changes to the edge with the given name in this mutation.
+// It returns an error if the edge is not defined in the schema.
+func (m *DentalappointmentMutation) ResetEdge(name string) error {
+	switch name {
+	case dentalappointment.EdgePersonnel:
+		m.ResetPersonnel()
+		return nil
+	case dentalappointment.EdgePatient:
+		m.ResetPatient()
+		return nil
+	case dentalappointment.EdgeDentaltype:
+		m.ResetDentaltype()
+		return nil
+	}
+	return fmt.Errorf("unknown Dentalappointment edge %s", name)
+}
+
+// DentaltypeMutation represents an operation that mutates the Dentaltype nodes in the graph.
+type DentaltypeMutation struct {
+	config
+	op                        Op
+	typ                       string
+	id                        *int
+	typename                  *string
+	clearedFields             map[string]struct{}
+	_Dentalappointment        map[int]struct{}
+	removed_Dentalappointment map[int]struct{}
+	cleared_Dentalappointment bool
+	done                      bool
+	oldValue                  func(context.Context) (*Dentaltype, error)
+	predicates                []predicate.Dentaltype
+}
+
+var _ ent.Mutation = (*DentaltypeMutation)(nil)
+
+// dentaltypeOption allows management of the mutation configuration using functional options.
+type dentaltypeOption func(*DentaltypeMutation)
+
+// newDentaltypeMutation creates new mutation for the Dentaltype entity.
+func newDentaltypeMutation(c config, op Op, opts ...dentaltypeOption) *DentaltypeMutation {
+	m := &DentaltypeMutation{
+		config:        c,
+		op:            op,
+		typ:           TypeDentaltype,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withDentaltypeID sets the ID field of the mutation.
+func withDentaltypeID(id int) dentaltypeOption {
+	return func(m *DentaltypeMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *Dentaltype
+		)
+		m.oldValue = func(ctx context.Context) (*Dentaltype, error) {
+			once.Do(func() {
+				if m.done {
+					err = fmt.Errorf("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().Dentaltype.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withDentaltype sets the old Dentaltype of the mutation.
+func withDentaltype(node *Dentaltype) dentaltypeOption {
+	return func(m *DentaltypeMutation) {
+		m.oldValue = func(context.Context) (*Dentaltype, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m DentaltypeMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m DentaltypeMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, fmt.Errorf("ent: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// ID returns the ID value in the mutation. Note that the ID
+// is only available if it was provided to the builder.
+func (m *DentaltypeMutation) ID() (id int, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// SetTypename sets the "typename" field.
+func (m *DentaltypeMutation) SetTypename(s string) {
+	m.typename = &s
+}
+
+// Typename returns the value of the "typename" field in the mutation.
+func (m *DentaltypeMutation) Typename() (r string, exists bool) {
+	v := m.typename
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldTypename returns the old "typename" field's value of the Dentaltype entity.
+// If the Dentaltype object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *DentaltypeMutation) OldTypename(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldTypename is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldTypename requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldTypename: %w", err)
+	}
+	return oldValue.Typename, nil
+}
+
+// ResetTypename resets all changes to the "typename" field.
+func (m *DentaltypeMutation) ResetTypename() {
+	m.typename = nil
+}
+
+// AddDentalappointmentIDs adds the "Dentalappointment" edge to the Dentalappointment entity by ids.
+func (m *DentaltypeMutation) AddDentalappointmentIDs(ids ...int) {
+	if m._Dentalappointment == nil {
+		m._Dentalappointment = make(map[int]struct{})
+	}
+	for i := range ids {
+		m._Dentalappointment[ids[i]] = struct{}{}
+	}
+}
+
+// ClearDentalappointment clears the "Dentalappointment" edge to the Dentalappointment entity.
+func (m *DentaltypeMutation) ClearDentalappointment() {
+	m.cleared_Dentalappointment = true
+}
+
+// DentalappointmentCleared returns if the "Dentalappointment" edge to the Dentalappointment entity was cleared.
+func (m *DentaltypeMutation) DentalappointmentCleared() bool {
+	return m.cleared_Dentalappointment
+}
+
+// RemoveDentalappointmentIDs removes the "Dentalappointment" edge to the Dentalappointment entity by IDs.
+func (m *DentaltypeMutation) RemoveDentalappointmentIDs(ids ...int) {
+	if m.removed_Dentalappointment == nil {
+		m.removed_Dentalappointment = make(map[int]struct{})
+	}
+	for i := range ids {
+		m.removed_Dentalappointment[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedDentalappointment returns the removed IDs of the "Dentalappointment" edge to the Dentalappointment entity.
+func (m *DentaltypeMutation) RemovedDentalappointmentIDs() (ids []int) {
+	for id := range m.removed_Dentalappointment {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// DentalappointmentIDs returns the "Dentalappointment" edge IDs in the mutation.
+func (m *DentaltypeMutation) DentalappointmentIDs() (ids []int) {
+	for id := range m._Dentalappointment {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetDentalappointment resets all changes to the "Dentalappointment" edge.
+func (m *DentaltypeMutation) ResetDentalappointment() {
+	m._Dentalappointment = nil
+	m.cleared_Dentalappointment = false
+	m.removed_Dentalappointment = nil
+}
+
+// Op returns the operation name.
+func (m *DentaltypeMutation) Op() Op {
+	return m.op
+}
+
+// Type returns the node type of this mutation (Dentaltype).
+func (m *DentaltypeMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during this mutation. Note that in
+// order to get all numeric fields that were incremented/decremented, call
+// AddedFields().
+func (m *DentaltypeMutation) Fields() []string {
+	fields := make([]string, 0, 1)
+	if m.typename != nil {
+		fields = append(fields, dentaltype.FieldTypename)
+	}
+	return fields
+}
+
+// Field returns the value of a field with the given name. The second boolean
+// return value indicates that this field was not set, or was not defined in the
+// schema.
+func (m *DentaltypeMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case dentaltype.FieldTypename:
+		return m.Typename()
+	}
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database. An error is
+// returned if the mutation operation is not UpdateOne, or the query to the
+// database failed.
+func (m *DentaltypeMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case dentaltype.FieldTypename:
+		return m.OldTypename(ctx)
+	}
+	return nil, fmt.Errorf("unknown Dentaltype field %s", name)
+}
+
+// SetField sets the value of a field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *DentaltypeMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	case dentaltype.FieldTypename:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetTypename(v)
+		return nil
+	}
+	return fmt.Errorf("unknown Dentaltype field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented/decremented during
+// this mutation.
+func (m *DentaltypeMutation) AddedFields() []string {
+	return nil
+}
+
+// AddedField returns the numeric value that was incremented/decremented on a field
+// with the given name. The second boolean return value indicates that this field
+// was not set, or was not defined in the schema.
+func (m *DentaltypeMutation) AddedField(name string) (ent.Value, bool) {
+	return nil, false
+}
+
+// AddField adds the value to the field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *DentaltypeMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	}
+	return fmt.Errorf("unknown Dentaltype numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared during this
+// mutation.
+func (m *DentaltypeMutation) ClearedFields() []string {
+	return nil
+}
+
+// FieldCleared returns a boolean indicating if a field with the given name was
+// cleared in this mutation.
+func (m *DentaltypeMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value of the field with the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *DentaltypeMutation) ClearField(name string) error {
+	return fmt.Errorf("unknown Dentaltype nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation for the field with the given name.
+// It returns an error if the field is not defined in the schema.
+func (m *DentaltypeMutation) ResetField(name string) error {
+	switch name {
+	case dentaltype.FieldTypename:
+		m.ResetTypename()
+		return nil
+	}
+	return fmt.Errorf("unknown Dentaltype field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this mutation.
+func (m *DentaltypeMutation) AddedEdges() []string {
+	edges := make([]string, 0, 1)
+	if m._Dentalappointment != nil {
+		edges = append(edges, dentaltype.EdgeDentalappointment)
+	}
+	return edges
+}
+
+// AddedIDs returns all IDs (to other nodes) that were added for the given edge
+// name in this mutation.
+func (m *DentaltypeMutation) AddedIDs(name string) []ent.Value {
+	switch name {
+	case dentaltype.EdgeDentalappointment:
+		ids := make([]ent.Value, 0, len(m._Dentalappointment))
+		for id := range m._Dentalappointment {
+			ids = append(ids, id)
+		}
+		return ids
+	}
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this mutation.
+func (m *DentaltypeMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 1)
+	if m.removed_Dentalappointment != nil {
+		edges = append(edges, dentaltype.EdgeDentalappointment)
+	}
+	return edges
+}
+
+// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
+// the given name in this mutation.
+func (m *DentaltypeMutation) RemovedIDs(name string) []ent.Value {
+	switch name {
+	case dentaltype.EdgeDentalappointment:
+		ids := make([]ent.Value, 0, len(m.removed_Dentalappointment))
+		for id := range m.removed_Dentalappointment {
+			ids = append(ids, id)
+		}
+		return ids
+	}
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this mutation.
+func (m *DentaltypeMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 1)
+	if m.cleared_Dentalappointment {
+		edges = append(edges, dentaltype.EdgeDentalappointment)
+	}
+	return edges
+}
+
+// EdgeCleared returns a boolean which indicates if the edge with the given name
+// was cleared in this mutation.
+func (m *DentaltypeMutation) EdgeCleared(name string) bool {
+	switch name {
+	case dentaltype.EdgeDentalappointment:
+		return m.cleared_Dentalappointment
+	}
+	return false
+}
+
+// ClearEdge clears the value of the edge with the given name. It returns an error
+// if that edge is not defined in the schema.
+func (m *DentaltypeMutation) ClearEdge(name string) error {
+	switch name {
+	}
+	return fmt.Errorf("unknown Dentaltype unique edge %s", name)
+}
+
+// ResetEdge resets all changes to the edge with the given name in this mutation.
+// It returns an error if the edge is not defined in the schema.
+func (m *DentaltypeMutation) ResetEdge(name string) error {
+	switch name {
+	case dentaltype.EdgeDentalappointment:
+		m.ResetDentalappointment()
+		return nil
+	}
+	return fmt.Errorf("unknown Dentaltype edge %s", name)
+}
+
 // DiseaseMutation represents an operation that mutates the Disease nodes in the graph.
 type DiseaseMutation struct {
 	config
@@ -1874,6 +2731,9 @@ type PatientMutation struct {
 	_Checksymptoms               map[int]struct{}
 	removed_Checksymptoms        map[int]struct{}
 	cleared_Checksymptoms        bool
+	_Dentalappointment           map[int]struct{}
+	removed_Dentalappointment    map[int]struct{}
+	cleared_Dentalappointment    bool
 	done                         bool
 	oldValue                     func(context.Context) (*Patient, error)
 	predicates                   []predicate.Patient
@@ -2225,6 +3085,59 @@ func (m *PatientMutation) ResetChecksymptoms() {
 	m.removed_Checksymptoms = nil
 }
 
+// AddDentalappointmentIDs adds the "Dentalappointment" edge to the Dentalappointment entity by ids.
+func (m *PatientMutation) AddDentalappointmentIDs(ids ...int) {
+	if m._Dentalappointment == nil {
+		m._Dentalappointment = make(map[int]struct{})
+	}
+	for i := range ids {
+		m._Dentalappointment[ids[i]] = struct{}{}
+	}
+}
+
+// ClearDentalappointment clears the "Dentalappointment" edge to the Dentalappointment entity.
+func (m *PatientMutation) ClearDentalappointment() {
+	m.cleared_Dentalappointment = true
+}
+
+// DentalappointmentCleared returns if the "Dentalappointment" edge to the Dentalappointment entity was cleared.
+func (m *PatientMutation) DentalappointmentCleared() bool {
+	return m.cleared_Dentalappointment
+}
+
+// RemoveDentalappointmentIDs removes the "Dentalappointment" edge to the Dentalappointment entity by IDs.
+func (m *PatientMutation) RemoveDentalappointmentIDs(ids ...int) {
+	if m.removed_Dentalappointment == nil {
+		m.removed_Dentalappointment = make(map[int]struct{})
+	}
+	for i := range ids {
+		m.removed_Dentalappointment[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedDentalappointment returns the removed IDs of the "Dentalappointment" edge to the Dentalappointment entity.
+func (m *PatientMutation) RemovedDentalappointmentIDs() (ids []int) {
+	for id := range m.removed_Dentalappointment {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// DentalappointmentIDs returns the "Dentalappointment" edge IDs in the mutation.
+func (m *PatientMutation) DentalappointmentIDs() (ids []int) {
+	for id := range m._Dentalappointment {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetDentalappointment resets all changes to the "Dentalappointment" edge.
+func (m *PatientMutation) ResetDentalappointment() {
+	m._Dentalappointment = nil
+	m.cleared_Dentalappointment = false
+	m.removed_Dentalappointment = nil
+}
+
 // Op returns the operation name.
 func (m *PatientMutation) Op() Op {
 	return m.op
@@ -2372,7 +3285,7 @@ func (m *PatientMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *PatientMutation) AddedEdges() []string {
-	edges := make([]string, 0, 3)
+	edges := make([]string, 0, 4)
 	if m.physicaltherapyrecord != nil {
 		edges = append(edges, patient.EdgePhysicaltherapyrecord)
 	}
@@ -2381,6 +3294,9 @@ func (m *PatientMutation) AddedEdges() []string {
 	}
 	if m._Checksymptoms != nil {
 		edges = append(edges, patient.EdgeChecksymptoms)
+	}
+	if m._Dentalappointment != nil {
+		edges = append(edges, patient.EdgeDentalappointment)
 	}
 	return edges
 }
@@ -2407,13 +3323,19 @@ func (m *PatientMutation) AddedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
+	case patient.EdgeDentalappointment:
+		ids := make([]ent.Value, 0, len(m._Dentalappointment))
+		for id := range m._Dentalappointment {
+			ids = append(ids, id)
+		}
+		return ids
 	}
 	return nil
 }
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *PatientMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 3)
+	edges := make([]string, 0, 4)
 	if m.removedphysicaltherapyrecord != nil {
 		edges = append(edges, patient.EdgePhysicaltherapyrecord)
 	}
@@ -2422,6 +3344,9 @@ func (m *PatientMutation) RemovedEdges() []string {
 	}
 	if m.removed_Checksymptoms != nil {
 		edges = append(edges, patient.EdgeChecksymptoms)
+	}
+	if m.removed_Dentalappointment != nil {
+		edges = append(edges, patient.EdgeDentalappointment)
 	}
 	return edges
 }
@@ -2448,13 +3373,19 @@ func (m *PatientMutation) RemovedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
+	case patient.EdgeDentalappointment:
+		ids := make([]ent.Value, 0, len(m.removed_Dentalappointment))
+		for id := range m.removed_Dentalappointment {
+			ids = append(ids, id)
+		}
+		return ids
 	}
 	return nil
 }
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *PatientMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 3)
+	edges := make([]string, 0, 4)
 	if m.clearedphysicaltherapyrecord {
 		edges = append(edges, patient.EdgePhysicaltherapyrecord)
 	}
@@ -2463,6 +3394,9 @@ func (m *PatientMutation) ClearedEdges() []string {
 	}
 	if m.cleared_Checksymptoms {
 		edges = append(edges, patient.EdgeChecksymptoms)
+	}
+	if m.cleared_Dentalappointment {
+		edges = append(edges, patient.EdgeDentalappointment)
 	}
 	return edges
 }
@@ -2477,6 +3411,8 @@ func (m *PatientMutation) EdgeCleared(name string) bool {
 		return m.cleared_Bonedisease
 	case patient.EdgeChecksymptoms:
 		return m.cleared_Checksymptoms
+	case patient.EdgeDentalappointment:
+		return m.cleared_Dentalappointment
 	}
 	return false
 }
@@ -2502,6 +3438,9 @@ func (m *PatientMutation) ResetEdge(name string) error {
 	case patient.EdgeChecksymptoms:
 		m.ResetChecksymptoms()
 		return nil
+	case patient.EdgeDentalappointment:
+		m.ResetDentalappointment()
+		return nil
 	}
 	return fmt.Errorf("unknown Patient edge %s", name)
 }
@@ -2526,6 +3465,9 @@ type PersonnelMutation struct {
 	_Checksymptoms               map[int]struct{}
 	removed_Checksymptoms        map[int]struct{}
 	cleared_Checksymptoms        bool
+	_Dentalappointment           map[int]struct{}
+	removed_Dentalappointment    map[int]struct{}
+	cleared_Dentalappointment    bool
 	done                         bool
 	oldValue                     func(context.Context) (*Personnel, error)
 	predicates                   []predicate.Personnel
@@ -2913,6 +3855,59 @@ func (m *PersonnelMutation) ResetChecksymptoms() {
 	m.removed_Checksymptoms = nil
 }
 
+// AddDentalappointmentIDs adds the "Dentalappointment" edge to the Dentalappointment entity by ids.
+func (m *PersonnelMutation) AddDentalappointmentIDs(ids ...int) {
+	if m._Dentalappointment == nil {
+		m._Dentalappointment = make(map[int]struct{})
+	}
+	for i := range ids {
+		m._Dentalappointment[ids[i]] = struct{}{}
+	}
+}
+
+// ClearDentalappointment clears the "Dentalappointment" edge to the Dentalappointment entity.
+func (m *PersonnelMutation) ClearDentalappointment() {
+	m.cleared_Dentalappointment = true
+}
+
+// DentalappointmentCleared returns if the "Dentalappointment" edge to the Dentalappointment entity was cleared.
+func (m *PersonnelMutation) DentalappointmentCleared() bool {
+	return m.cleared_Dentalappointment
+}
+
+// RemoveDentalappointmentIDs removes the "Dentalappointment" edge to the Dentalappointment entity by IDs.
+func (m *PersonnelMutation) RemoveDentalappointmentIDs(ids ...int) {
+	if m.removed_Dentalappointment == nil {
+		m.removed_Dentalappointment = make(map[int]struct{})
+	}
+	for i := range ids {
+		m.removed_Dentalappointment[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedDentalappointment returns the removed IDs of the "Dentalappointment" edge to the Dentalappointment entity.
+func (m *PersonnelMutation) RemovedDentalappointmentIDs() (ids []int) {
+	for id := range m.removed_Dentalappointment {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// DentalappointmentIDs returns the "Dentalappointment" edge IDs in the mutation.
+func (m *PersonnelMutation) DentalappointmentIDs() (ids []int) {
+	for id := range m._Dentalappointment {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetDentalappointment resets all changes to the "Dentalappointment" edge.
+func (m *PersonnelMutation) ResetDentalappointment() {
+	m._Dentalappointment = nil
+	m.cleared_Dentalappointment = false
+	m.removed_Dentalappointment = nil
+}
+
 // Op returns the operation name.
 func (m *PersonnelMutation) Op() Op {
 	return m.op
@@ -3077,7 +4072,7 @@ func (m *PersonnelMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *PersonnelMutation) AddedEdges() []string {
-	edges := make([]string, 0, 3)
+	edges := make([]string, 0, 4)
 	if m.physicaltherapyrecord != nil {
 		edges = append(edges, personnel.EdgePhysicaltherapyrecord)
 	}
@@ -3086,6 +4081,9 @@ func (m *PersonnelMutation) AddedEdges() []string {
 	}
 	if m._Checksymptoms != nil {
 		edges = append(edges, personnel.EdgeChecksymptoms)
+	}
+	if m._Dentalappointment != nil {
+		edges = append(edges, personnel.EdgeDentalappointment)
 	}
 	return edges
 }
@@ -3112,13 +4110,19 @@ func (m *PersonnelMutation) AddedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
+	case personnel.EdgeDentalappointment:
+		ids := make([]ent.Value, 0, len(m._Dentalappointment))
+		for id := range m._Dentalappointment {
+			ids = append(ids, id)
+		}
+		return ids
 	}
 	return nil
 }
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *PersonnelMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 3)
+	edges := make([]string, 0, 4)
 	if m.removedphysicaltherapyrecord != nil {
 		edges = append(edges, personnel.EdgePhysicaltherapyrecord)
 	}
@@ -3127,6 +4131,9 @@ func (m *PersonnelMutation) RemovedEdges() []string {
 	}
 	if m.removed_Checksymptoms != nil {
 		edges = append(edges, personnel.EdgeChecksymptoms)
+	}
+	if m.removed_Dentalappointment != nil {
+		edges = append(edges, personnel.EdgeDentalappointment)
 	}
 	return edges
 }
@@ -3153,13 +4160,19 @@ func (m *PersonnelMutation) RemovedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
+	case personnel.EdgeDentalappointment:
+		ids := make([]ent.Value, 0, len(m.removed_Dentalappointment))
+		for id := range m.removed_Dentalappointment {
+			ids = append(ids, id)
+		}
+		return ids
 	}
 	return nil
 }
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *PersonnelMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 3)
+	edges := make([]string, 0, 4)
 	if m.clearedphysicaltherapyrecord {
 		edges = append(edges, personnel.EdgePhysicaltherapyrecord)
 	}
@@ -3168,6 +4181,9 @@ func (m *PersonnelMutation) ClearedEdges() []string {
 	}
 	if m.cleared_Checksymptoms {
 		edges = append(edges, personnel.EdgeChecksymptoms)
+	}
+	if m.cleared_Dentalappointment {
+		edges = append(edges, personnel.EdgeDentalappointment)
 	}
 	return edges
 }
@@ -3182,6 +4198,8 @@ func (m *PersonnelMutation) EdgeCleared(name string) bool {
 		return m.cleared_Bonedisease
 	case personnel.EdgeChecksymptoms:
 		return m.cleared_Checksymptoms
+	case personnel.EdgeDentalappointment:
+		return m.cleared_Dentalappointment
 	}
 	return false
 }
@@ -3206,6 +4224,9 @@ func (m *PersonnelMutation) ResetEdge(name string) error {
 		return nil
 	case personnel.EdgeChecksymptoms:
 		m.ResetChecksymptoms()
+		return nil
+	case personnel.EdgeDentalappointment:
+		m.ResetDentalappointment()
 		return nil
 	}
 	return fmt.Errorf("unknown Personnel edge %s", name)

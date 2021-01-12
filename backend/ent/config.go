@@ -26,6 +26,8 @@ type config struct {
 type hooks struct {
 	Bonedisease           []ent.Hook
 	Checksymptoms         []ent.Hook
+	Dentalappointment     []ent.Hook
+	Dentaltype            []ent.Hook
 	Disease               []ent.Hook
 	DoctorOrderSheet      []ent.Hook
 	Patient               []ent.Hook

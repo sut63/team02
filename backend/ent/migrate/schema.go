@@ -90,6 +90,55 @@ var (
 			},
 		},
 	}
+	// DentalappointmentsColumns holds the columns for the "dentalappointments" table.
+	DentalappointmentsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "appoint_time", Type: field.TypeTime},
+		{Name: "typename", Type: field.TypeInt, Nullable: true},
+		{Name: "Patient_id", Type: field.TypeInt, Nullable: true},
+		{Name: "Personnel_id", Type: field.TypeInt, Nullable: true},
+	}
+	// DentalappointmentsTable holds the schema information for the "dentalappointments" table.
+	DentalappointmentsTable = &schema.Table{
+		Name:       "dentalappointments",
+		Columns:    DentalappointmentsColumns,
+		PrimaryKey: []*schema.Column{DentalappointmentsColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:  "dentalappointments_dentaltypes_Dentalappointment",
+				Columns: []*schema.Column{DentalappointmentsColumns[2]},
+
+				RefColumns: []*schema.Column{DentaltypesColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+			{
+				Symbol:  "dentalappointments_patients_Dentalappointment",
+				Columns: []*schema.Column{DentalappointmentsColumns[3]},
+
+				RefColumns: []*schema.Column{PatientsColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+			{
+				Symbol:  "dentalappointments_personnels_Dentalappointment",
+				Columns: []*schema.Column{DentalappointmentsColumns[4]},
+
+				RefColumns: []*schema.Column{PersonnelsColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+		},
+	}
+	// DentaltypesColumns holds the columns for the "dentaltypes" table.
+	DentaltypesColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "typename", Type: field.TypeString},
+	}
+	// DentaltypesTable holds the schema information for the "dentaltypes" table.
+	DentaltypesTable = &schema.Table{
+		Name:        "dentaltypes",
+		Columns:     DentaltypesColumns,
+		PrimaryKey:  []*schema.Column{DentaltypesColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{},
+	}
 	// DiseasesColumns holds the columns for the "diseases" table.
 	DiseasesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
@@ -229,6 +278,8 @@ var (
 	Tables = []*schema.Table{
 		BonediseasesTable,
 		ChecksymptomsTable,
+		DentalappointmentsTable,
+		DentaltypesTable,
 		DiseasesTable,
 		DoctorOrderSheetsTable,
 		PatientsTable,
@@ -248,6 +299,9 @@ func init() {
 	ChecksymptomsTable.ForeignKeys[1].RefTable = DoctorOrderSheetsTable
 	ChecksymptomsTable.ForeignKeys[2].RefTable = PatientsTable
 	ChecksymptomsTable.ForeignKeys[3].RefTable = PersonnelsTable
+	DentalappointmentsTable.ForeignKeys[0].RefTable = DentaltypesTable
+	DentalappointmentsTable.ForeignKeys[1].RefTable = PatientsTable
+	DentalappointmentsTable.ForeignKeys[2].RefTable = PersonnelsTable
 	PhysicaltherapyrecordsTable.ForeignKeys[0].RefTable = PatientsTable
 	PhysicaltherapyrecordsTable.ForeignKeys[1].RefTable = PersonnelsTable
 	PhysicaltherapyrecordsTable.ForeignKeys[2].RefTable = PhysicaltherapyroomsTable

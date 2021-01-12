@@ -35,6 +35,32 @@ func (f ChecksymptomsFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Valu
 	return f(ctx, mv)
 }
 
+// The DentalappointmentFunc type is an adapter to allow the use of ordinary
+// function as Dentalappointment mutator.
+type DentalappointmentFunc func(context.Context, *ent.DentalappointmentMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f DentalappointmentFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	mv, ok := m.(*ent.DentalappointmentMutation)
+	if !ok {
+		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.DentalappointmentMutation", m)
+	}
+	return f(ctx, mv)
+}
+
+// The DentaltypeFunc type is an adapter to allow the use of ordinary
+// function as Dentaltype mutator.
+type DentaltypeFunc func(context.Context, *ent.DentaltypeMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f DentaltypeFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	mv, ok := m.(*ent.DentaltypeMutation)
+	if !ok {
+		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.DentaltypeMutation", m)
+	}
+	return f(ctx, mv)
+}
+
 // The DiseaseFunc type is an adapter to allow the use of ordinary
 // function as Disease mutator.
 type DiseaseFunc func(context.Context, *ent.DiseaseMutation) (ent.Value, error)

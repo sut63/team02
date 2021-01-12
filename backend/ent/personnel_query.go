@@ -14,6 +14,7 @@ import (
 	"github.com/facebook/ent/schema/field"
 	"github.com/to63/app/ent/bonedisease"
 	"github.com/to63/app/ent/checksymptoms"
+	"github.com/to63/app/ent/dentalappointment"
 	"github.com/to63/app/ent/personnel"
 	"github.com/to63/app/ent/physicaltherapyrecord"
 	"github.com/to63/app/ent/predicate"
@@ -31,6 +32,7 @@ type PersonnelQuery struct {
 	withPhysicaltherapyrecord *PhysicaltherapyrecordQuery
 	withBonedisease           *BonediseaseQuery
 	withChecksymptoms         *ChecksymptomsQuery
+	withDentalappointment     *DentalappointmentQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -119,6 +121,28 @@ func (pq *PersonnelQuery) QueryChecksymptoms() *ChecksymptomsQuery {
 			sqlgraph.From(personnel.Table, personnel.FieldID, selector),
 			sqlgraph.To(checksymptoms.Table, checksymptoms.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, personnel.ChecksymptomsTable, personnel.ChecksymptomsColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(pq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryDentalappointment chains the current query on the "Dentalappointment" edge.
+func (pq *PersonnelQuery) QueryDentalappointment() *DentalappointmentQuery {
+	query := &DentalappointmentQuery{config: pq.config}
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := pq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := pq.sqlQuery()
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(personnel.Table, personnel.FieldID, selector),
+			sqlgraph.To(dentalappointment.Table, dentalappointment.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, personnel.DentalappointmentTable, personnel.DentalappointmentColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(pq.driver.Dialect(), step)
 		return fromU, nil
@@ -310,6 +334,7 @@ func (pq *PersonnelQuery) Clone() *PersonnelQuery {
 		withPhysicaltherapyrecord: pq.withPhysicaltherapyrecord.Clone(),
 		withBonedisease:           pq.withBonedisease.Clone(),
 		withChecksymptoms:         pq.withChecksymptoms.Clone(),
+		withDentalappointment:     pq.withDentalappointment.Clone(),
 		// clone intermediate query.
 		sql:  pq.sql.Clone(),
 		path: pq.path,
@@ -346,6 +371,17 @@ func (pq *PersonnelQuery) WithChecksymptoms(opts ...func(*ChecksymptomsQuery)) *
 		opt(query)
 	}
 	pq.withChecksymptoms = query
+	return pq
+}
+
+// WithDentalappointment tells the query-builder to eager-load the nodes that are connected to
+// the "Dentalappointment" edge. The optional arguments are used to configure the query builder of the edge.
+func (pq *PersonnelQuery) WithDentalappointment(opts ...func(*DentalappointmentQuery)) *PersonnelQuery {
+	query := &DentalappointmentQuery{config: pq.config}
+	for _, opt := range opts {
+		opt(query)
+	}
+	pq.withDentalappointment = query
 	return pq
 }
 
@@ -414,10 +450,11 @@ func (pq *PersonnelQuery) sqlAll(ctx context.Context) ([]*Personnel, error) {
 	var (
 		nodes       = []*Personnel{}
 		_spec       = pq.querySpec()
-		loadedTypes = [3]bool{
+		loadedTypes = [4]bool{
 			pq.withPhysicaltherapyrecord != nil,
 			pq.withBonedisease != nil,
 			pq.withChecksymptoms != nil,
+			pq.withDentalappointment != nil,
 		}
 	)
 	_spec.ScanValues = func(columns []string) ([]interface{}, error) {
@@ -524,6 +561,35 @@ func (pq *PersonnelQuery) sqlAll(ctx context.Context) ([]*Personnel, error) {
 				return nil, fmt.Errorf(`unexpected foreign-key "_Personnel_id" returned %v for node %v`, *fk, n.ID)
 			}
 			node.Edges.Checksymptoms = append(node.Edges.Checksymptoms, n)
+		}
+	}
+
+	if query := pq.withDentalappointment; query != nil {
+		fks := make([]driver.Value, 0, len(nodes))
+		nodeids := make(map[int]*Personnel)
+		for i := range nodes {
+			fks = append(fks, nodes[i].ID)
+			nodeids[nodes[i].ID] = nodes[i]
+			nodes[i].Edges.Dentalappointment = []*Dentalappointment{}
+		}
+		query.withFKs = true
+		query.Where(predicate.Dentalappointment(func(s *sql.Selector) {
+			s.Where(sql.InValues(personnel.DentalappointmentColumn, fks...))
+		}))
+		neighbors, err := query.All(ctx)
+		if err != nil {
+			return nil, err
+		}
+		for _, n := range neighbors {
+			fk := n._Personnel_id
+			if fk == nil {
+				return nil, fmt.Errorf(`foreign-key "_Personnel_id" is nil for node %v`, n.ID)
+			}
+			node, ok := nodeids[*fk]
+			if !ok {
+				return nil, fmt.Errorf(`unexpected foreign-key "_Personnel_id" returned %v for node %v`, *fk, n.ID)
+			}
+			node.Edges.Dentalappointment = append(node.Edges.Dentalappointment, n)
 		}
 	}
 

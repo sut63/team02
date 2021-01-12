@@ -22,6 +22,8 @@ const (
 	EdgeBonedisease = "Bonedisease"
 	// EdgeChecksymptoms holds the string denoting the checksymptoms edge name in mutations.
 	EdgeChecksymptoms = "Checksymptoms"
+	// EdgeDentalappointment holds the string denoting the dentalappointment edge name in mutations.
+	EdgeDentalappointment = "Dentalappointment"
 
 	// Table holds the table name of the personnel in the database.
 	Table = "personnels"
@@ -46,6 +48,13 @@ const (
 	ChecksymptomsInverseTable = "checksymptoms"
 	// ChecksymptomsColumn is the table column denoting the Checksymptoms relation/edge.
 	ChecksymptomsColumn = "Personnel_id"
+	// DentalappointmentTable is the table the holds the Dentalappointment relation/edge.
+	DentalappointmentTable = "dentalappointments"
+	// DentalappointmentInverseTable is the table name for the Dentalappointment entity.
+	// It exists in this package in order to avoid circular dependency with the "dentalappointment" package.
+	DentalappointmentInverseTable = "dentalappointments"
+	// DentalappointmentColumn is the table column denoting the Dentalappointment relation/edge.
+	DentalappointmentColumn = "Personnel_id"
 )
 
 // Columns holds all SQL columns for personnel fields.

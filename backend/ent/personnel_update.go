@@ -11,6 +11,7 @@ import (
 	"github.com/facebook/ent/schema/field"
 	"github.com/to63/app/ent/bonedisease"
 	"github.com/to63/app/ent/checksymptoms"
+	"github.com/to63/app/ent/dentalappointment"
 	"github.com/to63/app/ent/personnel"
 	"github.com/to63/app/ent/physicaltherapyrecord"
 	"github.com/to63/app/ent/predicate"
@@ -98,6 +99,21 @@ func (pu *PersonnelUpdate) AddChecksymptoms(c ...*Checksymptoms) *PersonnelUpdat
 	return pu.AddChecksymptomIDs(ids...)
 }
 
+// AddDentalappointmentIDs adds the "Dentalappointment" edge to the Dentalappointment entity by IDs.
+func (pu *PersonnelUpdate) AddDentalappointmentIDs(ids ...int) *PersonnelUpdate {
+	pu.mutation.AddDentalappointmentIDs(ids...)
+	return pu
+}
+
+// AddDentalappointment adds the "Dentalappointment" edges to the Dentalappointment entity.
+func (pu *PersonnelUpdate) AddDentalappointment(d ...*Dentalappointment) *PersonnelUpdate {
+	ids := make([]int, len(d))
+	for i := range d {
+		ids[i] = d[i].ID
+	}
+	return pu.AddDentalappointmentIDs(ids...)
+}
+
 // Mutation returns the PersonnelMutation object of the builder.
 func (pu *PersonnelUpdate) Mutation() *PersonnelMutation {
 	return pu.mutation
@@ -164,6 +180,27 @@ func (pu *PersonnelUpdate) RemoveChecksymptoms(c ...*Checksymptoms) *PersonnelUp
 		ids[i] = c[i].ID
 	}
 	return pu.RemoveChecksymptomIDs(ids...)
+}
+
+// ClearDentalappointment clears all "Dentalappointment" edges to the Dentalappointment entity.
+func (pu *PersonnelUpdate) ClearDentalappointment() *PersonnelUpdate {
+	pu.mutation.ClearDentalappointment()
+	return pu
+}
+
+// RemoveDentalappointmentIDs removes the "Dentalappointment" edge to Dentalappointment entities by IDs.
+func (pu *PersonnelUpdate) RemoveDentalappointmentIDs(ids ...int) *PersonnelUpdate {
+	pu.mutation.RemoveDentalappointmentIDs(ids...)
+	return pu
+}
+
+// RemoveDentalappointment removes "Dentalappointment" edges to Dentalappointment entities.
+func (pu *PersonnelUpdate) RemoveDentalappointment(d ...*Dentalappointment) *PersonnelUpdate {
+	ids := make([]int, len(d))
+	for i := range d {
+		ids[i] = d[i].ID
+	}
+	return pu.RemoveDentalappointmentIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -456,6 +493,60 @@ func (pu *PersonnelUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	if pu.mutation.DentalappointmentCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   personnel.DentalappointmentTable,
+			Columns: []string{personnel.DentalappointmentColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: dentalappointment.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := pu.mutation.RemovedDentalappointmentIDs(); len(nodes) > 0 && !pu.mutation.DentalappointmentCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   personnel.DentalappointmentTable,
+			Columns: []string{personnel.DentalappointmentColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: dentalappointment.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := pu.mutation.DentalappointmentIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   personnel.DentalappointmentTable,
+			Columns: []string{personnel.DentalappointmentColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: dentalappointment.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
 	if n, err = sqlgraph.UpdateNodes(ctx, pu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{personnel.Label}
@@ -543,6 +634,21 @@ func (puo *PersonnelUpdateOne) AddChecksymptoms(c ...*Checksymptoms) *PersonnelU
 	return puo.AddChecksymptomIDs(ids...)
 }
 
+// AddDentalappointmentIDs adds the "Dentalappointment" edge to the Dentalappointment entity by IDs.
+func (puo *PersonnelUpdateOne) AddDentalappointmentIDs(ids ...int) *PersonnelUpdateOne {
+	puo.mutation.AddDentalappointmentIDs(ids...)
+	return puo
+}
+
+// AddDentalappointment adds the "Dentalappointment" edges to the Dentalappointment entity.
+func (puo *PersonnelUpdateOne) AddDentalappointment(d ...*Dentalappointment) *PersonnelUpdateOne {
+	ids := make([]int, len(d))
+	for i := range d {
+		ids[i] = d[i].ID
+	}
+	return puo.AddDentalappointmentIDs(ids...)
+}
+
 // Mutation returns the PersonnelMutation object of the builder.
 func (puo *PersonnelUpdateOne) Mutation() *PersonnelMutation {
 	return puo.mutation
@@ -609,6 +715,27 @@ func (puo *PersonnelUpdateOne) RemoveChecksymptoms(c ...*Checksymptoms) *Personn
 		ids[i] = c[i].ID
 	}
 	return puo.RemoveChecksymptomIDs(ids...)
+}
+
+// ClearDentalappointment clears all "Dentalappointment" edges to the Dentalappointment entity.
+func (puo *PersonnelUpdateOne) ClearDentalappointment() *PersonnelUpdateOne {
+	puo.mutation.ClearDentalappointment()
+	return puo
+}
+
+// RemoveDentalappointmentIDs removes the "Dentalappointment" edge to Dentalappointment entities by IDs.
+func (puo *PersonnelUpdateOne) RemoveDentalappointmentIDs(ids ...int) *PersonnelUpdateOne {
+	puo.mutation.RemoveDentalappointmentIDs(ids...)
+	return puo
+}
+
+// RemoveDentalappointment removes "Dentalappointment" edges to Dentalappointment entities.
+func (puo *PersonnelUpdateOne) RemoveDentalappointment(d ...*Dentalappointment) *PersonnelUpdateOne {
+	ids := make([]int, len(d))
+	for i := range d {
+		ids[i] = d[i].ID
+	}
+	return puo.RemoveDentalappointmentIDs(ids...)
 }
 
 // Save executes the query and returns the updated Personnel entity.
@@ -891,6 +1018,60 @@ func (puo *PersonnelUpdateOne) sqlSave(ctx context.Context) (_node *Personnel, e
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
 					Column: checksymptoms.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if puo.mutation.DentalappointmentCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   personnel.DentalappointmentTable,
+			Columns: []string{personnel.DentalappointmentColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: dentalappointment.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := puo.mutation.RemovedDentalappointmentIDs(); len(nodes) > 0 && !puo.mutation.DentalappointmentCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   personnel.DentalappointmentTable,
+			Columns: []string{personnel.DentalappointmentColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: dentalappointment.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := puo.mutation.DentalappointmentIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   personnel.DentalappointmentTable,
+			Columns: []string{personnel.DentalappointmentColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: dentalappointment.FieldID,
 				},
 			},
 		}
