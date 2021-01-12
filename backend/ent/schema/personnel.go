@@ -1,6 +1,10 @@
 package schema
 
-import "github.com/facebookincubator/ent"
+import (
+	"github.com/facebook/ent"
+	"github.com/facebook/ent/schema/edge"
+	"github.com/facebook/ent/schema/field"
+)
 
 // Personnel holds the schema definition for the Personnel entity.
 type Personnel struct {
@@ -9,10 +13,17 @@ type Personnel struct {
 
 // Fields of the Personnel.
 func (Personnel) Fields() []ent.Field {
-	return nil
+	return []ent.Field{
+		field.String("name").NotEmpty(),
+		field.String("department").NotEmpty(),
+		field.String("user").NotEmpty(),
+		field.String("password").NotEmpty(),
+	}
 }
 
 // Edges of the Personnel.
 func (Personnel) Edges() []ent.Edge {
-	return nil
+	return []ent.Edge{
+		edge.To("Bonedisease", Bonedisease.Type).StorageKey(edge.Column("Personel_id")),
+	}
 }

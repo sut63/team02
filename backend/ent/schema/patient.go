@@ -1,6 +1,10 @@
 package schema
 
-import "github.com/facebookincubator/ent"
+import (
+	"github.com/facebook/ent"
+	"github.com/facebook/ent/schema/edge"
+	"github.com/facebook/ent/schema/field"
+)
 
 // Patient holds the schema definition for the Patient entity.
 type Patient struct {
@@ -9,10 +13,17 @@ type Patient struct {
 
 // Fields of the Patient.
 func (Patient) Fields() []ent.Field {
-	return nil
+	return []ent.Field{
+		field.String("name").NotEmpty(),
+		field.String("birthday").NotEmpty(),
+		field.String("gender").NotEmpty(),
+	}
 }
 
 // Edges of the Patient.
 func (Patient) Edges() []ent.Edge {
-	return nil
+	return []ent.Edge{
+		edge.To("Bonedisease", Bonedisease.Type).StorageKey(edge.Column("Patient_id")),
+		
+	}
 }
