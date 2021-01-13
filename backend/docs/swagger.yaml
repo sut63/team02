@@ -37,6 +37,19 @@ definitions:
       personnelID:
         type: integer
     type: object
+  controllers.Physicaltherapyrecord:
+    properties:
+      patient:
+        type: integer
+      personnel:
+        type: integer
+      physicaltherapyroom:
+        type: integer
+      status:
+        type: integer
+      time:
+        type: string
+    type: object
   controllers.Surgeryappointment:
     properties:
       appointtime:
@@ -409,6 +422,10 @@ definitions:
         description: Status holds the value of the status edge.
         type: object
     type: object
+  ent.Physicaltherapyrecords:
+    items:
+      $ref: '#/definitions/ent.Physicaltherapyrecord'
+    type: array
   ent.Physicaltherapyroom:
     properties:
       edges:
@@ -1826,6 +1843,184 @@ paths:
           schema:
             $ref: '#/definitions/gin.H'
       summary: Update a personnel entity by ID
+  /physicaltherapyrecords:
+    get:
+      description: list Physicaltherapyrecord entities
+      operationId: list-Physicaltherapyrecord
+      parameters:
+      - description: Limit
+        in: query
+        name: limit
+        type: integer
+      - description: Offset
+        in: query
+        name: offset
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/ent.Physicaltherapyrecords'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: List Physicaltherapyrecord entities
+    post:
+      consumes:
+      - application/json
+      description: Create physicaltherapyrecord
+      operationId: create-physicaltherapyrecord
+      parameters:
+      - description: Physicaltherapyrecord entity
+        in: body
+        name: physicaltherapyrecord
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.Physicaltherapyrecord'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ent.Physicaltherapyrecords'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Create physicaltherapyrecord
+  /physicaltherapyrecords/{id}:
+    delete:
+      description: get approvedresult by ID
+      operationId: delete-approvedresult
+      parameters:
+      - description: Physicaltherapyrecord ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/gin.H'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Delete a approvedresult entity by ID
+  /physicaltherapyrooms:
+    get:
+      description: list physicaltherapyroom entities
+      operationId: list-physicaltherapyroom
+      parameters:
+      - description: Limit
+        in: query
+        name: limit
+        type: integer
+      - description: Offset
+        in: query
+        name: offset
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/ent.Physicaltherapyroom'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: List physicaltherapyroom entities
+    post:
+      consumes:
+      - application/json
+      description: Create physicaltherapyroom
+      operationId: create-physicaltherapyroom
+      parameters:
+      - description: Physicaltherapyroom entity
+        in: body
+        name: physicaltherapyroom
+        required: true
+        schema:
+          $ref: '#/definitions/ent.Physicaltherapyroom'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ent.Physicaltherapyroom'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Create physicaltherapyroom
+  /physicaltherapyrooms/{id}:
+    get:
+      description: get physicaltherapyroom by ID
+      operationId: get-physicaltherapyroom
+      parameters:
+      - description: Physicaltherapyroom ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ent.Physicaltherapyroom'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Get a physicaltherapyroom entity by ID
   /pregnancystatuss:
     get:
       description: list pregnancystatus entities
@@ -2099,6 +2294,95 @@ paths:
           schema:
             $ref: '#/definitions/gin.H'
       summary: Get a risks entity by ID
+  /statuss:
+    get:
+      description: list status entities
+      operationId: list-status
+      parameters:
+      - description: Limit
+        in: query
+        name: limit
+        type: integer
+      - description: Offset
+        in: query
+        name: offset
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/ent.Status'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: List status entities
+    post:
+      consumes:
+      - application/json
+      description: Create status
+      operationId: create-status
+      parameters:
+      - description: Status entity
+        in: body
+        name: status
+        required: true
+        schema:
+          $ref: '#/definitions/ent.Status'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ent.Status'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Create status
+  /statuss/{id}:
+    get:
+      description: get status by ID
+      operationId: get-status
+      parameters:
+      - description: Status ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ent.Status'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Get a status entity by ID
   /surgeryappointments:
     get:
       description: list surgeryappointment entities

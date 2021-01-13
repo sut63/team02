@@ -94,6 +94,22 @@ type Risks struct {
 	Risks string
 }
 
+type Physicaltherapyrooms struct {
+	Physicaltherapyroom []Physicaltherapyroom
+}
+
+type Physicaltherapyroom struct {
+	Physicaltherapyroom string
+}
+
+type Statuss struct {
+	Status []Status
+}
+
+type Status struct {
+	Status string
+}
+
 // @title SUT SA Example API
 // @version 1.0
 // @description This is a sample server for SUT SE 2563
@@ -159,8 +175,11 @@ func main() {
 	controllers.NewDentalkindController(v1, client)
 	controllers.NewDentalappointmentController(v1, client)
 	controllers.NewPregnancystatusController(v1, client)
-   	controllers.NewRisksController(v1, client)
-   	controllers.NewAntenatalinformationController(v1, client)
+	controllers.NewRisksController(v1, client)
+	controllers.NewAntenatalinformationController(v1, client)
+	controllers.NewPhysicaltherapyrecordController(v1, client)
+	controllers.NewPhysicaltherapyroomController(v1, client)
+	controllers.NewStatusController(v1, client)
 
 	// Set Personnel Data
 	personnels := Personnels{
@@ -291,6 +310,38 @@ func main() {
 		client.Risks.
 			Create().
 			SetRisks(Riskss.Risks).
+			Save(context.Background())
+	}
+
+	// Set Physicaltherapyroom Data
+	physicaltherapyrooms := Physicaltherapyrooms{
+		Physicaltherapyroom: []Physicaltherapyroom{
+			Physicaltherapyroom{"Rhysicaltherapyroom01"},
+			Physicaltherapyroom{"Rhysicaltherapyroom02"},
+		},
+	}
+
+	for _, physicaltherapyrooms := range physicaltherapyrooms.Physicaltherapyroom {
+
+		client.Physicaltherapyroom.
+			Create().
+			SetPhysicalTherapyRoomName(physicaltherapyrooms.Physicaltherapyroom).
+			Save(context.Background())
+	}
+
+	// Set Status Data
+	statuss := Statuss{
+		Status: []Status{
+			Status{"ดีขึ้น"},
+			Status{"ต้องติดตามอาการ"},
+		},
+	}
+
+	for _, statuss := range statuss.Status {
+
+		client.Status.
+			Create().
+			SetStatusName(statuss.Status).
 			Save(context.Background())
 	}
 
