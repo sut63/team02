@@ -14,6 +14,7 @@ import (
 	"github.com/to63/app/ent/remedy"
 	"github.com/to63/app/ent/schema"
 	"github.com/to63/app/ent/status"
+	"github.com/to63/app/ent/surgerytype"
 )
 
 // The init function reads all schema descriptors with runtime code
@@ -96,4 +97,10 @@ func init() {
 	statusDescStatusName := statusFields[0].Descriptor()
 	// status.StatusNameValidator is a validator for the "status_name" field. It is called by the builders before save.
 	status.StatusNameValidator = statusDescStatusName.Validators[0].(func(string) error)
+	surgerytypeFields := schema.Surgerytype{}.Fields()
+	_ = surgerytypeFields
+	// surgerytypeDescTypename is the schema descriptor for typename field.
+	surgerytypeDescTypename := surgerytypeFields[0].Descriptor()
+	// surgerytype.TypenameValidator is a validator for the "typename" field. It is called by the builders before save.
+	surgerytype.TypenameValidator = surgerytypeDescTypename.Validators[0].(func(string) error)
 }

@@ -36,6 +36,10 @@ type Tx struct {
 	Remedy *RemedyClient
 	// Status is the client for interacting with the Status builders.
 	Status *StatusClient
+	// Surgeryappointment is the client for interacting with the Surgeryappointment builders.
+	Surgeryappointment *SurgeryappointmentClient
+	// Surgerytype is the client for interacting with the Surgerytype builders.
+	Surgerytype *SurgerytypeClient
 
 	// lazily loaded.
 	client     *Client
@@ -183,6 +187,8 @@ func (tx *Tx) init() {
 	tx.Physicaltherapyroom = NewPhysicaltherapyroomClient(tx.config)
 	tx.Remedy = NewRemedyClient(tx.config)
 	tx.Status = NewStatusClient(tx.config)
+	tx.Surgeryappointment = NewSurgeryappointmentClient(tx.config)
+	tx.Surgerytype = NewSurgerytypeClient(tx.config)
 }
 
 // txDriver wraps the given dialect.Tx with a nop dialect.Driver implementation.

@@ -36,6 +36,8 @@ type hooks struct {
 	Physicaltherapyroom   []ent.Hook
 	Remedy                []ent.Hook
 	Status                []ent.Hook
+	Surgeryappointment    []ent.Hook
+	Surgerytype           []ent.Hook
 }
 
 // Options applies the options on the config object.

@@ -41,3 +41,9 @@ type Remedy func(*sql.Selector)
 
 // Status is the predicate function for status builders.
 type Status func(*sql.Selector)
+
+// Surgeryappointment is the predicate function for surgeryappointment builders.
+type Surgeryappointment func(*sql.Selector)
+
+// Surgerytype is the predicate function for surgerytype builders.
+type Surgerytype func(*sql.Selector)
