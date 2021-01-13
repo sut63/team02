@@ -4,6 +4,7 @@ package surgerytype
 
 import (
 	"github.com/facebook/ent/dialect/sql"
+	"github.com/facebook/ent/dialect/sql/sqlgraph"
 	"github.com/to63/app/ent/predicate"
 )
 
@@ -205,6 +206,34 @@ func TypenameEqualFold(v string) predicate.Surgerytype {
 func TypenameContainsFold(v string) predicate.Surgerytype {
 	return predicate.Surgerytype(func(s *sql.Selector) {
 		s.Where(sql.ContainsFold(s.C(FieldTypename), v))
+	})
+}
+
+// HasSurgeryappointment applies the HasEdge predicate on the "Surgeryappointment" edge.
+func HasSurgeryappointment() predicate.Surgerytype {
+	return predicate.Surgerytype(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(SurgeryappointmentTable, FieldID),
+			sqlgraph.Edge(sqlgraph.O2O, false, SurgeryappointmentTable, SurgeryappointmentColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasSurgeryappointmentWith applies the HasEdge predicate on the "Surgeryappointment" edge with a given conditions (other predicates).
+func HasSurgeryappointmentWith(preds ...predicate.Surgeryappointment) predicate.Surgerytype {
+	return predicate.Surgerytype(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(SurgeryappointmentInverseTable, FieldID),
+			sqlgraph.Edge(sqlgraph.O2O, false, SurgeryappointmentTable, SurgeryappointmentColumn),
+		)
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
 	})
 }
 

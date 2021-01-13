@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/facebook/ent/dialect/sql"
+	"github.com/to63/app/ent/surgeryappointment"
 	"github.com/to63/app/ent/surgerytype"
 )
 
@@ -17,6 +18,32 @@ type Surgerytype struct {
 	ID int `json:"id,omitempty"`
 	// Typename holds the value of the "typename" field.
 	Typename string `json:"typename,omitempty"`
+	// Edges holds the relations/edges for other nodes in the graph.
+	// The values are being populated by the SurgerytypeQuery when eager-loading is set.
+	Edges SurgerytypeEdges `json:"edges"`
+}
+
+// SurgerytypeEdges holds the relations/edges for other nodes in the graph.
+type SurgerytypeEdges struct {
+	// Surgeryappointment holds the value of the Surgeryappointment edge.
+	Surgeryappointment *Surgeryappointment
+	// loadedTypes holds the information for reporting if a
+	// type was loaded (or requested) in eager-loading or not.
+	loadedTypes [1]bool
+}
+
+// SurgeryappointmentOrErr returns the Surgeryappointment value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e SurgerytypeEdges) SurgeryappointmentOrErr() (*Surgeryappointment, error) {
+	if e.loadedTypes[0] {
+		if e.Surgeryappointment == nil {
+			// The edge Surgeryappointment was loaded in eager-loading,
+			// but was not found.
+			return nil, &NotFoundError{label: surgeryappointment.Label}
+		}
+		return e.Surgeryappointment, nil
+	}
+	return nil, &NotLoadedError{edge: "Surgeryappointment"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -58,6 +85,11 @@ func (s *Surgerytype) assignValues(columns []string, values []interface{}) error
 		}
 	}
 	return nil
+}
+
+// QuerySurgeryappointment queries the "Surgeryappointment" edge of the Surgerytype entity.
+func (s *Surgerytype) QuerySurgeryappointment() *SurgeryappointmentQuery {
+	return (&SurgerytypeClient{config: s.config}).QuerySurgeryappointment(s)
 }
 
 // Update returns a builder for updating this Surgerytype.

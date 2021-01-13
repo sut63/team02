@@ -9,6 +9,7 @@ import (
 
 	"github.com/facebook/ent/dialect/sql/sqlgraph"
 	"github.com/facebook/ent/schema/field"
+	"github.com/to63/app/ent/surgeryappointment"
 	"github.com/to63/app/ent/surgerytype"
 )
 
@@ -23,6 +24,25 @@ type SurgerytypeCreate struct {
 func (sc *SurgerytypeCreate) SetTypename(s string) *SurgerytypeCreate {
 	sc.mutation.SetTypename(s)
 	return sc
+}
+
+// SetSurgeryappointmentID sets the "Surgeryappointment" edge to the Surgeryappointment entity by ID.
+func (sc *SurgerytypeCreate) SetSurgeryappointmentID(id int) *SurgerytypeCreate {
+	sc.mutation.SetSurgeryappointmentID(id)
+	return sc
+}
+
+// SetNillableSurgeryappointmentID sets the "Surgeryappointment" edge to the Surgeryappointment entity by ID if the given value is not nil.
+func (sc *SurgerytypeCreate) SetNillableSurgeryappointmentID(id *int) *SurgerytypeCreate {
+	if id != nil {
+		sc = sc.SetSurgeryappointmentID(*id)
+	}
+	return sc
+}
+
+// SetSurgeryappointment sets the "Surgeryappointment" edge to the Surgeryappointment entity.
+func (sc *SurgerytypeCreate) SetSurgeryappointment(s *Surgeryappointment) *SurgerytypeCreate {
+	return sc.SetSurgeryappointmentID(s.ID)
 }
 
 // Mutation returns the SurgerytypeMutation object of the builder.
@@ -118,6 +138,25 @@ func (sc *SurgerytypeCreate) createSpec() (*Surgerytype, *sqlgraph.CreateSpec) {
 			Column: surgerytype.FieldTypename,
 		})
 		_node.Typename = value
+	}
+	if nodes := sc.mutation.SurgeryappointmentIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2O,
+			Inverse: false,
+			Table:   surgerytype.SurgeryappointmentTable,
+			Columns: []string{surgerytype.SurgeryappointmentColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: surgeryappointment.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec
 }

@@ -4,6 +4,7 @@ package ent
 
 import (
 	"context"
+	"database/sql/driver"
 	"errors"
 	"fmt"
 	"math"
@@ -12,6 +13,7 @@ import (
 	"github.com/facebook/ent/dialect/sql/sqlgraph"
 	"github.com/facebook/ent/schema/field"
 	"github.com/to63/app/ent/predicate"
+	"github.com/to63/app/ent/surgeryappointment"
 	"github.com/to63/app/ent/surgerytype"
 )
 
@@ -23,6 +25,8 @@ type SurgerytypeQuery struct {
 	order      []OrderFunc
 	fields     []string
 	predicates []predicate.Surgerytype
+	// eager-loading edges.
+	withSurgeryappointment *SurgeryappointmentQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -50,6 +54,28 @@ func (sq *SurgerytypeQuery) Offset(offset int) *SurgerytypeQuery {
 func (sq *SurgerytypeQuery) Order(o ...OrderFunc) *SurgerytypeQuery {
 	sq.order = append(sq.order, o...)
 	return sq
+}
+
+// QuerySurgeryappointment chains the current query on the "Surgeryappointment" edge.
+func (sq *SurgerytypeQuery) QuerySurgeryappointment() *SurgeryappointmentQuery {
+	query := &SurgeryappointmentQuery{config: sq.config}
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := sq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := sq.sqlQuery()
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(surgerytype.Table, surgerytype.FieldID, selector),
+			sqlgraph.To(surgeryappointment.Table, surgeryappointment.FieldID),
+			sqlgraph.Edge(sqlgraph.O2O, false, surgerytype.SurgeryappointmentTable, surgerytype.SurgeryappointmentColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(sq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
 }
 
 // First returns the first Surgerytype entity from the query.
@@ -228,15 +254,27 @@ func (sq *SurgerytypeQuery) Clone() *SurgerytypeQuery {
 		return nil
 	}
 	return &SurgerytypeQuery{
-		config:     sq.config,
-		limit:      sq.limit,
-		offset:     sq.offset,
-		order:      append([]OrderFunc{}, sq.order...),
-		predicates: append([]predicate.Surgerytype{}, sq.predicates...),
+		config:                 sq.config,
+		limit:                  sq.limit,
+		offset:                 sq.offset,
+		order:                  append([]OrderFunc{}, sq.order...),
+		predicates:             append([]predicate.Surgerytype{}, sq.predicates...),
+		withSurgeryappointment: sq.withSurgeryappointment.Clone(),
 		// clone intermediate query.
 		sql:  sq.sql.Clone(),
 		path: sq.path,
 	}
+}
+
+// WithSurgeryappointment tells the query-builder to eager-load the nodes that are connected to
+// the "Surgeryappointment" edge. The optional arguments are used to configure the query builder of the edge.
+func (sq *SurgerytypeQuery) WithSurgeryappointment(opts ...func(*SurgeryappointmentQuery)) *SurgerytypeQuery {
+	query := &SurgeryappointmentQuery{config: sq.config}
+	for _, opt := range opts {
+		opt(query)
+	}
+	sq.withSurgeryappointment = query
+	return sq
 }
 
 // GroupBy is used to group vertices by one or more fields/columns.
@@ -302,8 +340,11 @@ func (sq *SurgerytypeQuery) prepareQuery(ctx context.Context) error {
 
 func (sq *SurgerytypeQuery) sqlAll(ctx context.Context) ([]*Surgerytype, error) {
 	var (
-		nodes = []*Surgerytype{}
-		_spec = sq.querySpec()
+		nodes       = []*Surgerytype{}
+		_spec       = sq.querySpec()
+		loadedTypes = [1]bool{
+			sq.withSurgeryappointment != nil,
+		}
 	)
 	_spec.ScanValues = func(columns []string) ([]interface{}, error) {
 		node := &Surgerytype{config: sq.config}
@@ -315,6 +356,7 @@ func (sq *SurgerytypeQuery) sqlAll(ctx context.Context) ([]*Surgerytype, error) 
 			return fmt.Errorf("ent: Assign called without calling ScanValues")
 		}
 		node := nodes[len(nodes)-1]
+		node.Edges.loadedTypes = loadedTypes
 		return node.assignValues(columns, values)
 	}
 	if err := sqlgraph.QueryNodes(ctx, sq.driver, _spec); err != nil {
@@ -323,6 +365,35 @@ func (sq *SurgerytypeQuery) sqlAll(ctx context.Context) ([]*Surgerytype, error) 
 	if len(nodes) == 0 {
 		return nodes, nil
 	}
+
+	if query := sq.withSurgeryappointment; query != nil {
+		fks := make([]driver.Value, 0, len(nodes))
+		nodeids := make(map[int]*Surgerytype)
+		for i := range nodes {
+			fks = append(fks, nodes[i].ID)
+			nodeids[nodes[i].ID] = nodes[i]
+		}
+		query.withFKs = true
+		query.Where(predicate.Surgeryappointment(func(s *sql.Selector) {
+			s.Where(sql.InValues(surgerytype.SurgeryappointmentColumn, fks...))
+		}))
+		neighbors, err := query.All(ctx)
+		if err != nil {
+			return nil, err
+		}
+		for _, n := range neighbors {
+			fk := n.surgerytype_surgeryappointment
+			if fk == nil {
+				return nil, fmt.Errorf(`foreign-key "surgerytype_surgeryappointment" is nil for node %v`, n.ID)
+			}
+			node, ok := nodeids[*fk]
+			if !ok {
+				return nil, fmt.Errorf(`unexpected foreign-key "surgerytype_surgeryappointment" returned %v for node %v`, *fk, n.ID)
+			}
+			node.Edges.Surgeryappointment = n
+		}
+	}
+
 	return nodes, nil
 }
 

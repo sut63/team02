@@ -11,6 +11,7 @@ import (
 	"github.com/to63/app/ent/patient"
 	"github.com/to63/app/ent/personnel"
 	"github.com/to63/app/ent/surgeryappointment"
+	"github.com/to63/app/ent/surgerytype"
 )
 
 // Surgeryappointment is the model entity for the Surgeryappointment schema.
@@ -22,9 +23,10 @@ type Surgeryappointment struct {
 	AppointTime time.Time `json:"appoint_time,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the SurgeryappointmentQuery when eager-loading is set.
-	Edges         SurgeryappointmentEdges `json:"edges"`
-	_Patient_id   *int
-	_Personnel_id *int
+	Edges                          SurgeryappointmentEdges `json:"edges"`
+	_Patient_id                    *int
+	_Personnel_id                  *int
+	surgerytype_surgeryappointment *int
 }
 
 // SurgeryappointmentEdges holds the relations/edges for other nodes in the graph.
@@ -33,9 +35,11 @@ type SurgeryappointmentEdges struct {
 	Personnel *Personnel
 	// Patient holds the value of the Patient edge.
 	Patient *Patient
+	// Surgerytype holds the value of the Surgerytype edge.
+	Surgerytype *Surgerytype
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [2]bool
+	loadedTypes [3]bool
 }
 
 // PersonnelOrErr returns the Personnel value or an error if the edge
@@ -66,6 +70,20 @@ func (e SurgeryappointmentEdges) PatientOrErr() (*Patient, error) {
 	return nil, &NotLoadedError{edge: "Patient"}
 }
 
+// SurgerytypeOrErr returns the Surgerytype value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e SurgeryappointmentEdges) SurgerytypeOrErr() (*Surgerytype, error) {
+	if e.loadedTypes[2] {
+		if e.Surgerytype == nil {
+			// The edge Surgerytype was loaded in eager-loading,
+			// but was not found.
+			return nil, &NotFoundError{label: surgerytype.Label}
+		}
+		return e.Surgerytype, nil
+	}
+	return nil, &NotLoadedError{edge: "Surgerytype"}
+}
+
 // scanValues returns the types for scanning values from sql.Rows.
 func (*Surgeryappointment) scanValues(columns []string) ([]interface{}, error) {
 	values := make([]interface{}, len(columns))
@@ -78,6 +96,8 @@ func (*Surgeryappointment) scanValues(columns []string) ([]interface{}, error) {
 		case surgeryappointment.ForeignKeys[0]: // _Patient_id
 			values[i] = &sql.NullInt64{}
 		case surgeryappointment.ForeignKeys[1]: // _Personnel_id
+			values[i] = &sql.NullInt64{}
+		case surgeryappointment.ForeignKeys[2]: // surgerytype_surgeryappointment
 			values[i] = &sql.NullInt64{}
 		default:
 			return nil, fmt.Errorf("unexpected column %q for type Surgeryappointment", columns[i])
@@ -120,6 +140,13 @@ func (s *Surgeryappointment) assignValues(columns []string, values []interface{}
 				s._Personnel_id = new(int)
 				*s._Personnel_id = int(value.Int64)
 			}
+		case surgeryappointment.ForeignKeys[2]:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for edge-field surgerytype_surgeryappointment", value)
+			} else if value.Valid {
+				s.surgerytype_surgeryappointment = new(int)
+				*s.surgerytype_surgeryappointment = int(value.Int64)
+			}
 		}
 	}
 	return nil
@@ -133,6 +160,11 @@ func (s *Surgeryappointment) QueryPersonnel() *PersonnelQuery {
 // QueryPatient queries the "Patient" edge of the Surgeryappointment entity.
 func (s *Surgeryappointment) QueryPatient() *PatientQuery {
 	return (&SurgeryappointmentClient{config: s.config}).QueryPatient(s)
+}
+
+// QuerySurgerytype queries the "Surgerytype" edge of the Surgeryappointment entity.
+func (s *Surgeryappointment) QuerySurgerytype() *SurgerytypeQuery {
+	return (&SurgeryappointmentClient{config: s.config}).QuerySurgerytype(s)
 }
 
 // Update returns a builder for updating this Surgeryappointment.

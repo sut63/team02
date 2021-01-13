@@ -350,6 +350,7 @@ var (
 		{Name: "appoint_time", Type: field.TypeTime},
 		{Name: "Patient_id", Type: field.TypeInt, Nullable: true},
 		{Name: "Personnel_id", Type: field.TypeInt, Nullable: true},
+		{Name: "surgerytype_surgeryappointment", Type: field.TypeInt, Unique: true, Nullable: true},
 	}
 	// SurgeryappointmentsTable holds the schema information for the "surgeryappointments" table.
 	SurgeryappointmentsTable = &schema.Table{
@@ -369,6 +370,13 @@ var (
 				Columns: []*schema.Column{SurgeryappointmentsColumns[3]},
 
 				RefColumns: []*schema.Column{PersonnelsColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+			{
+				Symbol:  "surgeryappointments_surgerytypes_Surgeryappointment",
+				Columns: []*schema.Column{SurgeryappointmentsColumns[4]},
+
+				RefColumns: []*schema.Column{SurgerytypesColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 		},
@@ -428,4 +436,5 @@ func init() {
 	PhysicaltherapyrecordsTable.ForeignKeys[3].RefTable = StatusTable
 	SurgeryappointmentsTable.ForeignKeys[0].RefTable = PatientsTable
 	SurgeryappointmentsTable.ForeignKeys[1].RefTable = PersonnelsTable
+	SurgeryappointmentsTable.ForeignKeys[2].RefTable = SurgerytypesTable
 }

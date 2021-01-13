@@ -24,5 +24,6 @@ func (Surgeryappointment) Edges() []ent.Edge {
 	return []ent.Edge{
 		edge.From("Personnel", Personnel.Type).Ref("Surgeryappointment").Unique(),
 		edge.From("Patient", Patient.Type).Ref("Surgeryappointment").Unique(),
+		edge.From("Surgerytype", Surgerytype.Type).Ref("Surgeryappointment").Unique(),
 	}
 }

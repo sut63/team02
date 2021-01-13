@@ -10,6 +10,7 @@ import (
 	"github.com/facebook/ent/dialect/sql/sqlgraph"
 	"github.com/facebook/ent/schema/field"
 	"github.com/to63/app/ent/predicate"
+	"github.com/to63/app/ent/surgeryappointment"
 	"github.com/to63/app/ent/surgerytype"
 )
 
@@ -32,9 +33,34 @@ func (su *SurgerytypeUpdate) SetTypename(s string) *SurgerytypeUpdate {
 	return su
 }
 
+// SetSurgeryappointmentID sets the "Surgeryappointment" edge to the Surgeryappointment entity by ID.
+func (su *SurgerytypeUpdate) SetSurgeryappointmentID(id int) *SurgerytypeUpdate {
+	su.mutation.SetSurgeryappointmentID(id)
+	return su
+}
+
+// SetNillableSurgeryappointmentID sets the "Surgeryappointment" edge to the Surgeryappointment entity by ID if the given value is not nil.
+func (su *SurgerytypeUpdate) SetNillableSurgeryappointmentID(id *int) *SurgerytypeUpdate {
+	if id != nil {
+		su = su.SetSurgeryappointmentID(*id)
+	}
+	return su
+}
+
+// SetSurgeryappointment sets the "Surgeryappointment" edge to the Surgeryappointment entity.
+func (su *SurgerytypeUpdate) SetSurgeryappointment(s *Surgeryappointment) *SurgerytypeUpdate {
+	return su.SetSurgeryappointmentID(s.ID)
+}
+
 // Mutation returns the SurgerytypeMutation object of the builder.
 func (su *SurgerytypeUpdate) Mutation() *SurgerytypeMutation {
 	return su.mutation
+}
+
+// ClearSurgeryappointment clears the "Surgeryappointment" edge to the Surgeryappointment entity.
+func (su *SurgerytypeUpdate) ClearSurgeryappointment() *SurgerytypeUpdate {
+	su.mutation.ClearSurgeryappointment()
+	return su
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -129,6 +155,41 @@ func (su *SurgerytypeUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: surgerytype.FieldTypename,
 		})
 	}
+	if su.mutation.SurgeryappointmentCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2O,
+			Inverse: false,
+			Table:   surgerytype.SurgeryappointmentTable,
+			Columns: []string{surgerytype.SurgeryappointmentColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: surgeryappointment.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := su.mutation.SurgeryappointmentIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2O,
+			Inverse: false,
+			Table:   surgerytype.SurgeryappointmentTable,
+			Columns: []string{surgerytype.SurgeryappointmentColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: surgeryappointment.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
 	if n, err = sqlgraph.UpdateNodes(ctx, su.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{surgerytype.Label}
@@ -153,9 +214,34 @@ func (suo *SurgerytypeUpdateOne) SetTypename(s string) *SurgerytypeUpdateOne {
 	return suo
 }
 
+// SetSurgeryappointmentID sets the "Surgeryappointment" edge to the Surgeryappointment entity by ID.
+func (suo *SurgerytypeUpdateOne) SetSurgeryappointmentID(id int) *SurgerytypeUpdateOne {
+	suo.mutation.SetSurgeryappointmentID(id)
+	return suo
+}
+
+// SetNillableSurgeryappointmentID sets the "Surgeryappointment" edge to the Surgeryappointment entity by ID if the given value is not nil.
+func (suo *SurgerytypeUpdateOne) SetNillableSurgeryappointmentID(id *int) *SurgerytypeUpdateOne {
+	if id != nil {
+		suo = suo.SetSurgeryappointmentID(*id)
+	}
+	return suo
+}
+
+// SetSurgeryappointment sets the "Surgeryappointment" edge to the Surgeryappointment entity.
+func (suo *SurgerytypeUpdateOne) SetSurgeryappointment(s *Surgeryappointment) *SurgerytypeUpdateOne {
+	return suo.SetSurgeryappointmentID(s.ID)
+}
+
 // Mutation returns the SurgerytypeMutation object of the builder.
 func (suo *SurgerytypeUpdateOne) Mutation() *SurgerytypeMutation {
 	return suo.mutation
+}
+
+// ClearSurgeryappointment clears the "Surgeryappointment" edge to the Surgeryappointment entity.
+func (suo *SurgerytypeUpdateOne) ClearSurgeryappointment() *SurgerytypeUpdateOne {
+	suo.mutation.ClearSurgeryappointment()
+	return suo
 }
 
 // Save executes the query and returns the updated Surgerytype entity.
@@ -247,6 +333,41 @@ func (suo *SurgerytypeUpdateOne) sqlSave(ctx context.Context) (_node *Surgerytyp
 			Value:  value,
 			Column: surgerytype.FieldTypename,
 		})
+	}
+	if suo.mutation.SurgeryappointmentCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2O,
+			Inverse: false,
+			Table:   surgerytype.SurgeryappointmentTable,
+			Columns: []string{surgerytype.SurgeryappointmentColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: surgeryappointment.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := suo.mutation.SurgeryappointmentIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2O,
+			Inverse: false,
+			Table:   surgerytype.SurgeryappointmentTable,
+			Columns: []string{surgerytype.SurgeryappointmentColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: surgeryappointment.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	_node = &Surgerytype{config: suo.config}
 	_spec.Assign = _node.assignValues

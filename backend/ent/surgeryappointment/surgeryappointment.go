@@ -14,6 +14,8 @@ const (
 	EdgePersonnel = "Personnel"
 	// EdgePatient holds the string denoting the patient edge name in mutations.
 	EdgePatient = "Patient"
+	// EdgeSurgerytype holds the string denoting the surgerytype edge name in mutations.
+	EdgeSurgerytype = "Surgerytype"
 
 	// Table holds the table name of the surgeryappointment in the database.
 	Table = "surgeryappointments"
@@ -31,6 +33,13 @@ const (
 	PatientInverseTable = "patients"
 	// PatientColumn is the table column denoting the Patient relation/edge.
 	PatientColumn = "Patient_id"
+	// SurgerytypeTable is the table the holds the Surgerytype relation/edge.
+	SurgerytypeTable = "surgeryappointments"
+	// SurgerytypeInverseTable is the table name for the Surgerytype entity.
+	// It exists in this package in order to avoid circular dependency with the "surgerytype" package.
+	SurgerytypeInverseTable = "surgerytypes"
+	// SurgerytypeColumn is the table column denoting the Surgerytype relation/edge.
+	SurgerytypeColumn = "surgerytype_surgeryappointment"
 )
 
 // Columns holds all SQL columns for surgeryappointment fields.
@@ -43,6 +52,7 @@ var Columns = []string{
 var ForeignKeys = []string{
 	"Patient_id",
 	"Personnel_id",
+	"surgerytype_surgeryappointment",
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).

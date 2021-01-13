@@ -2272,6 +2272,22 @@ func (c *SurgeryappointmentClient) QueryPatient(s *Surgeryappointment) *PatientQ
 	return query
 }
 
+// QuerySurgerytype queries the Surgerytype edge of a Surgeryappointment.
+func (c *SurgeryappointmentClient) QuerySurgerytype(s *Surgeryappointment) *SurgerytypeQuery {
+	query := &SurgerytypeQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := s.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(surgeryappointment.Table, surgeryappointment.FieldID, id),
+			sqlgraph.To(surgerytype.Table, surgerytype.FieldID),
+			sqlgraph.Edge(sqlgraph.O2O, true, surgeryappointment.SurgerytypeTable, surgeryappointment.SurgerytypeColumn),
+		)
+		fromV = sqlgraph.Neighbors(s.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
 // Hooks returns the client hooks.
 func (c *SurgeryappointmentClient) Hooks() []Hook {
 	return c.hooks.Surgeryappointment
@@ -2358,6 +2374,22 @@ func (c *SurgerytypeClient) GetX(ctx context.Context, id int) *Surgerytype {
 		panic(err)
 	}
 	return obj
+}
+
+// QuerySurgeryappointment queries the Surgeryappointment edge of a Surgerytype.
+func (c *SurgerytypeClient) QuerySurgeryappointment(s *Surgerytype) *SurgeryappointmentQuery {
+	query := &SurgeryappointmentQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := s.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(surgerytype.Table, surgerytype.FieldID, id),
+			sqlgraph.To(surgeryappointment.Table, surgeryappointment.FieldID),
+			sqlgraph.Edge(sqlgraph.O2O, false, surgerytype.SurgeryappointmentTable, surgerytype.SurgeryappointmentColumn),
+		)
+		fromV = sqlgraph.Neighbors(s.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
 }
 
 // Hooks returns the client hooks.

@@ -10,8 +10,18 @@ const (
 	// FieldTypename holds the string denoting the typename field in the database.
 	FieldTypename = "typename"
 
+	// EdgeSurgeryappointment holds the string denoting the surgeryappointment edge name in mutations.
+	EdgeSurgeryappointment = "Surgeryappointment"
+
 	// Table holds the table name of the surgerytype in the database.
 	Table = "surgerytypes"
+	// SurgeryappointmentTable is the table the holds the Surgeryappointment relation/edge.
+	SurgeryappointmentTable = "surgeryappointments"
+	// SurgeryappointmentInverseTable is the table name for the Surgeryappointment entity.
+	// It exists in this package in order to avoid circular dependency with the "surgeryappointment" package.
+	SurgeryappointmentInverseTable = "surgeryappointments"
+	// SurgeryappointmentColumn is the table column denoting the Surgeryappointment relation/edge.
+	SurgeryappointmentColumn = "surgerytype_surgeryappointment"
 )
 
 // Columns holds all SQL columns for surgerytype fields.

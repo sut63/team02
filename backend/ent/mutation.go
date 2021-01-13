@@ -7496,18 +7496,20 @@ func (m *StatusMutation) ResetEdge(name string) error {
 // SurgeryappointmentMutation represents an operation that mutates the Surgeryappointment nodes in the graph.
 type SurgeryappointmentMutation struct {
 	config
-	op                Op
-	typ               string
-	id                *int
-	appoint_time      *time.Time
-	clearedFields     map[string]struct{}
-	_Personnel        *int
-	cleared_Personnel bool
-	_Patient          *int
-	cleared_Patient   bool
-	done              bool
-	oldValue          func(context.Context) (*Surgeryappointment, error)
-	predicates        []predicate.Surgeryappointment
+	op                  Op
+	typ                 string
+	id                  *int
+	appoint_time        *time.Time
+	clearedFields       map[string]struct{}
+	_Personnel          *int
+	cleared_Personnel   bool
+	_Patient            *int
+	cleared_Patient     bool
+	_Surgerytype        *int
+	cleared_Surgerytype bool
+	done                bool
+	oldValue            func(context.Context) (*Surgeryappointment, error)
+	predicates          []predicate.Surgeryappointment
 }
 
 var _ ent.Mutation = (*SurgeryappointmentMutation)(nil)
@@ -7703,6 +7705,45 @@ func (m *SurgeryappointmentMutation) ResetPatient() {
 	m.cleared_Patient = false
 }
 
+// SetSurgerytypeID sets the "Surgerytype" edge to the Surgerytype entity by id.
+func (m *SurgeryappointmentMutation) SetSurgerytypeID(id int) {
+	m._Surgerytype = &id
+}
+
+// ClearSurgerytype clears the "Surgerytype" edge to the Surgerytype entity.
+func (m *SurgeryappointmentMutation) ClearSurgerytype() {
+	m.cleared_Surgerytype = true
+}
+
+// SurgerytypeCleared returns if the "Surgerytype" edge to the Surgerytype entity was cleared.
+func (m *SurgeryappointmentMutation) SurgerytypeCleared() bool {
+	return m.cleared_Surgerytype
+}
+
+// SurgerytypeID returns the "Surgerytype" edge ID in the mutation.
+func (m *SurgeryappointmentMutation) SurgerytypeID() (id int, exists bool) {
+	if m._Surgerytype != nil {
+		return *m._Surgerytype, true
+	}
+	return
+}
+
+// SurgerytypeIDs returns the "Surgerytype" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// SurgerytypeID instead. It exists only for internal usage by the builders.
+func (m *SurgeryappointmentMutation) SurgerytypeIDs() (ids []int) {
+	if id := m._Surgerytype; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetSurgerytype resets all changes to the "Surgerytype" edge.
+func (m *SurgeryappointmentMutation) ResetSurgerytype() {
+	m._Surgerytype = nil
+	m.cleared_Surgerytype = false
+}
+
 // Op returns the operation name.
 func (m *SurgeryappointmentMutation) Op() Op {
 	return m.op
@@ -7816,12 +7857,15 @@ func (m *SurgeryappointmentMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *SurgeryappointmentMutation) AddedEdges() []string {
-	edges := make([]string, 0, 2)
+	edges := make([]string, 0, 3)
 	if m._Personnel != nil {
 		edges = append(edges, surgeryappointment.EdgePersonnel)
 	}
 	if m._Patient != nil {
 		edges = append(edges, surgeryappointment.EdgePatient)
+	}
+	if m._Surgerytype != nil {
+		edges = append(edges, surgeryappointment.EdgeSurgerytype)
 	}
 	return edges
 }
@@ -7838,13 +7882,17 @@ func (m *SurgeryappointmentMutation) AddedIDs(name string) []ent.Value {
 		if id := m._Patient; id != nil {
 			return []ent.Value{*id}
 		}
+	case surgeryappointment.EdgeSurgerytype:
+		if id := m._Surgerytype; id != nil {
+			return []ent.Value{*id}
+		}
 	}
 	return nil
 }
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *SurgeryappointmentMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 2)
+	edges := make([]string, 0, 3)
 	return edges
 }
 
@@ -7858,12 +7906,15 @@ func (m *SurgeryappointmentMutation) RemovedIDs(name string) []ent.Value {
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *SurgeryappointmentMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 2)
+	edges := make([]string, 0, 3)
 	if m.cleared_Personnel {
 		edges = append(edges, surgeryappointment.EdgePersonnel)
 	}
 	if m.cleared_Patient {
 		edges = append(edges, surgeryappointment.EdgePatient)
+	}
+	if m.cleared_Surgerytype {
+		edges = append(edges, surgeryappointment.EdgeSurgerytype)
 	}
 	return edges
 }
@@ -7876,6 +7927,8 @@ func (m *SurgeryappointmentMutation) EdgeCleared(name string) bool {
 		return m.cleared_Personnel
 	case surgeryappointment.EdgePatient:
 		return m.cleared_Patient
+	case surgeryappointment.EdgeSurgerytype:
+		return m.cleared_Surgerytype
 	}
 	return false
 }
@@ -7889,6 +7942,9 @@ func (m *SurgeryappointmentMutation) ClearEdge(name string) error {
 		return nil
 	case surgeryappointment.EdgePatient:
 		m.ClearPatient()
+		return nil
+	case surgeryappointment.EdgeSurgerytype:
+		m.ClearSurgerytype()
 		return nil
 	}
 	return fmt.Errorf("unknown Surgeryappointment unique edge %s", name)
@@ -7904,6 +7960,9 @@ func (m *SurgeryappointmentMutation) ResetEdge(name string) error {
 	case surgeryappointment.EdgePatient:
 		m.ResetPatient()
 		return nil
+	case surgeryappointment.EdgeSurgerytype:
+		m.ResetSurgerytype()
+		return nil
 	}
 	return fmt.Errorf("unknown Surgeryappointment edge %s", name)
 }
@@ -7911,14 +7970,16 @@ func (m *SurgeryappointmentMutation) ResetEdge(name string) error {
 // SurgerytypeMutation represents an operation that mutates the Surgerytype nodes in the graph.
 type SurgerytypeMutation struct {
 	config
-	op            Op
-	typ           string
-	id            *int
-	typename      *string
-	clearedFields map[string]struct{}
-	done          bool
-	oldValue      func(context.Context) (*Surgerytype, error)
-	predicates    []predicate.Surgerytype
+	op                         Op
+	typ                        string
+	id                         *int
+	typename                   *string
+	clearedFields              map[string]struct{}
+	_Surgeryappointment        *int
+	cleared_Surgeryappointment bool
+	done                       bool
+	oldValue                   func(context.Context) (*Surgerytype, error)
+	predicates                 []predicate.Surgerytype
 }
 
 var _ ent.Mutation = (*SurgerytypeMutation)(nil)
@@ -8036,6 +8097,45 @@ func (m *SurgerytypeMutation) ResetTypename() {
 	m.typename = nil
 }
 
+// SetSurgeryappointmentID sets the "Surgeryappointment" edge to the Surgeryappointment entity by id.
+func (m *SurgerytypeMutation) SetSurgeryappointmentID(id int) {
+	m._Surgeryappointment = &id
+}
+
+// ClearSurgeryappointment clears the "Surgeryappointment" edge to the Surgeryappointment entity.
+func (m *SurgerytypeMutation) ClearSurgeryappointment() {
+	m.cleared_Surgeryappointment = true
+}
+
+// SurgeryappointmentCleared returns if the "Surgeryappointment" edge to the Surgeryappointment entity was cleared.
+func (m *SurgerytypeMutation) SurgeryappointmentCleared() bool {
+	return m.cleared_Surgeryappointment
+}
+
+// SurgeryappointmentID returns the "Surgeryappointment" edge ID in the mutation.
+func (m *SurgerytypeMutation) SurgeryappointmentID() (id int, exists bool) {
+	if m._Surgeryappointment != nil {
+		return *m._Surgeryappointment, true
+	}
+	return
+}
+
+// SurgeryappointmentIDs returns the "Surgeryappointment" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// SurgeryappointmentID instead. It exists only for internal usage by the builders.
+func (m *SurgerytypeMutation) SurgeryappointmentIDs() (ids []int) {
+	if id := m._Surgeryappointment; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetSurgeryappointment resets all changes to the "Surgeryappointment" edge.
+func (m *SurgerytypeMutation) ResetSurgeryappointment() {
+	m._Surgeryappointment = nil
+	m.cleared_Surgeryappointment = false
+}
+
 // Op returns the operation name.
 func (m *SurgerytypeMutation) Op() Op {
 	return m.op
@@ -8149,48 +8249,76 @@ func (m *SurgerytypeMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *SurgerytypeMutation) AddedEdges() []string {
-	edges := make([]string, 0, 0)
+	edges := make([]string, 0, 1)
+	if m._Surgeryappointment != nil {
+		edges = append(edges, surgerytype.EdgeSurgeryappointment)
+	}
 	return edges
 }
 
 // AddedIDs returns all IDs (to other nodes) that were added for the given edge
 // name in this mutation.
 func (m *SurgerytypeMutation) AddedIDs(name string) []ent.Value {
+	switch name {
+	case surgerytype.EdgeSurgeryappointment:
+		if id := m._Surgeryappointment; id != nil {
+			return []ent.Value{*id}
+		}
+	}
 	return nil
 }
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *SurgerytypeMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 0)
+	edges := make([]string, 0, 1)
 	return edges
 }
 
 // RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
 // the given name in this mutation.
 func (m *SurgerytypeMutation) RemovedIDs(name string) []ent.Value {
+	switch name {
+	}
 	return nil
 }
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *SurgerytypeMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 0)
+	edges := make([]string, 0, 1)
+	if m.cleared_Surgeryappointment {
+		edges = append(edges, surgerytype.EdgeSurgeryappointment)
+	}
 	return edges
 }
 
 // EdgeCleared returns a boolean which indicates if the edge with the given name
 // was cleared in this mutation.
 func (m *SurgerytypeMutation) EdgeCleared(name string) bool {
+	switch name {
+	case surgerytype.EdgeSurgeryappointment:
+		return m.cleared_Surgeryappointment
+	}
 	return false
 }
 
 // ClearEdge clears the value of the edge with the given name. It returns an error
 // if that edge is not defined in the schema.
 func (m *SurgerytypeMutation) ClearEdge(name string) error {
+	switch name {
+	case surgerytype.EdgeSurgeryappointment:
+		m.ClearSurgeryappointment()
+		return nil
+	}
 	return fmt.Errorf("unknown Surgerytype unique edge %s", name)
 }
 
 // ResetEdge resets all changes to the edge with the given name in this mutation.
 // It returns an error if the edge is not defined in the schema.
 func (m *SurgerytypeMutation) ResetEdge(name string) error {
+	switch name {
+	case surgerytype.EdgeSurgeryappointment:
+		m.ResetSurgeryappointment()
+		return nil
+	}
 	return fmt.Errorf("unknown Surgerytype edge %s", name)
 }

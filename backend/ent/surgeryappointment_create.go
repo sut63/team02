@@ -13,6 +13,7 @@ import (
 	"github.com/to63/app/ent/patient"
 	"github.com/to63/app/ent/personnel"
 	"github.com/to63/app/ent/surgeryappointment"
+	"github.com/to63/app/ent/surgerytype"
 )
 
 // SurgeryappointmentCreate is the builder for creating a Surgeryappointment entity.
@@ -64,6 +65,25 @@ func (sc *SurgeryappointmentCreate) SetNillablePatientID(id *int) *Surgeryappoin
 // SetPatient sets the "Patient" edge to the Patient entity.
 func (sc *SurgeryappointmentCreate) SetPatient(p *Patient) *SurgeryappointmentCreate {
 	return sc.SetPatientID(p.ID)
+}
+
+// SetSurgerytypeID sets the "Surgerytype" edge to the Surgerytype entity by ID.
+func (sc *SurgeryappointmentCreate) SetSurgerytypeID(id int) *SurgeryappointmentCreate {
+	sc.mutation.SetSurgerytypeID(id)
+	return sc
+}
+
+// SetNillableSurgerytypeID sets the "Surgerytype" edge to the Surgerytype entity by ID if the given value is not nil.
+func (sc *SurgeryappointmentCreate) SetNillableSurgerytypeID(id *int) *SurgeryappointmentCreate {
+	if id != nil {
+		sc = sc.SetSurgerytypeID(*id)
+	}
+	return sc
+}
+
+// SetSurgerytype sets the "Surgerytype" edge to the Surgerytype entity.
+func (sc *SurgeryappointmentCreate) SetSurgerytype(s *Surgerytype) *SurgeryappointmentCreate {
+	return sc.SetSurgerytypeID(s.ID)
 }
 
 // Mutation returns the SurgeryappointmentMutation object of the builder.
@@ -185,6 +205,25 @@ func (sc *SurgeryappointmentCreate) createSpec() (*Surgeryappointment, *sqlgraph
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
 					Column: patient.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := sc.mutation.SurgerytypeIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2O,
+			Inverse: true,
+			Table:   surgeryappointment.SurgerytypeTable,
+			Columns: []string{surgeryappointment.SurgerytypeColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: surgerytype.FieldID,
 				},
 			},
 		}

@@ -2,6 +2,7 @@ package schema
 
 import (
 	"github.com/facebook/ent"
+	"github.com/facebook/ent/schema/edge"
 	"github.com/facebook/ent/schema/field"
 )
 
@@ -19,5 +20,7 @@ func (Surgerytype) Fields() []ent.Field {
 
 // Edges of the Surgerytype.
 func (Surgerytype) Edges() []ent.Edge {
-	return nil
+	return []ent.Edge{
+		edge.To("Surgeryappointment", Surgeryappointment.Type).Unique(),
+	}
 }
