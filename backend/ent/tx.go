@@ -20,8 +20,8 @@ type Tx struct {
 	Checksymptoms *ChecksymptomsClient
 	// Dentalappointment is the client for interacting with the Dentalappointment builders.
 	Dentalappointment *DentalappointmentClient
-	// Dentaltype is the client for interacting with the Dentaltype builders.
-	Dentaltype *DentaltypeClient
+	// Dentalkind is the client for interacting with the Dentalkind builders.
+	Dentalkind *DentalkindClient
 	// Disease is the client for interacting with the Disease builders.
 	Disease *DiseaseClient
 	// DoctorOrderSheet is the client for interacting with the DoctorOrderSheet builders.
@@ -185,7 +185,7 @@ func (tx *Tx) init() {
 	tx.Bonedisease = NewBonediseaseClient(tx.config)
 	tx.Checksymptoms = NewChecksymptomsClient(tx.config)
 	tx.Dentalappointment = NewDentalappointmentClient(tx.config)
-	tx.Dentaltype = NewDentaltypeClient(tx.config)
+	tx.Dentalkind = NewDentalkindClient(tx.config)
 	tx.Disease = NewDiseaseClient(tx.config)
 	tx.DoctorOrderSheet = NewDoctorOrderSheetClient(tx.config)
 	tx.Patient = NewPatientClient(tx.config)

@@ -11,7 +11,7 @@ import (
 	"github.com/facebook/ent/dialect/sql/sqlgraph"
 	"github.com/facebook/ent/schema/field"
 	"github.com/to63/app/ent/dentalappointment"
-	"github.com/to63/app/ent/dentaltype"
+	"github.com/to63/app/ent/dentalkind"
 	"github.com/to63/app/ent/patient"
 	"github.com/to63/app/ent/personnel"
 )
@@ -23,9 +23,9 @@ type DentalappointmentCreate struct {
 	hooks    []Hook
 }
 
-// SetAppointTime sets the "appoint_time" field.
-func (dc *DentalappointmentCreate) SetAppointTime(t time.Time) *DentalappointmentCreate {
-	dc.mutation.SetAppointTime(t)
+// SetAppointtime sets the "appointtime" field.
+func (dc *DentalappointmentCreate) SetAppointtime(t time.Time) *DentalappointmentCreate {
+	dc.mutation.SetAppointtime(t)
 	return dc
 }
 
@@ -67,23 +67,23 @@ func (dc *DentalappointmentCreate) SetPatient(p *Patient) *DentalappointmentCrea
 	return dc.SetPatientID(p.ID)
 }
 
-// SetDentaltypeID sets the "Dentaltype" edge to the Dentaltype entity by ID.
-func (dc *DentalappointmentCreate) SetDentaltypeID(id int) *DentalappointmentCreate {
-	dc.mutation.SetDentaltypeID(id)
+// SetDentalkindID sets the "Dentalkind" edge to the Dentalkind entity by ID.
+func (dc *DentalappointmentCreate) SetDentalkindID(id int) *DentalappointmentCreate {
+	dc.mutation.SetDentalkindID(id)
 	return dc
 }
 
-// SetNillableDentaltypeID sets the "Dentaltype" edge to the Dentaltype entity by ID if the given value is not nil.
-func (dc *DentalappointmentCreate) SetNillableDentaltypeID(id *int) *DentalappointmentCreate {
+// SetNillableDentalkindID sets the "Dentalkind" edge to the Dentalkind entity by ID if the given value is not nil.
+func (dc *DentalappointmentCreate) SetNillableDentalkindID(id *int) *DentalappointmentCreate {
 	if id != nil {
-		dc = dc.SetDentaltypeID(*id)
+		dc = dc.SetDentalkindID(*id)
 	}
 	return dc
 }
 
-// SetDentaltype sets the "Dentaltype" edge to the Dentaltype entity.
-func (dc *DentalappointmentCreate) SetDentaltype(d *Dentaltype) *DentalappointmentCreate {
-	return dc.SetDentaltypeID(d.ID)
+// SetDentalkind sets the "Dentalkind" edge to the Dentalkind entity.
+func (dc *DentalappointmentCreate) SetDentalkind(d *Dentalkind) *DentalappointmentCreate {
+	return dc.SetDentalkindID(d.ID)
 }
 
 // Mutation returns the DentalappointmentMutation object of the builder.
@@ -137,8 +137,8 @@ func (dc *DentalappointmentCreate) SaveX(ctx context.Context) *Dentalappointment
 
 // check runs all checks and user-defined validators on the builder.
 func (dc *DentalappointmentCreate) check() error {
-	if _, ok := dc.mutation.AppointTime(); !ok {
-		return &ValidationError{Name: "appoint_time", err: errors.New("ent: missing required field \"appoint_time\"")}
+	if _, ok := dc.mutation.Appointtime(); !ok {
+		return &ValidationError{Name: "appointtime", err: errors.New("ent: missing required field \"appointtime\"")}
 	}
 	return nil
 }
@@ -167,13 +167,13 @@ func (dc *DentalappointmentCreate) createSpec() (*Dentalappointment, *sqlgraph.C
 			},
 		}
 	)
-	if value, ok := dc.mutation.AppointTime(); ok {
+	if value, ok := dc.mutation.Appointtime(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeTime,
 			Value:  value,
-			Column: dentalappointment.FieldAppointTime,
+			Column: dentalappointment.FieldAppointtime,
 		})
-		_node.AppointTime = value
+		_node.Appointtime = value
 	}
 	if nodes := dc.mutation.PersonnelIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
@@ -213,17 +213,17 @@ func (dc *DentalappointmentCreate) createSpec() (*Dentalappointment, *sqlgraph.C
 		}
 		_spec.Edges = append(_spec.Edges, edge)
 	}
-	if nodes := dc.mutation.DentaltypeIDs(); len(nodes) > 0 {
+	if nodes := dc.mutation.DentalkindIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   dentalappointment.DentaltypeTable,
-			Columns: []string{dentalappointment.DentaltypeColumn},
+			Table:   dentalappointment.DentalkindTable,
+			Columns: []string{dentalappointment.DentalkindColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
-					Column: dentaltype.FieldID,
+					Column: dentalkind.FieldID,
 				},
 			},
 		}

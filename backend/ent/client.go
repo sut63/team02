@@ -13,7 +13,7 @@ import (
 	"github.com/to63/app/ent/bonedisease"
 	"github.com/to63/app/ent/checksymptoms"
 	"github.com/to63/app/ent/dentalappointment"
-	"github.com/to63/app/ent/dentaltype"
+	"github.com/to63/app/ent/dentalkind"
 	"github.com/to63/app/ent/disease"
 	"github.com/to63/app/ent/doctorordersheet"
 	"github.com/to63/app/ent/patient"
@@ -45,8 +45,8 @@ type Client struct {
 	Checksymptoms *ChecksymptomsClient
 	// Dentalappointment is the client for interacting with the Dentalappointment builders.
 	Dentalappointment *DentalappointmentClient
-	// Dentaltype is the client for interacting with the Dentaltype builders.
-	Dentaltype *DentaltypeClient
+	// Dentalkind is the client for interacting with the Dentalkind builders.
+	Dentalkind *DentalkindClient
 	// Disease is the client for interacting with the Disease builders.
 	Disease *DiseaseClient
 	// DoctorOrderSheet is the client for interacting with the DoctorOrderSheet builders.
@@ -88,7 +88,7 @@ func (c *Client) init() {
 	c.Bonedisease = NewBonediseaseClient(c.config)
 	c.Checksymptoms = NewChecksymptomsClient(c.config)
 	c.Dentalappointment = NewDentalappointmentClient(c.config)
-	c.Dentaltype = NewDentaltypeClient(c.config)
+	c.Dentalkind = NewDentalkindClient(c.config)
 	c.Disease = NewDiseaseClient(c.config)
 	c.DoctorOrderSheet = NewDoctorOrderSheetClient(c.config)
 	c.Patient = NewPatientClient(c.config)
@@ -137,7 +137,7 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 		Bonedisease:           NewBonediseaseClient(cfg),
 		Checksymptoms:         NewChecksymptomsClient(cfg),
 		Dentalappointment:     NewDentalappointmentClient(cfg),
-		Dentaltype:            NewDentaltypeClient(cfg),
+		Dentalkind:            NewDentalkindClient(cfg),
 		Disease:               NewDiseaseClient(cfg),
 		DoctorOrderSheet:      NewDoctorOrderSheetClient(cfg),
 		Patient:               NewPatientClient(cfg),
@@ -169,7 +169,7 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 		Bonedisease:           NewBonediseaseClient(cfg),
 		Checksymptoms:         NewChecksymptomsClient(cfg),
 		Dentalappointment:     NewDentalappointmentClient(cfg),
-		Dentaltype:            NewDentaltypeClient(cfg),
+		Dentalkind:            NewDentalkindClient(cfg),
 		Disease:               NewDiseaseClient(cfg),
 		DoctorOrderSheet:      NewDoctorOrderSheetClient(cfg),
 		Patient:               NewPatientClient(cfg),
@@ -214,7 +214,7 @@ func (c *Client) Use(hooks ...Hook) {
 	c.Bonedisease.Use(hooks...)
 	c.Checksymptoms.Use(hooks...)
 	c.Dentalappointment.Use(hooks...)
-	c.Dentaltype.Use(hooks...)
+	c.Dentalkind.Use(hooks...)
 	c.Disease.Use(hooks...)
 	c.DoctorOrderSheet.Use(hooks...)
 	c.Patient.Use(hooks...)
@@ -784,15 +784,15 @@ func (c *DentalappointmentClient) QueryPatient(d *Dentalappointment) *PatientQue
 	return query
 }
 
-// QueryDentaltype queries the Dentaltype edge of a Dentalappointment.
-func (c *DentalappointmentClient) QueryDentaltype(d *Dentalappointment) *DentaltypeQuery {
-	query := &DentaltypeQuery{config: c.config}
+// QueryDentalkind queries the Dentalkind edge of a Dentalappointment.
+func (c *DentalappointmentClient) QueryDentalkind(d *Dentalappointment) *DentalkindQuery {
+	query := &DentalkindQuery{config: c.config}
 	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
 		id := d.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(dentalappointment.Table, dentalappointment.FieldID, id),
-			sqlgraph.To(dentaltype.Table, dentaltype.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, dentalappointment.DentaltypeTable, dentalappointment.DentaltypeColumn),
+			sqlgraph.To(dentalkind.Table, dentalkind.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, dentalappointment.DentalkindTable, dentalappointment.DentalkindColumn),
 		)
 		fromV = sqlgraph.Neighbors(d.driver.Dialect(), step)
 		return fromV, nil
@@ -805,82 +805,82 @@ func (c *DentalappointmentClient) Hooks() []Hook {
 	return c.hooks.Dentalappointment
 }
 
-// DentaltypeClient is a client for the Dentaltype schema.
-type DentaltypeClient struct {
+// DentalkindClient is a client for the Dentalkind schema.
+type DentalkindClient struct {
 	config
 }
 
-// NewDentaltypeClient returns a client for the Dentaltype from the given config.
-func NewDentaltypeClient(c config) *DentaltypeClient {
-	return &DentaltypeClient{config: c}
+// NewDentalkindClient returns a client for the Dentalkind from the given config.
+func NewDentalkindClient(c config) *DentalkindClient {
+	return &DentalkindClient{config: c}
 }
 
 // Use adds a list of mutation hooks to the hooks stack.
-// A call to `Use(f, g, h)` equals to `dentaltype.Hooks(f(g(h())))`.
-func (c *DentaltypeClient) Use(hooks ...Hook) {
-	c.hooks.Dentaltype = append(c.hooks.Dentaltype, hooks...)
+// A call to `Use(f, g, h)` equals to `dentalkind.Hooks(f(g(h())))`.
+func (c *DentalkindClient) Use(hooks ...Hook) {
+	c.hooks.Dentalkind = append(c.hooks.Dentalkind, hooks...)
 }
 
-// Create returns a create builder for Dentaltype.
-func (c *DentaltypeClient) Create() *DentaltypeCreate {
-	mutation := newDentaltypeMutation(c.config, OpCreate)
-	return &DentaltypeCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+// Create returns a create builder for Dentalkind.
+func (c *DentalkindClient) Create() *DentalkindCreate {
+	mutation := newDentalkindMutation(c.config, OpCreate)
+	return &DentalkindCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
-// CreateBulk returns a builder for creating a bulk of Dentaltype entities.
-func (c *DentaltypeClient) CreateBulk(builders ...*DentaltypeCreate) *DentaltypeCreateBulk {
-	return &DentaltypeCreateBulk{config: c.config, builders: builders}
+// CreateBulk returns a builder for creating a bulk of Dentalkind entities.
+func (c *DentalkindClient) CreateBulk(builders ...*DentalkindCreate) *DentalkindCreateBulk {
+	return &DentalkindCreateBulk{config: c.config, builders: builders}
 }
 
-// Update returns an update builder for Dentaltype.
-func (c *DentaltypeClient) Update() *DentaltypeUpdate {
-	mutation := newDentaltypeMutation(c.config, OpUpdate)
-	return &DentaltypeUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+// Update returns an update builder for Dentalkind.
+func (c *DentalkindClient) Update() *DentalkindUpdate {
+	mutation := newDentalkindMutation(c.config, OpUpdate)
+	return &DentalkindUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
 // UpdateOne returns an update builder for the given entity.
-func (c *DentaltypeClient) UpdateOne(d *Dentaltype) *DentaltypeUpdateOne {
-	mutation := newDentaltypeMutation(c.config, OpUpdateOne, withDentaltype(d))
-	return &DentaltypeUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+func (c *DentalkindClient) UpdateOne(d *Dentalkind) *DentalkindUpdateOne {
+	mutation := newDentalkindMutation(c.config, OpUpdateOne, withDentalkind(d))
+	return &DentalkindUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
 // UpdateOneID returns an update builder for the given id.
-func (c *DentaltypeClient) UpdateOneID(id int) *DentaltypeUpdateOne {
-	mutation := newDentaltypeMutation(c.config, OpUpdateOne, withDentaltypeID(id))
-	return &DentaltypeUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+func (c *DentalkindClient) UpdateOneID(id int) *DentalkindUpdateOne {
+	mutation := newDentalkindMutation(c.config, OpUpdateOne, withDentalkindID(id))
+	return &DentalkindUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
-// Delete returns a delete builder for Dentaltype.
-func (c *DentaltypeClient) Delete() *DentaltypeDelete {
-	mutation := newDentaltypeMutation(c.config, OpDelete)
-	return &DentaltypeDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+// Delete returns a delete builder for Dentalkind.
+func (c *DentalkindClient) Delete() *DentalkindDelete {
+	mutation := newDentalkindMutation(c.config, OpDelete)
+	return &DentalkindDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
 // DeleteOne returns a delete builder for the given entity.
-func (c *DentaltypeClient) DeleteOne(d *Dentaltype) *DentaltypeDeleteOne {
+func (c *DentalkindClient) DeleteOne(d *Dentalkind) *DentalkindDeleteOne {
 	return c.DeleteOneID(d.ID)
 }
 
 // DeleteOneID returns a delete builder for the given id.
-func (c *DentaltypeClient) DeleteOneID(id int) *DentaltypeDeleteOne {
-	builder := c.Delete().Where(dentaltype.ID(id))
+func (c *DentalkindClient) DeleteOneID(id int) *DentalkindDeleteOne {
+	builder := c.Delete().Where(dentalkind.ID(id))
 	builder.mutation.id = &id
 	builder.mutation.op = OpDeleteOne
-	return &DentaltypeDeleteOne{builder}
+	return &DentalkindDeleteOne{builder}
 }
 
-// Query returns a query builder for Dentaltype.
-func (c *DentaltypeClient) Query() *DentaltypeQuery {
-	return &DentaltypeQuery{config: c.config}
+// Query returns a query builder for Dentalkind.
+func (c *DentalkindClient) Query() *DentalkindQuery {
+	return &DentalkindQuery{config: c.config}
 }
 
-// Get returns a Dentaltype entity by its id.
-func (c *DentaltypeClient) Get(ctx context.Context, id int) (*Dentaltype, error) {
-	return c.Query().Where(dentaltype.ID(id)).Only(ctx)
+// Get returns a Dentalkind entity by its id.
+func (c *DentalkindClient) Get(ctx context.Context, id int) (*Dentalkind, error) {
+	return c.Query().Where(dentalkind.ID(id)).Only(ctx)
 }
 
 // GetX is like Get, but panics if an error occurs.
-func (c *DentaltypeClient) GetX(ctx context.Context, id int) *Dentaltype {
+func (c *DentalkindClient) GetX(ctx context.Context, id int) *Dentalkind {
 	obj, err := c.Get(ctx, id)
 	if err != nil {
 		panic(err)
@@ -888,15 +888,15 @@ func (c *DentaltypeClient) GetX(ctx context.Context, id int) *Dentaltype {
 	return obj
 }
 
-// QueryDentalappointment queries the Dentalappointment edge of a Dentaltype.
-func (c *DentaltypeClient) QueryDentalappointment(d *Dentaltype) *DentalappointmentQuery {
+// QueryDentalappointment queries the Dentalappointment edge of a Dentalkind.
+func (c *DentalkindClient) QueryDentalappointment(d *Dentalkind) *DentalappointmentQuery {
 	query := &DentalappointmentQuery{config: c.config}
 	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
 		id := d.ID
 		step := sqlgraph.NewStep(
-			sqlgraph.From(dentaltype.Table, dentaltype.FieldID, id),
+			sqlgraph.From(dentalkind.Table, dentalkind.FieldID, id),
 			sqlgraph.To(dentalappointment.Table, dentalappointment.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, dentaltype.DentalappointmentTable, dentaltype.DentalappointmentColumn),
+			sqlgraph.Edge(sqlgraph.O2M, false, dentalkind.DentalappointmentTable, dentalkind.DentalappointmentColumn),
 		)
 		fromV = sqlgraph.Neighbors(d.driver.Dialect(), step)
 		return fromV, nil
@@ -905,8 +905,8 @@ func (c *DentaltypeClient) QueryDentalappointment(d *Dentaltype) *Dentalappointm
 }
 
 // Hooks returns the client hooks.
-func (c *DentaltypeClient) Hooks() []Hook {
-	return c.hooks.Dentaltype
+func (c *DentalkindClient) Hooks() []Hook {
+	return c.hooks.Dentalkind
 }
 
 // DiseaseClient is a client for the Disease schema.

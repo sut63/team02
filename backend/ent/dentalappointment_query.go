@@ -12,7 +12,7 @@ import (
 	"github.com/facebook/ent/dialect/sql/sqlgraph"
 	"github.com/facebook/ent/schema/field"
 	"github.com/to63/app/ent/dentalappointment"
-	"github.com/to63/app/ent/dentaltype"
+	"github.com/to63/app/ent/dentalkind"
 	"github.com/to63/app/ent/patient"
 	"github.com/to63/app/ent/personnel"
 	"github.com/to63/app/ent/predicate"
@@ -29,7 +29,7 @@ type DentalappointmentQuery struct {
 	// eager-loading edges.
 	withPersonnel  *PersonnelQuery
 	withPatient    *PatientQuery
-	withDentaltype *DentaltypeQuery
+	withDentalkind *DentalkindQuery
 	withFKs        bool
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
@@ -104,9 +104,9 @@ func (dq *DentalappointmentQuery) QueryPatient() *PatientQuery {
 	return query
 }
 
-// QueryDentaltype chains the current query on the "Dentaltype" edge.
-func (dq *DentalappointmentQuery) QueryDentaltype() *DentaltypeQuery {
-	query := &DentaltypeQuery{config: dq.config}
+// QueryDentalkind chains the current query on the "Dentalkind" edge.
+func (dq *DentalappointmentQuery) QueryDentalkind() *DentalkindQuery {
+	query := &DentalkindQuery{config: dq.config}
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
 		if err := dq.prepareQuery(ctx); err != nil {
 			return nil, err
@@ -117,8 +117,8 @@ func (dq *DentalappointmentQuery) QueryDentaltype() *DentaltypeQuery {
 		}
 		step := sqlgraph.NewStep(
 			sqlgraph.From(dentalappointment.Table, dentalappointment.FieldID, selector),
-			sqlgraph.To(dentaltype.Table, dentaltype.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, dentalappointment.DentaltypeTable, dentalappointment.DentaltypeColumn),
+			sqlgraph.To(dentalkind.Table, dentalkind.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, dentalappointment.DentalkindTable, dentalappointment.DentalkindColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(dq.driver.Dialect(), step)
 		return fromU, nil
@@ -309,7 +309,7 @@ func (dq *DentalappointmentQuery) Clone() *DentalappointmentQuery {
 		predicates:     append([]predicate.Dentalappointment{}, dq.predicates...),
 		withPersonnel:  dq.withPersonnel.Clone(),
 		withPatient:    dq.withPatient.Clone(),
-		withDentaltype: dq.withDentaltype.Clone(),
+		withDentalkind: dq.withDentalkind.Clone(),
 		// clone intermediate query.
 		sql:  dq.sql.Clone(),
 		path: dq.path,
@@ -338,14 +338,14 @@ func (dq *DentalappointmentQuery) WithPatient(opts ...func(*PatientQuery)) *Dent
 	return dq
 }
 
-// WithDentaltype tells the query-builder to eager-load the nodes that are connected to
-// the "Dentaltype" edge. The optional arguments are used to configure the query builder of the edge.
-func (dq *DentalappointmentQuery) WithDentaltype(opts ...func(*DentaltypeQuery)) *DentalappointmentQuery {
-	query := &DentaltypeQuery{config: dq.config}
+// WithDentalkind tells the query-builder to eager-load the nodes that are connected to
+// the "Dentalkind" edge. The optional arguments are used to configure the query builder of the edge.
+func (dq *DentalappointmentQuery) WithDentalkind(opts ...func(*DentalkindQuery)) *DentalappointmentQuery {
+	query := &DentalkindQuery{config: dq.config}
 	for _, opt := range opts {
 		opt(query)
 	}
-	dq.withDentaltype = query
+	dq.withDentalkind = query
 	return dq
 }
 
@@ -355,12 +355,12 @@ func (dq *DentalappointmentQuery) WithDentaltype(opts ...func(*DentaltypeQuery))
 // Example:
 //
 //	var v []struct {
-//		AppointTime time.Time `json:"appoint_time,omitempty"`
+//		Appointtime time.Time `json:"appointtime,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
 //	client.Dentalappointment.Query().
-//		GroupBy(dentalappointment.FieldAppointTime).
+//		GroupBy(dentalappointment.FieldAppointtime).
 //		Aggregate(ent.Count()).
 //		Scan(ctx, &v)
 //
@@ -382,11 +382,11 @@ func (dq *DentalappointmentQuery) GroupBy(field string, fields ...string) *Denta
 // Example:
 //
 //	var v []struct {
-//		AppointTime time.Time `json:"appoint_time,omitempty"`
+//		Appointtime time.Time `json:"appointtime,omitempty"`
 //	}
 //
 //	client.Dentalappointment.Query().
-//		Select(dentalappointment.FieldAppointTime).
+//		Select(dentalappointment.FieldAppointtime).
 //		Scan(ctx, &v)
 //
 func (dq *DentalappointmentQuery) Select(field string, fields ...string) *DentalappointmentSelect {
@@ -418,10 +418,10 @@ func (dq *DentalappointmentQuery) sqlAll(ctx context.Context) ([]*Dentalappointm
 		loadedTypes = [3]bool{
 			dq.withPersonnel != nil,
 			dq.withPatient != nil,
-			dq.withDentaltype != nil,
+			dq.withDentalkind != nil,
 		}
 	)
-	if dq.withPersonnel != nil || dq.withPatient != nil || dq.withDentaltype != nil {
+	if dq.withPersonnel != nil || dq.withPatient != nil || dq.withDentalkind != nil {
 		withFKs = true
 	}
 	if withFKs {
@@ -497,16 +497,16 @@ func (dq *DentalappointmentQuery) sqlAll(ctx context.Context) ([]*Dentalappointm
 		}
 	}
 
-	if query := dq.withDentaltype; query != nil {
+	if query := dq.withDentalkind; query != nil {
 		ids := make([]int, 0, len(nodes))
 		nodeids := make(map[int][]*Dentalappointment)
 		for i := range nodes {
-			if fk := nodes[i].typename; fk != nil {
+			if fk := nodes[i].kindname; fk != nil {
 				ids = append(ids, *fk)
 				nodeids[*fk] = append(nodeids[*fk], nodes[i])
 			}
 		}
-		query.Where(dentaltype.IDIn(ids...))
+		query.Where(dentalkind.IDIn(ids...))
 		neighbors, err := query.All(ctx)
 		if err != nil {
 			return nil, err
@@ -514,10 +514,10 @@ func (dq *DentalappointmentQuery) sqlAll(ctx context.Context) ([]*Dentalappointm
 		for _, n := range neighbors {
 			nodes, ok := nodeids[n.ID]
 			if !ok {
-				return nil, fmt.Errorf(`unexpected foreign-key "typename" returned %v`, n.ID)
+				return nil, fmt.Errorf(`unexpected foreign-key "kindname" returned %v`, n.ID)
 			}
 			for i := range nodes {
-				nodes[i].Edges.Dentaltype = n
+				nodes[i].Edges.Dentalkind = n
 			}
 		}
 	}

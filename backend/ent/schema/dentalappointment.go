@@ -14,7 +14,7 @@ type Dentalappointment struct {
 // Fields of the Dentalappointment.
 func (Dentalappointment) Fields() []ent.Field {
 	return []ent.Field{
-		field.Time("appoint_time"),
+		field.Time("appointtime"),
 	}
 }
 
@@ -23,6 +23,6 @@ func (Dentalappointment) Edges() []ent.Edge {
 	return []ent.Edge{
 		edge.From("Personnel", Personnel.Type).Ref("Dentalappointment").Unique(),
 		edge.From("Patient", Patient.Type).Ref("Dentalappointment").Unique(),
-		edge.From("Dentaltype", Dentaltype.Type).Ref("Dentalappointment").Unique(),
+		edge.From("Dentalkind", Dentalkind.Type).Ref("Dentalappointment").Unique(),
 	}
 }

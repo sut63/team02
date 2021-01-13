@@ -9,7 +9,7 @@ import (
 
 	"github.com/facebook/ent/dialect/sql"
 	"github.com/to63/app/ent/dentalappointment"
-	"github.com/to63/app/ent/dentaltype"
+	"github.com/to63/app/ent/dentalkind"
 	"github.com/to63/app/ent/patient"
 	"github.com/to63/app/ent/personnel"
 )
@@ -19,12 +19,12 @@ type Dentalappointment struct {
 	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
-	// AppointTime holds the value of the "appoint_time" field.
-	AppointTime time.Time `json:"appoint_time,omitempty"`
+	// Appointtime holds the value of the "appointtime" field.
+	Appointtime time.Time `json:"appointtime,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the DentalappointmentQuery when eager-loading is set.
 	Edges         DentalappointmentEdges `json:"edges"`
-	typename      *int
+	kindname      *int
 	_Patient_id   *int
 	_Personnel_id *int
 }
@@ -35,8 +35,8 @@ type DentalappointmentEdges struct {
 	Personnel *Personnel
 	// Patient holds the value of the Patient edge.
 	Patient *Patient
-	// Dentaltype holds the value of the Dentaltype edge.
-	Dentaltype *Dentaltype
+	// Dentalkind holds the value of the Dentalkind edge.
+	Dentalkind *Dentalkind
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
 	loadedTypes [3]bool
@@ -70,18 +70,18 @@ func (e DentalappointmentEdges) PatientOrErr() (*Patient, error) {
 	return nil, &NotLoadedError{edge: "Patient"}
 }
 
-// DentaltypeOrErr returns the Dentaltype value or an error if the edge
+// DentalkindOrErr returns the Dentalkind value or an error if the edge
 // was not loaded in eager-loading, or loaded but was not found.
-func (e DentalappointmentEdges) DentaltypeOrErr() (*Dentaltype, error) {
+func (e DentalappointmentEdges) DentalkindOrErr() (*Dentalkind, error) {
 	if e.loadedTypes[2] {
-		if e.Dentaltype == nil {
-			// The edge Dentaltype was loaded in eager-loading,
+		if e.Dentalkind == nil {
+			// The edge Dentalkind was loaded in eager-loading,
 			// but was not found.
-			return nil, &NotFoundError{label: dentaltype.Label}
+			return nil, &NotFoundError{label: dentalkind.Label}
 		}
-		return e.Dentaltype, nil
+		return e.Dentalkind, nil
 	}
-	return nil, &NotLoadedError{edge: "Dentaltype"}
+	return nil, &NotLoadedError{edge: "Dentalkind"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -91,9 +91,9 @@ func (*Dentalappointment) scanValues(columns []string) ([]interface{}, error) {
 		switch columns[i] {
 		case dentalappointment.FieldID:
 			values[i] = &sql.NullInt64{}
-		case dentalappointment.FieldAppointTime:
+		case dentalappointment.FieldAppointtime:
 			values[i] = &sql.NullTime{}
-		case dentalappointment.ForeignKeys[0]: // typename
+		case dentalappointment.ForeignKeys[0]: // kindname
 			values[i] = &sql.NullInt64{}
 		case dentalappointment.ForeignKeys[1]: // _Patient_id
 			values[i] = &sql.NullInt64{}
@@ -120,18 +120,18 @@ func (d *Dentalappointment) assignValues(columns []string, values []interface{})
 				return fmt.Errorf("unexpected type %T for field id", value)
 			}
 			d.ID = int(value.Int64)
-		case dentalappointment.FieldAppointTime:
+		case dentalappointment.FieldAppointtime:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field appoint_time", values[i])
+				return fmt.Errorf("unexpected type %T for field appointtime", values[i])
 			} else if value.Valid {
-				d.AppointTime = value.Time
+				d.Appointtime = value.Time
 			}
 		case dentalappointment.ForeignKeys[0]:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for edge-field typename", value)
+				return fmt.Errorf("unexpected type %T for edge-field kindname", value)
 			} else if value.Valid {
-				d.typename = new(int)
-				*d.typename = int(value.Int64)
+				d.kindname = new(int)
+				*d.kindname = int(value.Int64)
 			}
 		case dentalappointment.ForeignKeys[1]:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -162,9 +162,9 @@ func (d *Dentalappointment) QueryPatient() *PatientQuery {
 	return (&DentalappointmentClient{config: d.config}).QueryPatient(d)
 }
 
-// QueryDentaltype queries the "Dentaltype" edge of the Dentalappointment entity.
-func (d *Dentalappointment) QueryDentaltype() *DentaltypeQuery {
-	return (&DentalappointmentClient{config: d.config}).QueryDentaltype(d)
+// QueryDentalkind queries the "Dentalkind" edge of the Dentalappointment entity.
+func (d *Dentalappointment) QueryDentalkind() *DentalkindQuery {
+	return (&DentalappointmentClient{config: d.config}).QueryDentalkind(d)
 }
 
 // Update returns a builder for updating this Dentalappointment.
@@ -190,8 +190,8 @@ func (d *Dentalappointment) String() string {
 	var builder strings.Builder
 	builder.WriteString("Dentalappointment(")
 	builder.WriteString(fmt.Sprintf("id=%v", d.ID))
-	builder.WriteString(", appoint_time=")
-	builder.WriteString(d.AppointTime.Format(time.ANSIC))
+	builder.WriteString(", appointtime=")
+	builder.WriteString(d.Appointtime.Format(time.ANSIC))
 	builder.WriteByte(')')
 	return builder.String()
 }

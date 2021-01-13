@@ -93,29 +93,29 @@ func IDLTE(id int) predicate.Dentalappointment {
 	})
 }
 
-// AppointTime applies equality check predicate on the "appoint_time" field. It's identical to AppointTimeEQ.
-func AppointTime(v time.Time) predicate.Dentalappointment {
+// Appointtime applies equality check predicate on the "appointtime" field. It's identical to AppointtimeEQ.
+func Appointtime(v time.Time) predicate.Dentalappointment {
 	return predicate.Dentalappointment(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldAppointTime), v))
+		s.Where(sql.EQ(s.C(FieldAppointtime), v))
 	})
 }
 
-// AppointTimeEQ applies the EQ predicate on the "appoint_time" field.
-func AppointTimeEQ(v time.Time) predicate.Dentalappointment {
+// AppointtimeEQ applies the EQ predicate on the "appointtime" field.
+func AppointtimeEQ(v time.Time) predicate.Dentalappointment {
 	return predicate.Dentalappointment(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldAppointTime), v))
+		s.Where(sql.EQ(s.C(FieldAppointtime), v))
 	})
 }
 
-// AppointTimeNEQ applies the NEQ predicate on the "appoint_time" field.
-func AppointTimeNEQ(v time.Time) predicate.Dentalappointment {
+// AppointtimeNEQ applies the NEQ predicate on the "appointtime" field.
+func AppointtimeNEQ(v time.Time) predicate.Dentalappointment {
 	return predicate.Dentalappointment(func(s *sql.Selector) {
-		s.Where(sql.NEQ(s.C(FieldAppointTime), v))
+		s.Where(sql.NEQ(s.C(FieldAppointtime), v))
 	})
 }
 
-// AppointTimeIn applies the In predicate on the "appoint_time" field.
-func AppointTimeIn(vs ...time.Time) predicate.Dentalappointment {
+// AppointtimeIn applies the In predicate on the "appointtime" field.
+func AppointtimeIn(vs ...time.Time) predicate.Dentalappointment {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -127,12 +127,12 @@ func AppointTimeIn(vs ...time.Time) predicate.Dentalappointment {
 			s.Where(sql.False())
 			return
 		}
-		s.Where(sql.In(s.C(FieldAppointTime), v...))
+		s.Where(sql.In(s.C(FieldAppointtime), v...))
 	})
 }
 
-// AppointTimeNotIn applies the NotIn predicate on the "appoint_time" field.
-func AppointTimeNotIn(vs ...time.Time) predicate.Dentalappointment {
+// AppointtimeNotIn applies the NotIn predicate on the "appointtime" field.
+func AppointtimeNotIn(vs ...time.Time) predicate.Dentalappointment {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -144,35 +144,35 @@ func AppointTimeNotIn(vs ...time.Time) predicate.Dentalappointment {
 			s.Where(sql.False())
 			return
 		}
-		s.Where(sql.NotIn(s.C(FieldAppointTime), v...))
+		s.Where(sql.NotIn(s.C(FieldAppointtime), v...))
 	})
 }
 
-// AppointTimeGT applies the GT predicate on the "appoint_time" field.
-func AppointTimeGT(v time.Time) predicate.Dentalappointment {
+// AppointtimeGT applies the GT predicate on the "appointtime" field.
+func AppointtimeGT(v time.Time) predicate.Dentalappointment {
 	return predicate.Dentalappointment(func(s *sql.Selector) {
-		s.Where(sql.GT(s.C(FieldAppointTime), v))
+		s.Where(sql.GT(s.C(FieldAppointtime), v))
 	})
 }
 
-// AppointTimeGTE applies the GTE predicate on the "appoint_time" field.
-func AppointTimeGTE(v time.Time) predicate.Dentalappointment {
+// AppointtimeGTE applies the GTE predicate on the "appointtime" field.
+func AppointtimeGTE(v time.Time) predicate.Dentalappointment {
 	return predicate.Dentalappointment(func(s *sql.Selector) {
-		s.Where(sql.GTE(s.C(FieldAppointTime), v))
+		s.Where(sql.GTE(s.C(FieldAppointtime), v))
 	})
 }
 
-// AppointTimeLT applies the LT predicate on the "appoint_time" field.
-func AppointTimeLT(v time.Time) predicate.Dentalappointment {
+// AppointtimeLT applies the LT predicate on the "appointtime" field.
+func AppointtimeLT(v time.Time) predicate.Dentalappointment {
 	return predicate.Dentalappointment(func(s *sql.Selector) {
-		s.Where(sql.LT(s.C(FieldAppointTime), v))
+		s.Where(sql.LT(s.C(FieldAppointtime), v))
 	})
 }
 
-// AppointTimeLTE applies the LTE predicate on the "appoint_time" field.
-func AppointTimeLTE(v time.Time) predicate.Dentalappointment {
+// AppointtimeLTE applies the LTE predicate on the "appointtime" field.
+func AppointtimeLTE(v time.Time) predicate.Dentalappointment {
 	return predicate.Dentalappointment(func(s *sql.Selector) {
-		s.Where(sql.LTE(s.C(FieldAppointTime), v))
+		s.Where(sql.LTE(s.C(FieldAppointtime), v))
 	})
 }
 
@@ -232,25 +232,25 @@ func HasPatientWith(preds ...predicate.Patient) predicate.Dentalappointment {
 	})
 }
 
-// HasDentaltype applies the HasEdge predicate on the "Dentaltype" edge.
-func HasDentaltype() predicate.Dentalappointment {
+// HasDentalkind applies the HasEdge predicate on the "Dentalkind" edge.
+func HasDentalkind() predicate.Dentalappointment {
 	return predicate.Dentalappointment(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
-			sqlgraph.To(DentaltypeTable, FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, DentaltypeTable, DentaltypeColumn),
+			sqlgraph.To(DentalkindTable, FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, DentalkindTable, DentalkindColumn),
 		)
 		sqlgraph.HasNeighbors(s, step)
 	})
 }
 
-// HasDentaltypeWith applies the HasEdge predicate on the "Dentaltype" edge with a given conditions (other predicates).
-func HasDentaltypeWith(preds ...predicate.Dentaltype) predicate.Dentalappointment {
+// HasDentalkindWith applies the HasEdge predicate on the "Dentalkind" edge with a given conditions (other predicates).
+func HasDentalkindWith(preds ...predicate.Dentalkind) predicate.Dentalappointment {
 	return predicate.Dentalappointment(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
-			sqlgraph.To(DentaltypeInverseTable, FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, DentaltypeTable, DentaltypeColumn),
+			sqlgraph.To(DentalkindInverseTable, FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, DentalkindTable, DentalkindColumn),
 		)
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {

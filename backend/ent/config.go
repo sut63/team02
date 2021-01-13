@@ -28,7 +28,7 @@ type hooks struct {
 	Bonedisease           []ent.Hook
 	Checksymptoms         []ent.Hook
 	Dentalappointment     []ent.Hook
-	Dentaltype            []ent.Hook
+	Dentalkind            []ent.Hook
 	Disease               []ent.Hook
 	DoctorOrderSheet      []ent.Hook
 	Patient               []ent.Hook

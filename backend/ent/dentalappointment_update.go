@@ -11,7 +11,7 @@ import (
 	"github.com/facebook/ent/dialect/sql/sqlgraph"
 	"github.com/facebook/ent/schema/field"
 	"github.com/to63/app/ent/dentalappointment"
-	"github.com/to63/app/ent/dentaltype"
+	"github.com/to63/app/ent/dentalkind"
 	"github.com/to63/app/ent/patient"
 	"github.com/to63/app/ent/personnel"
 	"github.com/to63/app/ent/predicate"
@@ -30,9 +30,9 @@ func (du *DentalappointmentUpdate) Where(ps ...predicate.Dentalappointment) *Den
 	return du
 }
 
-// SetAppointTime sets the "appoint_time" field.
-func (du *DentalappointmentUpdate) SetAppointTime(t time.Time) *DentalappointmentUpdate {
-	du.mutation.SetAppointTime(t)
+// SetAppointtime sets the "appointtime" field.
+func (du *DentalappointmentUpdate) SetAppointtime(t time.Time) *DentalappointmentUpdate {
+	du.mutation.SetAppointtime(t)
 	return du
 }
 
@@ -74,23 +74,23 @@ func (du *DentalappointmentUpdate) SetPatient(p *Patient) *DentalappointmentUpda
 	return du.SetPatientID(p.ID)
 }
 
-// SetDentaltypeID sets the "Dentaltype" edge to the Dentaltype entity by ID.
-func (du *DentalappointmentUpdate) SetDentaltypeID(id int) *DentalappointmentUpdate {
-	du.mutation.SetDentaltypeID(id)
+// SetDentalkindID sets the "Dentalkind" edge to the Dentalkind entity by ID.
+func (du *DentalappointmentUpdate) SetDentalkindID(id int) *DentalappointmentUpdate {
+	du.mutation.SetDentalkindID(id)
 	return du
 }
 
-// SetNillableDentaltypeID sets the "Dentaltype" edge to the Dentaltype entity by ID if the given value is not nil.
-func (du *DentalappointmentUpdate) SetNillableDentaltypeID(id *int) *DentalappointmentUpdate {
+// SetNillableDentalkindID sets the "Dentalkind" edge to the Dentalkind entity by ID if the given value is not nil.
+func (du *DentalappointmentUpdate) SetNillableDentalkindID(id *int) *DentalappointmentUpdate {
 	if id != nil {
-		du = du.SetDentaltypeID(*id)
+		du = du.SetDentalkindID(*id)
 	}
 	return du
 }
 
-// SetDentaltype sets the "Dentaltype" edge to the Dentaltype entity.
-func (du *DentalappointmentUpdate) SetDentaltype(d *Dentaltype) *DentalappointmentUpdate {
-	return du.SetDentaltypeID(d.ID)
+// SetDentalkind sets the "Dentalkind" edge to the Dentalkind entity.
+func (du *DentalappointmentUpdate) SetDentalkind(d *Dentalkind) *DentalappointmentUpdate {
+	return du.SetDentalkindID(d.ID)
 }
 
 // Mutation returns the DentalappointmentMutation object of the builder.
@@ -110,9 +110,9 @@ func (du *DentalappointmentUpdate) ClearPatient() *DentalappointmentUpdate {
 	return du
 }
 
-// ClearDentaltype clears the "Dentaltype" edge to the Dentaltype entity.
-func (du *DentalappointmentUpdate) ClearDentaltype() *DentalappointmentUpdate {
-	du.mutation.ClearDentaltype()
+// ClearDentalkind clears the "Dentalkind" edge to the Dentalkind entity.
+func (du *DentalappointmentUpdate) ClearDentalkind() *DentalappointmentUpdate {
+	du.mutation.ClearDentalkind()
 	return du
 }
 
@@ -185,11 +185,11 @@ func (du *DentalappointmentUpdate) sqlSave(ctx context.Context) (n int, err erro
 			}
 		}
 	}
-	if value, ok := du.mutation.AppointTime(); ok {
+	if value, ok := du.mutation.Appointtime(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeTime,
 			Value:  value,
-			Column: dentalappointment.FieldAppointTime,
+			Column: dentalappointment.FieldAppointtime,
 		})
 	}
 	if du.mutation.PersonnelCleared() {
@@ -262,33 +262,33 @@ func (du *DentalappointmentUpdate) sqlSave(ctx context.Context) (n int, err erro
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if du.mutation.DentaltypeCleared() {
+	if du.mutation.DentalkindCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   dentalappointment.DentaltypeTable,
-			Columns: []string{dentalappointment.DentaltypeColumn},
+			Table:   dentalappointment.DentalkindTable,
+			Columns: []string{dentalappointment.DentalkindColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
-					Column: dentaltype.FieldID,
+					Column: dentalkind.FieldID,
 				},
 			},
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := du.mutation.DentaltypeIDs(); len(nodes) > 0 {
+	if nodes := du.mutation.DentalkindIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   dentalappointment.DentaltypeTable,
-			Columns: []string{dentalappointment.DentaltypeColumn},
+			Table:   dentalappointment.DentalkindTable,
+			Columns: []string{dentalappointment.DentalkindColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
-					Column: dentaltype.FieldID,
+					Column: dentalkind.FieldID,
 				},
 			},
 		}
@@ -315,9 +315,9 @@ type DentalappointmentUpdateOne struct {
 	mutation *DentalappointmentMutation
 }
 
-// SetAppointTime sets the "appoint_time" field.
-func (duo *DentalappointmentUpdateOne) SetAppointTime(t time.Time) *DentalappointmentUpdateOne {
-	duo.mutation.SetAppointTime(t)
+// SetAppointtime sets the "appointtime" field.
+func (duo *DentalappointmentUpdateOne) SetAppointtime(t time.Time) *DentalappointmentUpdateOne {
+	duo.mutation.SetAppointtime(t)
 	return duo
 }
 
@@ -359,23 +359,23 @@ func (duo *DentalappointmentUpdateOne) SetPatient(p *Patient) *Dentalappointment
 	return duo.SetPatientID(p.ID)
 }
 
-// SetDentaltypeID sets the "Dentaltype" edge to the Dentaltype entity by ID.
-func (duo *DentalappointmentUpdateOne) SetDentaltypeID(id int) *DentalappointmentUpdateOne {
-	duo.mutation.SetDentaltypeID(id)
+// SetDentalkindID sets the "Dentalkind" edge to the Dentalkind entity by ID.
+func (duo *DentalappointmentUpdateOne) SetDentalkindID(id int) *DentalappointmentUpdateOne {
+	duo.mutation.SetDentalkindID(id)
 	return duo
 }
 
-// SetNillableDentaltypeID sets the "Dentaltype" edge to the Dentaltype entity by ID if the given value is not nil.
-func (duo *DentalappointmentUpdateOne) SetNillableDentaltypeID(id *int) *DentalappointmentUpdateOne {
+// SetNillableDentalkindID sets the "Dentalkind" edge to the Dentalkind entity by ID if the given value is not nil.
+func (duo *DentalappointmentUpdateOne) SetNillableDentalkindID(id *int) *DentalappointmentUpdateOne {
 	if id != nil {
-		duo = duo.SetDentaltypeID(*id)
+		duo = duo.SetDentalkindID(*id)
 	}
 	return duo
 }
 
-// SetDentaltype sets the "Dentaltype" edge to the Dentaltype entity.
-func (duo *DentalappointmentUpdateOne) SetDentaltype(d *Dentaltype) *DentalappointmentUpdateOne {
-	return duo.SetDentaltypeID(d.ID)
+// SetDentalkind sets the "Dentalkind" edge to the Dentalkind entity.
+func (duo *DentalappointmentUpdateOne) SetDentalkind(d *Dentalkind) *DentalappointmentUpdateOne {
+	return duo.SetDentalkindID(d.ID)
 }
 
 // Mutation returns the DentalappointmentMutation object of the builder.
@@ -395,9 +395,9 @@ func (duo *DentalappointmentUpdateOne) ClearPatient() *DentalappointmentUpdateOn
 	return duo
 }
 
-// ClearDentaltype clears the "Dentaltype" edge to the Dentaltype entity.
-func (duo *DentalappointmentUpdateOne) ClearDentaltype() *DentalappointmentUpdateOne {
-	duo.mutation.ClearDentaltype()
+// ClearDentalkind clears the "Dentalkind" edge to the Dentalkind entity.
+func (duo *DentalappointmentUpdateOne) ClearDentalkind() *DentalappointmentUpdateOne {
+	duo.mutation.ClearDentalkind()
 	return duo
 }
 
@@ -468,11 +468,11 @@ func (duo *DentalappointmentUpdateOne) sqlSave(ctx context.Context) (_node *Dent
 		return nil, &ValidationError{Name: "ID", err: fmt.Errorf("missing Dentalappointment.ID for update")}
 	}
 	_spec.Node.ID.Value = id
-	if value, ok := duo.mutation.AppointTime(); ok {
+	if value, ok := duo.mutation.Appointtime(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeTime,
 			Value:  value,
-			Column: dentalappointment.FieldAppointTime,
+			Column: dentalappointment.FieldAppointtime,
 		})
 	}
 	if duo.mutation.PersonnelCleared() {
@@ -545,33 +545,33 @@ func (duo *DentalappointmentUpdateOne) sqlSave(ctx context.Context) (_node *Dent
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if duo.mutation.DentaltypeCleared() {
+	if duo.mutation.DentalkindCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   dentalappointment.DentaltypeTable,
-			Columns: []string{dentalappointment.DentaltypeColumn},
+			Table:   dentalappointment.DentalkindTable,
+			Columns: []string{dentalappointment.DentalkindColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
-					Column: dentaltype.FieldID,
+					Column: dentalkind.FieldID,
 				},
 			},
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := duo.mutation.DentaltypeIDs(); len(nodes) > 0 {
+	if nodes := duo.mutation.DentalkindIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   dentalappointment.DentaltypeTable,
-			Columns: []string{dentalappointment.DentaltypeColumn},
+			Table:   dentalappointment.DentalkindTable,
+			Columns: []string{dentalappointment.DentalkindColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
-					Column: dentaltype.FieldID,
+					Column: dentalkind.FieldID,
 				},
 			},
 		}

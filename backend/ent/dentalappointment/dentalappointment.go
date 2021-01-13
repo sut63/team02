@@ -7,15 +7,15 @@ const (
 	Label = "dentalappointment"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
-	// FieldAppointTime holds the string denoting the appoint_time field in the database.
-	FieldAppointTime = "appoint_time"
+	// FieldAppointtime holds the string denoting the appointtime field in the database.
+	FieldAppointtime = "appointtime"
 
 	// EdgePersonnel holds the string denoting the personnel edge name in mutations.
 	EdgePersonnel = "Personnel"
 	// EdgePatient holds the string denoting the patient edge name in mutations.
 	EdgePatient = "Patient"
-	// EdgeDentaltype holds the string denoting the dentaltype edge name in mutations.
-	EdgeDentaltype = "Dentaltype"
+	// EdgeDentalkind holds the string denoting the dentalkind edge name in mutations.
+	EdgeDentalkind = "Dentalkind"
 
 	// Table holds the table name of the dentalappointment in the database.
 	Table = "dentalappointments"
@@ -33,24 +33,24 @@ const (
 	PatientInverseTable = "patients"
 	// PatientColumn is the table column denoting the Patient relation/edge.
 	PatientColumn = "Patient_id"
-	// DentaltypeTable is the table the holds the Dentaltype relation/edge.
-	DentaltypeTable = "dentalappointments"
-	// DentaltypeInverseTable is the table name for the Dentaltype entity.
-	// It exists in this package in order to avoid circular dependency with the "dentaltype" package.
-	DentaltypeInverseTable = "dentaltypes"
-	// DentaltypeColumn is the table column denoting the Dentaltype relation/edge.
-	DentaltypeColumn = "typename"
+	// DentalkindTable is the table the holds the Dentalkind relation/edge.
+	DentalkindTable = "dentalappointments"
+	// DentalkindInverseTable is the table name for the Dentalkind entity.
+	// It exists in this package in order to avoid circular dependency with the "dentalkind" package.
+	DentalkindInverseTable = "dentalkinds"
+	// DentalkindColumn is the table column denoting the Dentalkind relation/edge.
+	DentalkindColumn = "kindname"
 )
 
 // Columns holds all SQL columns for dentalappointment fields.
 var Columns = []string{
 	FieldID,
-	FieldAppointTime,
+	FieldAppointtime,
 }
 
 // ForeignKeys holds the SQL foreign-keys that are owned by the Dentalappointment type.
 var ForeignKeys = []string{
-	"typename",
+	"kindname",
 	"Patient_id",
 	"Personnel_id",
 }

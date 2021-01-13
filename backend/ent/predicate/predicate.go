@@ -18,8 +18,8 @@ type Checksymptoms func(*sql.Selector)
 // Dentalappointment is the predicate function for dentalappointment builders.
 type Dentalappointment func(*sql.Selector)
 
-// Dentaltype is the predicate function for dentaltype builders.
-type Dentaltype func(*sql.Selector)
+// Dentalkind is the predicate function for dentalkind builders.
+type Dentalkind func(*sql.Selector)
 
 // Disease is the predicate function for disease builders.
 type Disease func(*sql.Selector)

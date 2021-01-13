@@ -61,15 +61,15 @@ func (f DentalappointmentFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.
 	return f(ctx, mv)
 }
 
-// The DentaltypeFunc type is an adapter to allow the use of ordinary
-// function as Dentaltype mutator.
-type DentaltypeFunc func(context.Context, *ent.DentaltypeMutation) (ent.Value, error)
+// The DentalkindFunc type is an adapter to allow the use of ordinary
+// function as Dentalkind mutator.
+type DentalkindFunc func(context.Context, *ent.DentalkindMutation) (ent.Value, error)
 
 // Mutate calls f(ctx, m).
-func (f DentaltypeFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
-	mv, ok := m.(*ent.DentaltypeMutation)
+func (f DentalkindFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	mv, ok := m.(*ent.DentalkindMutation)
 	if !ok {
-		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.DentaltypeMutation", m)
+		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.DentalkindMutation", m)
 	}
 	return f(ctx, mv)
 }
