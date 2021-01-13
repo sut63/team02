@@ -9,6 +9,7 @@ import (
 
 	"github.com/facebook/ent/dialect/sql/sqlgraph"
 	"github.com/facebook/ent/schema/field"
+	"github.com/to63/app/ent/antenatalinformation"
 	"github.com/to63/app/ent/bonedisease"
 	"github.com/to63/app/ent/checksymptoms"
 	"github.com/to63/app/ent/dentalappointment"
@@ -115,6 +116,21 @@ func (pc *PatientCreate) AddSurgeryappointment(s ...*Surgeryappointment) *Patien
 		ids[i] = s[i].ID
 	}
 	return pc.AddSurgeryappointmentIDs(ids...)
+}
+
+// AddAntenatalinformationIDs adds the "Antenatalinformation" edge to the Antenatalinformation entity by IDs.
+func (pc *PatientCreate) AddAntenatalinformationIDs(ids ...int) *PatientCreate {
+	pc.mutation.AddAntenatalinformationIDs(ids...)
+	return pc
+}
+
+// AddAntenatalinformation adds the "Antenatalinformation" edges to the Antenatalinformation entity.
+func (pc *PatientCreate) AddAntenatalinformation(a ...*Antenatalinformation) *PatientCreate {
+	ids := make([]int, len(a))
+	for i := range a {
+		ids[i] = a[i].ID
+	}
+	return pc.AddAntenatalinformationIDs(ids...)
 }
 
 // Mutation returns the PatientMutation object of the builder.
@@ -330,6 +346,25 @@ func (pc *PatientCreate) createSpec() (*Patient, *sqlgraph.CreateSpec) {
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
 					Column: surgeryappointment.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := pc.mutation.AntenatalinformationIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   patient.AntenatalinformationTable,
+			Columns: []string{patient.AntenatalinformationColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: antenatalinformation.FieldID,
 				},
 			},
 		}

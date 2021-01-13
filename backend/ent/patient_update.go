@@ -9,6 +9,7 @@ import (
 	"github.com/facebook/ent/dialect/sql"
 	"github.com/facebook/ent/dialect/sql/sqlgraph"
 	"github.com/facebook/ent/schema/field"
+	"github.com/to63/app/ent/antenatalinformation"
 	"github.com/to63/app/ent/bonedisease"
 	"github.com/to63/app/ent/checksymptoms"
 	"github.com/to63/app/ent/dentalappointment"
@@ -124,6 +125,21 @@ func (pu *PatientUpdate) AddSurgeryappointment(s ...*Surgeryappointment) *Patien
 	return pu.AddSurgeryappointmentIDs(ids...)
 }
 
+// AddAntenatalinformationIDs adds the "Antenatalinformation" edge to the Antenatalinformation entity by IDs.
+func (pu *PatientUpdate) AddAntenatalinformationIDs(ids ...int) *PatientUpdate {
+	pu.mutation.AddAntenatalinformationIDs(ids...)
+	return pu
+}
+
+// AddAntenatalinformation adds the "Antenatalinformation" edges to the Antenatalinformation entity.
+func (pu *PatientUpdate) AddAntenatalinformation(a ...*Antenatalinformation) *PatientUpdate {
+	ids := make([]int, len(a))
+	for i := range a {
+		ids[i] = a[i].ID
+	}
+	return pu.AddAntenatalinformationIDs(ids...)
+}
+
 // Mutation returns the PatientMutation object of the builder.
 func (pu *PatientUpdate) Mutation() *PatientMutation {
 	return pu.mutation
@@ -232,6 +248,27 @@ func (pu *PatientUpdate) RemoveSurgeryappointment(s ...*Surgeryappointment) *Pat
 		ids[i] = s[i].ID
 	}
 	return pu.RemoveSurgeryappointmentIDs(ids...)
+}
+
+// ClearAntenatalinformation clears all "Antenatalinformation" edges to the Antenatalinformation entity.
+func (pu *PatientUpdate) ClearAntenatalinformation() *PatientUpdate {
+	pu.mutation.ClearAntenatalinformation()
+	return pu
+}
+
+// RemoveAntenatalinformationIDs removes the "Antenatalinformation" edge to Antenatalinformation entities by IDs.
+func (pu *PatientUpdate) RemoveAntenatalinformationIDs(ids ...int) *PatientUpdate {
+	pu.mutation.RemoveAntenatalinformationIDs(ids...)
+	return pu
+}
+
+// RemoveAntenatalinformation removes "Antenatalinformation" edges to Antenatalinformation entities.
+func (pu *PatientUpdate) RemoveAntenatalinformation(a ...*Antenatalinformation) *PatientUpdate {
+	ids := make([]int, len(a))
+	for i := range a {
+		ids[i] = a[i].ID
+	}
+	return pu.RemoveAntenatalinformationIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -620,6 +657,60 @@ func (pu *PatientUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	if pu.mutation.AntenatalinformationCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   patient.AntenatalinformationTable,
+			Columns: []string{patient.AntenatalinformationColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: antenatalinformation.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := pu.mutation.RemovedAntenatalinformationIDs(); len(nodes) > 0 && !pu.mutation.AntenatalinformationCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   patient.AntenatalinformationTable,
+			Columns: []string{patient.AntenatalinformationColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: antenatalinformation.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := pu.mutation.AntenatalinformationIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   patient.AntenatalinformationTable,
+			Columns: []string{patient.AntenatalinformationColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: antenatalinformation.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
 	if n, err = sqlgraph.UpdateNodes(ctx, pu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{patient.Label}
@@ -731,6 +822,21 @@ func (puo *PatientUpdateOne) AddSurgeryappointment(s ...*Surgeryappointment) *Pa
 	return puo.AddSurgeryappointmentIDs(ids...)
 }
 
+// AddAntenatalinformationIDs adds the "Antenatalinformation" edge to the Antenatalinformation entity by IDs.
+func (puo *PatientUpdateOne) AddAntenatalinformationIDs(ids ...int) *PatientUpdateOne {
+	puo.mutation.AddAntenatalinformationIDs(ids...)
+	return puo
+}
+
+// AddAntenatalinformation adds the "Antenatalinformation" edges to the Antenatalinformation entity.
+func (puo *PatientUpdateOne) AddAntenatalinformation(a ...*Antenatalinformation) *PatientUpdateOne {
+	ids := make([]int, len(a))
+	for i := range a {
+		ids[i] = a[i].ID
+	}
+	return puo.AddAntenatalinformationIDs(ids...)
+}
+
 // Mutation returns the PatientMutation object of the builder.
 func (puo *PatientUpdateOne) Mutation() *PatientMutation {
 	return puo.mutation
@@ -839,6 +945,27 @@ func (puo *PatientUpdateOne) RemoveSurgeryappointment(s ...*Surgeryappointment) 
 		ids[i] = s[i].ID
 	}
 	return puo.RemoveSurgeryappointmentIDs(ids...)
+}
+
+// ClearAntenatalinformation clears all "Antenatalinformation" edges to the Antenatalinformation entity.
+func (puo *PatientUpdateOne) ClearAntenatalinformation() *PatientUpdateOne {
+	puo.mutation.ClearAntenatalinformation()
+	return puo
+}
+
+// RemoveAntenatalinformationIDs removes the "Antenatalinformation" edge to Antenatalinformation entities by IDs.
+func (puo *PatientUpdateOne) RemoveAntenatalinformationIDs(ids ...int) *PatientUpdateOne {
+	puo.mutation.RemoveAntenatalinformationIDs(ids...)
+	return puo
+}
+
+// RemoveAntenatalinformation removes "Antenatalinformation" edges to Antenatalinformation entities.
+func (puo *PatientUpdateOne) RemoveAntenatalinformation(a ...*Antenatalinformation) *PatientUpdateOne {
+	ids := make([]int, len(a))
+	for i := range a {
+		ids[i] = a[i].ID
+	}
+	return puo.RemoveAntenatalinformationIDs(ids...)
 }
 
 // Save executes the query and returns the updated Patient entity.
@@ -1217,6 +1344,60 @@ func (puo *PatientUpdateOne) sqlSave(ctx context.Context) (_node *Patient, err e
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
 					Column: surgeryappointment.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if puo.mutation.AntenatalinformationCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   patient.AntenatalinformationTable,
+			Columns: []string{patient.AntenatalinformationColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: antenatalinformation.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := puo.mutation.RemovedAntenatalinformationIDs(); len(nodes) > 0 && !puo.mutation.AntenatalinformationCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   patient.AntenatalinformationTable,
+			Columns: []string{patient.AntenatalinformationColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: antenatalinformation.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := puo.mutation.AntenatalinformationIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   patient.AntenatalinformationTable,
+			Columns: []string{patient.AntenatalinformationColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: antenatalinformation.FieldID,
 				},
 			},
 		}

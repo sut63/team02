@@ -703,6 +703,34 @@ func HasSurgeryappointmentWith(preds ...predicate.Surgeryappointment) predicate.
 	})
 }
 
+// HasAntenatalinformation applies the HasEdge predicate on the "Antenatalinformation" edge.
+func HasAntenatalinformation() predicate.Personnel {
+	return predicate.Personnel(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(AntenatalinformationTable, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, AntenatalinformationTable, AntenatalinformationColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasAntenatalinformationWith applies the HasEdge predicate on the "Antenatalinformation" edge with a given conditions (other predicates).
+func HasAntenatalinformationWith(preds ...predicate.Antenatalinformation) predicate.Personnel {
+	return predicate.Personnel(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(AntenatalinformationInverseTable, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, AntenatalinformationTable, AntenatalinformationColumn),
+		)
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
 // And groups predicates with the AND operator between them.
 func And(predicates ...predicate.Personnel) predicate.Personnel {
 	return predicate.Personnel(func(s *sql.Selector) {

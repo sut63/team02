@@ -8,6 +8,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/to63/app/ent/antenatalinformation"
 	"github.com/to63/app/ent/bonedisease"
 	"github.com/to63/app/ent/checksymptoms"
 	"github.com/to63/app/ent/dentalappointment"
@@ -19,7 +20,9 @@ import (
 	"github.com/to63/app/ent/physicaltherapyrecord"
 	"github.com/to63/app/ent/physicaltherapyroom"
 	"github.com/to63/app/ent/predicate"
+	"github.com/to63/app/ent/pregnancystatus"
 	"github.com/to63/app/ent/remedy"
+	"github.com/to63/app/ent/risks"
 	"github.com/to63/app/ent/status"
 	"github.com/to63/app/ent/surgeryappointment"
 	"github.com/to63/app/ent/surgerytype"
@@ -36,6 +39,7 @@ const (
 	OpUpdateOne = ent.OpUpdateOne
 
 	// Node types.
+	TypeAntenatalinformation  = "Antenatalinformation"
 	TypeBonedisease           = "Bonedisease"
 	TypeChecksymptoms         = "Checksymptoms"
 	TypeDentalappointment     = "Dentalappointment"
@@ -46,11 +50,600 @@ const (
 	TypePersonnel             = "Personnel"
 	TypePhysicaltherapyrecord = "Physicaltherapyrecord"
 	TypePhysicaltherapyroom   = "Physicaltherapyroom"
+	TypePregnancystatus       = "Pregnancystatus"
 	TypeRemedy                = "Remedy"
+	TypeRisks                 = "Risks"
 	TypeStatus                = "Status"
 	TypeSurgeryappointment    = "Surgeryappointment"
 	TypeSurgerytype           = "Surgerytype"
 )
+
+// AntenatalinformationMutation represents an operation that mutates the Antenatalinformation nodes in the graph.
+type AntenatalinformationMutation struct {
+	config
+	op                        Op
+	typ                       string
+	id                        *int
+	gestationalage            *string
+	added_time                *time.Time
+	clearedFields             map[string]struct{}
+	_Personnel                *int
+	cleared_Personnel         bool
+	_Patient                  *int
+	cleared_Patient           bool
+	_Pregnancystatusid        *int
+	cleared_Pregnancystatusid bool
+	_Risksid                  *int
+	cleared_Risksid           bool
+	done                      bool
+	oldValue                  func(context.Context) (*Antenatalinformation, error)
+	predicates                []predicate.Antenatalinformation
+}
+
+var _ ent.Mutation = (*AntenatalinformationMutation)(nil)
+
+// antenatalinformationOption allows management of the mutation configuration using functional options.
+type antenatalinformationOption func(*AntenatalinformationMutation)
+
+// newAntenatalinformationMutation creates new mutation for the Antenatalinformation entity.
+func newAntenatalinformationMutation(c config, op Op, opts ...antenatalinformationOption) *AntenatalinformationMutation {
+	m := &AntenatalinformationMutation{
+		config:        c,
+		op:            op,
+		typ:           TypeAntenatalinformation,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withAntenatalinformationID sets the ID field of the mutation.
+func withAntenatalinformationID(id int) antenatalinformationOption {
+	return func(m *AntenatalinformationMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *Antenatalinformation
+		)
+		m.oldValue = func(ctx context.Context) (*Antenatalinformation, error) {
+			once.Do(func() {
+				if m.done {
+					err = fmt.Errorf("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().Antenatalinformation.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withAntenatalinformation sets the old Antenatalinformation of the mutation.
+func withAntenatalinformation(node *Antenatalinformation) antenatalinformationOption {
+	return func(m *AntenatalinformationMutation) {
+		m.oldValue = func(context.Context) (*Antenatalinformation, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m AntenatalinformationMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m AntenatalinformationMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, fmt.Errorf("ent: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// ID returns the ID value in the mutation. Note that the ID
+// is only available if it was provided to the builder.
+func (m *AntenatalinformationMutation) ID() (id int, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// SetGestationalage sets the "gestationalage" field.
+func (m *AntenatalinformationMutation) SetGestationalage(s string) {
+	m.gestationalage = &s
+}
+
+// Gestationalage returns the value of the "gestationalage" field in the mutation.
+func (m *AntenatalinformationMutation) Gestationalage() (r string, exists bool) {
+	v := m.gestationalage
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldGestationalage returns the old "gestationalage" field's value of the Antenatalinformation entity.
+// If the Antenatalinformation object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *AntenatalinformationMutation) OldGestationalage(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldGestationalage is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldGestationalage requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldGestationalage: %w", err)
+	}
+	return oldValue.Gestationalage, nil
+}
+
+// ResetGestationalage resets all changes to the "gestationalage" field.
+func (m *AntenatalinformationMutation) ResetGestationalage() {
+	m.gestationalage = nil
+}
+
+// SetAddedTime sets the "added_time" field.
+func (m *AntenatalinformationMutation) SetAddedTime(t time.Time) {
+	m.added_time = &t
+}
+
+// AddedTime returns the value of the "added_time" field in the mutation.
+func (m *AntenatalinformationMutation) AddedTime() (r time.Time, exists bool) {
+	v := m.added_time
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldAddedTime returns the old "added_time" field's value of the Antenatalinformation entity.
+// If the Antenatalinformation object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *AntenatalinformationMutation) OldAddedTime(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldAddedTime is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldAddedTime requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldAddedTime: %w", err)
+	}
+	return oldValue.AddedTime, nil
+}
+
+// ResetAddedTime resets all changes to the "added_time" field.
+func (m *AntenatalinformationMutation) ResetAddedTime() {
+	m.added_time = nil
+}
+
+// SetPersonnelID sets the "Personnel" edge to the Personnel entity by id.
+func (m *AntenatalinformationMutation) SetPersonnelID(id int) {
+	m._Personnel = &id
+}
+
+// ClearPersonnel clears the "Personnel" edge to the Personnel entity.
+func (m *AntenatalinformationMutation) ClearPersonnel() {
+	m.cleared_Personnel = true
+}
+
+// PersonnelCleared returns if the "Personnel" edge to the Personnel entity was cleared.
+func (m *AntenatalinformationMutation) PersonnelCleared() bool {
+	return m.cleared_Personnel
+}
+
+// PersonnelID returns the "Personnel" edge ID in the mutation.
+func (m *AntenatalinformationMutation) PersonnelID() (id int, exists bool) {
+	if m._Personnel != nil {
+		return *m._Personnel, true
+	}
+	return
+}
+
+// PersonnelIDs returns the "Personnel" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// PersonnelID instead. It exists only for internal usage by the builders.
+func (m *AntenatalinformationMutation) PersonnelIDs() (ids []int) {
+	if id := m._Personnel; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetPersonnel resets all changes to the "Personnel" edge.
+func (m *AntenatalinformationMutation) ResetPersonnel() {
+	m._Personnel = nil
+	m.cleared_Personnel = false
+}
+
+// SetPatientID sets the "Patient" edge to the Patient entity by id.
+func (m *AntenatalinformationMutation) SetPatientID(id int) {
+	m._Patient = &id
+}
+
+// ClearPatient clears the "Patient" edge to the Patient entity.
+func (m *AntenatalinformationMutation) ClearPatient() {
+	m.cleared_Patient = true
+}
+
+// PatientCleared returns if the "Patient" edge to the Patient entity was cleared.
+func (m *AntenatalinformationMutation) PatientCleared() bool {
+	return m.cleared_Patient
+}
+
+// PatientID returns the "Patient" edge ID in the mutation.
+func (m *AntenatalinformationMutation) PatientID() (id int, exists bool) {
+	if m._Patient != nil {
+		return *m._Patient, true
+	}
+	return
+}
+
+// PatientIDs returns the "Patient" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// PatientID instead. It exists only for internal usage by the builders.
+func (m *AntenatalinformationMutation) PatientIDs() (ids []int) {
+	if id := m._Patient; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetPatient resets all changes to the "Patient" edge.
+func (m *AntenatalinformationMutation) ResetPatient() {
+	m._Patient = nil
+	m.cleared_Patient = false
+}
+
+// SetPregnancystatusidID sets the "Pregnancystatusid" edge to the Pregnancystatus entity by id.
+func (m *AntenatalinformationMutation) SetPregnancystatusidID(id int) {
+	m._Pregnancystatusid = &id
+}
+
+// ClearPregnancystatusid clears the "Pregnancystatusid" edge to the Pregnancystatus entity.
+func (m *AntenatalinformationMutation) ClearPregnancystatusid() {
+	m.cleared_Pregnancystatusid = true
+}
+
+// PregnancystatusidCleared returns if the "Pregnancystatusid" edge to the Pregnancystatus entity was cleared.
+func (m *AntenatalinformationMutation) PregnancystatusidCleared() bool {
+	return m.cleared_Pregnancystatusid
+}
+
+// PregnancystatusidID returns the "Pregnancystatusid" edge ID in the mutation.
+func (m *AntenatalinformationMutation) PregnancystatusidID() (id int, exists bool) {
+	if m._Pregnancystatusid != nil {
+		return *m._Pregnancystatusid, true
+	}
+	return
+}
+
+// PregnancystatusidIDs returns the "Pregnancystatusid" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// PregnancystatusidID instead. It exists only for internal usage by the builders.
+func (m *AntenatalinformationMutation) PregnancystatusidIDs() (ids []int) {
+	if id := m._Pregnancystatusid; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetPregnancystatusid resets all changes to the "Pregnancystatusid" edge.
+func (m *AntenatalinformationMutation) ResetPregnancystatusid() {
+	m._Pregnancystatusid = nil
+	m.cleared_Pregnancystatusid = false
+}
+
+// SetRisksidID sets the "Risksid" edge to the Risks entity by id.
+func (m *AntenatalinformationMutation) SetRisksidID(id int) {
+	m._Risksid = &id
+}
+
+// ClearRisksid clears the "Risksid" edge to the Risks entity.
+func (m *AntenatalinformationMutation) ClearRisksid() {
+	m.cleared_Risksid = true
+}
+
+// RisksidCleared returns if the "Risksid" edge to the Risks entity was cleared.
+func (m *AntenatalinformationMutation) RisksidCleared() bool {
+	return m.cleared_Risksid
+}
+
+// RisksidID returns the "Risksid" edge ID in the mutation.
+func (m *AntenatalinformationMutation) RisksidID() (id int, exists bool) {
+	if m._Risksid != nil {
+		return *m._Risksid, true
+	}
+	return
+}
+
+// RisksidIDs returns the "Risksid" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// RisksidID instead. It exists only for internal usage by the builders.
+func (m *AntenatalinformationMutation) RisksidIDs() (ids []int) {
+	if id := m._Risksid; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetRisksid resets all changes to the "Risksid" edge.
+func (m *AntenatalinformationMutation) ResetRisksid() {
+	m._Risksid = nil
+	m.cleared_Risksid = false
+}
+
+// Op returns the operation name.
+func (m *AntenatalinformationMutation) Op() Op {
+	return m.op
+}
+
+// Type returns the node type of this mutation (Antenatalinformation).
+func (m *AntenatalinformationMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during this mutation. Note that in
+// order to get all numeric fields that were incremented/decremented, call
+// AddedFields().
+func (m *AntenatalinformationMutation) Fields() []string {
+	fields := make([]string, 0, 2)
+	if m.gestationalage != nil {
+		fields = append(fields, antenatalinformation.FieldGestationalage)
+	}
+	if m.added_time != nil {
+		fields = append(fields, antenatalinformation.FieldAddedTime)
+	}
+	return fields
+}
+
+// Field returns the value of a field with the given name. The second boolean
+// return value indicates that this field was not set, or was not defined in the
+// schema.
+func (m *AntenatalinformationMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case antenatalinformation.FieldGestationalage:
+		return m.Gestationalage()
+	case antenatalinformation.FieldAddedTime:
+		return m.AddedTime()
+	}
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database. An error is
+// returned if the mutation operation is not UpdateOne, or the query to the
+// database failed.
+func (m *AntenatalinformationMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case antenatalinformation.FieldGestationalage:
+		return m.OldGestationalage(ctx)
+	case antenatalinformation.FieldAddedTime:
+		return m.OldAddedTime(ctx)
+	}
+	return nil, fmt.Errorf("unknown Antenatalinformation field %s", name)
+}
+
+// SetField sets the value of a field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *AntenatalinformationMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	case antenatalinformation.FieldGestationalage:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetGestationalage(v)
+		return nil
+	case antenatalinformation.FieldAddedTime:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetAddedTime(v)
+		return nil
+	}
+	return fmt.Errorf("unknown Antenatalinformation field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented/decremented during
+// this mutation.
+func (m *AntenatalinformationMutation) AddedFields() []string {
+	return nil
+}
+
+// AddedField returns the numeric value that was incremented/decremented on a field
+// with the given name. The second boolean return value indicates that this field
+// was not set, or was not defined in the schema.
+func (m *AntenatalinformationMutation) AddedField(name string) (ent.Value, bool) {
+	return nil, false
+}
+
+// AddField adds the value to the field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *AntenatalinformationMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	}
+	return fmt.Errorf("unknown Antenatalinformation numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared during this
+// mutation.
+func (m *AntenatalinformationMutation) ClearedFields() []string {
+	return nil
+}
+
+// FieldCleared returns a boolean indicating if a field with the given name was
+// cleared in this mutation.
+func (m *AntenatalinformationMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value of the field with the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *AntenatalinformationMutation) ClearField(name string) error {
+	return fmt.Errorf("unknown Antenatalinformation nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation for the field with the given name.
+// It returns an error if the field is not defined in the schema.
+func (m *AntenatalinformationMutation) ResetField(name string) error {
+	switch name {
+	case antenatalinformation.FieldGestationalage:
+		m.ResetGestationalage()
+		return nil
+	case antenatalinformation.FieldAddedTime:
+		m.ResetAddedTime()
+		return nil
+	}
+	return fmt.Errorf("unknown Antenatalinformation field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this mutation.
+func (m *AntenatalinformationMutation) AddedEdges() []string {
+	edges := make([]string, 0, 4)
+	if m._Personnel != nil {
+		edges = append(edges, antenatalinformation.EdgePersonnel)
+	}
+	if m._Patient != nil {
+		edges = append(edges, antenatalinformation.EdgePatient)
+	}
+	if m._Pregnancystatusid != nil {
+		edges = append(edges, antenatalinformation.EdgePregnancystatusid)
+	}
+	if m._Risksid != nil {
+		edges = append(edges, antenatalinformation.EdgeRisksid)
+	}
+	return edges
+}
+
+// AddedIDs returns all IDs (to other nodes) that were added for the given edge
+// name in this mutation.
+func (m *AntenatalinformationMutation) AddedIDs(name string) []ent.Value {
+	switch name {
+	case antenatalinformation.EdgePersonnel:
+		if id := m._Personnel; id != nil {
+			return []ent.Value{*id}
+		}
+	case antenatalinformation.EdgePatient:
+		if id := m._Patient; id != nil {
+			return []ent.Value{*id}
+		}
+	case antenatalinformation.EdgePregnancystatusid:
+		if id := m._Pregnancystatusid; id != nil {
+			return []ent.Value{*id}
+		}
+	case antenatalinformation.EdgeRisksid:
+		if id := m._Risksid; id != nil {
+			return []ent.Value{*id}
+		}
+	}
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this mutation.
+func (m *AntenatalinformationMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 4)
+	return edges
+}
+
+// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
+// the given name in this mutation.
+func (m *AntenatalinformationMutation) RemovedIDs(name string) []ent.Value {
+	switch name {
+	}
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this mutation.
+func (m *AntenatalinformationMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 4)
+	if m.cleared_Personnel {
+		edges = append(edges, antenatalinformation.EdgePersonnel)
+	}
+	if m.cleared_Patient {
+		edges = append(edges, antenatalinformation.EdgePatient)
+	}
+	if m.cleared_Pregnancystatusid {
+		edges = append(edges, antenatalinformation.EdgePregnancystatusid)
+	}
+	if m.cleared_Risksid {
+		edges = append(edges, antenatalinformation.EdgeRisksid)
+	}
+	return edges
+}
+
+// EdgeCleared returns a boolean which indicates if the edge with the given name
+// was cleared in this mutation.
+func (m *AntenatalinformationMutation) EdgeCleared(name string) bool {
+	switch name {
+	case antenatalinformation.EdgePersonnel:
+		return m.cleared_Personnel
+	case antenatalinformation.EdgePatient:
+		return m.cleared_Patient
+	case antenatalinformation.EdgePregnancystatusid:
+		return m.cleared_Pregnancystatusid
+	case antenatalinformation.EdgeRisksid:
+		return m.cleared_Risksid
+	}
+	return false
+}
+
+// ClearEdge clears the value of the edge with the given name. It returns an error
+// if that edge is not defined in the schema.
+func (m *AntenatalinformationMutation) ClearEdge(name string) error {
+	switch name {
+	case antenatalinformation.EdgePersonnel:
+		m.ClearPersonnel()
+		return nil
+	case antenatalinformation.EdgePatient:
+		m.ClearPatient()
+		return nil
+	case antenatalinformation.EdgePregnancystatusid:
+		m.ClearPregnancystatusid()
+		return nil
+	case antenatalinformation.EdgeRisksid:
+		m.ClearRisksid()
+		return nil
+	}
+	return fmt.Errorf("unknown Antenatalinformation unique edge %s", name)
+}
+
+// ResetEdge resets all changes to the edge with the given name in this mutation.
+// It returns an error if the edge is not defined in the schema.
+func (m *AntenatalinformationMutation) ResetEdge(name string) error {
+	switch name {
+	case antenatalinformation.EdgePersonnel:
+		m.ResetPersonnel()
+		return nil
+	case antenatalinformation.EdgePatient:
+		m.ResetPatient()
+		return nil
+	case antenatalinformation.EdgePregnancystatusid:
+		m.ResetPregnancystatusid()
+		return nil
+	case antenatalinformation.EdgeRisksid:
+		m.ResetRisksid()
+		return nil
+	}
+	return fmt.Errorf("unknown Antenatalinformation edge %s", name)
+}
 
 // BonediseaseMutation represents an operation that mutates the Bonedisease nodes in the graph.
 type BonediseaseMutation struct {
@@ -2741,6 +3334,9 @@ type PatientMutation struct {
 	_Surgeryappointment          map[int]struct{}
 	removed_Surgeryappointment   map[int]struct{}
 	cleared_Surgeryappointment   bool
+	_Antenatalinformation        map[int]struct{}
+	removed_Antenatalinformation map[int]struct{}
+	cleared_Antenatalinformation bool
 	done                         bool
 	oldValue                     func(context.Context) (*Patient, error)
 	predicates                   []predicate.Patient
@@ -3198,6 +3794,59 @@ func (m *PatientMutation) ResetSurgeryappointment() {
 	m.removed_Surgeryappointment = nil
 }
 
+// AddAntenatalinformationIDs adds the "Antenatalinformation" edge to the Antenatalinformation entity by ids.
+func (m *PatientMutation) AddAntenatalinformationIDs(ids ...int) {
+	if m._Antenatalinformation == nil {
+		m._Antenatalinformation = make(map[int]struct{})
+	}
+	for i := range ids {
+		m._Antenatalinformation[ids[i]] = struct{}{}
+	}
+}
+
+// ClearAntenatalinformation clears the "Antenatalinformation" edge to the Antenatalinformation entity.
+func (m *PatientMutation) ClearAntenatalinformation() {
+	m.cleared_Antenatalinformation = true
+}
+
+// AntenatalinformationCleared returns if the "Antenatalinformation" edge to the Antenatalinformation entity was cleared.
+func (m *PatientMutation) AntenatalinformationCleared() bool {
+	return m.cleared_Antenatalinformation
+}
+
+// RemoveAntenatalinformationIDs removes the "Antenatalinformation" edge to the Antenatalinformation entity by IDs.
+func (m *PatientMutation) RemoveAntenatalinformationIDs(ids ...int) {
+	if m.removed_Antenatalinformation == nil {
+		m.removed_Antenatalinformation = make(map[int]struct{})
+	}
+	for i := range ids {
+		m.removed_Antenatalinformation[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedAntenatalinformation returns the removed IDs of the "Antenatalinformation" edge to the Antenatalinformation entity.
+func (m *PatientMutation) RemovedAntenatalinformationIDs() (ids []int) {
+	for id := range m.removed_Antenatalinformation {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// AntenatalinformationIDs returns the "Antenatalinformation" edge IDs in the mutation.
+func (m *PatientMutation) AntenatalinformationIDs() (ids []int) {
+	for id := range m._Antenatalinformation {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetAntenatalinformation resets all changes to the "Antenatalinformation" edge.
+func (m *PatientMutation) ResetAntenatalinformation() {
+	m._Antenatalinformation = nil
+	m.cleared_Antenatalinformation = false
+	m.removed_Antenatalinformation = nil
+}
+
 // Op returns the operation name.
 func (m *PatientMutation) Op() Op {
 	return m.op
@@ -3345,7 +3994,7 @@ func (m *PatientMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *PatientMutation) AddedEdges() []string {
-	edges := make([]string, 0, 5)
+	edges := make([]string, 0, 6)
 	if m.physicaltherapyrecord != nil {
 		edges = append(edges, patient.EdgePhysicaltherapyrecord)
 	}
@@ -3360,6 +4009,9 @@ func (m *PatientMutation) AddedEdges() []string {
 	}
 	if m._Surgeryappointment != nil {
 		edges = append(edges, patient.EdgeSurgeryappointment)
+	}
+	if m._Antenatalinformation != nil {
+		edges = append(edges, patient.EdgeAntenatalinformation)
 	}
 	return edges
 }
@@ -3398,13 +4050,19 @@ func (m *PatientMutation) AddedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
+	case patient.EdgeAntenatalinformation:
+		ids := make([]ent.Value, 0, len(m._Antenatalinformation))
+		for id := range m._Antenatalinformation {
+			ids = append(ids, id)
+		}
+		return ids
 	}
 	return nil
 }
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *PatientMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 5)
+	edges := make([]string, 0, 6)
 	if m.removedphysicaltherapyrecord != nil {
 		edges = append(edges, patient.EdgePhysicaltherapyrecord)
 	}
@@ -3419,6 +4077,9 @@ func (m *PatientMutation) RemovedEdges() []string {
 	}
 	if m.removed_Surgeryappointment != nil {
 		edges = append(edges, patient.EdgeSurgeryappointment)
+	}
+	if m.removed_Antenatalinformation != nil {
+		edges = append(edges, patient.EdgeAntenatalinformation)
 	}
 	return edges
 }
@@ -3457,13 +4118,19 @@ func (m *PatientMutation) RemovedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
+	case patient.EdgeAntenatalinformation:
+		ids := make([]ent.Value, 0, len(m.removed_Antenatalinformation))
+		for id := range m.removed_Antenatalinformation {
+			ids = append(ids, id)
+		}
+		return ids
 	}
 	return nil
 }
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *PatientMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 5)
+	edges := make([]string, 0, 6)
 	if m.clearedphysicaltherapyrecord {
 		edges = append(edges, patient.EdgePhysicaltherapyrecord)
 	}
@@ -3478,6 +4145,9 @@ func (m *PatientMutation) ClearedEdges() []string {
 	}
 	if m.cleared_Surgeryappointment {
 		edges = append(edges, patient.EdgeSurgeryappointment)
+	}
+	if m.cleared_Antenatalinformation {
+		edges = append(edges, patient.EdgeAntenatalinformation)
 	}
 	return edges
 }
@@ -3496,6 +4166,8 @@ func (m *PatientMutation) EdgeCleared(name string) bool {
 		return m.cleared_Dentalappointment
 	case patient.EdgeSurgeryappointment:
 		return m.cleared_Surgeryappointment
+	case patient.EdgeAntenatalinformation:
+		return m.cleared_Antenatalinformation
 	}
 	return false
 }
@@ -3527,6 +4199,9 @@ func (m *PatientMutation) ResetEdge(name string) error {
 	case patient.EdgeSurgeryappointment:
 		m.ResetSurgeryappointment()
 		return nil
+	case patient.EdgeAntenatalinformation:
+		m.ResetAntenatalinformation()
+		return nil
 	}
 	return fmt.Errorf("unknown Patient edge %s", name)
 }
@@ -3557,6 +4232,9 @@ type PersonnelMutation struct {
 	_Surgeryappointment          map[int]struct{}
 	removed_Surgeryappointment   map[int]struct{}
 	cleared_Surgeryappointment   bool
+	_Antenatalinformation        map[int]struct{}
+	removed_Antenatalinformation map[int]struct{}
+	cleared_Antenatalinformation bool
 	done                         bool
 	oldValue                     func(context.Context) (*Personnel, error)
 	predicates                   []predicate.Personnel
@@ -4050,6 +4728,59 @@ func (m *PersonnelMutation) ResetSurgeryappointment() {
 	m.removed_Surgeryappointment = nil
 }
 
+// AddAntenatalinformationIDs adds the "Antenatalinformation" edge to the Antenatalinformation entity by ids.
+func (m *PersonnelMutation) AddAntenatalinformationIDs(ids ...int) {
+	if m._Antenatalinformation == nil {
+		m._Antenatalinformation = make(map[int]struct{})
+	}
+	for i := range ids {
+		m._Antenatalinformation[ids[i]] = struct{}{}
+	}
+}
+
+// ClearAntenatalinformation clears the "Antenatalinformation" edge to the Antenatalinformation entity.
+func (m *PersonnelMutation) ClearAntenatalinformation() {
+	m.cleared_Antenatalinformation = true
+}
+
+// AntenatalinformationCleared returns if the "Antenatalinformation" edge to the Antenatalinformation entity was cleared.
+func (m *PersonnelMutation) AntenatalinformationCleared() bool {
+	return m.cleared_Antenatalinformation
+}
+
+// RemoveAntenatalinformationIDs removes the "Antenatalinformation" edge to the Antenatalinformation entity by IDs.
+func (m *PersonnelMutation) RemoveAntenatalinformationIDs(ids ...int) {
+	if m.removed_Antenatalinformation == nil {
+		m.removed_Antenatalinformation = make(map[int]struct{})
+	}
+	for i := range ids {
+		m.removed_Antenatalinformation[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedAntenatalinformation returns the removed IDs of the "Antenatalinformation" edge to the Antenatalinformation entity.
+func (m *PersonnelMutation) RemovedAntenatalinformationIDs() (ids []int) {
+	for id := range m.removed_Antenatalinformation {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// AntenatalinformationIDs returns the "Antenatalinformation" edge IDs in the mutation.
+func (m *PersonnelMutation) AntenatalinformationIDs() (ids []int) {
+	for id := range m._Antenatalinformation {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetAntenatalinformation resets all changes to the "Antenatalinformation" edge.
+func (m *PersonnelMutation) ResetAntenatalinformation() {
+	m._Antenatalinformation = nil
+	m.cleared_Antenatalinformation = false
+	m.removed_Antenatalinformation = nil
+}
+
 // Op returns the operation name.
 func (m *PersonnelMutation) Op() Op {
 	return m.op
@@ -4214,7 +4945,7 @@ func (m *PersonnelMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *PersonnelMutation) AddedEdges() []string {
-	edges := make([]string, 0, 5)
+	edges := make([]string, 0, 6)
 	if m.physicaltherapyrecord != nil {
 		edges = append(edges, personnel.EdgePhysicaltherapyrecord)
 	}
@@ -4229,6 +4960,9 @@ func (m *PersonnelMutation) AddedEdges() []string {
 	}
 	if m._Surgeryappointment != nil {
 		edges = append(edges, personnel.EdgeSurgeryappointment)
+	}
+	if m._Antenatalinformation != nil {
+		edges = append(edges, personnel.EdgeAntenatalinformation)
 	}
 	return edges
 }
@@ -4267,13 +5001,19 @@ func (m *PersonnelMutation) AddedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
+	case personnel.EdgeAntenatalinformation:
+		ids := make([]ent.Value, 0, len(m._Antenatalinformation))
+		for id := range m._Antenatalinformation {
+			ids = append(ids, id)
+		}
+		return ids
 	}
 	return nil
 }
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *PersonnelMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 5)
+	edges := make([]string, 0, 6)
 	if m.removedphysicaltherapyrecord != nil {
 		edges = append(edges, personnel.EdgePhysicaltherapyrecord)
 	}
@@ -4288,6 +5028,9 @@ func (m *PersonnelMutation) RemovedEdges() []string {
 	}
 	if m.removed_Surgeryappointment != nil {
 		edges = append(edges, personnel.EdgeSurgeryappointment)
+	}
+	if m.removed_Antenatalinformation != nil {
+		edges = append(edges, personnel.EdgeAntenatalinformation)
 	}
 	return edges
 }
@@ -4326,13 +5069,19 @@ func (m *PersonnelMutation) RemovedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
+	case personnel.EdgeAntenatalinformation:
+		ids := make([]ent.Value, 0, len(m.removed_Antenatalinformation))
+		for id := range m.removed_Antenatalinformation {
+			ids = append(ids, id)
+		}
+		return ids
 	}
 	return nil
 }
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *PersonnelMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 5)
+	edges := make([]string, 0, 6)
 	if m.clearedphysicaltherapyrecord {
 		edges = append(edges, personnel.EdgePhysicaltherapyrecord)
 	}
@@ -4347,6 +5096,9 @@ func (m *PersonnelMutation) ClearedEdges() []string {
 	}
 	if m.cleared_Surgeryappointment {
 		edges = append(edges, personnel.EdgeSurgeryappointment)
+	}
+	if m.cleared_Antenatalinformation {
+		edges = append(edges, personnel.EdgeAntenatalinformation)
 	}
 	return edges
 }
@@ -4365,6 +5117,8 @@ func (m *PersonnelMutation) EdgeCleared(name string) bool {
 		return m.cleared_Dentalappointment
 	case personnel.EdgeSurgeryappointment:
 		return m.cleared_Surgeryappointment
+	case personnel.EdgeAntenatalinformation:
+		return m.cleared_Antenatalinformation
 	}
 	return false
 }
@@ -4395,6 +5149,9 @@ func (m *PersonnelMutation) ResetEdge(name string) error {
 		return nil
 	case personnel.EdgeSurgeryappointment:
 		m.ResetSurgeryappointment()
+		return nil
+	case personnel.EdgeAntenatalinformation:
+		m.ResetAntenatalinformation()
 		return nil
 	}
 	return fmt.Errorf("unknown Personnel edge %s", name)
@@ -5289,6 +6046,362 @@ func (m *PhysicaltherapyroomMutation) ResetEdge(name string) error {
 	return fmt.Errorf("unknown Physicaltherapyroom edge %s", name)
 }
 
+// PregnancystatusMutation represents an operation that mutates the Pregnancystatus nodes in the graph.
+type PregnancystatusMutation struct {
+	config
+	op                           Op
+	typ                          string
+	id                           *int
+	_Pregnancystatus             *string
+	clearedFields                map[string]struct{}
+	_Antenatalinformation        *int
+	cleared_Antenatalinformation bool
+	done                         bool
+	oldValue                     func(context.Context) (*Pregnancystatus, error)
+	predicates                   []predicate.Pregnancystatus
+}
+
+var _ ent.Mutation = (*PregnancystatusMutation)(nil)
+
+// pregnancystatusOption allows management of the mutation configuration using functional options.
+type pregnancystatusOption func(*PregnancystatusMutation)
+
+// newPregnancystatusMutation creates new mutation for the Pregnancystatus entity.
+func newPregnancystatusMutation(c config, op Op, opts ...pregnancystatusOption) *PregnancystatusMutation {
+	m := &PregnancystatusMutation{
+		config:        c,
+		op:            op,
+		typ:           TypePregnancystatus,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withPregnancystatusID sets the ID field of the mutation.
+func withPregnancystatusID(id int) pregnancystatusOption {
+	return func(m *PregnancystatusMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *Pregnancystatus
+		)
+		m.oldValue = func(ctx context.Context) (*Pregnancystatus, error) {
+			once.Do(func() {
+				if m.done {
+					err = fmt.Errorf("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().Pregnancystatus.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withPregnancystatus sets the old Pregnancystatus of the mutation.
+func withPregnancystatus(node *Pregnancystatus) pregnancystatusOption {
+	return func(m *PregnancystatusMutation) {
+		m.oldValue = func(context.Context) (*Pregnancystatus, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m PregnancystatusMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m PregnancystatusMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, fmt.Errorf("ent: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// ID returns the ID value in the mutation. Note that the ID
+// is only available if it was provided to the builder.
+func (m *PregnancystatusMutation) ID() (id int, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// SetPregnancystatus sets the "Pregnancystatus" field.
+func (m *PregnancystatusMutation) SetPregnancystatus(s string) {
+	m._Pregnancystatus = &s
+}
+
+// Pregnancystatus returns the value of the "Pregnancystatus" field in the mutation.
+func (m *PregnancystatusMutation) Pregnancystatus() (r string, exists bool) {
+	v := m._Pregnancystatus
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPregnancystatus returns the old "Pregnancystatus" field's value of the Pregnancystatus entity.
+// If the Pregnancystatus object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *PregnancystatusMutation) OldPregnancystatus(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldPregnancystatus is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldPregnancystatus requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPregnancystatus: %w", err)
+	}
+	return oldValue.Pregnancystatus, nil
+}
+
+// ResetPregnancystatus resets all changes to the "Pregnancystatus" field.
+func (m *PregnancystatusMutation) ResetPregnancystatus() {
+	m._Pregnancystatus = nil
+}
+
+// SetAntenatalinformationID sets the "Antenatalinformation" edge to the Antenatalinformation entity by id.
+func (m *PregnancystatusMutation) SetAntenatalinformationID(id int) {
+	m._Antenatalinformation = &id
+}
+
+// ClearAntenatalinformation clears the "Antenatalinformation" edge to the Antenatalinformation entity.
+func (m *PregnancystatusMutation) ClearAntenatalinformation() {
+	m.cleared_Antenatalinformation = true
+}
+
+// AntenatalinformationCleared returns if the "Antenatalinformation" edge to the Antenatalinformation entity was cleared.
+func (m *PregnancystatusMutation) AntenatalinformationCleared() bool {
+	return m.cleared_Antenatalinformation
+}
+
+// AntenatalinformationID returns the "Antenatalinformation" edge ID in the mutation.
+func (m *PregnancystatusMutation) AntenatalinformationID() (id int, exists bool) {
+	if m._Antenatalinformation != nil {
+		return *m._Antenatalinformation, true
+	}
+	return
+}
+
+// AntenatalinformationIDs returns the "Antenatalinformation" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// AntenatalinformationID instead. It exists only for internal usage by the builders.
+func (m *PregnancystatusMutation) AntenatalinformationIDs() (ids []int) {
+	if id := m._Antenatalinformation; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetAntenatalinformation resets all changes to the "Antenatalinformation" edge.
+func (m *PregnancystatusMutation) ResetAntenatalinformation() {
+	m._Antenatalinformation = nil
+	m.cleared_Antenatalinformation = false
+}
+
+// Op returns the operation name.
+func (m *PregnancystatusMutation) Op() Op {
+	return m.op
+}
+
+// Type returns the node type of this mutation (Pregnancystatus).
+func (m *PregnancystatusMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during this mutation. Note that in
+// order to get all numeric fields that were incremented/decremented, call
+// AddedFields().
+func (m *PregnancystatusMutation) Fields() []string {
+	fields := make([]string, 0, 1)
+	if m._Pregnancystatus != nil {
+		fields = append(fields, pregnancystatus.FieldPregnancystatus)
+	}
+	return fields
+}
+
+// Field returns the value of a field with the given name. The second boolean
+// return value indicates that this field was not set, or was not defined in the
+// schema.
+func (m *PregnancystatusMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case pregnancystatus.FieldPregnancystatus:
+		return m.Pregnancystatus()
+	}
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database. An error is
+// returned if the mutation operation is not UpdateOne, or the query to the
+// database failed.
+func (m *PregnancystatusMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case pregnancystatus.FieldPregnancystatus:
+		return m.OldPregnancystatus(ctx)
+	}
+	return nil, fmt.Errorf("unknown Pregnancystatus field %s", name)
+}
+
+// SetField sets the value of a field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *PregnancystatusMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	case pregnancystatus.FieldPregnancystatus:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPregnancystatus(v)
+		return nil
+	}
+	return fmt.Errorf("unknown Pregnancystatus field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented/decremented during
+// this mutation.
+func (m *PregnancystatusMutation) AddedFields() []string {
+	return nil
+}
+
+// AddedField returns the numeric value that was incremented/decremented on a field
+// with the given name. The second boolean return value indicates that this field
+// was not set, or was not defined in the schema.
+func (m *PregnancystatusMutation) AddedField(name string) (ent.Value, bool) {
+	return nil, false
+}
+
+// AddField adds the value to the field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *PregnancystatusMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	}
+	return fmt.Errorf("unknown Pregnancystatus numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared during this
+// mutation.
+func (m *PregnancystatusMutation) ClearedFields() []string {
+	return nil
+}
+
+// FieldCleared returns a boolean indicating if a field with the given name was
+// cleared in this mutation.
+func (m *PregnancystatusMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value of the field with the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *PregnancystatusMutation) ClearField(name string) error {
+	return fmt.Errorf("unknown Pregnancystatus nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation for the field with the given name.
+// It returns an error if the field is not defined in the schema.
+func (m *PregnancystatusMutation) ResetField(name string) error {
+	switch name {
+	case pregnancystatus.FieldPregnancystatus:
+		m.ResetPregnancystatus()
+		return nil
+	}
+	return fmt.Errorf("unknown Pregnancystatus field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this mutation.
+func (m *PregnancystatusMutation) AddedEdges() []string {
+	edges := make([]string, 0, 1)
+	if m._Antenatalinformation != nil {
+		edges = append(edges, pregnancystatus.EdgeAntenatalinformation)
+	}
+	return edges
+}
+
+// AddedIDs returns all IDs (to other nodes) that were added for the given edge
+// name in this mutation.
+func (m *PregnancystatusMutation) AddedIDs(name string) []ent.Value {
+	switch name {
+	case pregnancystatus.EdgeAntenatalinformation:
+		if id := m._Antenatalinformation; id != nil {
+			return []ent.Value{*id}
+		}
+	}
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this mutation.
+func (m *PregnancystatusMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 1)
+	return edges
+}
+
+// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
+// the given name in this mutation.
+func (m *PregnancystatusMutation) RemovedIDs(name string) []ent.Value {
+	switch name {
+	}
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this mutation.
+func (m *PregnancystatusMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 1)
+	if m.cleared_Antenatalinformation {
+		edges = append(edges, pregnancystatus.EdgeAntenatalinformation)
+	}
+	return edges
+}
+
+// EdgeCleared returns a boolean which indicates if the edge with the given name
+// was cleared in this mutation.
+func (m *PregnancystatusMutation) EdgeCleared(name string) bool {
+	switch name {
+	case pregnancystatus.EdgeAntenatalinformation:
+		return m.cleared_Antenatalinformation
+	}
+	return false
+}
+
+// ClearEdge clears the value of the edge with the given name. It returns an error
+// if that edge is not defined in the schema.
+func (m *PregnancystatusMutation) ClearEdge(name string) error {
+	switch name {
+	case pregnancystatus.EdgeAntenatalinformation:
+		m.ClearAntenatalinformation()
+		return nil
+	}
+	return fmt.Errorf("unknown Pregnancystatus unique edge %s", name)
+}
+
+// ResetEdge resets all changes to the edge with the given name in this mutation.
+// It returns an error if the edge is not defined in the schema.
+func (m *PregnancystatusMutation) ResetEdge(name string) error {
+	switch name {
+	case pregnancystatus.EdgeAntenatalinformation:
+		m.ResetAntenatalinformation()
+		return nil
+	}
+	return fmt.Errorf("unknown Pregnancystatus edge %s", name)
+}
+
 // RemedyMutation represents an operation that mutates the Remedy nodes in the graph.
 type RemedyMutation struct {
 	config
@@ -5666,6 +6779,362 @@ func (m *RemedyMutation) ResetEdge(name string) error {
 		return nil
 	}
 	return fmt.Errorf("unknown Remedy edge %s", name)
+}
+
+// RisksMutation represents an operation that mutates the Risks nodes in the graph.
+type RisksMutation struct {
+	config
+	op                           Op
+	typ                          string
+	id                           *int
+	_Risks                       *string
+	clearedFields                map[string]struct{}
+	_Antenatalinformation        *int
+	cleared_Antenatalinformation bool
+	done                         bool
+	oldValue                     func(context.Context) (*Risks, error)
+	predicates                   []predicate.Risks
+}
+
+var _ ent.Mutation = (*RisksMutation)(nil)
+
+// risksOption allows management of the mutation configuration using functional options.
+type risksOption func(*RisksMutation)
+
+// newRisksMutation creates new mutation for the Risks entity.
+func newRisksMutation(c config, op Op, opts ...risksOption) *RisksMutation {
+	m := &RisksMutation{
+		config:        c,
+		op:            op,
+		typ:           TypeRisks,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withRisksID sets the ID field of the mutation.
+func withRisksID(id int) risksOption {
+	return func(m *RisksMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *Risks
+		)
+		m.oldValue = func(ctx context.Context) (*Risks, error) {
+			once.Do(func() {
+				if m.done {
+					err = fmt.Errorf("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().Risks.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withRisks sets the old Risks of the mutation.
+func withRisks(node *Risks) risksOption {
+	return func(m *RisksMutation) {
+		m.oldValue = func(context.Context) (*Risks, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m RisksMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m RisksMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, fmt.Errorf("ent: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// ID returns the ID value in the mutation. Note that the ID
+// is only available if it was provided to the builder.
+func (m *RisksMutation) ID() (id int, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// SetRisks sets the "Risks" field.
+func (m *RisksMutation) SetRisks(s string) {
+	m._Risks = &s
+}
+
+// Risks returns the value of the "Risks" field in the mutation.
+func (m *RisksMutation) Risks() (r string, exists bool) {
+	v := m._Risks
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldRisks returns the old "Risks" field's value of the Risks entity.
+// If the Risks object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *RisksMutation) OldRisks(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldRisks is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldRisks requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldRisks: %w", err)
+	}
+	return oldValue.Risks, nil
+}
+
+// ResetRisks resets all changes to the "Risks" field.
+func (m *RisksMutation) ResetRisks() {
+	m._Risks = nil
+}
+
+// SetAntenatalinformationID sets the "Antenatalinformation" edge to the Antenatalinformation entity by id.
+func (m *RisksMutation) SetAntenatalinformationID(id int) {
+	m._Antenatalinformation = &id
+}
+
+// ClearAntenatalinformation clears the "Antenatalinformation" edge to the Antenatalinformation entity.
+func (m *RisksMutation) ClearAntenatalinformation() {
+	m.cleared_Antenatalinformation = true
+}
+
+// AntenatalinformationCleared returns if the "Antenatalinformation" edge to the Antenatalinformation entity was cleared.
+func (m *RisksMutation) AntenatalinformationCleared() bool {
+	return m.cleared_Antenatalinformation
+}
+
+// AntenatalinformationID returns the "Antenatalinformation" edge ID in the mutation.
+func (m *RisksMutation) AntenatalinformationID() (id int, exists bool) {
+	if m._Antenatalinformation != nil {
+		return *m._Antenatalinformation, true
+	}
+	return
+}
+
+// AntenatalinformationIDs returns the "Antenatalinformation" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// AntenatalinformationID instead. It exists only for internal usage by the builders.
+func (m *RisksMutation) AntenatalinformationIDs() (ids []int) {
+	if id := m._Antenatalinformation; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetAntenatalinformation resets all changes to the "Antenatalinformation" edge.
+func (m *RisksMutation) ResetAntenatalinformation() {
+	m._Antenatalinformation = nil
+	m.cleared_Antenatalinformation = false
+}
+
+// Op returns the operation name.
+func (m *RisksMutation) Op() Op {
+	return m.op
+}
+
+// Type returns the node type of this mutation (Risks).
+func (m *RisksMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during this mutation. Note that in
+// order to get all numeric fields that were incremented/decremented, call
+// AddedFields().
+func (m *RisksMutation) Fields() []string {
+	fields := make([]string, 0, 1)
+	if m._Risks != nil {
+		fields = append(fields, risks.FieldRisks)
+	}
+	return fields
+}
+
+// Field returns the value of a field with the given name. The second boolean
+// return value indicates that this field was not set, or was not defined in the
+// schema.
+func (m *RisksMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case risks.FieldRisks:
+		return m.Risks()
+	}
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database. An error is
+// returned if the mutation operation is not UpdateOne, or the query to the
+// database failed.
+func (m *RisksMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case risks.FieldRisks:
+		return m.OldRisks(ctx)
+	}
+	return nil, fmt.Errorf("unknown Risks field %s", name)
+}
+
+// SetField sets the value of a field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *RisksMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	case risks.FieldRisks:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetRisks(v)
+		return nil
+	}
+	return fmt.Errorf("unknown Risks field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented/decremented during
+// this mutation.
+func (m *RisksMutation) AddedFields() []string {
+	return nil
+}
+
+// AddedField returns the numeric value that was incremented/decremented on a field
+// with the given name. The second boolean return value indicates that this field
+// was not set, or was not defined in the schema.
+func (m *RisksMutation) AddedField(name string) (ent.Value, bool) {
+	return nil, false
+}
+
+// AddField adds the value to the field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *RisksMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	}
+	return fmt.Errorf("unknown Risks numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared during this
+// mutation.
+func (m *RisksMutation) ClearedFields() []string {
+	return nil
+}
+
+// FieldCleared returns a boolean indicating if a field with the given name was
+// cleared in this mutation.
+func (m *RisksMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value of the field with the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *RisksMutation) ClearField(name string) error {
+	return fmt.Errorf("unknown Risks nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation for the field with the given name.
+// It returns an error if the field is not defined in the schema.
+func (m *RisksMutation) ResetField(name string) error {
+	switch name {
+	case risks.FieldRisks:
+		m.ResetRisks()
+		return nil
+	}
+	return fmt.Errorf("unknown Risks field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this mutation.
+func (m *RisksMutation) AddedEdges() []string {
+	edges := make([]string, 0, 1)
+	if m._Antenatalinformation != nil {
+		edges = append(edges, risks.EdgeAntenatalinformation)
+	}
+	return edges
+}
+
+// AddedIDs returns all IDs (to other nodes) that were added for the given edge
+// name in this mutation.
+func (m *RisksMutation) AddedIDs(name string) []ent.Value {
+	switch name {
+	case risks.EdgeAntenatalinformation:
+		if id := m._Antenatalinformation; id != nil {
+			return []ent.Value{*id}
+		}
+	}
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this mutation.
+func (m *RisksMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 1)
+	return edges
+}
+
+// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
+// the given name in this mutation.
+func (m *RisksMutation) RemovedIDs(name string) []ent.Value {
+	switch name {
+	}
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this mutation.
+func (m *RisksMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 1)
+	if m.cleared_Antenatalinformation {
+		edges = append(edges, risks.EdgeAntenatalinformation)
+	}
+	return edges
+}
+
+// EdgeCleared returns a boolean which indicates if the edge with the given name
+// was cleared in this mutation.
+func (m *RisksMutation) EdgeCleared(name string) bool {
+	switch name {
+	case risks.EdgeAntenatalinformation:
+		return m.cleared_Antenatalinformation
+	}
+	return false
+}
+
+// ClearEdge clears the value of the edge with the given name. It returns an error
+// if that edge is not defined in the schema.
+func (m *RisksMutation) ClearEdge(name string) error {
+	switch name {
+	case risks.EdgeAntenatalinformation:
+		m.ClearAntenatalinformation()
+		return nil
+	}
+	return fmt.Errorf("unknown Risks unique edge %s", name)
+}
+
+// ResetEdge resets all changes to the edge with the given name in this mutation.
+// It returns an error if the edge is not defined in the schema.
+func (m *RisksMutation) ResetEdge(name string) error {
+	switch name {
+	case risks.EdgeAntenatalinformation:
+		m.ResetAntenatalinformation()
+		return nil
+	}
+	return fmt.Errorf("unknown Risks edge %s", name)
 }
 
 // StatusMutation represents an operation that mutates the Status nodes in the graph.

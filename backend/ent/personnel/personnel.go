@@ -26,6 +26,8 @@ const (
 	EdgeDentalappointment = "Dentalappointment"
 	// EdgeSurgeryappointment holds the string denoting the surgeryappointment edge name in mutations.
 	EdgeSurgeryappointment = "Surgeryappointment"
+	// EdgeAntenatalinformation holds the string denoting the antenatalinformation edge name in mutations.
+	EdgeAntenatalinformation = "Antenatalinformation"
 
 	// Table holds the table name of the personnel in the database.
 	Table = "personnels"
@@ -64,6 +66,13 @@ const (
 	SurgeryappointmentInverseTable = "surgeryappointments"
 	// SurgeryappointmentColumn is the table column denoting the Surgeryappointment relation/edge.
 	SurgeryappointmentColumn = "Personnel_id"
+	// AntenatalinformationTable is the table the holds the Antenatalinformation relation/edge.
+	AntenatalinformationTable = "antenatalinformations"
+	// AntenatalinformationInverseTable is the table name for the Antenatalinformation entity.
+	// It exists in this package in order to avoid circular dependency with the "antenatalinformation" package.
+	AntenatalinformationInverseTable = "antenatalinformations"
+	// AntenatalinformationColumn is the table column denoting the Antenatalinformation relation/edge.
+	AntenatalinformationColumn = "Personnel_id"
 )
 
 // Columns holds all SQL columns for personnel fields.

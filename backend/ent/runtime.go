@@ -5,13 +5,16 @@ package ent
 import (
 	"time"
 
+	"github.com/to63/app/ent/antenatalinformation"
 	"github.com/to63/app/ent/bonedisease"
 	"github.com/to63/app/ent/disease"
 	"github.com/to63/app/ent/doctorordersheet"
 	"github.com/to63/app/ent/patient"
 	"github.com/to63/app/ent/personnel"
 	"github.com/to63/app/ent/physicaltherapyroom"
+	"github.com/to63/app/ent/pregnancystatus"
 	"github.com/to63/app/ent/remedy"
+	"github.com/to63/app/ent/risks"
 	"github.com/to63/app/ent/schema"
 	"github.com/to63/app/ent/status"
 	"github.com/to63/app/ent/surgerytype"
@@ -21,6 +24,12 @@ import (
 // (default values, validators, hooks and policies) and stitches it
 // to their package variables.
 func init() {
+	antenatalinformationFields := schema.Antenatalinformation{}.Fields()
+	_ = antenatalinformationFields
+	// antenatalinformationDescGestationalage is the schema descriptor for gestationalage field.
+	antenatalinformationDescGestationalage := antenatalinformationFields[0].Descriptor()
+	// antenatalinformation.GestationalageValidator is a validator for the "gestationalage" field. It is called by the builders before save.
+	antenatalinformation.GestationalageValidator = antenatalinformationDescGestationalage.Validators[0].(func(string) error)
 	bonediseaseFields := schema.Bonedisease{}.Fields()
 	_ = bonediseaseFields
 	// bonediseaseDescAddedTime is the schema descriptor for addedTime field.
@@ -85,12 +94,24 @@ func init() {
 	physicaltherapyroomDescPhysicalTherapyRoomName := physicaltherapyroomFields[0].Descriptor()
 	// physicaltherapyroom.PhysicalTherapyRoomNameValidator is a validator for the "physical_therapy_room_name" field. It is called by the builders before save.
 	physicaltherapyroom.PhysicalTherapyRoomNameValidator = physicaltherapyroomDescPhysicalTherapyRoomName.Validators[0].(func(string) error)
+	pregnancystatusFields := schema.Pregnancystatus{}.Fields()
+	_ = pregnancystatusFields
+	// pregnancystatusDescPregnancystatus is the schema descriptor for Pregnancystatus field.
+	pregnancystatusDescPregnancystatus := pregnancystatusFields[0].Descriptor()
+	// pregnancystatus.PregnancystatusValidator is a validator for the "Pregnancystatus" field. It is called by the builders before save.
+	pregnancystatus.PregnancystatusValidator = pregnancystatusDescPregnancystatus.Validators[0].(func(string) error)
 	remedyFields := schema.Remedy{}.Fields()
 	_ = remedyFields
 	// remedyDescRemedy is the schema descriptor for remedy field.
 	remedyDescRemedy := remedyFields[0].Descriptor()
 	// remedy.RemedyValidator is a validator for the "remedy" field. It is called by the builders before save.
 	remedy.RemedyValidator = remedyDescRemedy.Validators[0].(func(string) error)
+	risksFields := schema.Risks{}.Fields()
+	_ = risksFields
+	// risksDescRisks is the schema descriptor for Risks field.
+	risksDescRisks := risksFields[0].Descriptor()
+	// risks.RisksValidator is a validator for the "Risks" field. It is called by the builders before save.
+	risks.RisksValidator = risksDescRisks.Validators[0].(func(string) error)
 	statusFields := schema.Status{}.Fields()
 	_ = statusFields
 	// statusDescStatusName is the schema descriptor for status_name field.

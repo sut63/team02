@@ -9,6 +9,7 @@ import (
 
 	"github.com/to63/app/ent/migrate"
 
+	"github.com/to63/app/ent/antenatalinformation"
 	"github.com/to63/app/ent/bonedisease"
 	"github.com/to63/app/ent/checksymptoms"
 	"github.com/to63/app/ent/dentalappointment"
@@ -19,7 +20,9 @@ import (
 	"github.com/to63/app/ent/personnel"
 	"github.com/to63/app/ent/physicaltherapyrecord"
 	"github.com/to63/app/ent/physicaltherapyroom"
+	"github.com/to63/app/ent/pregnancystatus"
 	"github.com/to63/app/ent/remedy"
+	"github.com/to63/app/ent/risks"
 	"github.com/to63/app/ent/status"
 	"github.com/to63/app/ent/surgeryappointment"
 	"github.com/to63/app/ent/surgerytype"
@@ -34,6 +37,8 @@ type Client struct {
 	config
 	// Schema is the client for creating, migrating and dropping schema.
 	Schema *migrate.Schema
+	// Antenatalinformation is the client for interacting with the Antenatalinformation builders.
+	Antenatalinformation *AntenatalinformationClient
 	// Bonedisease is the client for interacting with the Bonedisease builders.
 	Bonedisease *BonediseaseClient
 	// Checksymptoms is the client for interacting with the Checksymptoms builders.
@@ -54,8 +59,12 @@ type Client struct {
 	Physicaltherapyrecord *PhysicaltherapyrecordClient
 	// Physicaltherapyroom is the client for interacting with the Physicaltherapyroom builders.
 	Physicaltherapyroom *PhysicaltherapyroomClient
+	// Pregnancystatus is the client for interacting with the Pregnancystatus builders.
+	Pregnancystatus *PregnancystatusClient
 	// Remedy is the client for interacting with the Remedy builders.
 	Remedy *RemedyClient
+	// Risks is the client for interacting with the Risks builders.
+	Risks *RisksClient
 	// Status is the client for interacting with the Status builders.
 	Status *StatusClient
 	// Surgeryappointment is the client for interacting with the Surgeryappointment builders.
@@ -75,6 +84,7 @@ func NewClient(opts ...Option) *Client {
 
 func (c *Client) init() {
 	c.Schema = migrate.NewSchema(c.driver)
+	c.Antenatalinformation = NewAntenatalinformationClient(c.config)
 	c.Bonedisease = NewBonediseaseClient(c.config)
 	c.Checksymptoms = NewChecksymptomsClient(c.config)
 	c.Dentalappointment = NewDentalappointmentClient(c.config)
@@ -85,7 +95,9 @@ func (c *Client) init() {
 	c.Personnel = NewPersonnelClient(c.config)
 	c.Physicaltherapyrecord = NewPhysicaltherapyrecordClient(c.config)
 	c.Physicaltherapyroom = NewPhysicaltherapyroomClient(c.config)
+	c.Pregnancystatus = NewPregnancystatusClient(c.config)
 	c.Remedy = NewRemedyClient(c.config)
+	c.Risks = NewRisksClient(c.config)
 	c.Status = NewStatusClient(c.config)
 	c.Surgeryappointment = NewSurgeryappointmentClient(c.config)
 	c.Surgerytype = NewSurgerytypeClient(c.config)
@@ -121,6 +133,7 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 	return &Tx{
 		ctx:                   ctx,
 		config:                cfg,
+		Antenatalinformation:  NewAntenatalinformationClient(cfg),
 		Bonedisease:           NewBonediseaseClient(cfg),
 		Checksymptoms:         NewChecksymptomsClient(cfg),
 		Dentalappointment:     NewDentalappointmentClient(cfg),
@@ -131,7 +144,9 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 		Personnel:             NewPersonnelClient(cfg),
 		Physicaltherapyrecord: NewPhysicaltherapyrecordClient(cfg),
 		Physicaltherapyroom:   NewPhysicaltherapyroomClient(cfg),
+		Pregnancystatus:       NewPregnancystatusClient(cfg),
 		Remedy:                NewRemedyClient(cfg),
+		Risks:                 NewRisksClient(cfg),
 		Status:                NewStatusClient(cfg),
 		Surgeryappointment:    NewSurgeryappointmentClient(cfg),
 		Surgerytype:           NewSurgerytypeClient(cfg),
@@ -150,6 +165,7 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 	cfg := config{driver: &txDriver{tx: tx, drv: c.driver}, log: c.log, debug: c.debug, hooks: c.hooks}
 	return &Tx{
 		config:                cfg,
+		Antenatalinformation:  NewAntenatalinformationClient(cfg),
 		Bonedisease:           NewBonediseaseClient(cfg),
 		Checksymptoms:         NewChecksymptomsClient(cfg),
 		Dentalappointment:     NewDentalappointmentClient(cfg),
@@ -160,7 +176,9 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 		Personnel:             NewPersonnelClient(cfg),
 		Physicaltherapyrecord: NewPhysicaltherapyrecordClient(cfg),
 		Physicaltherapyroom:   NewPhysicaltherapyroomClient(cfg),
+		Pregnancystatus:       NewPregnancystatusClient(cfg),
 		Remedy:                NewRemedyClient(cfg),
+		Risks:                 NewRisksClient(cfg),
 		Status:                NewStatusClient(cfg),
 		Surgeryappointment:    NewSurgeryappointmentClient(cfg),
 		Surgerytype:           NewSurgerytypeClient(cfg),
@@ -170,7 +188,7 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 // Debug returns a new debug-client. It's used to get verbose logging on specific operations.
 //
 //	client.Debug().
-//		Bonedisease.
+//		Antenatalinformation.
 //		Query().
 //		Count(ctx)
 //
@@ -192,6 +210,7 @@ func (c *Client) Close() error {
 // Use adds the mutation hooks to all the entity clients.
 // In order to add hooks to a specific client, call: `client.Node.Use(...)`.
 func (c *Client) Use(hooks ...Hook) {
+	c.Antenatalinformation.Use(hooks...)
 	c.Bonedisease.Use(hooks...)
 	c.Checksymptoms.Use(hooks...)
 	c.Dentalappointment.Use(hooks...)
@@ -202,10 +221,164 @@ func (c *Client) Use(hooks ...Hook) {
 	c.Personnel.Use(hooks...)
 	c.Physicaltherapyrecord.Use(hooks...)
 	c.Physicaltherapyroom.Use(hooks...)
+	c.Pregnancystatus.Use(hooks...)
 	c.Remedy.Use(hooks...)
+	c.Risks.Use(hooks...)
 	c.Status.Use(hooks...)
 	c.Surgeryappointment.Use(hooks...)
 	c.Surgerytype.Use(hooks...)
+}
+
+// AntenatalinformationClient is a client for the Antenatalinformation schema.
+type AntenatalinformationClient struct {
+	config
+}
+
+// NewAntenatalinformationClient returns a client for the Antenatalinformation from the given config.
+func NewAntenatalinformationClient(c config) *AntenatalinformationClient {
+	return &AntenatalinformationClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `antenatalinformation.Hooks(f(g(h())))`.
+func (c *AntenatalinformationClient) Use(hooks ...Hook) {
+	c.hooks.Antenatalinformation = append(c.hooks.Antenatalinformation, hooks...)
+}
+
+// Create returns a create builder for Antenatalinformation.
+func (c *AntenatalinformationClient) Create() *AntenatalinformationCreate {
+	mutation := newAntenatalinformationMutation(c.config, OpCreate)
+	return &AntenatalinformationCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of Antenatalinformation entities.
+func (c *AntenatalinformationClient) CreateBulk(builders ...*AntenatalinformationCreate) *AntenatalinformationCreateBulk {
+	return &AntenatalinformationCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for Antenatalinformation.
+func (c *AntenatalinformationClient) Update() *AntenatalinformationUpdate {
+	mutation := newAntenatalinformationMutation(c.config, OpUpdate)
+	return &AntenatalinformationUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *AntenatalinformationClient) UpdateOne(a *Antenatalinformation) *AntenatalinformationUpdateOne {
+	mutation := newAntenatalinformationMutation(c.config, OpUpdateOne, withAntenatalinformation(a))
+	return &AntenatalinformationUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *AntenatalinformationClient) UpdateOneID(id int) *AntenatalinformationUpdateOne {
+	mutation := newAntenatalinformationMutation(c.config, OpUpdateOne, withAntenatalinformationID(id))
+	return &AntenatalinformationUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for Antenatalinformation.
+func (c *AntenatalinformationClient) Delete() *AntenatalinformationDelete {
+	mutation := newAntenatalinformationMutation(c.config, OpDelete)
+	return &AntenatalinformationDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a delete builder for the given entity.
+func (c *AntenatalinformationClient) DeleteOne(a *Antenatalinformation) *AntenatalinformationDeleteOne {
+	return c.DeleteOneID(a.ID)
+}
+
+// DeleteOneID returns a delete builder for the given id.
+func (c *AntenatalinformationClient) DeleteOneID(id int) *AntenatalinformationDeleteOne {
+	builder := c.Delete().Where(antenatalinformation.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &AntenatalinformationDeleteOne{builder}
+}
+
+// Query returns a query builder for Antenatalinformation.
+func (c *AntenatalinformationClient) Query() *AntenatalinformationQuery {
+	return &AntenatalinformationQuery{config: c.config}
+}
+
+// Get returns a Antenatalinformation entity by its id.
+func (c *AntenatalinformationClient) Get(ctx context.Context, id int) (*Antenatalinformation, error) {
+	return c.Query().Where(antenatalinformation.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *AntenatalinformationClient) GetX(ctx context.Context, id int) *Antenatalinformation {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// QueryPersonnel queries the Personnel edge of a Antenatalinformation.
+func (c *AntenatalinformationClient) QueryPersonnel(a *Antenatalinformation) *PersonnelQuery {
+	query := &PersonnelQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := a.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(antenatalinformation.Table, antenatalinformation.FieldID, id),
+			sqlgraph.To(personnel.Table, personnel.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, antenatalinformation.PersonnelTable, antenatalinformation.PersonnelColumn),
+		)
+		fromV = sqlgraph.Neighbors(a.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryPatient queries the Patient edge of a Antenatalinformation.
+func (c *AntenatalinformationClient) QueryPatient(a *Antenatalinformation) *PatientQuery {
+	query := &PatientQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := a.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(antenatalinformation.Table, antenatalinformation.FieldID, id),
+			sqlgraph.To(patient.Table, patient.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, antenatalinformation.PatientTable, antenatalinformation.PatientColumn),
+		)
+		fromV = sqlgraph.Neighbors(a.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryPregnancystatusid queries the Pregnancystatusid edge of a Antenatalinformation.
+func (c *AntenatalinformationClient) QueryPregnancystatusid(a *Antenatalinformation) *PregnancystatusQuery {
+	query := &PregnancystatusQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := a.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(antenatalinformation.Table, antenatalinformation.FieldID, id),
+			sqlgraph.To(pregnancystatus.Table, pregnancystatus.FieldID),
+			sqlgraph.Edge(sqlgraph.O2O, true, antenatalinformation.PregnancystatusidTable, antenatalinformation.PregnancystatusidColumn),
+		)
+		fromV = sqlgraph.Neighbors(a.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryRisksid queries the Risksid edge of a Antenatalinformation.
+func (c *AntenatalinformationClient) QueryRisksid(a *Antenatalinformation) *RisksQuery {
+	query := &RisksQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := a.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(antenatalinformation.Table, antenatalinformation.FieldID, id),
+			sqlgraph.To(risks.Table, risks.FieldID),
+			sqlgraph.Edge(sqlgraph.O2O, true, antenatalinformation.RisksidTable, antenatalinformation.RisksidColumn),
+		)
+		fromV = sqlgraph.Neighbors(a.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *AntenatalinformationClient) Hooks() []Hook {
+	return c.hooks.Antenatalinformation
 }
 
 // BonediseaseClient is a client for the Bonedisease schema.
@@ -1107,6 +1280,22 @@ func (c *PatientClient) QuerySurgeryappointment(pa *Patient) *Surgeryappointment
 	return query
 }
 
+// QueryAntenatalinformation queries the Antenatalinformation edge of a Patient.
+func (c *PatientClient) QueryAntenatalinformation(pa *Patient) *AntenatalinformationQuery {
+	query := &AntenatalinformationQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := pa.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(patient.Table, patient.FieldID, id),
+			sqlgraph.To(antenatalinformation.Table, antenatalinformation.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, patient.AntenatalinformationTable, patient.AntenatalinformationColumn),
+		)
+		fromV = sqlgraph.Neighbors(pa.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
 // Hooks returns the client hooks.
 func (c *PatientClient) Hooks() []Hook {
 	return c.hooks.Patient
@@ -1268,6 +1457,22 @@ func (c *PersonnelClient) QuerySurgeryappointment(pe *Personnel) *Surgeryappoint
 			sqlgraph.From(personnel.Table, personnel.FieldID, id),
 			sqlgraph.To(surgeryappointment.Table, surgeryappointment.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, personnel.SurgeryappointmentTable, personnel.SurgeryappointmentColumn),
+		)
+		fromV = sqlgraph.Neighbors(pe.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryAntenatalinformation queries the Antenatalinformation edge of a Personnel.
+func (c *PersonnelClient) QueryAntenatalinformation(pe *Personnel) *AntenatalinformationQuery {
+	query := &AntenatalinformationQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := pe.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(personnel.Table, personnel.FieldID, id),
+			sqlgraph.To(antenatalinformation.Table, antenatalinformation.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, personnel.AntenatalinformationTable, personnel.AntenatalinformationColumn),
 		)
 		fromV = sqlgraph.Neighbors(pe.driver.Dialect(), step)
 		return fromV, nil
@@ -1536,6 +1741,110 @@ func (c *PhysicaltherapyroomClient) Hooks() []Hook {
 	return c.hooks.Physicaltherapyroom
 }
 
+// PregnancystatusClient is a client for the Pregnancystatus schema.
+type PregnancystatusClient struct {
+	config
+}
+
+// NewPregnancystatusClient returns a client for the Pregnancystatus from the given config.
+func NewPregnancystatusClient(c config) *PregnancystatusClient {
+	return &PregnancystatusClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `pregnancystatus.Hooks(f(g(h())))`.
+func (c *PregnancystatusClient) Use(hooks ...Hook) {
+	c.hooks.Pregnancystatus = append(c.hooks.Pregnancystatus, hooks...)
+}
+
+// Create returns a create builder for Pregnancystatus.
+func (c *PregnancystatusClient) Create() *PregnancystatusCreate {
+	mutation := newPregnancystatusMutation(c.config, OpCreate)
+	return &PregnancystatusCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of Pregnancystatus entities.
+func (c *PregnancystatusClient) CreateBulk(builders ...*PregnancystatusCreate) *PregnancystatusCreateBulk {
+	return &PregnancystatusCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for Pregnancystatus.
+func (c *PregnancystatusClient) Update() *PregnancystatusUpdate {
+	mutation := newPregnancystatusMutation(c.config, OpUpdate)
+	return &PregnancystatusUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *PregnancystatusClient) UpdateOne(pr *Pregnancystatus) *PregnancystatusUpdateOne {
+	mutation := newPregnancystatusMutation(c.config, OpUpdateOne, withPregnancystatus(pr))
+	return &PregnancystatusUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *PregnancystatusClient) UpdateOneID(id int) *PregnancystatusUpdateOne {
+	mutation := newPregnancystatusMutation(c.config, OpUpdateOne, withPregnancystatusID(id))
+	return &PregnancystatusUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for Pregnancystatus.
+func (c *PregnancystatusClient) Delete() *PregnancystatusDelete {
+	mutation := newPregnancystatusMutation(c.config, OpDelete)
+	return &PregnancystatusDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a delete builder for the given entity.
+func (c *PregnancystatusClient) DeleteOne(pr *Pregnancystatus) *PregnancystatusDeleteOne {
+	return c.DeleteOneID(pr.ID)
+}
+
+// DeleteOneID returns a delete builder for the given id.
+func (c *PregnancystatusClient) DeleteOneID(id int) *PregnancystatusDeleteOne {
+	builder := c.Delete().Where(pregnancystatus.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &PregnancystatusDeleteOne{builder}
+}
+
+// Query returns a query builder for Pregnancystatus.
+func (c *PregnancystatusClient) Query() *PregnancystatusQuery {
+	return &PregnancystatusQuery{config: c.config}
+}
+
+// Get returns a Pregnancystatus entity by its id.
+func (c *PregnancystatusClient) Get(ctx context.Context, id int) (*Pregnancystatus, error) {
+	return c.Query().Where(pregnancystatus.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *PregnancystatusClient) GetX(ctx context.Context, id int) *Pregnancystatus {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// QueryAntenatalinformation queries the Antenatalinformation edge of a Pregnancystatus.
+func (c *PregnancystatusClient) QueryAntenatalinformation(pr *Pregnancystatus) *AntenatalinformationQuery {
+	query := &AntenatalinformationQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := pr.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(pregnancystatus.Table, pregnancystatus.FieldID, id),
+			sqlgraph.To(antenatalinformation.Table, antenatalinformation.FieldID),
+			sqlgraph.Edge(sqlgraph.O2O, false, pregnancystatus.AntenatalinformationTable, pregnancystatus.AntenatalinformationColumn),
+		)
+		fromV = sqlgraph.Neighbors(pr.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *PregnancystatusClient) Hooks() []Hook {
+	return c.hooks.Pregnancystatus
+}
+
 // RemedyClient is a client for the Remedy schema.
 type RemedyClient struct {
 	config
@@ -1638,6 +1947,110 @@ func (c *RemedyClient) QueryBonedisease(r *Remedy) *BonediseaseQuery {
 // Hooks returns the client hooks.
 func (c *RemedyClient) Hooks() []Hook {
 	return c.hooks.Remedy
+}
+
+// RisksClient is a client for the Risks schema.
+type RisksClient struct {
+	config
+}
+
+// NewRisksClient returns a client for the Risks from the given config.
+func NewRisksClient(c config) *RisksClient {
+	return &RisksClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `risks.Hooks(f(g(h())))`.
+func (c *RisksClient) Use(hooks ...Hook) {
+	c.hooks.Risks = append(c.hooks.Risks, hooks...)
+}
+
+// Create returns a create builder for Risks.
+func (c *RisksClient) Create() *RisksCreate {
+	mutation := newRisksMutation(c.config, OpCreate)
+	return &RisksCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of Risks entities.
+func (c *RisksClient) CreateBulk(builders ...*RisksCreate) *RisksCreateBulk {
+	return &RisksCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for Risks.
+func (c *RisksClient) Update() *RisksUpdate {
+	mutation := newRisksMutation(c.config, OpUpdate)
+	return &RisksUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *RisksClient) UpdateOne(r *Risks) *RisksUpdateOne {
+	mutation := newRisksMutation(c.config, OpUpdateOne, withRisks(r))
+	return &RisksUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *RisksClient) UpdateOneID(id int) *RisksUpdateOne {
+	mutation := newRisksMutation(c.config, OpUpdateOne, withRisksID(id))
+	return &RisksUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for Risks.
+func (c *RisksClient) Delete() *RisksDelete {
+	mutation := newRisksMutation(c.config, OpDelete)
+	return &RisksDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a delete builder for the given entity.
+func (c *RisksClient) DeleteOne(r *Risks) *RisksDeleteOne {
+	return c.DeleteOneID(r.ID)
+}
+
+// DeleteOneID returns a delete builder for the given id.
+func (c *RisksClient) DeleteOneID(id int) *RisksDeleteOne {
+	builder := c.Delete().Where(risks.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &RisksDeleteOne{builder}
+}
+
+// Query returns a query builder for Risks.
+func (c *RisksClient) Query() *RisksQuery {
+	return &RisksQuery{config: c.config}
+}
+
+// Get returns a Risks entity by its id.
+func (c *RisksClient) Get(ctx context.Context, id int) (*Risks, error) {
+	return c.Query().Where(risks.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *RisksClient) GetX(ctx context.Context, id int) *Risks {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// QueryAntenatalinformation queries the Antenatalinformation edge of a Risks.
+func (c *RisksClient) QueryAntenatalinformation(r *Risks) *AntenatalinformationQuery {
+	query := &AntenatalinformationQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := r.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(risks.Table, risks.FieldID, id),
+			sqlgraph.To(antenatalinformation.Table, antenatalinformation.FieldID),
+			sqlgraph.Edge(sqlgraph.O2O, false, risks.AntenatalinformationTable, risks.AntenatalinformationColumn),
+		)
+		fromV = sqlgraph.Neighbors(r.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *RisksClient) Hooks() []Hook {
+	return c.hooks.Risks
 }
 
 // StatusClient is a client for the Status schema.

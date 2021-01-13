@@ -12,6 +12,8 @@ import (
 // Tx is a transactional client that is created by calling Client.Tx().
 type Tx struct {
 	config
+	// Antenatalinformation is the client for interacting with the Antenatalinformation builders.
+	Antenatalinformation *AntenatalinformationClient
 	// Bonedisease is the client for interacting with the Bonedisease builders.
 	Bonedisease *BonediseaseClient
 	// Checksymptoms is the client for interacting with the Checksymptoms builders.
@@ -32,8 +34,12 @@ type Tx struct {
 	Physicaltherapyrecord *PhysicaltherapyrecordClient
 	// Physicaltherapyroom is the client for interacting with the Physicaltherapyroom builders.
 	Physicaltherapyroom *PhysicaltherapyroomClient
+	// Pregnancystatus is the client for interacting with the Pregnancystatus builders.
+	Pregnancystatus *PregnancystatusClient
 	// Remedy is the client for interacting with the Remedy builders.
 	Remedy *RemedyClient
+	// Risks is the client for interacting with the Risks builders.
+	Risks *RisksClient
 	// Status is the client for interacting with the Status builders.
 	Status *StatusClient
 	// Surgeryappointment is the client for interacting with the Surgeryappointment builders.
@@ -175,6 +181,7 @@ func (tx *Tx) Client() *Client {
 }
 
 func (tx *Tx) init() {
+	tx.Antenatalinformation = NewAntenatalinformationClient(tx.config)
 	tx.Bonedisease = NewBonediseaseClient(tx.config)
 	tx.Checksymptoms = NewChecksymptomsClient(tx.config)
 	tx.Dentalappointment = NewDentalappointmentClient(tx.config)
@@ -185,7 +192,9 @@ func (tx *Tx) init() {
 	tx.Personnel = NewPersonnelClient(tx.config)
 	tx.Physicaltherapyrecord = NewPhysicaltherapyrecordClient(tx.config)
 	tx.Physicaltherapyroom = NewPhysicaltherapyroomClient(tx.config)
+	tx.Pregnancystatus = NewPregnancystatusClient(tx.config)
 	tx.Remedy = NewRemedyClient(tx.config)
+	tx.Risks = NewRisksClient(tx.config)
 	tx.Status = NewStatusClient(tx.config)
 	tx.Surgeryappointment = NewSurgeryappointmentClient(tx.config)
 	tx.Surgerytype = NewSurgerytypeClient(tx.config)
@@ -198,7 +207,7 @@ func (tx *Tx) init() {
 // of them in order to commit or rollback the transaction.
 //
 // If a closed transaction is embedded in one of the generated entities, and the entity
-// applies a query, for example: Bonedisease.QueryXXX(), the query will be executed
+// applies a query, for example: Antenatalinformation.QueryXXX(), the query will be executed
 // through the driver which created this transaction.
 //
 // Note that txDriver is not goroutine safe.

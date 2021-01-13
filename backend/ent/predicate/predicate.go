@@ -6,6 +6,9 @@ import (
 	"github.com/facebook/ent/dialect/sql"
 )
 
+// Antenatalinformation is the predicate function for antenatalinformation builders.
+type Antenatalinformation func(*sql.Selector)
+
 // Bonedisease is the predicate function for bonedisease builders.
 type Bonedisease func(*sql.Selector)
 
@@ -36,8 +39,14 @@ type Physicaltherapyrecord func(*sql.Selector)
 // Physicaltherapyroom is the predicate function for physicaltherapyroom builders.
 type Physicaltherapyroom func(*sql.Selector)
 
+// Pregnancystatus is the predicate function for pregnancystatus builders.
+type Pregnancystatus func(*sql.Selector)
+
 // Remedy is the predicate function for remedy builders.
 type Remedy func(*sql.Selector)
+
+// Risks is the predicate function for risks builders.
+type Risks func(*sql.Selector)
 
 // Status is the predicate function for status builders.
 type Status func(*sql.Selector)

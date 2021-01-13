@@ -8,6 +8,52 @@ import (
 )
 
 var (
+	// AntenatalinformationsColumns holds the columns for the "antenatalinformations" table.
+	AntenatalinformationsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "gestationalage", Type: field.TypeString},
+		{Name: "added_time", Type: field.TypeTime},
+		{Name: "Patient_id", Type: field.TypeInt, Nullable: true},
+		{Name: "Personnel_id", Type: field.TypeInt, Nullable: true},
+		{Name: "pregnancystatus_antenatalinformation", Type: field.TypeInt, Unique: true, Nullable: true},
+		{Name: "risks_antenatalinformation", Type: field.TypeInt, Unique: true, Nullable: true},
+	}
+	// AntenatalinformationsTable holds the schema information for the "antenatalinformations" table.
+	AntenatalinformationsTable = &schema.Table{
+		Name:       "antenatalinformations",
+		Columns:    AntenatalinformationsColumns,
+		PrimaryKey: []*schema.Column{AntenatalinformationsColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:  "antenatalinformations_patients_Antenatalinformation",
+				Columns: []*schema.Column{AntenatalinformationsColumns[3]},
+
+				RefColumns: []*schema.Column{PatientsColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+			{
+				Symbol:  "antenatalinformations_personnels_Antenatalinformation",
+				Columns: []*schema.Column{AntenatalinformationsColumns[4]},
+
+				RefColumns: []*schema.Column{PersonnelsColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+			{
+				Symbol:  "antenatalinformations_pregnancystatuses_Antenatalinformation",
+				Columns: []*schema.Column{AntenatalinformationsColumns[5]},
+
+				RefColumns: []*schema.Column{PregnancystatusesColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+			{
+				Symbol:  "antenatalinformations_risks_Antenatalinformation",
+				Columns: []*schema.Column{AntenatalinformationsColumns[6]},
+
+				RefColumns: []*schema.Column{RisksColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+		},
+	}
 	// BonediseasesColumns holds the columns for the "bonediseases" table.
 	BonediseasesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
@@ -250,6 +296,18 @@ var (
 		PrimaryKey:  []*schema.Column{PhysicaltherapyroomsColumns[0]},
 		ForeignKeys: []*schema.ForeignKey{},
 	}
+	// PregnancystatusesColumns holds the columns for the "pregnancystatuses" table.
+	PregnancystatusesColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "pregnancystatus", Type: field.TypeString},
+	}
+	// PregnancystatusesTable holds the schema information for the "pregnancystatuses" table.
+	PregnancystatusesTable = &schema.Table{
+		Name:        "pregnancystatuses",
+		Columns:     PregnancystatusesColumns,
+		PrimaryKey:  []*schema.Column{PregnancystatusesColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{},
+	}
 	// RemediesColumns holds the columns for the "remedies" table.
 	RemediesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
@@ -260,6 +318,18 @@ var (
 		Name:        "remedies",
 		Columns:     RemediesColumns,
 		PrimaryKey:  []*schema.Column{RemediesColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{},
+	}
+	// RisksColumns holds the columns for the "risks" table.
+	RisksColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "risks", Type: field.TypeString},
+	}
+	// RisksTable holds the schema information for the "risks" table.
+	RisksTable = &schema.Table{
+		Name:        "risks",
+		Columns:     RisksColumns,
+		PrimaryKey:  []*schema.Column{RisksColumns[0]},
 		ForeignKeys: []*schema.ForeignKey{},
 	}
 	// StatusColumns holds the columns for the "status" table.
@@ -317,6 +387,7 @@ var (
 	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
+		AntenatalinformationsTable,
 		BonediseasesTable,
 		ChecksymptomsTable,
 		DentalappointmentsTable,
@@ -327,7 +398,9 @@ var (
 		PersonnelsTable,
 		PhysicaltherapyrecordsTable,
 		PhysicaltherapyroomsTable,
+		PregnancystatusesTable,
 		RemediesTable,
+		RisksTable,
 		StatusTable,
 		SurgeryappointmentsTable,
 		SurgerytypesTable,
@@ -335,6 +408,10 @@ var (
 )
 
 func init() {
+	AntenatalinformationsTable.ForeignKeys[0].RefTable = PatientsTable
+	AntenatalinformationsTable.ForeignKeys[1].RefTable = PersonnelsTable
+	AntenatalinformationsTable.ForeignKeys[2].RefTable = PregnancystatusesTable
+	AntenatalinformationsTable.ForeignKeys[3].RefTable = RisksTable
 	BonediseasesTable.ForeignKeys[0].RefTable = PatientsTable
 	BonediseasesTable.ForeignKeys[1].RefTable = PersonnelsTable
 	BonediseasesTable.ForeignKeys[2].RefTable = RemediesTable

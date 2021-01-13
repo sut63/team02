@@ -24,6 +24,7 @@ type config struct {
 
 // hooks per client, for fast access.
 type hooks struct {
+	Antenatalinformation  []ent.Hook
 	Bonedisease           []ent.Hook
 	Checksymptoms         []ent.Hook
 	Dentalappointment     []ent.Hook
@@ -34,7 +35,9 @@ type hooks struct {
 	Personnel             []ent.Hook
 	Physicaltherapyrecord []ent.Hook
 	Physicaltherapyroom   []ent.Hook
+	Pregnancystatus       []ent.Hook
 	Remedy                []ent.Hook
+	Risks                 []ent.Hook
 	Status                []ent.Hook
 	Surgeryappointment    []ent.Hook
 	Surgerytype           []ent.Hook
