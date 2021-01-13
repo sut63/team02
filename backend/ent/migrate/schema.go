@@ -274,6 +274,47 @@ var (
 		PrimaryKey:  []*schema.Column{StatusColumns[0]},
 		ForeignKeys: []*schema.ForeignKey{},
 	}
+	// SurgeryappointmentsColumns holds the columns for the "surgeryappointments" table.
+	SurgeryappointmentsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "appoint_time", Type: field.TypeTime},
+		{Name: "Patient_id", Type: field.TypeInt, Nullable: true},
+		{Name: "Personnel_id", Type: field.TypeInt, Nullable: true},
+	}
+	// SurgeryappointmentsTable holds the schema information for the "surgeryappointments" table.
+	SurgeryappointmentsTable = &schema.Table{
+		Name:       "surgeryappointments",
+		Columns:    SurgeryappointmentsColumns,
+		PrimaryKey: []*schema.Column{SurgeryappointmentsColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:  "surgeryappointments_patients_Surgeryappointment",
+				Columns: []*schema.Column{SurgeryappointmentsColumns[2]},
+
+				RefColumns: []*schema.Column{PatientsColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+			{
+				Symbol:  "surgeryappointments_personnels_Surgeryappointment",
+				Columns: []*schema.Column{SurgeryappointmentsColumns[3]},
+
+				RefColumns: []*schema.Column{PersonnelsColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+		},
+	}
+	// SurgerytypesColumns holds the columns for the "surgerytypes" table.
+	SurgerytypesColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "typename", Type: field.TypeString},
+	}
+	// SurgerytypesTable holds the schema information for the "surgerytypes" table.
+	SurgerytypesTable = &schema.Table{
+		Name:        "surgerytypes",
+		Columns:     SurgerytypesColumns,
+		PrimaryKey:  []*schema.Column{SurgerytypesColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{},
+	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
 		BonediseasesTable,
@@ -288,6 +329,8 @@ var (
 		PhysicaltherapyroomsTable,
 		RemediesTable,
 		StatusTable,
+		SurgeryappointmentsTable,
+		SurgerytypesTable,
 	}
 )
 
@@ -306,4 +349,6 @@ func init() {
 	PhysicaltherapyrecordsTable.ForeignKeys[1].RefTable = PersonnelsTable
 	PhysicaltherapyrecordsTable.ForeignKeys[2].RefTable = PhysicaltherapyroomsTable
 	PhysicaltherapyrecordsTable.ForeignKeys[3].RefTable = StatusTable
+	SurgeryappointmentsTable.ForeignKeys[0].RefTable = PatientsTable
+	SurgeryappointmentsTable.ForeignKeys[1].RefTable = PersonnelsTable
 }

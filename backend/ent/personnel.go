@@ -38,9 +38,11 @@ type PersonnelEdges struct {
 	Checksymptoms []*Checksymptoms
 	// Dentalappointment holds the value of the Dentalappointment edge.
 	Dentalappointment []*Dentalappointment
+	// Surgeryappointment holds the value of the Surgeryappointment edge.
+	Surgeryappointment []*Surgeryappointment
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [4]bool
+	loadedTypes [5]bool
 }
 
 // PhysicaltherapyrecordOrErr returns the Physicaltherapyrecord value or an error if the edge
@@ -77,6 +79,15 @@ func (e PersonnelEdges) DentalappointmentOrErr() ([]*Dentalappointment, error) {
 		return e.Dentalappointment, nil
 	}
 	return nil, &NotLoadedError{edge: "Dentalappointment"}
+}
+
+// SurgeryappointmentOrErr returns the Surgeryappointment value or an error if the edge
+// was not loaded in eager-loading.
+func (e PersonnelEdges) SurgeryappointmentOrErr() ([]*Surgeryappointment, error) {
+	if e.loadedTypes[4] {
+		return e.Surgeryappointment, nil
+	}
+	return nil, &NotLoadedError{edge: "Surgeryappointment"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -156,6 +167,11 @@ func (pe *Personnel) QueryChecksymptoms() *ChecksymptomsQuery {
 // QueryDentalappointment queries the "Dentalappointment" edge of the Personnel entity.
 func (pe *Personnel) QueryDentalappointment() *DentalappointmentQuery {
 	return (&PersonnelClient{config: pe.config}).QueryDentalappointment(pe)
+}
+
+// QuerySurgeryappointment queries the "Surgeryappointment" edge of the Personnel entity.
+func (pe *Personnel) QuerySurgeryappointment() *SurgeryappointmentQuery {
+	return (&PersonnelClient{config: pe.config}).QuerySurgeryappointment(pe)
 }
 
 // Update returns a builder for updating this Personnel.

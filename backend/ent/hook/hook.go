@@ -165,6 +165,32 @@ func (f StatusFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, erro
 	return f(ctx, mv)
 }
 
+// The SurgeryappointmentFunc type is an adapter to allow the use of ordinary
+// function as Surgeryappointment mutator.
+type SurgeryappointmentFunc func(context.Context, *ent.SurgeryappointmentMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f SurgeryappointmentFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	mv, ok := m.(*ent.SurgeryappointmentMutation)
+	if !ok {
+		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.SurgeryappointmentMutation", m)
+	}
+	return f(ctx, mv)
+}
+
+// The SurgerytypeFunc type is an adapter to allow the use of ordinary
+// function as Surgerytype mutator.
+type SurgerytypeFunc func(context.Context, *ent.SurgerytypeMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f SurgerytypeFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	mv, ok := m.(*ent.SurgerytypeMutation)
+	if !ok {
+		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.SurgerytypeMutation", m)
+	}
+	return f(ctx, mv)
+}
+
 // Condition is a hook condition function.
 type Condition func(context.Context, ent.Mutation) bool
 
