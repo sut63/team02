@@ -1,8 +1,10 @@
 package schema
 
 import (
+	"time"
 	"github.com/facebook/ent"
 	"github.com/facebook/ent/schema/edge"
+	"github.com/facebook/ent/schema/field"
 )
 
 // Checksymptoms holds the schema definition for the Checksymptoms entity.
@@ -12,8 +14,9 @@ type Checksymptoms struct {
 
 // Fields of the Checksymptoms.
 func (Checksymptoms) Fields() []ent.Field {
-	return nil
-
+	return []ent.Field{
+		field.Time("date").Default(time.Now),
+	}
 }
 
 // Edges of the Checksymptoms.

@@ -95,6 +95,7 @@ var (
 	// ChecksymptomsColumns holds the columns for the "checksymptoms" table.
 	ChecksymptomsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "date", Type: field.TypeTime},
 		{Name: "Disease_id", Type: field.TypeInt, Nullable: true},
 		{Name: "DoctorOrderSheet_id", Type: field.TypeInt, Nullable: true},
 		{Name: "Patient_id", Type: field.TypeInt, Nullable: true},
@@ -108,28 +109,28 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:  "checksymptoms_diseases_Checksymptoms",
-				Columns: []*schema.Column{ChecksymptomsColumns[1]},
+				Columns: []*schema.Column{ChecksymptomsColumns[2]},
 
 				RefColumns: []*schema.Column{DiseasesColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:  "checksymptoms_doctor_order_sheets_Checksymptoms",
-				Columns: []*schema.Column{ChecksymptomsColumns[2]},
+				Columns: []*schema.Column{ChecksymptomsColumns[3]},
 
 				RefColumns: []*schema.Column{DoctorOrderSheetsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:  "checksymptoms_patients_Checksymptoms",
-				Columns: []*schema.Column{ChecksymptomsColumns[3]},
+				Columns: []*schema.Column{ChecksymptomsColumns[4]},
 
 				RefColumns: []*schema.Column{PatientsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:  "checksymptoms_personnels_Checksymptoms",
-				Columns: []*schema.Column{ChecksymptomsColumns[4]},
+				Columns: []*schema.Column{ChecksymptomsColumns[5]},
 
 				RefColumns: []*schema.Column{PersonnelsColumns[0]},
 				OnDelete:   schema.SetNull,
@@ -200,8 +201,9 @@ var (
 	// DoctorOrderSheetsColumns holds the columns for the "doctor_order_sheets" table.
 	DoctorOrderSheetsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
-		{Name: "date", Type: field.TypeTime},
+		{Name: "name", Type: field.TypeString},
 		{Name: "time", Type: field.TypeString},
+		{Name: "note", Type: field.TypeString},
 	}
 	// DoctorOrderSheetsTable holds the schema information for the "doctor_order_sheets" table.
 	DoctorOrderSheetsTable = &schema.Table{

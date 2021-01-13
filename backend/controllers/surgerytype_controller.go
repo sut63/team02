@@ -22,7 +22,7 @@ type SurgerytypeController struct {
 // @ID get-surgerytype
 // @Produce  json
 // @Param id path int true "surgerytype ID"
-// @Success 200 {object} ent.surgerytype
+// @Success 200 {object} ent.Surgerytype
 // @Failure 400 {object} gin.H
 // @Failure 404 {object} gin.H
 // @Failure 500 {object} gin.H

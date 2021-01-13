@@ -2,19 +2,17 @@
 
 package doctorordersheet
 
-import (
-	"time"
-)
-
 const (
 	// Label holds the string label denoting the doctorordersheet type in the database.
 	Label = "doctor_order_sheet"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
-	// FieldDate holds the string denoting the date field in the database.
-	FieldDate = "date"
+	// FieldName holds the string denoting the name field in the database.
+	FieldName = "name"
 	// FieldTime holds the string denoting the time field in the database.
 	FieldTime = "time"
+	// FieldNote holds the string denoting the note field in the database.
+	FieldNote = "note"
 
 	// EdgeChecksymptoms holds the string denoting the checksymptoms edge name in mutations.
 	EdgeChecksymptoms = "Checksymptoms"
@@ -33,8 +31,9 @@ const (
 // Columns holds all SQL columns for doctorordersheet fields.
 var Columns = []string{
 	FieldID,
-	FieldDate,
+	FieldName,
 	FieldTime,
+	FieldNote,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -48,8 +47,10 @@ func ValidColumn(column string) bool {
 }
 
 var (
-	// DefaultDate holds the default value on creation for the "date" field.
-	DefaultDate func() time.Time
+	// NameValidator is a validator for the "Name" field. It is called by the builders before save.
+	NameValidator func(string) error
 	// TimeValidator is a validator for the "time" field. It is called by the builders before save.
 	TimeValidator func(string) error
+	// NoteValidator is a validator for the "note" field. It is called by the builders before save.
+	NoteValidator func(string) error
 )

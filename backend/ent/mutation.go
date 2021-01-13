@@ -1215,6 +1215,7 @@ type ChecksymptomsMutation struct {
 	op                      Op
 	typ                     string
 	id                      *int
+	date                    *time.Time
 	clearedFields           map[string]struct{}
 	disease                 *int
 	cleareddisease          bool
@@ -1306,6 +1307,42 @@ func (m *ChecksymptomsMutation) ID() (id int, exists bool) {
 		return
 	}
 	return *m.id, true
+}
+
+// SetDate sets the "date" field.
+func (m *ChecksymptomsMutation) SetDate(t time.Time) {
+	m.date = &t
+}
+
+// Date returns the value of the "date" field in the mutation.
+func (m *ChecksymptomsMutation) Date() (r time.Time, exists bool) {
+	v := m.date
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDate returns the old "date" field's value of the Checksymptoms entity.
+// If the Checksymptoms object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ChecksymptomsMutation) OldDate(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldDate is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldDate requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDate: %w", err)
+	}
+	return oldValue.Date, nil
+}
+
+// ResetDate resets all changes to the "date" field.
+func (m *ChecksymptomsMutation) ResetDate() {
+	m.date = nil
 }
 
 // SetDiseaseID sets the "disease" edge to the Disease entity by id.
@@ -1478,7 +1515,10 @@ func (m *ChecksymptomsMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *ChecksymptomsMutation) Fields() []string {
-	fields := make([]string, 0, 0)
+	fields := make([]string, 0, 1)
+	if m.date != nil {
+		fields = append(fields, checksymptoms.FieldDate)
+	}
 	return fields
 }
 
@@ -1486,6 +1526,10 @@ func (m *ChecksymptomsMutation) Fields() []string {
 // return value indicates that this field was not set, or was not defined in the
 // schema.
 func (m *ChecksymptomsMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case checksymptoms.FieldDate:
+		return m.Date()
+	}
 	return nil, false
 }
 
@@ -1493,6 +1537,10 @@ func (m *ChecksymptomsMutation) Field(name string) (ent.Value, bool) {
 // returned if the mutation operation is not UpdateOne, or the query to the
 // database failed.
 func (m *ChecksymptomsMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case checksymptoms.FieldDate:
+		return m.OldDate(ctx)
+	}
 	return nil, fmt.Errorf("unknown Checksymptoms field %s", name)
 }
 
@@ -1501,6 +1549,13 @@ func (m *ChecksymptomsMutation) OldField(ctx context.Context, name string) (ent.
 // type.
 func (m *ChecksymptomsMutation) SetField(name string, value ent.Value) error {
 	switch name {
+	case checksymptoms.FieldDate:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDate(v)
+		return nil
 	}
 	return fmt.Errorf("unknown Checksymptoms field %s", name)
 }
@@ -1522,6 +1577,8 @@ func (m *ChecksymptomsMutation) AddedField(name string) (ent.Value, bool) {
 // the field is not defined in the schema, or if the type mismatched the field
 // type.
 func (m *ChecksymptomsMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	}
 	return fmt.Errorf("unknown Checksymptoms numeric field %s", name)
 }
 
@@ -1547,6 +1604,11 @@ func (m *ChecksymptomsMutation) ClearField(name string) error {
 // ResetField resets all changes in the mutation for the field with the given name.
 // It returns an error if the field is not defined in the schema.
 func (m *ChecksymptomsMutation) ResetField(name string) error {
+	switch name {
+	case checksymptoms.FieldDate:
+		m.ResetDate()
+		return nil
+	}
 	return fmt.Errorf("unknown Checksymptoms field %s", name)
 }
 
@@ -2918,8 +2980,9 @@ type DoctorOrderSheetMutation struct {
 	op                    Op
 	typ                   string
 	id                    *int
-	date                  *time.Time
+	_Name                 *string
 	time                  *string
+	note                  *string
 	clearedFields         map[string]struct{}
 	_Checksymptoms        map[int]struct{}
 	removed_Checksymptoms map[int]struct{}
@@ -3008,40 +3071,40 @@ func (m *DoctorOrderSheetMutation) ID() (id int, exists bool) {
 	return *m.id, true
 }
 
-// SetDate sets the "date" field.
-func (m *DoctorOrderSheetMutation) SetDate(t time.Time) {
-	m.date = &t
+// SetName sets the "Name" field.
+func (m *DoctorOrderSheetMutation) SetName(s string) {
+	m._Name = &s
 }
 
-// Date returns the value of the "date" field in the mutation.
-func (m *DoctorOrderSheetMutation) Date() (r time.Time, exists bool) {
-	v := m.date
+// Name returns the value of the "Name" field in the mutation.
+func (m *DoctorOrderSheetMutation) Name() (r string, exists bool) {
+	v := m._Name
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldDate returns the old "date" field's value of the DoctorOrderSheet entity.
+// OldName returns the old "Name" field's value of the DoctorOrderSheet entity.
 // If the DoctorOrderSheet object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *DoctorOrderSheetMutation) OldDate(ctx context.Context) (v time.Time, err error) {
+func (m *DoctorOrderSheetMutation) OldName(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, fmt.Errorf("OldDate is only allowed on UpdateOne operations")
+		return v, fmt.Errorf("OldName is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, fmt.Errorf("OldDate requires an ID field in the mutation")
+		return v, fmt.Errorf("OldName requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldDate: %w", err)
+		return v, fmt.Errorf("querying old value for OldName: %w", err)
 	}
-	return oldValue.Date, nil
+	return oldValue.Name, nil
 }
 
-// ResetDate resets all changes to the "date" field.
-func (m *DoctorOrderSheetMutation) ResetDate() {
-	m.date = nil
+// ResetName resets all changes to the "Name" field.
+func (m *DoctorOrderSheetMutation) ResetName() {
+	m._Name = nil
 }
 
 // SetTime sets the "time" field.
@@ -3078,6 +3141,42 @@ func (m *DoctorOrderSheetMutation) OldTime(ctx context.Context) (v string, err e
 // ResetTime resets all changes to the "time" field.
 func (m *DoctorOrderSheetMutation) ResetTime() {
 	m.time = nil
+}
+
+// SetNote sets the "note" field.
+func (m *DoctorOrderSheetMutation) SetNote(s string) {
+	m.note = &s
+}
+
+// Note returns the value of the "note" field in the mutation.
+func (m *DoctorOrderSheetMutation) Note() (r string, exists bool) {
+	v := m.note
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldNote returns the old "note" field's value of the DoctorOrderSheet entity.
+// If the DoctorOrderSheet object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *DoctorOrderSheetMutation) OldNote(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldNote is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldNote requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldNote: %w", err)
+	}
+	return oldValue.Note, nil
+}
+
+// ResetNote resets all changes to the "note" field.
+func (m *DoctorOrderSheetMutation) ResetNote() {
+	m.note = nil
 }
 
 // AddChecksymptomIDs adds the "Checksymptoms" edge to the Checksymptoms entity by ids.
@@ -3147,12 +3246,15 @@ func (m *DoctorOrderSheetMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *DoctorOrderSheetMutation) Fields() []string {
-	fields := make([]string, 0, 2)
-	if m.date != nil {
-		fields = append(fields, doctorordersheet.FieldDate)
+	fields := make([]string, 0, 3)
+	if m._Name != nil {
+		fields = append(fields, doctorordersheet.FieldName)
 	}
 	if m.time != nil {
 		fields = append(fields, doctorordersheet.FieldTime)
+	}
+	if m.note != nil {
+		fields = append(fields, doctorordersheet.FieldNote)
 	}
 	return fields
 }
@@ -3162,10 +3264,12 @@ func (m *DoctorOrderSheetMutation) Fields() []string {
 // schema.
 func (m *DoctorOrderSheetMutation) Field(name string) (ent.Value, bool) {
 	switch name {
-	case doctorordersheet.FieldDate:
-		return m.Date()
+	case doctorordersheet.FieldName:
+		return m.Name()
 	case doctorordersheet.FieldTime:
 		return m.Time()
+	case doctorordersheet.FieldNote:
+		return m.Note()
 	}
 	return nil, false
 }
@@ -3175,10 +3279,12 @@ func (m *DoctorOrderSheetMutation) Field(name string) (ent.Value, bool) {
 // database failed.
 func (m *DoctorOrderSheetMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
 	switch name {
-	case doctorordersheet.FieldDate:
-		return m.OldDate(ctx)
+	case doctorordersheet.FieldName:
+		return m.OldName(ctx)
 	case doctorordersheet.FieldTime:
 		return m.OldTime(ctx)
+	case doctorordersheet.FieldNote:
+		return m.OldNote(ctx)
 	}
 	return nil, fmt.Errorf("unknown DoctorOrderSheet field %s", name)
 }
@@ -3188,12 +3294,12 @@ func (m *DoctorOrderSheetMutation) OldField(ctx context.Context, name string) (e
 // type.
 func (m *DoctorOrderSheetMutation) SetField(name string, value ent.Value) error {
 	switch name {
-	case doctorordersheet.FieldDate:
-		v, ok := value.(time.Time)
+	case doctorordersheet.FieldName:
+		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetDate(v)
+		m.SetName(v)
 		return nil
 	case doctorordersheet.FieldTime:
 		v, ok := value.(string)
@@ -3201,6 +3307,13 @@ func (m *DoctorOrderSheetMutation) SetField(name string, value ent.Value) error 
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetTime(v)
+		return nil
+	case doctorordersheet.FieldNote:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetNote(v)
 		return nil
 	}
 	return fmt.Errorf("unknown DoctorOrderSheet field %s", name)
@@ -3251,11 +3364,14 @@ func (m *DoctorOrderSheetMutation) ClearField(name string) error {
 // It returns an error if the field is not defined in the schema.
 func (m *DoctorOrderSheetMutation) ResetField(name string) error {
 	switch name {
-	case doctorordersheet.FieldDate:
-		m.ResetDate()
+	case doctorordersheet.FieldName:
+		m.ResetName()
 		return nil
 	case doctorordersheet.FieldTime:
 		m.ResetTime()
+		return nil
+	case doctorordersheet.FieldNote:
+		m.ResetNote()
 		return nil
 	}
 	return fmt.Errorf("unknown DoctorOrderSheet field %s", name)

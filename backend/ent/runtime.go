@@ -7,6 +7,7 @@ import (
 
 	"github.com/to63/app/ent/antenatalinformation"
 	"github.com/to63/app/ent/bonedisease"
+	"github.com/to63/app/ent/checksymptoms"
 	"github.com/to63/app/ent/disease"
 	"github.com/to63/app/ent/doctorordersheet"
 	"github.com/to63/app/ent/patient"
@@ -40,6 +41,12 @@ func init() {
 	bonediseaseDescAdvice := bonediseaseFields[1].Descriptor()
 	// bonedisease.AdviceValidator is a validator for the "advice" field. It is called by the builders before save.
 	bonedisease.AdviceValidator = bonediseaseDescAdvice.Validators[0].(func(string) error)
+	checksymptomsFields := schema.Checksymptoms{}.Fields()
+	_ = checksymptomsFields
+	// checksymptomsDescDate is the schema descriptor for date field.
+	checksymptomsDescDate := checksymptomsFields[0].Descriptor()
+	// checksymptoms.DefaultDate holds the default value on creation for the date field.
+	checksymptoms.DefaultDate = checksymptomsDescDate.Default.(func() time.Time)
 	diseaseFields := schema.Disease{}.Fields()
 	_ = diseaseFields
 	// diseaseDescName is the schema descriptor for name field.
@@ -48,14 +55,18 @@ func init() {
 	disease.NameValidator = diseaseDescName.Validators[0].(func(string) error)
 	doctorordersheetFields := schema.DoctorOrderSheet{}.Fields()
 	_ = doctorordersheetFields
-	// doctorordersheetDescDate is the schema descriptor for date field.
-	doctorordersheetDescDate := doctorordersheetFields[0].Descriptor()
-	// doctorordersheet.DefaultDate holds the default value on creation for the date field.
-	doctorordersheet.DefaultDate = doctorordersheetDescDate.Default.(func() time.Time)
+	// doctorordersheetDescName is the schema descriptor for Name field.
+	doctorordersheetDescName := doctorordersheetFields[0].Descriptor()
+	// doctorordersheet.NameValidator is a validator for the "Name" field. It is called by the builders before save.
+	doctorordersheet.NameValidator = doctorordersheetDescName.Validators[0].(func(string) error)
 	// doctorordersheetDescTime is the schema descriptor for time field.
 	doctorordersheetDescTime := doctorordersheetFields[1].Descriptor()
 	// doctorordersheet.TimeValidator is a validator for the "time" field. It is called by the builders before save.
 	doctorordersheet.TimeValidator = doctorordersheetDescTime.Validators[0].(func(string) error)
+	// doctorordersheetDescNote is the schema descriptor for note field.
+	doctorordersheetDescNote := doctorordersheetFields[2].Descriptor()
+	// doctorordersheet.NoteValidator is a validator for the "note" field. It is called by the builders before save.
+	doctorordersheet.NoteValidator = doctorordersheetDescNote.Validators[0].(func(string) error)
 	patientFields := schema.Patient{}.Fields()
 	_ = patientFields
 	// patientDescName is the schema descriptor for name field.

@@ -5,7 +5,6 @@ package ent
 import (
 	"context"
 	"fmt"
-	"time"
 
 	"github.com/facebook/ent/dialect/sql"
 	"github.com/facebook/ent/dialect/sql/sqlgraph"
@@ -28,23 +27,21 @@ func (dosu *DoctorOrderSheetUpdate) Where(ps ...predicate.DoctorOrderSheet) *Doc
 	return dosu
 }
 
-// SetDate sets the "date" field.
-func (dosu *DoctorOrderSheetUpdate) SetDate(t time.Time) *DoctorOrderSheetUpdate {
-	dosu.mutation.SetDate(t)
-	return dosu
-}
-
-// SetNillableDate sets the "date" field if the given value is not nil.
-func (dosu *DoctorOrderSheetUpdate) SetNillableDate(t *time.Time) *DoctorOrderSheetUpdate {
-	if t != nil {
-		dosu.SetDate(*t)
-	}
+// SetName sets the "Name" field.
+func (dosu *DoctorOrderSheetUpdate) SetName(s string) *DoctorOrderSheetUpdate {
+	dosu.mutation.SetName(s)
 	return dosu
 }
 
 // SetTime sets the "time" field.
 func (dosu *DoctorOrderSheetUpdate) SetTime(s string) *DoctorOrderSheetUpdate {
 	dosu.mutation.SetTime(s)
+	return dosu
+}
+
+// SetNote sets the "note" field.
+func (dosu *DoctorOrderSheetUpdate) SetNote(s string) *DoctorOrderSheetUpdate {
+	dosu.mutation.SetNote(s)
 	return dosu
 }
 
@@ -148,9 +145,19 @@ func (dosu *DoctorOrderSheetUpdate) ExecX(ctx context.Context) {
 
 // check runs all checks and user-defined validators on the builder.
 func (dosu *DoctorOrderSheetUpdate) check() error {
+	if v, ok := dosu.mutation.Name(); ok {
+		if err := doctorordersheet.NameValidator(v); err != nil {
+			return &ValidationError{Name: "Name", err: fmt.Errorf("ent: validator failed for field \"Name\": %w", err)}
+		}
+	}
 	if v, ok := dosu.mutation.Time(); ok {
 		if err := doctorordersheet.TimeValidator(v); err != nil {
 			return &ValidationError{Name: "time", err: fmt.Errorf("ent: validator failed for field \"time\": %w", err)}
+		}
+	}
+	if v, ok := dosu.mutation.Note(); ok {
+		if err := doctorordersheet.NoteValidator(v); err != nil {
+			return &ValidationError{Name: "note", err: fmt.Errorf("ent: validator failed for field \"note\": %w", err)}
 		}
 	}
 	return nil
@@ -174,11 +181,11 @@ func (dosu *DoctorOrderSheetUpdate) sqlSave(ctx context.Context) (n int, err err
 			}
 		}
 	}
-	if value, ok := dosu.mutation.Date(); ok {
+	if value, ok := dosu.mutation.Name(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeTime,
+			Type:   field.TypeString,
 			Value:  value,
-			Column: doctorordersheet.FieldDate,
+			Column: doctorordersheet.FieldName,
 		})
 	}
 	if value, ok := dosu.mutation.Time(); ok {
@@ -186,6 +193,13 @@ func (dosu *DoctorOrderSheetUpdate) sqlSave(ctx context.Context) (n int, err err
 			Type:   field.TypeString,
 			Value:  value,
 			Column: doctorordersheet.FieldTime,
+		})
+	}
+	if value, ok := dosu.mutation.Note(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: doctorordersheet.FieldNote,
 		})
 	}
 	if dosu.mutation.ChecksymptomsCleared() {
@@ -260,23 +274,21 @@ type DoctorOrderSheetUpdateOne struct {
 	mutation *DoctorOrderSheetMutation
 }
 
-// SetDate sets the "date" field.
-func (dosuo *DoctorOrderSheetUpdateOne) SetDate(t time.Time) *DoctorOrderSheetUpdateOne {
-	dosuo.mutation.SetDate(t)
-	return dosuo
-}
-
-// SetNillableDate sets the "date" field if the given value is not nil.
-func (dosuo *DoctorOrderSheetUpdateOne) SetNillableDate(t *time.Time) *DoctorOrderSheetUpdateOne {
-	if t != nil {
-		dosuo.SetDate(*t)
-	}
+// SetName sets the "Name" field.
+func (dosuo *DoctorOrderSheetUpdateOne) SetName(s string) *DoctorOrderSheetUpdateOne {
+	dosuo.mutation.SetName(s)
 	return dosuo
 }
 
 // SetTime sets the "time" field.
 func (dosuo *DoctorOrderSheetUpdateOne) SetTime(s string) *DoctorOrderSheetUpdateOne {
 	dosuo.mutation.SetTime(s)
+	return dosuo
+}
+
+// SetNote sets the "note" field.
+func (dosuo *DoctorOrderSheetUpdateOne) SetNote(s string) *DoctorOrderSheetUpdateOne {
+	dosuo.mutation.SetNote(s)
 	return dosuo
 }
 
@@ -380,9 +392,19 @@ func (dosuo *DoctorOrderSheetUpdateOne) ExecX(ctx context.Context) {
 
 // check runs all checks and user-defined validators on the builder.
 func (dosuo *DoctorOrderSheetUpdateOne) check() error {
+	if v, ok := dosuo.mutation.Name(); ok {
+		if err := doctorordersheet.NameValidator(v); err != nil {
+			return &ValidationError{Name: "Name", err: fmt.Errorf("ent: validator failed for field \"Name\": %w", err)}
+		}
+	}
 	if v, ok := dosuo.mutation.Time(); ok {
 		if err := doctorordersheet.TimeValidator(v); err != nil {
 			return &ValidationError{Name: "time", err: fmt.Errorf("ent: validator failed for field \"time\": %w", err)}
+		}
+	}
+	if v, ok := dosuo.mutation.Note(); ok {
+		if err := doctorordersheet.NoteValidator(v); err != nil {
+			return &ValidationError{Name: "note", err: fmt.Errorf("ent: validator failed for field \"note\": %w", err)}
 		}
 	}
 	return nil
@@ -404,11 +426,11 @@ func (dosuo *DoctorOrderSheetUpdateOne) sqlSave(ctx context.Context) (_node *Doc
 		return nil, &ValidationError{Name: "ID", err: fmt.Errorf("missing DoctorOrderSheet.ID for update")}
 	}
 	_spec.Node.ID.Value = id
-	if value, ok := dosuo.mutation.Date(); ok {
+	if value, ok := dosuo.mutation.Name(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeTime,
+			Type:   field.TypeString,
 			Value:  value,
-			Column: doctorordersheet.FieldDate,
+			Column: doctorordersheet.FieldName,
 		})
 	}
 	if value, ok := dosuo.mutation.Time(); ok {
@@ -416,6 +438,13 @@ func (dosuo *DoctorOrderSheetUpdateOne) sqlSave(ctx context.Context) (_node *Doc
 			Type:   field.TypeString,
 			Value:  value,
 			Column: doctorordersheet.FieldTime,
+		})
+	}
+	if value, ok := dosuo.mutation.Note(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: doctorordersheet.FieldNote,
 		})
 	}
 	if dosuo.mutation.ChecksymptomsCleared() {

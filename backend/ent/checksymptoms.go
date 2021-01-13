@@ -5,6 +5,7 @@ package ent
 import (
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/facebook/ent/dialect/sql"
 	"github.com/to63/app/ent/checksymptoms"
@@ -16,9 +17,11 @@ import (
 
 // Checksymptoms is the model entity for the Checksymptoms schema.
 type Checksymptoms struct {
-	config
+	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
+	// Date holds the value of the "date" field.
+	Date time.Time `json:"date,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the ChecksymptomsQuery when eager-loading is set.
 	Edges                ChecksymptomsEdges `json:"edges"`
@@ -106,6 +109,8 @@ func (*Checksymptoms) scanValues(columns []string) ([]interface{}, error) {
 		switch columns[i] {
 		case checksymptoms.FieldID:
 			values[i] = &sql.NullInt64{}
+		case checksymptoms.FieldDate:
+			values[i] = &sql.NullTime{}
 		case checksymptoms.ForeignKeys[0]: // _Disease_id
 			values[i] = &sql.NullInt64{}
 		case checksymptoms.ForeignKeys[1]: // _DoctorOrderSheet_id
@@ -135,6 +140,12 @@ func (c *Checksymptoms) assignValues(columns []string, values []interface{}) err
 				return fmt.Errorf("unexpected type %T for field id", value)
 			}
 			c.ID = int(value.Int64)
+		case checksymptoms.FieldDate:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field date", values[i])
+			} else if value.Valid {
+				c.Date = value.Time
+			}
 		case checksymptoms.ForeignKeys[0]:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for edge-field _Disease_id", value)
@@ -211,6 +222,8 @@ func (c *Checksymptoms) String() string {
 	var builder strings.Builder
 	builder.WriteString("Checksymptoms(")
 	builder.WriteString(fmt.Sprintf("id=%v", c.ID))
+	builder.WriteString(", date=")
+	builder.WriteString(c.Date.Format(time.ANSIC))
 	builder.WriteByte(')')
 	return builder.String()
 }

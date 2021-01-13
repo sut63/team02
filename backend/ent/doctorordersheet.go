@@ -5,7 +5,6 @@ package ent
 import (
 	"fmt"
 	"strings"
-	"time"
 
 	"github.com/facebook/ent/dialect/sql"
 	"github.com/to63/app/ent/doctorordersheet"
@@ -16,10 +15,12 @@ type DoctorOrderSheet struct {
 	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
-	// Date holds the value of the "date" field.
-	Date time.Time `json:"date,omitempty"`
+	// Name holds the value of the "Name" field.
+	Name string `json:"Name,omitempty"`
 	// Time holds the value of the "time" field.
 	Time string `json:"time,omitempty"`
+	// Note holds the value of the "note" field.
+	Note string `json:"note,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the DoctorOrderSheetQuery when eager-loading is set.
 	Edges DoctorOrderSheetEdges `json:"edges"`
@@ -50,10 +51,8 @@ func (*DoctorOrderSheet) scanValues(columns []string) ([]interface{}, error) {
 		switch columns[i] {
 		case doctorordersheet.FieldID:
 			values[i] = &sql.NullInt64{}
-		case doctorordersheet.FieldTime:
+		case doctorordersheet.FieldName, doctorordersheet.FieldTime, doctorordersheet.FieldNote:
 			values[i] = &sql.NullString{}
-		case doctorordersheet.FieldDate:
-			values[i] = &sql.NullTime{}
 		default:
 			return nil, fmt.Errorf("unexpected column %q for type DoctorOrderSheet", columns[i])
 		}
@@ -75,17 +74,23 @@ func (dos *DoctorOrderSheet) assignValues(columns []string, values []interface{}
 				return fmt.Errorf("unexpected type %T for field id", value)
 			}
 			dos.ID = int(value.Int64)
-		case doctorordersheet.FieldDate:
-			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field date", values[i])
+		case doctorordersheet.FieldName:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field Name", values[i])
 			} else if value.Valid {
-				dos.Date = value.Time
+				dos.Name = value.String
 			}
 		case doctorordersheet.FieldTime:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field time", values[i])
 			} else if value.Valid {
 				dos.Time = value.String
+			}
+		case doctorordersheet.FieldNote:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field note", values[i])
+			} else if value.Valid {
+				dos.Note = value.String
 			}
 		}
 	}
@@ -120,10 +125,12 @@ func (dos *DoctorOrderSheet) String() string {
 	var builder strings.Builder
 	builder.WriteString("DoctorOrderSheet(")
 	builder.WriteString(fmt.Sprintf("id=%v", dos.ID))
-	builder.WriteString(", date=")
-	builder.WriteString(dos.Date.Format(time.ANSIC))
+	builder.WriteString(", Name=")
+	builder.WriteString(dos.Name)
 	builder.WriteString(", time=")
 	builder.WriteString(dos.Time)
+	builder.WriteString(", note=")
+	builder.WriteString(dos.Note)
 	builder.WriteByte(')')
 	return builder.String()
 }

@@ -283,12 +283,12 @@ func (dosq *DoctorOrderSheetQuery) WithChecksymptoms(opts ...func(*Checksymptoms
 // Example:
 //
 //	var v []struct {
-//		Date time.Time `json:"date,omitempty"`
+//		Name string `json:"Name,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
 //	client.DoctorOrderSheet.Query().
-//		GroupBy(doctorordersheet.FieldDate).
+//		GroupBy(doctorordersheet.FieldName).
 //		Aggregate(ent.Count()).
 //		Scan(ctx, &v)
 //
@@ -310,11 +310,11 @@ func (dosq *DoctorOrderSheetQuery) GroupBy(field string, fields ...string) *Doct
 // Example:
 //
 //	var v []struct {
-//		Date time.Time `json:"date,omitempty"`
+//		Name string `json:"Name,omitempty"`
 //	}
 //
 //	client.DoctorOrderSheet.Query().
-//		Select(doctorordersheet.FieldDate).
+//		Select(doctorordersheet.FieldName).
 //		Scan(ctx, &v)
 //
 func (dosq *DoctorOrderSheetQuery) Select(field string, fields ...string) *DoctorOrderSheetSelect {

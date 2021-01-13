@@ -3,8 +3,6 @@
 package doctorordersheet
 
 import (
-	"time"
-
 	"github.com/facebook/ent/dialect/sql"
 	"github.com/facebook/ent/dialect/sql/sqlgraph"
 	"github.com/to63/app/ent/predicate"
@@ -93,10 +91,10 @@ func IDLTE(id int) predicate.DoctorOrderSheet {
 	})
 }
 
-// Date applies equality check predicate on the "date" field. It's identical to DateEQ.
-func Date(v time.Time) predicate.DoctorOrderSheet {
+// Name applies equality check predicate on the "Name" field. It's identical to NameEQ.
+func Name(v string) predicate.DoctorOrderSheet {
 	return predicate.DoctorOrderSheet(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldDate), v))
+		s.Where(sql.EQ(s.C(FieldName), v))
 	})
 }
 
@@ -107,22 +105,29 @@ func Time(v string) predicate.DoctorOrderSheet {
 	})
 }
 
-// DateEQ applies the EQ predicate on the "date" field.
-func DateEQ(v time.Time) predicate.DoctorOrderSheet {
+// Note applies equality check predicate on the "note" field. It's identical to NoteEQ.
+func Note(v string) predicate.DoctorOrderSheet {
 	return predicate.DoctorOrderSheet(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldDate), v))
+		s.Where(sql.EQ(s.C(FieldNote), v))
 	})
 }
 
-// DateNEQ applies the NEQ predicate on the "date" field.
-func DateNEQ(v time.Time) predicate.DoctorOrderSheet {
+// NameEQ applies the EQ predicate on the "Name" field.
+func NameEQ(v string) predicate.DoctorOrderSheet {
 	return predicate.DoctorOrderSheet(func(s *sql.Selector) {
-		s.Where(sql.NEQ(s.C(FieldDate), v))
+		s.Where(sql.EQ(s.C(FieldName), v))
 	})
 }
 
-// DateIn applies the In predicate on the "date" field.
-func DateIn(vs ...time.Time) predicate.DoctorOrderSheet {
+// NameNEQ applies the NEQ predicate on the "Name" field.
+func NameNEQ(v string) predicate.DoctorOrderSheet {
+	return predicate.DoctorOrderSheet(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldName), v))
+	})
+}
+
+// NameIn applies the In predicate on the "Name" field.
+func NameIn(vs ...string) predicate.DoctorOrderSheet {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -134,12 +139,12 @@ func DateIn(vs ...time.Time) predicate.DoctorOrderSheet {
 			s.Where(sql.False())
 			return
 		}
-		s.Where(sql.In(s.C(FieldDate), v...))
+		s.Where(sql.In(s.C(FieldName), v...))
 	})
 }
 
-// DateNotIn applies the NotIn predicate on the "date" field.
-func DateNotIn(vs ...time.Time) predicate.DoctorOrderSheet {
+// NameNotIn applies the NotIn predicate on the "Name" field.
+func NameNotIn(vs ...string) predicate.DoctorOrderSheet {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -151,35 +156,70 @@ func DateNotIn(vs ...time.Time) predicate.DoctorOrderSheet {
 			s.Where(sql.False())
 			return
 		}
-		s.Where(sql.NotIn(s.C(FieldDate), v...))
+		s.Where(sql.NotIn(s.C(FieldName), v...))
 	})
 }
 
-// DateGT applies the GT predicate on the "date" field.
-func DateGT(v time.Time) predicate.DoctorOrderSheet {
+// NameGT applies the GT predicate on the "Name" field.
+func NameGT(v string) predicate.DoctorOrderSheet {
 	return predicate.DoctorOrderSheet(func(s *sql.Selector) {
-		s.Where(sql.GT(s.C(FieldDate), v))
+		s.Where(sql.GT(s.C(FieldName), v))
 	})
 }
 
-// DateGTE applies the GTE predicate on the "date" field.
-func DateGTE(v time.Time) predicate.DoctorOrderSheet {
+// NameGTE applies the GTE predicate on the "Name" field.
+func NameGTE(v string) predicate.DoctorOrderSheet {
 	return predicate.DoctorOrderSheet(func(s *sql.Selector) {
-		s.Where(sql.GTE(s.C(FieldDate), v))
+		s.Where(sql.GTE(s.C(FieldName), v))
 	})
 }
 
-// DateLT applies the LT predicate on the "date" field.
-func DateLT(v time.Time) predicate.DoctorOrderSheet {
+// NameLT applies the LT predicate on the "Name" field.
+func NameLT(v string) predicate.DoctorOrderSheet {
 	return predicate.DoctorOrderSheet(func(s *sql.Selector) {
-		s.Where(sql.LT(s.C(FieldDate), v))
+		s.Where(sql.LT(s.C(FieldName), v))
 	})
 }
 
-// DateLTE applies the LTE predicate on the "date" field.
-func DateLTE(v time.Time) predicate.DoctorOrderSheet {
+// NameLTE applies the LTE predicate on the "Name" field.
+func NameLTE(v string) predicate.DoctorOrderSheet {
 	return predicate.DoctorOrderSheet(func(s *sql.Selector) {
-		s.Where(sql.LTE(s.C(FieldDate), v))
+		s.Where(sql.LTE(s.C(FieldName), v))
+	})
+}
+
+// NameContains applies the Contains predicate on the "Name" field.
+func NameContains(v string) predicate.DoctorOrderSheet {
+	return predicate.DoctorOrderSheet(func(s *sql.Selector) {
+		s.Where(sql.Contains(s.C(FieldName), v))
+	})
+}
+
+// NameHasPrefix applies the HasPrefix predicate on the "Name" field.
+func NameHasPrefix(v string) predicate.DoctorOrderSheet {
+	return predicate.DoctorOrderSheet(func(s *sql.Selector) {
+		s.Where(sql.HasPrefix(s.C(FieldName), v))
+	})
+}
+
+// NameHasSuffix applies the HasSuffix predicate on the "Name" field.
+func NameHasSuffix(v string) predicate.DoctorOrderSheet {
+	return predicate.DoctorOrderSheet(func(s *sql.Selector) {
+		s.Where(sql.HasSuffix(s.C(FieldName), v))
+	})
+}
+
+// NameEqualFold applies the EqualFold predicate on the "Name" field.
+func NameEqualFold(v string) predicate.DoctorOrderSheet {
+	return predicate.DoctorOrderSheet(func(s *sql.Selector) {
+		s.Where(sql.EqualFold(s.C(FieldName), v))
+	})
+}
+
+// NameContainsFold applies the ContainsFold predicate on the "Name" field.
+func NameContainsFold(v string) predicate.DoctorOrderSheet {
+	return predicate.DoctorOrderSheet(func(s *sql.Selector) {
+		s.Where(sql.ContainsFold(s.C(FieldName), v))
 	})
 }
 
@@ -291,6 +331,117 @@ func TimeEqualFold(v string) predicate.DoctorOrderSheet {
 func TimeContainsFold(v string) predicate.DoctorOrderSheet {
 	return predicate.DoctorOrderSheet(func(s *sql.Selector) {
 		s.Where(sql.ContainsFold(s.C(FieldTime), v))
+	})
+}
+
+// NoteEQ applies the EQ predicate on the "note" field.
+func NoteEQ(v string) predicate.DoctorOrderSheet {
+	return predicate.DoctorOrderSheet(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldNote), v))
+	})
+}
+
+// NoteNEQ applies the NEQ predicate on the "note" field.
+func NoteNEQ(v string) predicate.DoctorOrderSheet {
+	return predicate.DoctorOrderSheet(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldNote), v))
+	})
+}
+
+// NoteIn applies the In predicate on the "note" field.
+func NoteIn(vs ...string) predicate.DoctorOrderSheet {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.DoctorOrderSheet(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.In(s.C(FieldNote), v...))
+	})
+}
+
+// NoteNotIn applies the NotIn predicate on the "note" field.
+func NoteNotIn(vs ...string) predicate.DoctorOrderSheet {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.DoctorOrderSheet(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.NotIn(s.C(FieldNote), v...))
+	})
+}
+
+// NoteGT applies the GT predicate on the "note" field.
+func NoteGT(v string) predicate.DoctorOrderSheet {
+	return predicate.DoctorOrderSheet(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldNote), v))
+	})
+}
+
+// NoteGTE applies the GTE predicate on the "note" field.
+func NoteGTE(v string) predicate.DoctorOrderSheet {
+	return predicate.DoctorOrderSheet(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldNote), v))
+	})
+}
+
+// NoteLT applies the LT predicate on the "note" field.
+func NoteLT(v string) predicate.DoctorOrderSheet {
+	return predicate.DoctorOrderSheet(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldNote), v))
+	})
+}
+
+// NoteLTE applies the LTE predicate on the "note" field.
+func NoteLTE(v string) predicate.DoctorOrderSheet {
+	return predicate.DoctorOrderSheet(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldNote), v))
+	})
+}
+
+// NoteContains applies the Contains predicate on the "note" field.
+func NoteContains(v string) predicate.DoctorOrderSheet {
+	return predicate.DoctorOrderSheet(func(s *sql.Selector) {
+		s.Where(sql.Contains(s.C(FieldNote), v))
+	})
+}
+
+// NoteHasPrefix applies the HasPrefix predicate on the "note" field.
+func NoteHasPrefix(v string) predicate.DoctorOrderSheet {
+	return predicate.DoctorOrderSheet(func(s *sql.Selector) {
+		s.Where(sql.HasPrefix(s.C(FieldNote), v))
+	})
+}
+
+// NoteHasSuffix applies the HasSuffix predicate on the "note" field.
+func NoteHasSuffix(v string) predicate.DoctorOrderSheet {
+	return predicate.DoctorOrderSheet(func(s *sql.Selector) {
+		s.Where(sql.HasSuffix(s.C(FieldNote), v))
+	})
+}
+
+// NoteEqualFold applies the EqualFold predicate on the "note" field.
+func NoteEqualFold(v string) predicate.DoctorOrderSheet {
+	return predicate.DoctorOrderSheet(func(s *sql.Selector) {
+		s.Where(sql.EqualFold(s.C(FieldNote), v))
+	})
+}
+
+// NoteContainsFold applies the ContainsFold predicate on the "note" field.
+func NoteContainsFold(v string) predicate.DoctorOrderSheet {
+	return predicate.DoctorOrderSheet(func(s *sql.Selector) {
+		s.Where(sql.ContainsFold(s.C(FieldNote), v))
 	})
 }
 

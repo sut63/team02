@@ -12,11 +12,11 @@ import (
 	"github.com/to63/app/controllers"
 	"github.com/to63/app/ent"
 )
-
+//Personnels with 
 type Personnels struct {
 	Personnel []Personnel
 }
-
+//Personnel with  
 type Personnel struct {
 	Name       string
 	Department string
@@ -24,22 +24,48 @@ type Personnel struct {
 	Password   string
 }
 
+//Patients with  
 type Patients struct {
 	Patient []Patient
 }
 
+//Patient with  
 type Patient struct {
 	Name     string
 	Birthday string
 	Gender   string
 }
 
+//Remedys with  
 type Remedys struct {
 	Remedy []Remedy
 }
 
+//Remedy with  
 type Remedy struct {
 	Remedy string
+}
+
+//Diseases with  
+type Diseases struct {
+	Disease []Disease
+}
+
+//Disease with   
+type Disease struct {
+	Name       	string
+	
+}
+//DoctorOrderSheets with 
+type DoctorOrderSheets struct {
+	DoctorOrderSheet []DoctorOrderSheet
+}
+
+//DoctorOrderSheet with
+type DoctorOrderSheet struct {
+	Name       	string
+	time		string
+	note		string
 }
 
 // @title SUT SA Example API
@@ -98,6 +124,8 @@ func main() {
 	}
 
 	v1 := router.Group("/api/v1")
+	controllers.NewDiseaseController(v1, client) //ของเจม
+	controllers.NewDoctorOrderSheetController(v1, client) //ของเจม
 	controllers.NewBonediseaseController(v1, client)
 	controllers.NewPatientController(v1, client)
 	controllers.NewPersonnelController(v1, client)

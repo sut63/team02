@@ -6,7 +6,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"time"
 
 	"github.com/facebook/ent/dialect/sql/sqlgraph"
 	"github.com/facebook/ent/schema/field"
@@ -21,23 +20,21 @@ type DoctorOrderSheetCreate struct {
 	hooks    []Hook
 }
 
-// SetDate sets the "date" field.
-func (dosc *DoctorOrderSheetCreate) SetDate(t time.Time) *DoctorOrderSheetCreate {
-	dosc.mutation.SetDate(t)
-	return dosc
-}
-
-// SetNillableDate sets the "date" field if the given value is not nil.
-func (dosc *DoctorOrderSheetCreate) SetNillableDate(t *time.Time) *DoctorOrderSheetCreate {
-	if t != nil {
-		dosc.SetDate(*t)
-	}
+// SetName sets the "Name" field.
+func (dosc *DoctorOrderSheetCreate) SetName(s string) *DoctorOrderSheetCreate {
+	dosc.mutation.SetName(s)
 	return dosc
 }
 
 // SetTime sets the "time" field.
 func (dosc *DoctorOrderSheetCreate) SetTime(s string) *DoctorOrderSheetCreate {
 	dosc.mutation.SetTime(s)
+	return dosc
+}
+
+// SetNote sets the "note" field.
+func (dosc *DoctorOrderSheetCreate) SetNote(s string) *DoctorOrderSheetCreate {
+	dosc.mutation.SetNote(s)
 	return dosc
 }
 
@@ -67,7 +64,6 @@ func (dosc *DoctorOrderSheetCreate) Save(ctx context.Context) (*DoctorOrderSheet
 		err  error
 		node *DoctorOrderSheet
 	)
-	dosc.defaults()
 	if len(dosc.hooks) == 0 {
 		if err = dosc.check(); err != nil {
 			return nil, err
@@ -106,18 +102,15 @@ func (dosc *DoctorOrderSheetCreate) SaveX(ctx context.Context) *DoctorOrderSheet
 	return v
 }
 
-// defaults sets the default values of the builder before save.
-func (dosc *DoctorOrderSheetCreate) defaults() {
-	if _, ok := dosc.mutation.Date(); !ok {
-		v := doctorordersheet.DefaultDate()
-		dosc.mutation.SetDate(v)
-	}
-}
-
 // check runs all checks and user-defined validators on the builder.
 func (dosc *DoctorOrderSheetCreate) check() error {
-	if _, ok := dosc.mutation.Date(); !ok {
-		return &ValidationError{Name: "date", err: errors.New("ent: missing required field \"date\"")}
+	if _, ok := dosc.mutation.Name(); !ok {
+		return &ValidationError{Name: "Name", err: errors.New("ent: missing required field \"Name\"")}
+	}
+	if v, ok := dosc.mutation.Name(); ok {
+		if err := doctorordersheet.NameValidator(v); err != nil {
+			return &ValidationError{Name: "Name", err: fmt.Errorf("ent: validator failed for field \"Name\": %w", err)}
+		}
 	}
 	if _, ok := dosc.mutation.Time(); !ok {
 		return &ValidationError{Name: "time", err: errors.New("ent: missing required field \"time\"")}
@@ -125,6 +118,14 @@ func (dosc *DoctorOrderSheetCreate) check() error {
 	if v, ok := dosc.mutation.Time(); ok {
 		if err := doctorordersheet.TimeValidator(v); err != nil {
 			return &ValidationError{Name: "time", err: fmt.Errorf("ent: validator failed for field \"time\": %w", err)}
+		}
+	}
+	if _, ok := dosc.mutation.Note(); !ok {
+		return &ValidationError{Name: "note", err: errors.New("ent: missing required field \"note\"")}
+	}
+	if v, ok := dosc.mutation.Note(); ok {
+		if err := doctorordersheet.NoteValidator(v); err != nil {
+			return &ValidationError{Name: "note", err: fmt.Errorf("ent: validator failed for field \"note\": %w", err)}
 		}
 	}
 	return nil
@@ -154,13 +155,13 @@ func (dosc *DoctorOrderSheetCreate) createSpec() (*DoctorOrderSheet, *sqlgraph.C
 			},
 		}
 	)
-	if value, ok := dosc.mutation.Date(); ok {
+	if value, ok := dosc.mutation.Name(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeTime,
+			Type:   field.TypeString,
 			Value:  value,
-			Column: doctorordersheet.FieldDate,
+			Column: doctorordersheet.FieldName,
 		})
-		_node.Date = value
+		_node.Name = value
 	}
 	if value, ok := dosc.mutation.Time(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
@@ -169,6 +170,14 @@ func (dosc *DoctorOrderSheetCreate) createSpec() (*DoctorOrderSheet, *sqlgraph.C
 			Column: doctorordersheet.FieldTime,
 		})
 		_node.Time = value
+	}
+	if value, ok := dosc.mutation.Note(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: doctorordersheet.FieldNote,
+		})
+		_node.Note = value
 	}
 	if nodes := dosc.mutation.ChecksymptomsIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
@@ -206,7 +215,6 @@ func (doscb *DoctorOrderSheetCreateBulk) Save(ctx context.Context) ([]*DoctorOrd
 	for i := range doscb.builders {
 		func(i int, root context.Context) {
 			builder := doscb.builders[i]
-			builder.defaults()
 			var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 				mutation, ok := m.(*DoctorOrderSheetMutation)
 				if !ok {

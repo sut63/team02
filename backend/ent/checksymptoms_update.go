@@ -5,6 +5,7 @@ package ent
 import (
 	"context"
 	"fmt"
+	"time"
 
 	"github.com/facebook/ent/dialect/sql"
 	"github.com/facebook/ent/dialect/sql/sqlgraph"
@@ -27,6 +28,20 @@ type ChecksymptomsUpdate struct {
 // Where adds a new predicate for the ChecksymptomsUpdate builder.
 func (cu *ChecksymptomsUpdate) Where(ps ...predicate.Checksymptoms) *ChecksymptomsUpdate {
 	cu.mutation.predicates = append(cu.mutation.predicates, ps...)
+	return cu
+}
+
+// SetDate sets the "date" field.
+func (cu *ChecksymptomsUpdate) SetDate(t time.Time) *ChecksymptomsUpdate {
+	cu.mutation.SetDate(t)
+	return cu
+}
+
+// SetNillableDate sets the "date" field if the given value is not nil.
+func (cu *ChecksymptomsUpdate) SetNillableDate(t *time.Time) *ChecksymptomsUpdate {
+	if t != nil {
+		cu.SetDate(*t)
+	}
 	return cu
 }
 
@@ -204,6 +219,13 @@ func (cu *ChecksymptomsUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			}
 		}
 	}
+	if value, ok := cu.mutation.Date(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: checksymptoms.FieldDate,
+		})
+	}
 	if cu.mutation.DiseaseCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
@@ -360,6 +382,20 @@ type ChecksymptomsUpdateOne struct {
 	config
 	hooks    []Hook
 	mutation *ChecksymptomsMutation
+}
+
+// SetDate sets the "date" field.
+func (cuo *ChecksymptomsUpdateOne) SetDate(t time.Time) *ChecksymptomsUpdateOne {
+	cuo.mutation.SetDate(t)
+	return cuo
+}
+
+// SetNillableDate sets the "date" field if the given value is not nil.
+func (cuo *ChecksymptomsUpdateOne) SetNillableDate(t *time.Time) *ChecksymptomsUpdateOne {
+	if t != nil {
+		cuo.SetDate(*t)
+	}
+	return cuo
 }
 
 // SetDiseaseID sets the "disease" edge to the Disease entity by ID.
@@ -534,6 +570,13 @@ func (cuo *ChecksymptomsUpdateOne) sqlSave(ctx context.Context) (_node *Checksym
 		return nil, &ValidationError{Name: "ID", err: fmt.Errorf("missing Checksymptoms.ID for update")}
 	}
 	_spec.Node.ID.Value = id
+	if value, ok := cuo.mutation.Date(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: checksymptoms.FieldDate,
+		})
+	}
 	if cuo.mutation.DiseaseCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,

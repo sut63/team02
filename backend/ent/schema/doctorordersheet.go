@@ -1,7 +1,7 @@
 package schema
 
 import  (
-	"time"
+	
 	"github.com/facebook/ent"
 	"github.com/facebook/ent/schema/edge"
 	"github.com/facebook/ent/schema/field"
@@ -14,8 +14,9 @@ type DoctorOrderSheet struct {
 // Fields of the DoctorOrderSheet.
 func (DoctorOrderSheet) Fields() []ent.Field {
 	return []ent.Field{
-		field.Time("date").Default(time.Now),
+		field.String("Name").NotEmpty(),
 		field.String("time").NotEmpty(),
+		field.String("note").NotEmpty(),
 	}
 }
 

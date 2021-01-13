@@ -2,11 +2,17 @@
 
 package checksymptoms
 
+import (
+	"time"
+)
+
 const (
 	// Label holds the string label denoting the checksymptoms type in the database.
 	Label = "checksymptoms"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
+	// FieldDate holds the string denoting the date field in the database.
+	FieldDate = "date"
 
 	// EdgeDisease holds the string denoting the disease edge name in mutations.
 	EdgeDisease = "disease"
@@ -52,6 +58,7 @@ const (
 // Columns holds all SQL columns for checksymptoms fields.
 var Columns = []string{
 	FieldID,
+	FieldDate,
 }
 
 // ForeignKeys holds the SQL foreign-keys that are owned by the Checksymptoms type.
@@ -76,3 +83,8 @@ func ValidColumn(column string) bool {
 	}
 	return false
 }
+
+var (
+	// DefaultDate holds the default value on creation for the "date" field.
+	DefaultDate func() time.Time
+)

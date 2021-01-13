@@ -111,7 +111,7 @@ func (ctl *SurgeryappointmentController) CreateSurgeryappointment(c *gin.Context
 // @ID get-surgeryappointment
 // @Produce  json
 // @Param id path int true "surgeryappointment ID"
-// @Success 200 {object} ent.surgeryappointment
+// @Success 200 {object} ent.Surgeryappointment
 // @Failure 400 {object} gin.H
 // @Failure 404 {object} gin.H
 // @Failure 500 {object} gin.H

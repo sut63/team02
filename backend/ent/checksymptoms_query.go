@@ -387,6 +387,19 @@ func (cq *ChecksymptomsQuery) WithDoctorordersheet(opts ...func(*DoctorOrderShee
 
 // GroupBy is used to group vertices by one or more fields/columns.
 // It is often used with aggregate functions, like: count, max, mean, min, sum.
+//
+// Example:
+//
+//	var v []struct {
+//		Date time.Time `json:"date,omitempty"`
+//		Count int `json:"count,omitempty"`
+//	}
+//
+//	client.Checksymptoms.Query().
+//		GroupBy(checksymptoms.FieldDate).
+//		Aggregate(ent.Count()).
+//		Scan(ctx, &v)
+//
 func (cq *ChecksymptomsQuery) GroupBy(field string, fields ...string) *ChecksymptomsGroupBy {
 	group := &ChecksymptomsGroupBy{config: cq.config}
 	group.fields = append([]string{field}, fields...)
@@ -401,6 +414,17 @@ func (cq *ChecksymptomsQuery) GroupBy(field string, fields ...string) *Checksymp
 
 // Select allows the selection one or more fields/columns for the given query,
 // instead of selecting all fields in the entity.
+//
+// Example:
+//
+//	var v []struct {
+//		Date time.Time `json:"date,omitempty"`
+//	}
+//
+//	client.Checksymptoms.Query().
+//		Select(checksymptoms.FieldDate).
+//		Scan(ctx, &v)
+//
 func (cq *ChecksymptomsQuery) Select(field string, fields ...string) *ChecksymptomsSelect {
 	cq.fields = append([]string{field}, fields...)
 	return &ChecksymptomsSelect{ChecksymptomsQuery: cq}
