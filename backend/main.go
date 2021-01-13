@@ -168,6 +168,23 @@ func main() {
 			Save(context.Background())
 	}
 
+	diseases := []string{"โรคกระดูก", "ผ่าตัด","กายภาพบำบัด","ทันตกรรม","ฝากครรภ์"}
+	for _, disease := range diseases {
+		client.Disease.
+			Create().
+			SetName(disease).
+			Save(context.Background())
+	}
+
+	// Set DoctorOrderSheet Data
+	doctorordersheets := []string{"นายแพทย์อนุสรณ์ ศรีพรหม","นายแพทย์วัชรพงศ์ ซึ้งศิริทรัพย์","นายแพทย์ธนาทิพย์ ซื่อตรง"}
+	for _, name := range doctorordersheets {
+		client.DoctorOrderSheet.
+			Create().
+			SetName(name).
+			Save(context.Background())
+	}
+	
 	// Set Patient Data
 	remedys := Remedys{
 		Remedy: []Remedy{
