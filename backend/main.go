@@ -12,11 +12,13 @@ import (
 	"github.com/to63/app/controllers"
 	"github.com/to63/app/ent"
 )
-//Personnels with 
+
+//Personnels with
 type Personnels struct {
 	Personnel []Personnel
 }
-//Personnel with  
+
+//Personnel with
 type Personnel struct {
 	Name       string
 	Department string
@@ -24,48 +26,56 @@ type Personnel struct {
 	Password   string
 }
 
-//Patients with  
+//Patients with
 type Patients struct {
 	Patient []Patient
 }
 
-//Patient with  
+//Patient with
 type Patient struct {
 	Name     string
 	Birthday string
 	Gender   string
 }
 
-//Remedys with  
+//Remedys with
 type Remedys struct {
 	Remedy []Remedy
 }
 
-//Remedy with  
+//Remedy with
 type Remedy struct {
 	Remedy string
 }
 
-//Diseases with  
+//Diseases with
 type Diseases struct {
 	Disease []Disease
 }
 
-//Disease with   
+//Disease with
 type Disease struct {
-	Name       	string
-	
+	Name string
 }
-//DoctorOrderSheets with 
+
+//DoctorOrderSheets with
 type DoctorOrderSheets struct {
 	DoctorOrderSheet []DoctorOrderSheet
 }
 
 //DoctorOrderSheet with
 type DoctorOrderSheet struct {
-	Name       	string
-	time		string
-	note		string
+	Name string
+	time string
+	note string
+}
+
+type Dentalkinds struct {
+	Dentalkind []Dentalkind
+}
+
+type Dentalkind struct {
+	KindName string
 }
 
 // @title SUT SA Example API
@@ -124,18 +134,22 @@ func main() {
 	}
 
 	v1 := router.Group("/api/v1")
-	controllers.NewDiseaseController(v1, client) //ของเจม
+	controllers.NewDiseaseController(v1, client)          //ของเจม
 	controllers.NewDoctorOrderSheetController(v1, client) //ของเจม
 	controllers.NewBonediseaseController(v1, client)
 	controllers.NewPatientController(v1, client)
 	controllers.NewPersonnelController(v1, client)
 	controllers.NewRemedyController(v1, client)
+	controllers.NewDentalkindController(v1, client)
+	controllers.NewDentalappointmentController(v1, client)
 
 	// Set Personnel Data
 	personnels := Personnels{
 		Personnel: []Personnel{
 			Personnel{"Anusorn", "Orthopedics", "Anusorn@gmail.com", "12321"},
 			Personnel{"Kamkeaw", "Orthopedics", "Kamkeaw@gmail.com", "1234"},
+			Personnel{"Nutchaya", "Dentist", "nutchaya@gmail.com", "1121"},
+			Personnel{"Thanawut", "Dentist", "thanawut@gmail.com", "11210"},
 		},
 	}
 
@@ -168,7 +182,7 @@ func main() {
 			Save(context.Background())
 	}
 
-	diseases := []string{"โรคกระดูก", "ผ่าตัด","กายภาพบำบัด","ทันตกรรม","ฝากครรภ์"}
+	diseases := []string{"โรคกระดูก", "ผ่าตัด", "กายภาพบำบัด", "ทันตกรรม", "ฝากครรภ์"}
 	for _, disease := range diseases {
 		client.Disease.
 			Create().
@@ -177,15 +191,15 @@ func main() {
 	}
 
 	// Set DoctorOrderSheet Data
-	doctorordersheets := []string{"นายแพทย์อนุสรณ์ ศรีพรหม","นายแพทย์วัชรพงศ์ ซึ้งศิริทรัพย์","นายแพทย์ธนาทิพย์ ซื่อตรง"}
+	doctorordersheets := []string{"นายแพทย์อนุสรณ์ ศรีพรหม", "นายแพทย์วัชรพงศ์ ซึ้งศิริทรัพย์", "นายแพทย์ธนาทิพย์ ซื่อตรง"}
 	for _, name := range doctorordersheets {
 		client.DoctorOrderSheet.
 			Create().
 			SetName(name).
 			Save(context.Background())
 	}
-	
-	// Set Patient Data
+
+	// Set Remedy Data
 	remedys := Remedys{
 		Remedy: []Remedy{
 			Remedy{"ทำการผ่าตัดกระดูก"},
@@ -198,6 +212,29 @@ func main() {
 		client.Remedy.
 			Create().
 			SetRemedy(remedys.Remedy).
+			Save(context.Background())
+	}
+
+	// Set Dentalkind Data
+	dentalkinds := Dentalkinds{
+		Dentalkind: []Dentalkind{
+			Dentalkind{"ตรวจช่องปาก"},
+			Dentalkind{"ถอนฟัน"},
+			Dentalkind{"ขูดหินปูน"},
+			Dentalkind{"ผ่าฟันคุด"},
+			Dentalkind{"เอ็กซเรย์ฟัน"},
+			Dentalkind{"รักษารากฟัน"},
+			Dentalkind{"อุดฟัน"},
+			Dentalkind{"เติมฟัน"},
+			Dentalkind{"ทำฟันปลอม"},
+		},
+	}
+
+	for _, dentalkinds := range dentalkinds.Dentalkind {
+
+		client.Dentalkind.
+			Create().
+			SetKindname(dentalkinds.KindName).
 			Save(context.Background())
 	}
 
