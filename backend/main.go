@@ -14,7 +14,7 @@ import (
 )
 
 type Personnels struct {
-	Personnel []personnel
+	Personnel []Personnel
 }
 
 type Personnel struct {
@@ -39,8 +39,8 @@ type Remedys struct {
 	Remedy []Remedy
 }
 
-type Remedys struct {
-	Remedys 	string
+type Remedy struct {
+	Remedy		string
 }
 
 
@@ -106,9 +106,9 @@ func main() {
 	controllers.NewRemedyController(v1, client)
 
 	// Set Personnel Data
-	personnels := Personnel{
+	personnels := Personnels{
 		Personnel: []Personnel{
-			Personnel{"Anusorn", "Orthopedics", "Anusorn@gmail.com", "12321"},}
+			Personnel{"Anusorn", "Orthopedics", "Anusorn@gmail.com", "12321"},
 			Personnel{"Kamkeaw", "Orthopedics", "Kamkeaw@gmail.com", "1234"},
 		},
 	}
@@ -124,7 +124,7 @@ func main() {
 	}
 
 	// Set Patient Data
-	patients := Patient{
+	patients := Patients{
 		Patient: []Patient{
 			Patient{"นายแดง", "15/02/1980", "Male"},
 			Patient{"นายดำ", "11/03/1980", "Male"},
@@ -144,18 +144,18 @@ func main() {
 	}
 
 	// Set Patient Data
-	patients := Patient{
-		Patient: []Patient{
-			Patient{"ทำการผ่าตัดกระดูก"},
-			Patient{"ขีดไขข้อ"},
+	remedys := Remedys{
+		Remedy: []Remedy{
+			Remedy{"ทำการผ่าตัดกระดูก"},
+			Remedy{"ขีดไขข้อ"},
 		},
 	}
 
-	for _, patients := range patients.Patient {
+	for _, remedys := range remedys.Remedy {
 
-		client.Patient.
+		client.Remedy.
 			Create().
-			SetRemedy(patients.Remedy).
+			SetRemedy(remedys.Remedy).
 			Save(context.Background())
 	}
 
