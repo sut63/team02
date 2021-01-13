@@ -29,7 +29,7 @@ func init() {
 	// antenatalinformationDescGestationalage is the schema descriptor for gestationalage field.
 	antenatalinformationDescGestationalage := antenatalinformationFields[0].Descriptor()
 	// antenatalinformation.GestationalageValidator is a validator for the "gestationalage" field. It is called by the builders before save.
-	antenatalinformation.GestationalageValidator = antenatalinformationDescGestationalage.Validators[0].(func(string) error)
+	antenatalinformation.GestationalageValidator = antenatalinformationDescGestationalage.Validators[0].(func(int) error)
 	bonediseaseFields := schema.Bonedisease{}.Fields()
 	_ = bonediseaseFields
 	// bonediseaseDescAddedTime is the schema descriptor for addedTime field.

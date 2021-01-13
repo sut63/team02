@@ -344,15 +344,15 @@ func (c *AntenatalinformationClient) QueryPatient(a *Antenatalinformation) *Pati
 	return query
 }
 
-// QueryPregnancystatusid queries the Pregnancystatusid edge of a Antenatalinformation.
-func (c *AntenatalinformationClient) QueryPregnancystatusid(a *Antenatalinformation) *PregnancystatusQuery {
+// QueryPregnancystatus queries the Pregnancystatus edge of a Antenatalinformation.
+func (c *AntenatalinformationClient) QueryPregnancystatus(a *Antenatalinformation) *PregnancystatusQuery {
 	query := &PregnancystatusQuery{config: c.config}
 	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
 		id := a.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(antenatalinformation.Table, antenatalinformation.FieldID, id),
 			sqlgraph.To(pregnancystatus.Table, pregnancystatus.FieldID),
-			sqlgraph.Edge(sqlgraph.O2O, true, antenatalinformation.PregnancystatusidTable, antenatalinformation.PregnancystatusidColumn),
+			sqlgraph.Edge(sqlgraph.O2O, true, antenatalinformation.PregnancystatusTable, antenatalinformation.PregnancystatusColumn),
 		)
 		fromV = sqlgraph.Neighbors(a.driver.Dialect(), step)
 		return fromV, nil
@@ -360,15 +360,15 @@ func (c *AntenatalinformationClient) QueryPregnancystatusid(a *Antenatalinformat
 	return query
 }
 
-// QueryRisksid queries the Risksid edge of a Antenatalinformation.
-func (c *AntenatalinformationClient) QueryRisksid(a *Antenatalinformation) *RisksQuery {
+// QueryRisks queries the Risks edge of a Antenatalinformation.
+func (c *AntenatalinformationClient) QueryRisks(a *Antenatalinformation) *RisksQuery {
 	query := &RisksQuery{config: c.config}
 	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
 		id := a.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(antenatalinformation.Table, antenatalinformation.FieldID, id),
 			sqlgraph.To(risks.Table, risks.FieldID),
-			sqlgraph.Edge(sqlgraph.O2O, true, antenatalinformation.RisksidTable, antenatalinformation.RisksidColumn),
+			sqlgraph.Edge(sqlgraph.O2O, true, antenatalinformation.RisksTable, antenatalinformation.RisksColumn),
 		)
 		fromV = sqlgraph.Neighbors(a.driver.Dialect(), step)
 		return fromV, nil

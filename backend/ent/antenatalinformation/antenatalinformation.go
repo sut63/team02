@@ -9,17 +9,17 @@ const (
 	FieldID = "id"
 	// FieldGestationalage holds the string denoting the gestationalage field in the database.
 	FieldGestationalage = "gestationalage"
-	// FieldAddedTime holds the string denoting the added_time field in the database.
-	FieldAddedTime = "added_time"
+	// FieldTime holds the string denoting the time field in the database.
+	FieldTime = "time"
 
 	// EdgePersonnel holds the string denoting the personnel edge name in mutations.
 	EdgePersonnel = "Personnel"
 	// EdgePatient holds the string denoting the patient edge name in mutations.
 	EdgePatient = "Patient"
-	// EdgePregnancystatusid holds the string denoting the pregnancystatusid edge name in mutations.
-	EdgePregnancystatusid = "Pregnancystatusid"
-	// EdgeRisksid holds the string denoting the risksid edge name in mutations.
-	EdgeRisksid = "Risksid"
+	// EdgePregnancystatus holds the string denoting the pregnancystatus edge name in mutations.
+	EdgePregnancystatus = "Pregnancystatus"
+	// EdgeRisks holds the string denoting the risks edge name in mutations.
+	EdgeRisks = "Risks"
 
 	// Table holds the table name of the antenatalinformation in the database.
 	Table = "antenatalinformations"
@@ -37,27 +37,27 @@ const (
 	PatientInverseTable = "patients"
 	// PatientColumn is the table column denoting the Patient relation/edge.
 	PatientColumn = "Patient_id"
-	// PregnancystatusidTable is the table the holds the Pregnancystatusid relation/edge.
-	PregnancystatusidTable = "antenatalinformations"
-	// PregnancystatusidInverseTable is the table name for the Pregnancystatus entity.
+	// PregnancystatusTable is the table the holds the Pregnancystatus relation/edge.
+	PregnancystatusTable = "antenatalinformations"
+	// PregnancystatusInverseTable is the table name for the Pregnancystatus entity.
 	// It exists in this package in order to avoid circular dependency with the "pregnancystatus" package.
-	PregnancystatusidInverseTable = "pregnancystatuses"
-	// PregnancystatusidColumn is the table column denoting the Pregnancystatusid relation/edge.
-	PregnancystatusidColumn = "pregnancystatus_antenatalinformation"
-	// RisksidTable is the table the holds the Risksid relation/edge.
-	RisksidTable = "antenatalinformations"
-	// RisksidInverseTable is the table name for the Risks entity.
+	PregnancystatusInverseTable = "pregnancystatuses"
+	// PregnancystatusColumn is the table column denoting the Pregnancystatus relation/edge.
+	PregnancystatusColumn = "pregnancystatus_antenatalinformation"
+	// RisksTable is the table the holds the Risks relation/edge.
+	RisksTable = "antenatalinformations"
+	// RisksInverseTable is the table name for the Risks entity.
 	// It exists in this package in order to avoid circular dependency with the "risks" package.
-	RisksidInverseTable = "risks"
-	// RisksidColumn is the table column denoting the Risksid relation/edge.
-	RisksidColumn = "risks_antenatalinformation"
+	RisksInverseTable = "risks"
+	// RisksColumn is the table column denoting the Risks relation/edge.
+	RisksColumn = "risks_antenatalinformation"
 )
 
 // Columns holds all SQL columns for antenatalinformation fields.
 var Columns = []string{
 	FieldID,
 	FieldGestationalage,
-	FieldAddedTime,
+	FieldTime,
 }
 
 // ForeignKeys holds the SQL foreign-keys that are owned by the Antenatalinformation type.
@@ -85,5 +85,5 @@ func ValidColumn(column string) bool {
 
 var (
 	// GestationalageValidator is a validator for the "gestationalage" field. It is called by the builders before save.
-	GestationalageValidator func(string) error
+	GestationalageValidator func(int) error
 )

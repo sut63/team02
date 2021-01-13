@@ -28,11 +28,11 @@ type AntenatalinformationQuery struct {
 	fields     []string
 	predicates []predicate.Antenatalinformation
 	// eager-loading edges.
-	withPersonnel         *PersonnelQuery
-	withPatient           *PatientQuery
-	withPregnancystatusid *PregnancystatusQuery
-	withRisksid           *RisksQuery
-	withFKs               bool
+	withPersonnel       *PersonnelQuery
+	withPatient         *PatientQuery
+	withPregnancystatus *PregnancystatusQuery
+	withRisks           *RisksQuery
+	withFKs             bool
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -106,8 +106,8 @@ func (aq *AntenatalinformationQuery) QueryPatient() *PatientQuery {
 	return query
 }
 
-// QueryPregnancystatusid chains the current query on the "Pregnancystatusid" edge.
-func (aq *AntenatalinformationQuery) QueryPregnancystatusid() *PregnancystatusQuery {
+// QueryPregnancystatus chains the current query on the "Pregnancystatus" edge.
+func (aq *AntenatalinformationQuery) QueryPregnancystatus() *PregnancystatusQuery {
 	query := &PregnancystatusQuery{config: aq.config}
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
 		if err := aq.prepareQuery(ctx); err != nil {
@@ -120,7 +120,7 @@ func (aq *AntenatalinformationQuery) QueryPregnancystatusid() *PregnancystatusQu
 		step := sqlgraph.NewStep(
 			sqlgraph.From(antenatalinformation.Table, antenatalinformation.FieldID, selector),
 			sqlgraph.To(pregnancystatus.Table, pregnancystatus.FieldID),
-			sqlgraph.Edge(sqlgraph.O2O, true, antenatalinformation.PregnancystatusidTable, antenatalinformation.PregnancystatusidColumn),
+			sqlgraph.Edge(sqlgraph.O2O, true, antenatalinformation.PregnancystatusTable, antenatalinformation.PregnancystatusColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(aq.driver.Dialect(), step)
 		return fromU, nil
@@ -128,8 +128,8 @@ func (aq *AntenatalinformationQuery) QueryPregnancystatusid() *PregnancystatusQu
 	return query
 }
 
-// QueryRisksid chains the current query on the "Risksid" edge.
-func (aq *AntenatalinformationQuery) QueryRisksid() *RisksQuery {
+// QueryRisks chains the current query on the "Risks" edge.
+func (aq *AntenatalinformationQuery) QueryRisks() *RisksQuery {
 	query := &RisksQuery{config: aq.config}
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
 		if err := aq.prepareQuery(ctx); err != nil {
@@ -142,7 +142,7 @@ func (aq *AntenatalinformationQuery) QueryRisksid() *RisksQuery {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(antenatalinformation.Table, antenatalinformation.FieldID, selector),
 			sqlgraph.To(risks.Table, risks.FieldID),
-			sqlgraph.Edge(sqlgraph.O2O, true, antenatalinformation.RisksidTable, antenatalinformation.RisksidColumn),
+			sqlgraph.Edge(sqlgraph.O2O, true, antenatalinformation.RisksTable, antenatalinformation.RisksColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(aq.driver.Dialect(), step)
 		return fromU, nil
@@ -326,15 +326,15 @@ func (aq *AntenatalinformationQuery) Clone() *AntenatalinformationQuery {
 		return nil
 	}
 	return &AntenatalinformationQuery{
-		config:                aq.config,
-		limit:                 aq.limit,
-		offset:                aq.offset,
-		order:                 append([]OrderFunc{}, aq.order...),
-		predicates:            append([]predicate.Antenatalinformation{}, aq.predicates...),
-		withPersonnel:         aq.withPersonnel.Clone(),
-		withPatient:           aq.withPatient.Clone(),
-		withPregnancystatusid: aq.withPregnancystatusid.Clone(),
-		withRisksid:           aq.withRisksid.Clone(),
+		config:              aq.config,
+		limit:               aq.limit,
+		offset:              aq.offset,
+		order:               append([]OrderFunc{}, aq.order...),
+		predicates:          append([]predicate.Antenatalinformation{}, aq.predicates...),
+		withPersonnel:       aq.withPersonnel.Clone(),
+		withPatient:         aq.withPatient.Clone(),
+		withPregnancystatus: aq.withPregnancystatus.Clone(),
+		withRisks:           aq.withRisks.Clone(),
 		// clone intermediate query.
 		sql:  aq.sql.Clone(),
 		path: aq.path,
@@ -363,25 +363,25 @@ func (aq *AntenatalinformationQuery) WithPatient(opts ...func(*PatientQuery)) *A
 	return aq
 }
 
-// WithPregnancystatusid tells the query-builder to eager-load the nodes that are connected to
-// the "Pregnancystatusid" edge. The optional arguments are used to configure the query builder of the edge.
-func (aq *AntenatalinformationQuery) WithPregnancystatusid(opts ...func(*PregnancystatusQuery)) *AntenatalinformationQuery {
+// WithPregnancystatus tells the query-builder to eager-load the nodes that are connected to
+// the "Pregnancystatus" edge. The optional arguments are used to configure the query builder of the edge.
+func (aq *AntenatalinformationQuery) WithPregnancystatus(opts ...func(*PregnancystatusQuery)) *AntenatalinformationQuery {
 	query := &PregnancystatusQuery{config: aq.config}
 	for _, opt := range opts {
 		opt(query)
 	}
-	aq.withPregnancystatusid = query
+	aq.withPregnancystatus = query
 	return aq
 }
 
-// WithRisksid tells the query-builder to eager-load the nodes that are connected to
-// the "Risksid" edge. The optional arguments are used to configure the query builder of the edge.
-func (aq *AntenatalinformationQuery) WithRisksid(opts ...func(*RisksQuery)) *AntenatalinformationQuery {
+// WithRisks tells the query-builder to eager-load the nodes that are connected to
+// the "Risks" edge. The optional arguments are used to configure the query builder of the edge.
+func (aq *AntenatalinformationQuery) WithRisks(opts ...func(*RisksQuery)) *AntenatalinformationQuery {
 	query := &RisksQuery{config: aq.config}
 	for _, opt := range opts {
 		opt(query)
 	}
-	aq.withRisksid = query
+	aq.withRisks = query
 	return aq
 }
 
@@ -391,7 +391,7 @@ func (aq *AntenatalinformationQuery) WithRisksid(opts ...func(*RisksQuery)) *Ant
 // Example:
 //
 //	var v []struct {
-//		Gestationalage string `json:"gestationalage,omitempty"`
+//		Gestationalage int `json:"gestationalage,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
@@ -418,7 +418,7 @@ func (aq *AntenatalinformationQuery) GroupBy(field string, fields ...string) *An
 // Example:
 //
 //	var v []struct {
-//		Gestationalage string `json:"gestationalage,omitempty"`
+//		Gestationalage int `json:"gestationalage,omitempty"`
 //	}
 //
 //	client.Antenatalinformation.Query().
@@ -454,11 +454,11 @@ func (aq *AntenatalinformationQuery) sqlAll(ctx context.Context) ([]*Antenatalin
 		loadedTypes = [4]bool{
 			aq.withPersonnel != nil,
 			aq.withPatient != nil,
-			aq.withPregnancystatusid != nil,
-			aq.withRisksid != nil,
+			aq.withPregnancystatus != nil,
+			aq.withRisks != nil,
 		}
 	)
-	if aq.withPersonnel != nil || aq.withPatient != nil || aq.withPregnancystatusid != nil || aq.withRisksid != nil {
+	if aq.withPersonnel != nil || aq.withPatient != nil || aq.withPregnancystatus != nil || aq.withRisks != nil {
 		withFKs = true
 	}
 	if withFKs {
@@ -534,7 +534,7 @@ func (aq *AntenatalinformationQuery) sqlAll(ctx context.Context) ([]*Antenatalin
 		}
 	}
 
-	if query := aq.withPregnancystatusid; query != nil {
+	if query := aq.withPregnancystatus; query != nil {
 		ids := make([]int, 0, len(nodes))
 		nodeids := make(map[int][]*Antenatalinformation)
 		for i := range nodes {
@@ -554,12 +554,12 @@ func (aq *AntenatalinformationQuery) sqlAll(ctx context.Context) ([]*Antenatalin
 				return nil, fmt.Errorf(`unexpected foreign-key "pregnancystatus_antenatalinformation" returned %v`, n.ID)
 			}
 			for i := range nodes {
-				nodes[i].Edges.Pregnancystatusid = n
+				nodes[i].Edges.Pregnancystatus = n
 			}
 		}
 	}
 
-	if query := aq.withRisksid; query != nil {
+	if query := aq.withRisks; query != nil {
 		ids := make([]int, 0, len(nodes))
 		nodeids := make(map[int][]*Antenatalinformation)
 		for i := range nodes {
@@ -579,7 +579,7 @@ func (aq *AntenatalinformationQuery) sqlAll(ctx context.Context) ([]*Antenatalin
 				return nil, fmt.Errorf(`unexpected foreign-key "risks_antenatalinformation" returned %v`, n.ID)
 			}
 			for i := range nodes {
-				nodes[i].Edges.Risksid = n
+				nodes[i].Edges.Risks = n
 			}
 		}
 	}

@@ -61,23 +61,24 @@ const (
 // AntenatalinformationMutation represents an operation that mutates the Antenatalinformation nodes in the graph.
 type AntenatalinformationMutation struct {
 	config
-	op                        Op
-	typ                       string
-	id                        *int
-	gestationalage            *string
-	added_time                *time.Time
-	clearedFields             map[string]struct{}
-	_Personnel                *int
-	cleared_Personnel         bool
-	_Patient                  *int
-	cleared_Patient           bool
-	_Pregnancystatusid        *int
-	cleared_Pregnancystatusid bool
-	_Risksid                  *int
-	cleared_Risksid           bool
-	done                      bool
-	oldValue                  func(context.Context) (*Antenatalinformation, error)
-	predicates                []predicate.Antenatalinformation
+	op                      Op
+	typ                     string
+	id                      *int
+	gestationalage          *int
+	addgestationalage       *int
+	time                    *time.Time
+	clearedFields           map[string]struct{}
+	_Personnel              *int
+	cleared_Personnel       bool
+	_Patient                *int
+	cleared_Patient         bool
+	_Pregnancystatus        *int
+	cleared_Pregnancystatus bool
+	_Risks                  *int
+	cleared_Risks           bool
+	done                    bool
+	oldValue                func(context.Context) (*Antenatalinformation, error)
+	predicates              []predicate.Antenatalinformation
 }
 
 var _ ent.Mutation = (*AntenatalinformationMutation)(nil)
@@ -160,12 +161,13 @@ func (m *AntenatalinformationMutation) ID() (id int, exists bool) {
 }
 
 // SetGestationalage sets the "gestationalage" field.
-func (m *AntenatalinformationMutation) SetGestationalage(s string) {
-	m.gestationalage = &s
+func (m *AntenatalinformationMutation) SetGestationalage(i int) {
+	m.gestationalage = &i
+	m.addgestationalage = nil
 }
 
 // Gestationalage returns the value of the "gestationalage" field in the mutation.
-func (m *AntenatalinformationMutation) Gestationalage() (r string, exists bool) {
+func (m *AntenatalinformationMutation) Gestationalage() (r int, exists bool) {
 	v := m.gestationalage
 	if v == nil {
 		return
@@ -176,7 +178,7 @@ func (m *AntenatalinformationMutation) Gestationalage() (r string, exists bool) 
 // OldGestationalage returns the old "gestationalage" field's value of the Antenatalinformation entity.
 // If the Antenatalinformation object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *AntenatalinformationMutation) OldGestationalage(ctx context.Context) (v string, err error) {
+func (m *AntenatalinformationMutation) OldGestationalage(ctx context.Context) (v int, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, fmt.Errorf("OldGestationalage is only allowed on UpdateOne operations")
 	}
@@ -190,45 +192,64 @@ func (m *AntenatalinformationMutation) OldGestationalage(ctx context.Context) (v
 	return oldValue.Gestationalage, nil
 }
 
-// ResetGestationalage resets all changes to the "gestationalage" field.
-func (m *AntenatalinformationMutation) ResetGestationalage() {
-	m.gestationalage = nil
+// AddGestationalage adds i to the "gestationalage" field.
+func (m *AntenatalinformationMutation) AddGestationalage(i int) {
+	if m.addgestationalage != nil {
+		*m.addgestationalage += i
+	} else {
+		m.addgestationalage = &i
+	}
 }
 
-// SetAddedTime sets the "added_time" field.
-func (m *AntenatalinformationMutation) SetAddedTime(t time.Time) {
-	m.added_time = &t
-}
-
-// AddedTime returns the value of the "added_time" field in the mutation.
-func (m *AntenatalinformationMutation) AddedTime() (r time.Time, exists bool) {
-	v := m.added_time
+// AddedGestationalage returns the value that was added to the "gestationalage" field in this mutation.
+func (m *AntenatalinformationMutation) AddedGestationalage() (r int, exists bool) {
+	v := m.addgestationalage
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldAddedTime returns the old "added_time" field's value of the Antenatalinformation entity.
+// ResetGestationalage resets all changes to the "gestationalage" field.
+func (m *AntenatalinformationMutation) ResetGestationalage() {
+	m.gestationalage = nil
+	m.addgestationalage = nil
+}
+
+// SetTime sets the "time" field.
+func (m *AntenatalinformationMutation) SetTime(t time.Time) {
+	m.time = &t
+}
+
+// Time returns the value of the "time" field in the mutation.
+func (m *AntenatalinformationMutation) Time() (r time.Time, exists bool) {
+	v := m.time
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldTime returns the old "time" field's value of the Antenatalinformation entity.
 // If the Antenatalinformation object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *AntenatalinformationMutation) OldAddedTime(ctx context.Context) (v time.Time, err error) {
+func (m *AntenatalinformationMutation) OldTime(ctx context.Context) (v time.Time, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, fmt.Errorf("OldAddedTime is only allowed on UpdateOne operations")
+		return v, fmt.Errorf("OldTime is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, fmt.Errorf("OldAddedTime requires an ID field in the mutation")
+		return v, fmt.Errorf("OldTime requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldAddedTime: %w", err)
+		return v, fmt.Errorf("querying old value for OldTime: %w", err)
 	}
-	return oldValue.AddedTime, nil
+	return oldValue.Time, nil
 }
 
-// ResetAddedTime resets all changes to the "added_time" field.
-func (m *AntenatalinformationMutation) ResetAddedTime() {
-	m.added_time = nil
+// ResetTime resets all changes to the "time" field.
+func (m *AntenatalinformationMutation) ResetTime() {
+	m.time = nil
 }
 
 // SetPersonnelID sets the "Personnel" edge to the Personnel entity by id.
@@ -309,82 +330,82 @@ func (m *AntenatalinformationMutation) ResetPatient() {
 	m.cleared_Patient = false
 }
 
-// SetPregnancystatusidID sets the "Pregnancystatusid" edge to the Pregnancystatus entity by id.
-func (m *AntenatalinformationMutation) SetPregnancystatusidID(id int) {
-	m._Pregnancystatusid = &id
+// SetPregnancystatusID sets the "Pregnancystatus" edge to the Pregnancystatus entity by id.
+func (m *AntenatalinformationMutation) SetPregnancystatusID(id int) {
+	m._Pregnancystatus = &id
 }
 
-// ClearPregnancystatusid clears the "Pregnancystatusid" edge to the Pregnancystatus entity.
-func (m *AntenatalinformationMutation) ClearPregnancystatusid() {
-	m.cleared_Pregnancystatusid = true
+// ClearPregnancystatus clears the "Pregnancystatus" edge to the Pregnancystatus entity.
+func (m *AntenatalinformationMutation) ClearPregnancystatus() {
+	m.cleared_Pregnancystatus = true
 }
 
-// PregnancystatusidCleared returns if the "Pregnancystatusid" edge to the Pregnancystatus entity was cleared.
-func (m *AntenatalinformationMutation) PregnancystatusidCleared() bool {
-	return m.cleared_Pregnancystatusid
+// PregnancystatusCleared returns if the "Pregnancystatus" edge to the Pregnancystatus entity was cleared.
+func (m *AntenatalinformationMutation) PregnancystatusCleared() bool {
+	return m.cleared_Pregnancystatus
 }
 
-// PregnancystatusidID returns the "Pregnancystatusid" edge ID in the mutation.
-func (m *AntenatalinformationMutation) PregnancystatusidID() (id int, exists bool) {
-	if m._Pregnancystatusid != nil {
-		return *m._Pregnancystatusid, true
+// PregnancystatusID returns the "Pregnancystatus" edge ID in the mutation.
+func (m *AntenatalinformationMutation) PregnancystatusID() (id int, exists bool) {
+	if m._Pregnancystatus != nil {
+		return *m._Pregnancystatus, true
 	}
 	return
 }
 
-// PregnancystatusidIDs returns the "Pregnancystatusid" edge IDs in the mutation.
+// PregnancystatusIDs returns the "Pregnancystatus" edge IDs in the mutation.
 // Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
-// PregnancystatusidID instead. It exists only for internal usage by the builders.
-func (m *AntenatalinformationMutation) PregnancystatusidIDs() (ids []int) {
-	if id := m._Pregnancystatusid; id != nil {
+// PregnancystatusID instead. It exists only for internal usage by the builders.
+func (m *AntenatalinformationMutation) PregnancystatusIDs() (ids []int) {
+	if id := m._Pregnancystatus; id != nil {
 		ids = append(ids, *id)
 	}
 	return
 }
 
-// ResetPregnancystatusid resets all changes to the "Pregnancystatusid" edge.
-func (m *AntenatalinformationMutation) ResetPregnancystatusid() {
-	m._Pregnancystatusid = nil
-	m.cleared_Pregnancystatusid = false
+// ResetPregnancystatus resets all changes to the "Pregnancystatus" edge.
+func (m *AntenatalinformationMutation) ResetPregnancystatus() {
+	m._Pregnancystatus = nil
+	m.cleared_Pregnancystatus = false
 }
 
-// SetRisksidID sets the "Risksid" edge to the Risks entity by id.
-func (m *AntenatalinformationMutation) SetRisksidID(id int) {
-	m._Risksid = &id
+// SetRisksID sets the "Risks" edge to the Risks entity by id.
+func (m *AntenatalinformationMutation) SetRisksID(id int) {
+	m._Risks = &id
 }
 
-// ClearRisksid clears the "Risksid" edge to the Risks entity.
-func (m *AntenatalinformationMutation) ClearRisksid() {
-	m.cleared_Risksid = true
+// ClearRisks clears the "Risks" edge to the Risks entity.
+func (m *AntenatalinformationMutation) ClearRisks() {
+	m.cleared_Risks = true
 }
 
-// RisksidCleared returns if the "Risksid" edge to the Risks entity was cleared.
-func (m *AntenatalinformationMutation) RisksidCleared() bool {
-	return m.cleared_Risksid
+// RisksCleared returns if the "Risks" edge to the Risks entity was cleared.
+func (m *AntenatalinformationMutation) RisksCleared() bool {
+	return m.cleared_Risks
 }
 
-// RisksidID returns the "Risksid" edge ID in the mutation.
-func (m *AntenatalinformationMutation) RisksidID() (id int, exists bool) {
-	if m._Risksid != nil {
-		return *m._Risksid, true
+// RisksID returns the "Risks" edge ID in the mutation.
+func (m *AntenatalinformationMutation) RisksID() (id int, exists bool) {
+	if m._Risks != nil {
+		return *m._Risks, true
 	}
 	return
 }
 
-// RisksidIDs returns the "Risksid" edge IDs in the mutation.
+// RisksIDs returns the "Risks" edge IDs in the mutation.
 // Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
-// RisksidID instead. It exists only for internal usage by the builders.
-func (m *AntenatalinformationMutation) RisksidIDs() (ids []int) {
-	if id := m._Risksid; id != nil {
+// RisksID instead. It exists only for internal usage by the builders.
+func (m *AntenatalinformationMutation) RisksIDs() (ids []int) {
+	if id := m._Risks; id != nil {
 		ids = append(ids, *id)
 	}
 	return
 }
 
-// ResetRisksid resets all changes to the "Risksid" edge.
-func (m *AntenatalinformationMutation) ResetRisksid() {
-	m._Risksid = nil
-	m.cleared_Risksid = false
+// ResetRisks resets all changes to the "Risks" edge.
+func (m *AntenatalinformationMutation) ResetRisks() {
+	m._Risks = nil
+	m.cleared_Risks = false
 }
 
 // Op returns the operation name.
@@ -405,8 +426,8 @@ func (m *AntenatalinformationMutation) Fields() []string {
 	if m.gestationalage != nil {
 		fields = append(fields, antenatalinformation.FieldGestationalage)
 	}
-	if m.added_time != nil {
-		fields = append(fields, antenatalinformation.FieldAddedTime)
+	if m.time != nil {
+		fields = append(fields, antenatalinformation.FieldTime)
 	}
 	return fields
 }
@@ -418,8 +439,8 @@ func (m *AntenatalinformationMutation) Field(name string) (ent.Value, bool) {
 	switch name {
 	case antenatalinformation.FieldGestationalage:
 		return m.Gestationalage()
-	case antenatalinformation.FieldAddedTime:
-		return m.AddedTime()
+	case antenatalinformation.FieldTime:
+		return m.Time()
 	}
 	return nil, false
 }
@@ -431,8 +452,8 @@ func (m *AntenatalinformationMutation) OldField(ctx context.Context, name string
 	switch name {
 	case antenatalinformation.FieldGestationalage:
 		return m.OldGestationalage(ctx)
-	case antenatalinformation.FieldAddedTime:
-		return m.OldAddedTime(ctx)
+	case antenatalinformation.FieldTime:
+		return m.OldTime(ctx)
 	}
 	return nil, fmt.Errorf("unknown Antenatalinformation field %s", name)
 }
@@ -443,18 +464,18 @@ func (m *AntenatalinformationMutation) OldField(ctx context.Context, name string
 func (m *AntenatalinformationMutation) SetField(name string, value ent.Value) error {
 	switch name {
 	case antenatalinformation.FieldGestationalage:
-		v, ok := value.(string)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetGestationalage(v)
 		return nil
-	case antenatalinformation.FieldAddedTime:
+	case antenatalinformation.FieldTime:
 		v, ok := value.(time.Time)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetAddedTime(v)
+		m.SetTime(v)
 		return nil
 	}
 	return fmt.Errorf("unknown Antenatalinformation field %s", name)
@@ -463,13 +484,21 @@ func (m *AntenatalinformationMutation) SetField(name string, value ent.Value) er
 // AddedFields returns all numeric fields that were incremented/decremented during
 // this mutation.
 func (m *AntenatalinformationMutation) AddedFields() []string {
-	return nil
+	var fields []string
+	if m.addgestationalage != nil {
+		fields = append(fields, antenatalinformation.FieldGestationalage)
+	}
+	return fields
 }
 
 // AddedField returns the numeric value that was incremented/decremented on a field
 // with the given name. The second boolean return value indicates that this field
 // was not set, or was not defined in the schema.
 func (m *AntenatalinformationMutation) AddedField(name string) (ent.Value, bool) {
+	switch name {
+	case antenatalinformation.FieldGestationalage:
+		return m.AddedGestationalage()
+	}
 	return nil, false
 }
 
@@ -478,6 +507,13 @@ func (m *AntenatalinformationMutation) AddedField(name string) (ent.Value, bool)
 // type.
 func (m *AntenatalinformationMutation) AddField(name string, value ent.Value) error {
 	switch name {
+	case antenatalinformation.FieldGestationalage:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddGestationalage(v)
+		return nil
 	}
 	return fmt.Errorf("unknown Antenatalinformation numeric field %s", name)
 }
@@ -508,8 +544,8 @@ func (m *AntenatalinformationMutation) ResetField(name string) error {
 	case antenatalinformation.FieldGestationalage:
 		m.ResetGestationalage()
 		return nil
-	case antenatalinformation.FieldAddedTime:
-		m.ResetAddedTime()
+	case antenatalinformation.FieldTime:
+		m.ResetTime()
 		return nil
 	}
 	return fmt.Errorf("unknown Antenatalinformation field %s", name)
@@ -524,11 +560,11 @@ func (m *AntenatalinformationMutation) AddedEdges() []string {
 	if m._Patient != nil {
 		edges = append(edges, antenatalinformation.EdgePatient)
 	}
-	if m._Pregnancystatusid != nil {
-		edges = append(edges, antenatalinformation.EdgePregnancystatusid)
+	if m._Pregnancystatus != nil {
+		edges = append(edges, antenatalinformation.EdgePregnancystatus)
 	}
-	if m._Risksid != nil {
-		edges = append(edges, antenatalinformation.EdgeRisksid)
+	if m._Risks != nil {
+		edges = append(edges, antenatalinformation.EdgeRisks)
 	}
 	return edges
 }
@@ -545,12 +581,12 @@ func (m *AntenatalinformationMutation) AddedIDs(name string) []ent.Value {
 		if id := m._Patient; id != nil {
 			return []ent.Value{*id}
 		}
-	case antenatalinformation.EdgePregnancystatusid:
-		if id := m._Pregnancystatusid; id != nil {
+	case antenatalinformation.EdgePregnancystatus:
+		if id := m._Pregnancystatus; id != nil {
 			return []ent.Value{*id}
 		}
-	case antenatalinformation.EdgeRisksid:
-		if id := m._Risksid; id != nil {
+	case antenatalinformation.EdgeRisks:
+		if id := m._Risks; id != nil {
 			return []ent.Value{*id}
 		}
 	}
@@ -580,11 +616,11 @@ func (m *AntenatalinformationMutation) ClearedEdges() []string {
 	if m.cleared_Patient {
 		edges = append(edges, antenatalinformation.EdgePatient)
 	}
-	if m.cleared_Pregnancystatusid {
-		edges = append(edges, antenatalinformation.EdgePregnancystatusid)
+	if m.cleared_Pregnancystatus {
+		edges = append(edges, antenatalinformation.EdgePregnancystatus)
 	}
-	if m.cleared_Risksid {
-		edges = append(edges, antenatalinformation.EdgeRisksid)
+	if m.cleared_Risks {
+		edges = append(edges, antenatalinformation.EdgeRisks)
 	}
 	return edges
 }
@@ -597,10 +633,10 @@ func (m *AntenatalinformationMutation) EdgeCleared(name string) bool {
 		return m.cleared_Personnel
 	case antenatalinformation.EdgePatient:
 		return m.cleared_Patient
-	case antenatalinformation.EdgePregnancystatusid:
-		return m.cleared_Pregnancystatusid
-	case antenatalinformation.EdgeRisksid:
-		return m.cleared_Risksid
+	case antenatalinformation.EdgePregnancystatus:
+		return m.cleared_Pregnancystatus
+	case antenatalinformation.EdgeRisks:
+		return m.cleared_Risks
 	}
 	return false
 }
@@ -615,11 +651,11 @@ func (m *AntenatalinformationMutation) ClearEdge(name string) error {
 	case antenatalinformation.EdgePatient:
 		m.ClearPatient()
 		return nil
-	case antenatalinformation.EdgePregnancystatusid:
-		m.ClearPregnancystatusid()
+	case antenatalinformation.EdgePregnancystatus:
+		m.ClearPregnancystatus()
 		return nil
-	case antenatalinformation.EdgeRisksid:
-		m.ClearRisksid()
+	case antenatalinformation.EdgeRisks:
+		m.ClearRisks()
 		return nil
 	}
 	return fmt.Errorf("unknown Antenatalinformation unique edge %s", name)
@@ -635,11 +671,11 @@ func (m *AntenatalinformationMutation) ResetEdge(name string) error {
 	case antenatalinformation.EdgePatient:
 		m.ResetPatient()
 		return nil
-	case antenatalinformation.EdgePregnancystatusid:
-		m.ResetPregnancystatusid()
+	case antenatalinformation.EdgePregnancystatus:
+		m.ResetPregnancystatus()
 		return nil
-	case antenatalinformation.EdgeRisksid:
-		m.ResetRisksid()
+	case antenatalinformation.EdgeRisks:
+		m.ResetRisks()
 		return nil
 	}
 	return fmt.Errorf("unknown Antenatalinformation edge %s", name)

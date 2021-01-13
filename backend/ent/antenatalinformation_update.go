@@ -32,14 +32,21 @@ func (au *AntenatalinformationUpdate) Where(ps ...predicate.Antenatalinformation
 }
 
 // SetGestationalage sets the "gestationalage" field.
-func (au *AntenatalinformationUpdate) SetGestationalage(s string) *AntenatalinformationUpdate {
-	au.mutation.SetGestationalage(s)
+func (au *AntenatalinformationUpdate) SetGestationalage(i int) *AntenatalinformationUpdate {
+	au.mutation.ResetGestationalage()
+	au.mutation.SetGestationalage(i)
 	return au
 }
 
-// SetAddedTime sets the "added_time" field.
-func (au *AntenatalinformationUpdate) SetAddedTime(t time.Time) *AntenatalinformationUpdate {
-	au.mutation.SetAddedTime(t)
+// AddGestationalage adds i to the "gestationalage" field.
+func (au *AntenatalinformationUpdate) AddGestationalage(i int) *AntenatalinformationUpdate {
+	au.mutation.AddGestationalage(i)
+	return au
+}
+
+// SetTime sets the "time" field.
+func (au *AntenatalinformationUpdate) SetTime(t time.Time) *AntenatalinformationUpdate {
+	au.mutation.SetTime(t)
 	return au
 }
 
@@ -81,42 +88,42 @@ func (au *AntenatalinformationUpdate) SetPatient(p *Patient) *Antenatalinformati
 	return au.SetPatientID(p.ID)
 }
 
-// SetPregnancystatusidID sets the "Pregnancystatusid" edge to the Pregnancystatus entity by ID.
-func (au *AntenatalinformationUpdate) SetPregnancystatusidID(id int) *AntenatalinformationUpdate {
-	au.mutation.SetPregnancystatusidID(id)
+// SetPregnancystatusID sets the "Pregnancystatus" edge to the Pregnancystatus entity by ID.
+func (au *AntenatalinformationUpdate) SetPregnancystatusID(id int) *AntenatalinformationUpdate {
+	au.mutation.SetPregnancystatusID(id)
 	return au
 }
 
-// SetNillablePregnancystatusidID sets the "Pregnancystatusid" edge to the Pregnancystatus entity by ID if the given value is not nil.
-func (au *AntenatalinformationUpdate) SetNillablePregnancystatusidID(id *int) *AntenatalinformationUpdate {
+// SetNillablePregnancystatusID sets the "Pregnancystatus" edge to the Pregnancystatus entity by ID if the given value is not nil.
+func (au *AntenatalinformationUpdate) SetNillablePregnancystatusID(id *int) *AntenatalinformationUpdate {
 	if id != nil {
-		au = au.SetPregnancystatusidID(*id)
+		au = au.SetPregnancystatusID(*id)
 	}
 	return au
 }
 
-// SetPregnancystatusid sets the "Pregnancystatusid" edge to the Pregnancystatus entity.
-func (au *AntenatalinformationUpdate) SetPregnancystatusid(p *Pregnancystatus) *AntenatalinformationUpdate {
-	return au.SetPregnancystatusidID(p.ID)
+// SetPregnancystatus sets the "Pregnancystatus" edge to the Pregnancystatus entity.
+func (au *AntenatalinformationUpdate) SetPregnancystatus(p *Pregnancystatus) *AntenatalinformationUpdate {
+	return au.SetPregnancystatusID(p.ID)
 }
 
-// SetRisksidID sets the "Risksid" edge to the Risks entity by ID.
-func (au *AntenatalinformationUpdate) SetRisksidID(id int) *AntenatalinformationUpdate {
-	au.mutation.SetRisksidID(id)
+// SetRisksID sets the "Risks" edge to the Risks entity by ID.
+func (au *AntenatalinformationUpdate) SetRisksID(id int) *AntenatalinformationUpdate {
+	au.mutation.SetRisksID(id)
 	return au
 }
 
-// SetNillableRisksidID sets the "Risksid" edge to the Risks entity by ID if the given value is not nil.
-func (au *AntenatalinformationUpdate) SetNillableRisksidID(id *int) *AntenatalinformationUpdate {
+// SetNillableRisksID sets the "Risks" edge to the Risks entity by ID if the given value is not nil.
+func (au *AntenatalinformationUpdate) SetNillableRisksID(id *int) *AntenatalinformationUpdate {
 	if id != nil {
-		au = au.SetRisksidID(*id)
+		au = au.SetRisksID(*id)
 	}
 	return au
 }
 
-// SetRisksid sets the "Risksid" edge to the Risks entity.
-func (au *AntenatalinformationUpdate) SetRisksid(r *Risks) *AntenatalinformationUpdate {
-	return au.SetRisksidID(r.ID)
+// SetRisks sets the "Risks" edge to the Risks entity.
+func (au *AntenatalinformationUpdate) SetRisks(r *Risks) *AntenatalinformationUpdate {
+	return au.SetRisksID(r.ID)
 }
 
 // Mutation returns the AntenatalinformationMutation object of the builder.
@@ -136,15 +143,15 @@ func (au *AntenatalinformationUpdate) ClearPatient() *AntenatalinformationUpdate
 	return au
 }
 
-// ClearPregnancystatusid clears the "Pregnancystatusid" edge to the Pregnancystatus entity.
-func (au *AntenatalinformationUpdate) ClearPregnancystatusid() *AntenatalinformationUpdate {
-	au.mutation.ClearPregnancystatusid()
+// ClearPregnancystatus clears the "Pregnancystatus" edge to the Pregnancystatus entity.
+func (au *AntenatalinformationUpdate) ClearPregnancystatus() *AntenatalinformationUpdate {
+	au.mutation.ClearPregnancystatus()
 	return au
 }
 
-// ClearRisksid clears the "Risksid" edge to the Risks entity.
-func (au *AntenatalinformationUpdate) ClearRisksid() *AntenatalinformationUpdate {
-	au.mutation.ClearRisksid()
+// ClearRisks clears the "Risks" edge to the Risks entity.
+func (au *AntenatalinformationUpdate) ClearRisks() *AntenatalinformationUpdate {
+	au.mutation.ClearRisks()
 	return au
 }
 
@@ -235,16 +242,23 @@ func (au *AntenatalinformationUpdate) sqlSave(ctx context.Context) (n int, err e
 	}
 	if value, ok := au.mutation.Gestationalage(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: antenatalinformation.FieldGestationalage,
 		})
 	}
-	if value, ok := au.mutation.AddedTime(); ok {
+	if value, ok := au.mutation.AddedGestationalage(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: antenatalinformation.FieldGestationalage,
+		})
+	}
+	if value, ok := au.mutation.Time(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeTime,
 			Value:  value,
-			Column: antenatalinformation.FieldAddedTime,
+			Column: antenatalinformation.FieldTime,
 		})
 	}
 	if au.mutation.PersonnelCleared() {
@@ -317,12 +331,12 @@ func (au *AntenatalinformationUpdate) sqlSave(ctx context.Context) (n int, err e
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if au.mutation.PregnancystatusidCleared() {
+	if au.mutation.PregnancystatusCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2O,
 			Inverse: true,
-			Table:   antenatalinformation.PregnancystatusidTable,
-			Columns: []string{antenatalinformation.PregnancystatusidColumn},
+			Table:   antenatalinformation.PregnancystatusTable,
+			Columns: []string{antenatalinformation.PregnancystatusColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
@@ -333,12 +347,12 @@ func (au *AntenatalinformationUpdate) sqlSave(ctx context.Context) (n int, err e
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := au.mutation.PregnancystatusidIDs(); len(nodes) > 0 {
+	if nodes := au.mutation.PregnancystatusIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2O,
 			Inverse: true,
-			Table:   antenatalinformation.PregnancystatusidTable,
-			Columns: []string{antenatalinformation.PregnancystatusidColumn},
+			Table:   antenatalinformation.PregnancystatusTable,
+			Columns: []string{antenatalinformation.PregnancystatusColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
@@ -352,12 +366,12 @@ func (au *AntenatalinformationUpdate) sqlSave(ctx context.Context) (n int, err e
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if au.mutation.RisksidCleared() {
+	if au.mutation.RisksCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2O,
 			Inverse: true,
-			Table:   antenatalinformation.RisksidTable,
-			Columns: []string{antenatalinformation.RisksidColumn},
+			Table:   antenatalinformation.RisksTable,
+			Columns: []string{antenatalinformation.RisksColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
@@ -368,12 +382,12 @@ func (au *AntenatalinformationUpdate) sqlSave(ctx context.Context) (n int, err e
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := au.mutation.RisksidIDs(); len(nodes) > 0 {
+	if nodes := au.mutation.RisksIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2O,
 			Inverse: true,
-			Table:   antenatalinformation.RisksidTable,
-			Columns: []string{antenatalinformation.RisksidColumn},
+			Table:   antenatalinformation.RisksTable,
+			Columns: []string{antenatalinformation.RisksColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
@@ -406,14 +420,21 @@ type AntenatalinformationUpdateOne struct {
 }
 
 // SetGestationalage sets the "gestationalage" field.
-func (auo *AntenatalinformationUpdateOne) SetGestationalage(s string) *AntenatalinformationUpdateOne {
-	auo.mutation.SetGestationalage(s)
+func (auo *AntenatalinformationUpdateOne) SetGestationalage(i int) *AntenatalinformationUpdateOne {
+	auo.mutation.ResetGestationalage()
+	auo.mutation.SetGestationalage(i)
 	return auo
 }
 
-// SetAddedTime sets the "added_time" field.
-func (auo *AntenatalinformationUpdateOne) SetAddedTime(t time.Time) *AntenatalinformationUpdateOne {
-	auo.mutation.SetAddedTime(t)
+// AddGestationalage adds i to the "gestationalage" field.
+func (auo *AntenatalinformationUpdateOne) AddGestationalage(i int) *AntenatalinformationUpdateOne {
+	auo.mutation.AddGestationalage(i)
+	return auo
+}
+
+// SetTime sets the "time" field.
+func (auo *AntenatalinformationUpdateOne) SetTime(t time.Time) *AntenatalinformationUpdateOne {
+	auo.mutation.SetTime(t)
 	return auo
 }
 
@@ -455,42 +476,42 @@ func (auo *AntenatalinformationUpdateOne) SetPatient(p *Patient) *Antenatalinfor
 	return auo.SetPatientID(p.ID)
 }
 
-// SetPregnancystatusidID sets the "Pregnancystatusid" edge to the Pregnancystatus entity by ID.
-func (auo *AntenatalinformationUpdateOne) SetPregnancystatusidID(id int) *AntenatalinformationUpdateOne {
-	auo.mutation.SetPregnancystatusidID(id)
+// SetPregnancystatusID sets the "Pregnancystatus" edge to the Pregnancystatus entity by ID.
+func (auo *AntenatalinformationUpdateOne) SetPregnancystatusID(id int) *AntenatalinformationUpdateOne {
+	auo.mutation.SetPregnancystatusID(id)
 	return auo
 }
 
-// SetNillablePregnancystatusidID sets the "Pregnancystatusid" edge to the Pregnancystatus entity by ID if the given value is not nil.
-func (auo *AntenatalinformationUpdateOne) SetNillablePregnancystatusidID(id *int) *AntenatalinformationUpdateOne {
+// SetNillablePregnancystatusID sets the "Pregnancystatus" edge to the Pregnancystatus entity by ID if the given value is not nil.
+func (auo *AntenatalinformationUpdateOne) SetNillablePregnancystatusID(id *int) *AntenatalinformationUpdateOne {
 	if id != nil {
-		auo = auo.SetPregnancystatusidID(*id)
+		auo = auo.SetPregnancystatusID(*id)
 	}
 	return auo
 }
 
-// SetPregnancystatusid sets the "Pregnancystatusid" edge to the Pregnancystatus entity.
-func (auo *AntenatalinformationUpdateOne) SetPregnancystatusid(p *Pregnancystatus) *AntenatalinformationUpdateOne {
-	return auo.SetPregnancystatusidID(p.ID)
+// SetPregnancystatus sets the "Pregnancystatus" edge to the Pregnancystatus entity.
+func (auo *AntenatalinformationUpdateOne) SetPregnancystatus(p *Pregnancystatus) *AntenatalinformationUpdateOne {
+	return auo.SetPregnancystatusID(p.ID)
 }
 
-// SetRisksidID sets the "Risksid" edge to the Risks entity by ID.
-func (auo *AntenatalinformationUpdateOne) SetRisksidID(id int) *AntenatalinformationUpdateOne {
-	auo.mutation.SetRisksidID(id)
+// SetRisksID sets the "Risks" edge to the Risks entity by ID.
+func (auo *AntenatalinformationUpdateOne) SetRisksID(id int) *AntenatalinformationUpdateOne {
+	auo.mutation.SetRisksID(id)
 	return auo
 }
 
-// SetNillableRisksidID sets the "Risksid" edge to the Risks entity by ID if the given value is not nil.
-func (auo *AntenatalinformationUpdateOne) SetNillableRisksidID(id *int) *AntenatalinformationUpdateOne {
+// SetNillableRisksID sets the "Risks" edge to the Risks entity by ID if the given value is not nil.
+func (auo *AntenatalinformationUpdateOne) SetNillableRisksID(id *int) *AntenatalinformationUpdateOne {
 	if id != nil {
-		auo = auo.SetRisksidID(*id)
+		auo = auo.SetRisksID(*id)
 	}
 	return auo
 }
 
-// SetRisksid sets the "Risksid" edge to the Risks entity.
-func (auo *AntenatalinformationUpdateOne) SetRisksid(r *Risks) *AntenatalinformationUpdateOne {
-	return auo.SetRisksidID(r.ID)
+// SetRisks sets the "Risks" edge to the Risks entity.
+func (auo *AntenatalinformationUpdateOne) SetRisks(r *Risks) *AntenatalinformationUpdateOne {
+	return auo.SetRisksID(r.ID)
 }
 
 // Mutation returns the AntenatalinformationMutation object of the builder.
@@ -510,15 +531,15 @@ func (auo *AntenatalinformationUpdateOne) ClearPatient() *AntenatalinformationUp
 	return auo
 }
 
-// ClearPregnancystatusid clears the "Pregnancystatusid" edge to the Pregnancystatus entity.
-func (auo *AntenatalinformationUpdateOne) ClearPregnancystatusid() *AntenatalinformationUpdateOne {
-	auo.mutation.ClearPregnancystatusid()
+// ClearPregnancystatus clears the "Pregnancystatus" edge to the Pregnancystatus entity.
+func (auo *AntenatalinformationUpdateOne) ClearPregnancystatus() *AntenatalinformationUpdateOne {
+	auo.mutation.ClearPregnancystatus()
 	return auo
 }
 
-// ClearRisksid clears the "Risksid" edge to the Risks entity.
-func (auo *AntenatalinformationUpdateOne) ClearRisksid() *AntenatalinformationUpdateOne {
-	auo.mutation.ClearRisksid()
+// ClearRisks clears the "Risks" edge to the Risks entity.
+func (auo *AntenatalinformationUpdateOne) ClearRisks() *AntenatalinformationUpdateOne {
+	auo.mutation.ClearRisks()
 	return auo
 }
 
@@ -607,16 +628,23 @@ func (auo *AntenatalinformationUpdateOne) sqlSave(ctx context.Context) (_node *A
 	_spec.Node.ID.Value = id
 	if value, ok := auo.mutation.Gestationalage(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: antenatalinformation.FieldGestationalage,
 		})
 	}
-	if value, ok := auo.mutation.AddedTime(); ok {
+	if value, ok := auo.mutation.AddedGestationalage(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: antenatalinformation.FieldGestationalage,
+		})
+	}
+	if value, ok := auo.mutation.Time(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeTime,
 			Value:  value,
-			Column: antenatalinformation.FieldAddedTime,
+			Column: antenatalinformation.FieldTime,
 		})
 	}
 	if auo.mutation.PersonnelCleared() {
@@ -689,12 +717,12 @@ func (auo *AntenatalinformationUpdateOne) sqlSave(ctx context.Context) (_node *A
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if auo.mutation.PregnancystatusidCleared() {
+	if auo.mutation.PregnancystatusCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2O,
 			Inverse: true,
-			Table:   antenatalinformation.PregnancystatusidTable,
-			Columns: []string{antenatalinformation.PregnancystatusidColumn},
+			Table:   antenatalinformation.PregnancystatusTable,
+			Columns: []string{antenatalinformation.PregnancystatusColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
@@ -705,12 +733,12 @@ func (auo *AntenatalinformationUpdateOne) sqlSave(ctx context.Context) (_node *A
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := auo.mutation.PregnancystatusidIDs(); len(nodes) > 0 {
+	if nodes := auo.mutation.PregnancystatusIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2O,
 			Inverse: true,
-			Table:   antenatalinformation.PregnancystatusidTable,
-			Columns: []string{antenatalinformation.PregnancystatusidColumn},
+			Table:   antenatalinformation.PregnancystatusTable,
+			Columns: []string{antenatalinformation.PregnancystatusColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
@@ -724,12 +752,12 @@ func (auo *AntenatalinformationUpdateOne) sqlSave(ctx context.Context) (_node *A
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if auo.mutation.RisksidCleared() {
+	if auo.mutation.RisksCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2O,
 			Inverse: true,
-			Table:   antenatalinformation.RisksidTable,
-			Columns: []string{antenatalinformation.RisksidColumn},
+			Table:   antenatalinformation.RisksTable,
+			Columns: []string{antenatalinformation.RisksColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
@@ -740,12 +768,12 @@ func (auo *AntenatalinformationUpdateOne) sqlSave(ctx context.Context) (_node *A
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := auo.mutation.RisksidIDs(); len(nodes) > 0 {
+	if nodes := auo.mutation.RisksIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2O,
 			Inverse: true,
-			Table:   antenatalinformation.RisksidTable,
-			Columns: []string{antenatalinformation.RisksidColumn},
+			Table:   antenatalinformation.RisksTable,
+			Columns: []string{antenatalinformation.RisksColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{

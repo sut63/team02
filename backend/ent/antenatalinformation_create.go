@@ -25,14 +25,14 @@ type AntenatalinformationCreate struct {
 }
 
 // SetGestationalage sets the "gestationalage" field.
-func (ac *AntenatalinformationCreate) SetGestationalage(s string) *AntenatalinformationCreate {
-	ac.mutation.SetGestationalage(s)
+func (ac *AntenatalinformationCreate) SetGestationalage(i int) *AntenatalinformationCreate {
+	ac.mutation.SetGestationalage(i)
 	return ac
 }
 
-// SetAddedTime sets the "added_time" field.
-func (ac *AntenatalinformationCreate) SetAddedTime(t time.Time) *AntenatalinformationCreate {
-	ac.mutation.SetAddedTime(t)
+// SetTime sets the "time" field.
+func (ac *AntenatalinformationCreate) SetTime(t time.Time) *AntenatalinformationCreate {
+	ac.mutation.SetTime(t)
 	return ac
 }
 
@@ -74,42 +74,42 @@ func (ac *AntenatalinformationCreate) SetPatient(p *Patient) *Antenatalinformati
 	return ac.SetPatientID(p.ID)
 }
 
-// SetPregnancystatusidID sets the "Pregnancystatusid" edge to the Pregnancystatus entity by ID.
-func (ac *AntenatalinformationCreate) SetPregnancystatusidID(id int) *AntenatalinformationCreate {
-	ac.mutation.SetPregnancystatusidID(id)
+// SetPregnancystatusID sets the "Pregnancystatus" edge to the Pregnancystatus entity by ID.
+func (ac *AntenatalinformationCreate) SetPregnancystatusID(id int) *AntenatalinformationCreate {
+	ac.mutation.SetPregnancystatusID(id)
 	return ac
 }
 
-// SetNillablePregnancystatusidID sets the "Pregnancystatusid" edge to the Pregnancystatus entity by ID if the given value is not nil.
-func (ac *AntenatalinformationCreate) SetNillablePregnancystatusidID(id *int) *AntenatalinformationCreate {
+// SetNillablePregnancystatusID sets the "Pregnancystatus" edge to the Pregnancystatus entity by ID if the given value is not nil.
+func (ac *AntenatalinformationCreate) SetNillablePregnancystatusID(id *int) *AntenatalinformationCreate {
 	if id != nil {
-		ac = ac.SetPregnancystatusidID(*id)
+		ac = ac.SetPregnancystatusID(*id)
 	}
 	return ac
 }
 
-// SetPregnancystatusid sets the "Pregnancystatusid" edge to the Pregnancystatus entity.
-func (ac *AntenatalinformationCreate) SetPregnancystatusid(p *Pregnancystatus) *AntenatalinformationCreate {
-	return ac.SetPregnancystatusidID(p.ID)
+// SetPregnancystatus sets the "Pregnancystatus" edge to the Pregnancystatus entity.
+func (ac *AntenatalinformationCreate) SetPregnancystatus(p *Pregnancystatus) *AntenatalinformationCreate {
+	return ac.SetPregnancystatusID(p.ID)
 }
 
-// SetRisksidID sets the "Risksid" edge to the Risks entity by ID.
-func (ac *AntenatalinformationCreate) SetRisksidID(id int) *AntenatalinformationCreate {
-	ac.mutation.SetRisksidID(id)
+// SetRisksID sets the "Risks" edge to the Risks entity by ID.
+func (ac *AntenatalinformationCreate) SetRisksID(id int) *AntenatalinformationCreate {
+	ac.mutation.SetRisksID(id)
 	return ac
 }
 
-// SetNillableRisksidID sets the "Risksid" edge to the Risks entity by ID if the given value is not nil.
-func (ac *AntenatalinformationCreate) SetNillableRisksidID(id *int) *AntenatalinformationCreate {
+// SetNillableRisksID sets the "Risks" edge to the Risks entity by ID if the given value is not nil.
+func (ac *AntenatalinformationCreate) SetNillableRisksID(id *int) *AntenatalinformationCreate {
 	if id != nil {
-		ac = ac.SetRisksidID(*id)
+		ac = ac.SetRisksID(*id)
 	}
 	return ac
 }
 
-// SetRisksid sets the "Risksid" edge to the Risks entity.
-func (ac *AntenatalinformationCreate) SetRisksid(r *Risks) *AntenatalinformationCreate {
-	return ac.SetRisksidID(r.ID)
+// SetRisks sets the "Risks" edge to the Risks entity.
+func (ac *AntenatalinformationCreate) SetRisks(r *Risks) *AntenatalinformationCreate {
+	return ac.SetRisksID(r.ID)
 }
 
 // Mutation returns the AntenatalinformationMutation object of the builder.
@@ -171,8 +171,8 @@ func (ac *AntenatalinformationCreate) check() error {
 			return &ValidationError{Name: "gestationalage", err: fmt.Errorf("ent: validator failed for field \"gestationalage\": %w", err)}
 		}
 	}
-	if _, ok := ac.mutation.AddedTime(); !ok {
-		return &ValidationError{Name: "added_time", err: errors.New("ent: missing required field \"added_time\"")}
+	if _, ok := ac.mutation.Time(); !ok {
+		return &ValidationError{Name: "time", err: errors.New("ent: missing required field \"time\"")}
 	}
 	return nil
 }
@@ -203,19 +203,19 @@ func (ac *AntenatalinformationCreate) createSpec() (*Antenatalinformation, *sqlg
 	)
 	if value, ok := ac.mutation.Gestationalage(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: antenatalinformation.FieldGestationalage,
 		})
 		_node.Gestationalage = value
 	}
-	if value, ok := ac.mutation.AddedTime(); ok {
+	if value, ok := ac.mutation.Time(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeTime,
 			Value:  value,
-			Column: antenatalinformation.FieldAddedTime,
+			Column: antenatalinformation.FieldTime,
 		})
-		_node.AddedTime = value
+		_node.Time = value
 	}
 	if nodes := ac.mutation.PersonnelIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
@@ -255,12 +255,12 @@ func (ac *AntenatalinformationCreate) createSpec() (*Antenatalinformation, *sqlg
 		}
 		_spec.Edges = append(_spec.Edges, edge)
 	}
-	if nodes := ac.mutation.PregnancystatusidIDs(); len(nodes) > 0 {
+	if nodes := ac.mutation.PregnancystatusIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2O,
 			Inverse: true,
-			Table:   antenatalinformation.PregnancystatusidTable,
-			Columns: []string{antenatalinformation.PregnancystatusidColumn},
+			Table:   antenatalinformation.PregnancystatusTable,
+			Columns: []string{antenatalinformation.PregnancystatusColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
@@ -274,12 +274,12 @@ func (ac *AntenatalinformationCreate) createSpec() (*Antenatalinformation, *sqlg
 		}
 		_spec.Edges = append(_spec.Edges, edge)
 	}
-	if nodes := ac.mutation.RisksidIDs(); len(nodes) > 0 {
+	if nodes := ac.mutation.RisksIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2O,
 			Inverse: true,
-			Table:   antenatalinformation.RisksidTable,
-			Columns: []string{antenatalinformation.RisksidColumn},
+			Table:   antenatalinformation.RisksTable,
+			Columns: []string{antenatalinformation.RisksColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{

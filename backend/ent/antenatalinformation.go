@@ -21,9 +21,9 @@ type Antenatalinformation struct {
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
 	// Gestationalage holds the value of the "gestationalage" field.
-	Gestationalage string `json:"gestationalage,omitempty"`
-	// AddedTime holds the value of the "added_time" field.
-	AddedTime time.Time `json:"added_time,omitempty"`
+	Gestationalage int `json:"gestationalage,omitempty"`
+	// Time holds the value of the "time" field.
+	Time time.Time `json:"time,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the AntenatalinformationQuery when eager-loading is set.
 	Edges                                AntenatalinformationEdges `json:"edges"`
@@ -39,10 +39,10 @@ type AntenatalinformationEdges struct {
 	Personnel *Personnel
 	// Patient holds the value of the Patient edge.
 	Patient *Patient
-	// Pregnancystatusid holds the value of the Pregnancystatusid edge.
-	Pregnancystatusid *Pregnancystatus
-	// Risksid holds the value of the Risksid edge.
-	Risksid *Risks
+	// Pregnancystatus holds the value of the Pregnancystatus edge.
+	Pregnancystatus *Pregnancystatus
+	// Risks holds the value of the Risks edge.
+	Risks *Risks
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
 	loadedTypes [4]bool
@@ -76,32 +76,32 @@ func (e AntenatalinformationEdges) PatientOrErr() (*Patient, error) {
 	return nil, &NotLoadedError{edge: "Patient"}
 }
 
-// PregnancystatusidOrErr returns the Pregnancystatusid value or an error if the edge
+// PregnancystatusOrErr returns the Pregnancystatus value or an error if the edge
 // was not loaded in eager-loading, or loaded but was not found.
-func (e AntenatalinformationEdges) PregnancystatusidOrErr() (*Pregnancystatus, error) {
+func (e AntenatalinformationEdges) PregnancystatusOrErr() (*Pregnancystatus, error) {
 	if e.loadedTypes[2] {
-		if e.Pregnancystatusid == nil {
-			// The edge Pregnancystatusid was loaded in eager-loading,
+		if e.Pregnancystatus == nil {
+			// The edge Pregnancystatus was loaded in eager-loading,
 			// but was not found.
 			return nil, &NotFoundError{label: pregnancystatus.Label}
 		}
-		return e.Pregnancystatusid, nil
+		return e.Pregnancystatus, nil
 	}
-	return nil, &NotLoadedError{edge: "Pregnancystatusid"}
+	return nil, &NotLoadedError{edge: "Pregnancystatus"}
 }
 
-// RisksidOrErr returns the Risksid value or an error if the edge
+// RisksOrErr returns the Risks value or an error if the edge
 // was not loaded in eager-loading, or loaded but was not found.
-func (e AntenatalinformationEdges) RisksidOrErr() (*Risks, error) {
+func (e AntenatalinformationEdges) RisksOrErr() (*Risks, error) {
 	if e.loadedTypes[3] {
-		if e.Risksid == nil {
-			// The edge Risksid was loaded in eager-loading,
+		if e.Risks == nil {
+			// The edge Risks was loaded in eager-loading,
 			// but was not found.
 			return nil, &NotFoundError{label: risks.Label}
 		}
-		return e.Risksid, nil
+		return e.Risks, nil
 	}
-	return nil, &NotLoadedError{edge: "Risksid"}
+	return nil, &NotLoadedError{edge: "Risks"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -109,11 +109,9 @@ func (*Antenatalinformation) scanValues(columns []string) ([]interface{}, error)
 	values := make([]interface{}, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case antenatalinformation.FieldID:
+		case antenatalinformation.FieldID, antenatalinformation.FieldGestationalage:
 			values[i] = &sql.NullInt64{}
-		case antenatalinformation.FieldGestationalage:
-			values[i] = &sql.NullString{}
-		case antenatalinformation.FieldAddedTime:
+		case antenatalinformation.FieldTime:
 			values[i] = &sql.NullTime{}
 		case antenatalinformation.ForeignKeys[0]: // _Patient_id
 			values[i] = &sql.NullInt64{}
@@ -145,16 +143,16 @@ func (a *Antenatalinformation) assignValues(columns []string, values []interface
 			}
 			a.ID = int(value.Int64)
 		case antenatalinformation.FieldGestationalage:
-			if value, ok := values[i].(*sql.NullString); !ok {
+			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field gestationalage", values[i])
 			} else if value.Valid {
-				a.Gestationalage = value.String
+				a.Gestationalage = int(value.Int64)
 			}
-		case antenatalinformation.FieldAddedTime:
+		case antenatalinformation.FieldTime:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field added_time", values[i])
+				return fmt.Errorf("unexpected type %T for field time", values[i])
 			} else if value.Valid {
-				a.AddedTime = value.Time
+				a.Time = value.Time
 			}
 		case antenatalinformation.ForeignKeys[0]:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -199,14 +197,14 @@ func (a *Antenatalinformation) QueryPatient() *PatientQuery {
 	return (&AntenatalinformationClient{config: a.config}).QueryPatient(a)
 }
 
-// QueryPregnancystatusid queries the "Pregnancystatusid" edge of the Antenatalinformation entity.
-func (a *Antenatalinformation) QueryPregnancystatusid() *PregnancystatusQuery {
-	return (&AntenatalinformationClient{config: a.config}).QueryPregnancystatusid(a)
+// QueryPregnancystatus queries the "Pregnancystatus" edge of the Antenatalinformation entity.
+func (a *Antenatalinformation) QueryPregnancystatus() *PregnancystatusQuery {
+	return (&AntenatalinformationClient{config: a.config}).QueryPregnancystatus(a)
 }
 
-// QueryRisksid queries the "Risksid" edge of the Antenatalinformation entity.
-func (a *Antenatalinformation) QueryRisksid() *RisksQuery {
-	return (&AntenatalinformationClient{config: a.config}).QueryRisksid(a)
+// QueryRisks queries the "Risks" edge of the Antenatalinformation entity.
+func (a *Antenatalinformation) QueryRisks() *RisksQuery {
+	return (&AntenatalinformationClient{config: a.config}).QueryRisks(a)
 }
 
 // Update returns a builder for updating this Antenatalinformation.
@@ -233,9 +231,9 @@ func (a *Antenatalinformation) String() string {
 	builder.WriteString("Antenatalinformation(")
 	builder.WriteString(fmt.Sprintf("id=%v", a.ID))
 	builder.WriteString(", gestationalage=")
-	builder.WriteString(a.Gestationalage)
-	builder.WriteString(", added_time=")
-	builder.WriteString(a.AddedTime.Format(time.ANSIC))
+	builder.WriteString(fmt.Sprintf("%v", a.Gestationalage))
+	builder.WriteString(", time=")
+	builder.WriteString(a.Time.Format(time.ANSIC))
 	builder.WriteByte(')')
 	return builder.String()
 }

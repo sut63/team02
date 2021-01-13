@@ -94,35 +94,35 @@ func IDLTE(id int) predicate.Antenatalinformation {
 }
 
 // Gestationalage applies equality check predicate on the "gestationalage" field. It's identical to GestationalageEQ.
-func Gestationalage(v string) predicate.Antenatalinformation {
+func Gestationalage(v int) predicate.Antenatalinformation {
 	return predicate.Antenatalinformation(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldGestationalage), v))
 	})
 }
 
-// AddedTime applies equality check predicate on the "added_time" field. It's identical to AddedTimeEQ.
-func AddedTime(v time.Time) predicate.Antenatalinformation {
+// Time applies equality check predicate on the "time" field. It's identical to TimeEQ.
+func Time(v time.Time) predicate.Antenatalinformation {
 	return predicate.Antenatalinformation(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldAddedTime), v))
+		s.Where(sql.EQ(s.C(FieldTime), v))
 	})
 }
 
 // GestationalageEQ applies the EQ predicate on the "gestationalage" field.
-func GestationalageEQ(v string) predicate.Antenatalinformation {
+func GestationalageEQ(v int) predicate.Antenatalinformation {
 	return predicate.Antenatalinformation(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldGestationalage), v))
 	})
 }
 
 // GestationalageNEQ applies the NEQ predicate on the "gestationalage" field.
-func GestationalageNEQ(v string) predicate.Antenatalinformation {
+func GestationalageNEQ(v int) predicate.Antenatalinformation {
 	return predicate.Antenatalinformation(func(s *sql.Selector) {
 		s.Where(sql.NEQ(s.C(FieldGestationalage), v))
 	})
 }
 
 // GestationalageIn applies the In predicate on the "gestationalage" field.
-func GestationalageIn(vs ...string) predicate.Antenatalinformation {
+func GestationalageIn(vs ...int) predicate.Antenatalinformation {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -139,7 +139,7 @@ func GestationalageIn(vs ...string) predicate.Antenatalinformation {
 }
 
 // GestationalageNotIn applies the NotIn predicate on the "gestationalage" field.
-func GestationalageNotIn(vs ...string) predicate.Antenatalinformation {
+func GestationalageNotIn(vs ...int) predicate.Antenatalinformation {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -156,84 +156,49 @@ func GestationalageNotIn(vs ...string) predicate.Antenatalinformation {
 }
 
 // GestationalageGT applies the GT predicate on the "gestationalage" field.
-func GestationalageGT(v string) predicate.Antenatalinformation {
+func GestationalageGT(v int) predicate.Antenatalinformation {
 	return predicate.Antenatalinformation(func(s *sql.Selector) {
 		s.Where(sql.GT(s.C(FieldGestationalage), v))
 	})
 }
 
 // GestationalageGTE applies the GTE predicate on the "gestationalage" field.
-func GestationalageGTE(v string) predicate.Antenatalinformation {
+func GestationalageGTE(v int) predicate.Antenatalinformation {
 	return predicate.Antenatalinformation(func(s *sql.Selector) {
 		s.Where(sql.GTE(s.C(FieldGestationalage), v))
 	})
 }
 
 // GestationalageLT applies the LT predicate on the "gestationalage" field.
-func GestationalageLT(v string) predicate.Antenatalinformation {
+func GestationalageLT(v int) predicate.Antenatalinformation {
 	return predicate.Antenatalinformation(func(s *sql.Selector) {
 		s.Where(sql.LT(s.C(FieldGestationalage), v))
 	})
 }
 
 // GestationalageLTE applies the LTE predicate on the "gestationalage" field.
-func GestationalageLTE(v string) predicate.Antenatalinformation {
+func GestationalageLTE(v int) predicate.Antenatalinformation {
 	return predicate.Antenatalinformation(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldGestationalage), v))
 	})
 }
 
-// GestationalageContains applies the Contains predicate on the "gestationalage" field.
-func GestationalageContains(v string) predicate.Antenatalinformation {
+// TimeEQ applies the EQ predicate on the "time" field.
+func TimeEQ(v time.Time) predicate.Antenatalinformation {
 	return predicate.Antenatalinformation(func(s *sql.Selector) {
-		s.Where(sql.Contains(s.C(FieldGestationalage), v))
+		s.Where(sql.EQ(s.C(FieldTime), v))
 	})
 }
 
-// GestationalageHasPrefix applies the HasPrefix predicate on the "gestationalage" field.
-func GestationalageHasPrefix(v string) predicate.Antenatalinformation {
+// TimeNEQ applies the NEQ predicate on the "time" field.
+func TimeNEQ(v time.Time) predicate.Antenatalinformation {
 	return predicate.Antenatalinformation(func(s *sql.Selector) {
-		s.Where(sql.HasPrefix(s.C(FieldGestationalage), v))
+		s.Where(sql.NEQ(s.C(FieldTime), v))
 	})
 }
 
-// GestationalageHasSuffix applies the HasSuffix predicate on the "gestationalage" field.
-func GestationalageHasSuffix(v string) predicate.Antenatalinformation {
-	return predicate.Antenatalinformation(func(s *sql.Selector) {
-		s.Where(sql.HasSuffix(s.C(FieldGestationalage), v))
-	})
-}
-
-// GestationalageEqualFold applies the EqualFold predicate on the "gestationalage" field.
-func GestationalageEqualFold(v string) predicate.Antenatalinformation {
-	return predicate.Antenatalinformation(func(s *sql.Selector) {
-		s.Where(sql.EqualFold(s.C(FieldGestationalage), v))
-	})
-}
-
-// GestationalageContainsFold applies the ContainsFold predicate on the "gestationalage" field.
-func GestationalageContainsFold(v string) predicate.Antenatalinformation {
-	return predicate.Antenatalinformation(func(s *sql.Selector) {
-		s.Where(sql.ContainsFold(s.C(FieldGestationalage), v))
-	})
-}
-
-// AddedTimeEQ applies the EQ predicate on the "added_time" field.
-func AddedTimeEQ(v time.Time) predicate.Antenatalinformation {
-	return predicate.Antenatalinformation(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldAddedTime), v))
-	})
-}
-
-// AddedTimeNEQ applies the NEQ predicate on the "added_time" field.
-func AddedTimeNEQ(v time.Time) predicate.Antenatalinformation {
-	return predicate.Antenatalinformation(func(s *sql.Selector) {
-		s.Where(sql.NEQ(s.C(FieldAddedTime), v))
-	})
-}
-
-// AddedTimeIn applies the In predicate on the "added_time" field.
-func AddedTimeIn(vs ...time.Time) predicate.Antenatalinformation {
+// TimeIn applies the In predicate on the "time" field.
+func TimeIn(vs ...time.Time) predicate.Antenatalinformation {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -245,12 +210,12 @@ func AddedTimeIn(vs ...time.Time) predicate.Antenatalinformation {
 			s.Where(sql.False())
 			return
 		}
-		s.Where(sql.In(s.C(FieldAddedTime), v...))
+		s.Where(sql.In(s.C(FieldTime), v...))
 	})
 }
 
-// AddedTimeNotIn applies the NotIn predicate on the "added_time" field.
-func AddedTimeNotIn(vs ...time.Time) predicate.Antenatalinformation {
+// TimeNotIn applies the NotIn predicate on the "time" field.
+func TimeNotIn(vs ...time.Time) predicate.Antenatalinformation {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -262,35 +227,35 @@ func AddedTimeNotIn(vs ...time.Time) predicate.Antenatalinformation {
 			s.Where(sql.False())
 			return
 		}
-		s.Where(sql.NotIn(s.C(FieldAddedTime), v...))
+		s.Where(sql.NotIn(s.C(FieldTime), v...))
 	})
 }
 
-// AddedTimeGT applies the GT predicate on the "added_time" field.
-func AddedTimeGT(v time.Time) predicate.Antenatalinformation {
+// TimeGT applies the GT predicate on the "time" field.
+func TimeGT(v time.Time) predicate.Antenatalinformation {
 	return predicate.Antenatalinformation(func(s *sql.Selector) {
-		s.Where(sql.GT(s.C(FieldAddedTime), v))
+		s.Where(sql.GT(s.C(FieldTime), v))
 	})
 }
 
-// AddedTimeGTE applies the GTE predicate on the "added_time" field.
-func AddedTimeGTE(v time.Time) predicate.Antenatalinformation {
+// TimeGTE applies the GTE predicate on the "time" field.
+func TimeGTE(v time.Time) predicate.Antenatalinformation {
 	return predicate.Antenatalinformation(func(s *sql.Selector) {
-		s.Where(sql.GTE(s.C(FieldAddedTime), v))
+		s.Where(sql.GTE(s.C(FieldTime), v))
 	})
 }
 
-// AddedTimeLT applies the LT predicate on the "added_time" field.
-func AddedTimeLT(v time.Time) predicate.Antenatalinformation {
+// TimeLT applies the LT predicate on the "time" field.
+func TimeLT(v time.Time) predicate.Antenatalinformation {
 	return predicate.Antenatalinformation(func(s *sql.Selector) {
-		s.Where(sql.LT(s.C(FieldAddedTime), v))
+		s.Where(sql.LT(s.C(FieldTime), v))
 	})
 }
 
-// AddedTimeLTE applies the LTE predicate on the "added_time" field.
-func AddedTimeLTE(v time.Time) predicate.Antenatalinformation {
+// TimeLTE applies the LTE predicate on the "time" field.
+func TimeLTE(v time.Time) predicate.Antenatalinformation {
 	return predicate.Antenatalinformation(func(s *sql.Selector) {
-		s.Where(sql.LTE(s.C(FieldAddedTime), v))
+		s.Where(sql.LTE(s.C(FieldTime), v))
 	})
 }
 
@@ -350,25 +315,25 @@ func HasPatientWith(preds ...predicate.Patient) predicate.Antenatalinformation {
 	})
 }
 
-// HasPregnancystatusid applies the HasEdge predicate on the "Pregnancystatusid" edge.
-func HasPregnancystatusid() predicate.Antenatalinformation {
+// HasPregnancystatus applies the HasEdge predicate on the "Pregnancystatus" edge.
+func HasPregnancystatus() predicate.Antenatalinformation {
 	return predicate.Antenatalinformation(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
-			sqlgraph.To(PregnancystatusidTable, FieldID),
-			sqlgraph.Edge(sqlgraph.O2O, true, PregnancystatusidTable, PregnancystatusidColumn),
+			sqlgraph.To(PregnancystatusTable, FieldID),
+			sqlgraph.Edge(sqlgraph.O2O, true, PregnancystatusTable, PregnancystatusColumn),
 		)
 		sqlgraph.HasNeighbors(s, step)
 	})
 }
 
-// HasPregnancystatusidWith applies the HasEdge predicate on the "Pregnancystatusid" edge with a given conditions (other predicates).
-func HasPregnancystatusidWith(preds ...predicate.Pregnancystatus) predicate.Antenatalinformation {
+// HasPregnancystatusWith applies the HasEdge predicate on the "Pregnancystatus" edge with a given conditions (other predicates).
+func HasPregnancystatusWith(preds ...predicate.Pregnancystatus) predicate.Antenatalinformation {
 	return predicate.Antenatalinformation(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
-			sqlgraph.To(PregnancystatusidInverseTable, FieldID),
-			sqlgraph.Edge(sqlgraph.O2O, true, PregnancystatusidTable, PregnancystatusidColumn),
+			sqlgraph.To(PregnancystatusInverseTable, FieldID),
+			sqlgraph.Edge(sqlgraph.O2O, true, PregnancystatusTable, PregnancystatusColumn),
 		)
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
@@ -378,25 +343,25 @@ func HasPregnancystatusidWith(preds ...predicate.Pregnancystatus) predicate.Ante
 	})
 }
 
-// HasRisksid applies the HasEdge predicate on the "Risksid" edge.
-func HasRisksid() predicate.Antenatalinformation {
+// HasRisks applies the HasEdge predicate on the "Risks" edge.
+func HasRisks() predicate.Antenatalinformation {
 	return predicate.Antenatalinformation(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
-			sqlgraph.To(RisksidTable, FieldID),
-			sqlgraph.Edge(sqlgraph.O2O, true, RisksidTable, RisksidColumn),
+			sqlgraph.To(RisksTable, FieldID),
+			sqlgraph.Edge(sqlgraph.O2O, true, RisksTable, RisksColumn),
 		)
 		sqlgraph.HasNeighbors(s, step)
 	})
 }
 
-// HasRisksidWith applies the HasEdge predicate on the "Risksid" edge with a given conditions (other predicates).
-func HasRisksidWith(preds ...predicate.Risks) predicate.Antenatalinformation {
+// HasRisksWith applies the HasEdge predicate on the "Risks" edge with a given conditions (other predicates).
+func HasRisksWith(preds ...predicate.Risks) predicate.Antenatalinformation {
 	return predicate.Antenatalinformation(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
-			sqlgraph.To(RisksidInverseTable, FieldID),
-			sqlgraph.Edge(sqlgraph.O2O, true, RisksidTable, RisksidColumn),
+			sqlgraph.To(RisksInverseTable, FieldID),
+			sqlgraph.Edge(sqlgraph.O2O, true, RisksTable, RisksColumn),
 		)
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {

@@ -14,8 +14,8 @@ type Antenatalinformation struct {
 // Fields of the Antenatalinformation.
 func (Antenatalinformation) Fields() []ent.Field {
 	return []ent.Field{
-		field.String("gestationalage").NotEmpty(),
-		field.Time("added_time"),
+		field.Int("gestationalage").Positive(),
+		field.Time("time"),
 	}
 }
 
@@ -24,7 +24,7 @@ func (Antenatalinformation) Edges() []ent.Edge {
 	return []ent.Edge{
 		edge.From("Personnel", Personnel.Type).Ref("Antenatalinformation").Unique(),
 		edge.From("Patient", Patient.Type).Ref("Antenatalinformation").Unique(),
-		edge.From("Pregnancystatusid", Pregnancystatus.Type).Ref("Antenatalinformation").Unique(),
-		edge.From("Risksid", Risks.Type).Ref("Antenatalinformation").Unique(),
+		edge.From("Pregnancystatus", Pregnancystatus.Type).Ref("Antenatalinformation").Unique(),
+		edge.From("Risks", Risks.Type).Ref("Antenatalinformation").Unique(),
 	}
 }

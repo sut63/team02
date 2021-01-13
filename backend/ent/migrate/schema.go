@@ -11,8 +11,8 @@ var (
 	// AntenatalinformationsColumns holds the columns for the "antenatalinformations" table.
 	AntenatalinformationsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
-		{Name: "gestationalage", Type: field.TypeString},
-		{Name: "added_time", Type: field.TypeTime},
+		{Name: "gestationalage", Type: field.TypeInt},
+		{Name: "time", Type: field.TypeTime},
 		{Name: "Patient_id", Type: field.TypeInt, Nullable: true},
 		{Name: "Personnel_id", Type: field.TypeInt, Nullable: true},
 		{Name: "pregnancystatus_antenatalinformation", Type: field.TypeInt, Unique: true, Nullable: true},
