@@ -1,6 +1,6 @@
 package schema
 
-import  (
+import (
 	"time"
 
 	"github.com/facebook/ent"

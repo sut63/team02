@@ -1,7 +1,6 @@
 package schema
 
-import  (
-
+import (
 	"github.com/facebook/ent"
 	"github.com/facebook/ent/schema/edge"
 )
@@ -14,7 +13,7 @@ type Checksymptoms struct {
 // Fields of the Checksymptoms.
 func (Checksymptoms) Fields() []ent.Field {
 	return nil
-		
+
 }
 
 // Edges of the Checksymptoms.
@@ -24,6 +23,5 @@ func (Checksymptoms) Edges() []ent.Edge {
 		edge.From("patient", Patient.Type).Ref("Checksymptoms").Unique(),
 		edge.From("personnel", Personnel.Type).Ref("Checksymptoms").Unique(),
 		edge.From("doctorordersheet", DoctorOrderSheet.Type).Ref("Checksymptoms").Unique(),
-		
 	}
 }

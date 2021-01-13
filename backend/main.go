@@ -18,10 +18,10 @@ type Personnels struct {
 }
 
 type Personnel struct {
-	Name 		string
-	Department 	string
-	User		string
-	Password	string
+	Name       string
+	Department string
+	User       string
+	Password   string
 }
 
 type Patients struct {
@@ -29,10 +29,9 @@ type Patients struct {
 }
 
 type Patient struct {
-	Name 		string
-	Birthday	string
-	Gender		string
-
+	Name     string
+	Birthday string
+	Gender   string
 }
 
 type Remedys struct {
@@ -40,9 +39,8 @@ type Remedys struct {
 }
 
 type Remedy struct {
-	Remedy		string
+	Remedy string
 }
-
 
 // @title SUT SA Example API
 // @version 1.0
@@ -129,7 +127,6 @@ func main() {
 			Patient{"นายแดง", "15/02/1980", "Male"},
 			Patient{"นายดำ", "11/03/1980", "Male"},
 			Patient{"นางหล่า", "13/11/1980", "Female"},
-			
 		},
 	}
 
@@ -159,10 +156,6 @@ func main() {
 			Save(context.Background())
 	}
 
-
-
-
-	
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	router.Run()
 
