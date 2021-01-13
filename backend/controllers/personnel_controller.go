@@ -17,16 +17,16 @@ type PersonnelController struct {
 }
 
 // CreatePersonnel handles POST requests for adding Personnel entities
-// @Summary Create Personnel
-// @Description Create Personnel
-// @ID create-Personnel
+// @Summary Create personnel
+// @Description Create personnel
+// @ID create-personnel
 // @Accept   json
 // @Produce  json
-// @Param Personnel body ent.Personnel true "Personnel entity"
+// @Param personnel body ent.Personnel true "personnel entity"
 // @Success 200 {object} ent.Personnel
 // @Failure 400 {object} gin.H
 // @Failure 500 {object} gin.H
-// @Router /Personnels [post]
+// @Router /personnels [post]
 func (ctl *PersonnelController) CreatePersonnel(c *gin.Context) {
 	obj := ent.Personnel{}
 	if err := c.ShouldBind(&obj); err != nil {
@@ -55,16 +55,16 @@ func (ctl *PersonnelController) CreatePersonnel(c *gin.Context) {
 }
 
 // GetPersonnel handles GET requests to retrieve a Personnel entity
-// @Summary Get a Personnel entity by ID
-// @Description get Personnel by ID
-// @ID get-Personnel
+// @Summary Get a personnel entity by ID
+// @Description get personnel by ID
+// @ID get-personnel
 // @Produce  json
-// @Param id path int true "Personnel ID"
+// @Param id path int true "personnel ID"
 // @Success 200 {object} ent.Personnel
 // @Failure 400 {object} gin.H
 // @Failure 404 {object} gin.H
 // @Failure 500 {object} gin.H
-// @Router /PersonnelNames/{id} [get]
+// @Router /personnelNames/{id} [get]
 func (ctl *PersonnelController) GetPersonnel(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
@@ -89,16 +89,16 @@ func (ctl *PersonnelController) GetPersonnel(c *gin.Context) {
 }
 
 // ListPersonnel handles request to get a list of Personnel entities
-// @Summary List Personnel entities
-// @Description list Personnel entities
-// @ID list-Personnel
+// @Summary List personnel entities
+// @Description list personnel entities
+// @ID list-personnel
 // @Produce json
 // @Param limit  query int false "Limit"
 // @Param offset query int false "Offset"
 // @Success 200 {array} ent.Personnel
 // @Failure 400 {object} gin.H
 // @Failure 500 {object} gin.H
-// @Router /Personnels [get]
+// @Router /personnels [get]
 func (ctl *PersonnelController) ListPersonnel(c *gin.Context) {
 	limitQuery := c.Query("limit")
 	limit := 10
@@ -132,16 +132,16 @@ func (ctl *PersonnelController) ListPersonnel(c *gin.Context) {
 }
 
 // DeletePersonnel handles DELETE requests to delete a Personnel entity
-// @Summary Delete a Personnel entity by ID
-// @Description get Personnel by ID
-// @ID delete-Personnel
+// @Summary Delete a personnel entity by ID
+// @Description get personnel by ID
+// @ID delete-personnel
 // @Produce  json
-// @Param id path int true "Personnel ID"
+// @Param id path int true "personnel ID"
 // @Success 200 {object} gin.H
 // @Failure 400 {object} gin.H
 // @Failure 404 {object} gin.H
 // @Failure 500 {object} gin.H
-// @Router /Personnels/{id} [delete]
+// @Router /personnels/{id} [delete]
 func (ctl *PersonnelController) DeletePersonnel(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
@@ -165,17 +165,17 @@ func (ctl *PersonnelController) DeletePersonnel(c *gin.Context) {
 }
 
 // UpdatePersonnel handles PUT requests to update a Personnel entity
-// @Summary Update a Personnel entity by ID
-// @Description update Personnel by ID
-// @ID update-Personnel
+// @Summary Update a personnel entity by ID
+// @Description update personnel by ID
+// @ID update-personnel
 // @Accept   json
 // @Produce  json
-// @Param id path int true "Personnel ID"
-// @Param Personnel body ent.Personnel true "Personnel entity"
+// @Param id path int true "personnel ID"
+// @Param personnel body ent.Personnel true "personnel entity"
 // @Success 200 {object} ent.Personnel
 // @Failure 400 {object} gin.H
 // @Failure 500 {object} gin.H
-// @Router /Personnels/{id} [put]
+// @Router /personnels/{id} [put]
 func (ctl *PersonnelController) UpdatePersonnel(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
@@ -220,7 +220,7 @@ func NewPersonnelController(router gin.IRouter, client *ent.Client) *PersonnelCo
 
 // InitPersonnelController registers routes to the main engine
 func (ctl *PersonnelController) register() {
-	Personnel := ctl.router.Group("/Personnels")
+	Personnel := ctl.router.Group("/personnels")
 	Personnel.GET("", ctl.ListPersonnel)
 	// CRUD
 	Personnel.POST("", ctl.CreatePersonnel)

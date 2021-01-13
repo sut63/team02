@@ -17,16 +17,16 @@ type PatientController struct {
 }
 
 // CreatePatient handles POST requests for adding Patient entities
-// @Summary Create Patient
-// @Description Create Patient
-// @ID create-Patient
+// @Summary Create patient
+// @Description Create patient
+// @ID create-patient
 // @Accept   json
 // @Produce  json
-// @Param Patient body ent.Patient true "Patient entity"
+// @Param patient body ent.Patient true "patient entity"
 // @Success 200 {object} ent.Patient
 // @Failure 400 {object} gin.H
 // @Failure 500 {object} gin.H
-// @Router /Patients [post]
+// @Router /patients [post]
 func (ctl *PatientController) CreatePatient(c *gin.Context) {
 	obj := ent.Patient{}
 	if err := c.ShouldBind(&obj); err != nil {
@@ -54,16 +54,16 @@ func (ctl *PatientController) CreatePatient(c *gin.Context) {
 }
 
 // GetPatient handles GET requests to retrieve a Patient entity
-// @Summary Get a Patient entity by ID
-// @Description get Patient by ID
-// @ID get-Patient
+// @Summary Get a patient entity by ID
+// @Description get patient by ID
+// @ID get-patient
 // @Produce  json
-// @Param id path int true "Patient ID"
+// @Param id path int true "patient ID"
 // @Success 200 {object} ent.Patient
 // @Failure 400 {object} gin.H
 // @Failure 404 {object} gin.H
 // @Failure 500 {object} gin.H
-// @Router /PatientNames/{id} [get]
+// @Router /patientNames/{id} [get]
 func (ctl *PatientController) GetPatient(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
@@ -88,16 +88,16 @@ func (ctl *PatientController) GetPatient(c *gin.Context) {
 }
 
 // ListPatient handles request to get a list of Patient entities
-// @Summary List Patient entities
-// @Description list Patient entities
-// @ID list-Patient
+// @Summary List patient entities
+// @Description list patient entities
+// @ID list-patient
 // @Produce json
 // @Param limit  query int false "Limit"
 // @Param offset query int false "Offset"
 // @Success 200 {array} ent.Patient
 // @Failure 400 {object} gin.H
 // @Failure 500 {object} gin.H
-// @Router /Patients [get]
+// @Router /patients [get]
 func (ctl *PatientController) ListPatient(c *gin.Context) {
 	limitQuery := c.Query("limit")
 	limit := 10
@@ -131,16 +131,16 @@ func (ctl *PatientController) ListPatient(c *gin.Context) {
 }
 
 // DeletePatient handles DELETE requests to delete a Patient entity
-// @Summary Delete a Patient entity by ID
-// @Description get Patient by ID
-// @ID delete-Patient
+// @Summary Delete a patient entity by ID
+// @Description get patient by ID
+// @ID delete-patient
 // @Produce  json
-// @Param id path int true "Patient ID"
+// @Param id path int true "patient ID"
 // @Success 200 {object} gin.H
 // @Failure 400 {object} gin.H
 // @Failure 404 {object} gin.H
 // @Failure 500 {object} gin.H
-// @Router /Patients/{id} [delete]
+// @Router /patients/{id} [delete]
 func (ctl *PatientController) DeletePatient(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
@@ -164,17 +164,17 @@ func (ctl *PatientController) DeletePatient(c *gin.Context) {
 }
 
 // UpdatePatient handles PUT requests to update a Patient entity
-// @Summary Update a Patient entity by ID
-// @Description update Patient by ID
-// @ID update-Patient
+// @Summary Update a patient entity by ID
+// @Description update patient by ID
+// @ID update-patient
 // @Accept   json
 // @Produce  json
-// @Param id path int true "Patient ID"
-// @Param Patient body ent.Patient true "Patient entity"
+// @Param id path int true "patient ID"
+// @Param patient body ent.Patient true "patient entity"
 // @Success 200 {object} ent.Patient
 // @Failure 400 {object} gin.H
 // @Failure 500 {object} gin.H
-// @Router /Patients/{id} [put]
+// @Router /patients/{id} [put]
 func (ctl *PatientController) UpdatePatient(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
@@ -218,7 +218,7 @@ func NewPatientController(router gin.IRouter, client *ent.Client) *PatientContro
 
 // InitPatientController registers routes to the main engine
 func (ctl *PatientController) register() {
-	Patient := ctl.router.Group("/Patients")
+	Patient := ctl.router.Group("/patients")
 	Patient.GET("", ctl.ListPatient)
 	// CRUD
 	Patient.POST("", ctl.CreatePatient)

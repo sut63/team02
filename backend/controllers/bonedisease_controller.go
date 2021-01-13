@@ -30,16 +30,16 @@ type Bonedisease struct {
 }
 
 // CreateBonedisease handles POST requests for adding Bonedisease entities
-// @Summary Create Bonedisease
-// @Description Create Bonedisease
-// @ID create-Bonedisease
+// @Summary Create bonedisease
+// @Description Create bonedisease
+// @ID create-bonedisease
 // @Accept   json
 // @Produce  json
-// @Param Bonedisease body Bonedisease true "Bonedisease entity"
+// @Param bonedisease body Bonedisease true "bonedisease entity"
 // @Success 200 {object} ent.Bonedisease
 // @Failure 400 {object} gin.H
 // @Failure 500 {object} gin.H
-// @Router /Bonediseases [post]
+// @Router /bonediseases [post]
 func (ctl *BonediseaseController) CreateBonedisease(c *gin.Context) {
 	obj := Bonedisease{}
 	if err := c.ShouldBind(&obj); err != nil {
@@ -110,16 +110,16 @@ func (ctl *BonediseaseController) CreateBonedisease(c *gin.Context) {
 }
 
 // ListBonedisease handles request to get a list of Bonedisease entities
-// @Summary List Bonedisease entities
-// @Description list Bonedisease entities
-// @ID list-Bonedisease
+// @Summary List bonedisease entities
+// @Description list bonedisease entities
+// @ID list-bonedisease
 // @Produce json
 // @Param limit  query int false "Limit"
 // @Param offset query int false "Offset"
 // @Success 200 {array} ent.Bonedisease
 // @Failure 400 {object} gin.H
 // @Failure 500 {object} gin.H
-// @Router /Bonediseases [get]
+// @Router /bonediseases [get]
 func (ctl *BonediseaseController) ListBonedisease(c *gin.Context) {
 	limitQuery := c.Query("limit")
 	limit := 10
@@ -156,16 +156,16 @@ func (ctl *BonediseaseController) ListBonedisease(c *gin.Context) {
 }
 
 // DeleteBonedisease handles DELETE requests to delete a Bonedisease entity
-// @Summary Delete a Bonedisease entity by ID
-// @Description get Bonedisease by ID
-// @ID delete-Bonedisease
+// @Summary Delete a bonedisease entity by ID
+// @Description get bonedisease by ID
+// @ID delete-bonedisease
 // @Produce  json
-// @Param id path int true "Bonedisease ID"
+// @Param id path int true "bonedisease ID"
 // @Success 200 {object} gin.H
 // @Failure 400 {object} gin.H
 // @Failure 404 {object} gin.H
 // @Failure 500 {object} gin.H
-// @Router /Bonediseases/{id} [delete]
+// @Router /bonediseases/{id} [delete]
 func (ctl *BonediseaseController) DeleteBonedisease(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
@@ -200,7 +200,7 @@ func NewBonediseaseController(router gin.IRouter, client *ent.Client) *Bonedisea
 
 // InitBonediseaseController registers routes to the main engine
 func (ctl *BonediseaseController) register() {
-	Bonediseases := ctl.router.Group("/Bonediseases")
+	Bonediseases := ctl.router.Group("/bonediseases")
 
 	Bonediseases.GET("", ctl.ListBonedisease)
 

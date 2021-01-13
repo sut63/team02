@@ -17,16 +17,16 @@ type RemedyController struct {
 }
 
 // CreateRemedy handles POST requests for adding Remedy entities
-// @Summary Create Remedy
-// @Description Create Remedy
-// @ID create-Remedy
+// @Summary Create remedy
+// @Description Create remedy
+// @ID create-remedy
 // @Accept   json
 // @Produce  json
-// @Param Remedy body ent.Remedy true "Remedy entity"
+// @Param remedy body ent.Remedy true "remedy entity"
 // @Success 200 {object} ent.Remedy
 // @Failure 400 {object} gin.H
 // @Failure 500 {object} gin.H
-// @Router /Remedys [post]
+// @Router /remedys [post]
 func (ctl *RemedyController) CreateRemedy(c *gin.Context) {
 	obj := ent.Remedy{}
 	if err := c.ShouldBind(&obj); err != nil {
@@ -52,16 +52,16 @@ func (ctl *RemedyController) CreateRemedy(c *gin.Context) {
 }
 
 // GetRemedy handles GET requests to retrieve a Remedy entity
-// @Summary Get a Remedy entity by ID
-// @Description get Remedy by ID
-// @ID get-Remedy
+// @Summary Get a remedy entity by ID
+// @Description get remedy by ID
+// @ID get-remedy
 // @Produce  json
-// @Param id path int true "Remedy ID"
+// @Param id path int true "remedy ID"
 // @Success 200 {object} ent.Remedy
 // @Failure 400 {object} gin.H
 // @Failure 404 {object} gin.H
 // @Failure 500 {object} gin.H
-// @Router /RemedyNames/{id} [get]
+// @Router /remedys/{id} [get]
 func (ctl *RemedyController) GetRemedy(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
@@ -86,16 +86,16 @@ func (ctl *RemedyController) GetRemedy(c *gin.Context) {
 }
 
 // ListRemedy handles request to get a list of Remedy entities
-// @Summary List Remedy entities
-// @Description list Remedy entities
-// @ID list-Remedy
+// @Summary List remedy entities
+// @Description list remedy entities
+// @ID list-remedy
 // @Produce json
 // @Param limit  query int false "Limit"
 // @Param offset query int false "Offset"
 // @Success 200 {array} ent.Remedy
 // @Failure 400 {object} gin.H
 // @Failure 500 {object} gin.H
-// @Router /Remedys [get]
+// @Router /remedys [get]
 func (ctl *RemedyController) ListRemedy(c *gin.Context) {
 	limitQuery := c.Query("limit")
 	limit := 10
@@ -129,16 +129,16 @@ func (ctl *RemedyController) ListRemedy(c *gin.Context) {
 }
 
 // DeleteRemedy handles DELETE requests to delete a Remedy entity
-// @Summary Delete a Remedy entity by ID
-// @Description get Remedy by ID
-// @ID delete-Remedy
+// @Summary Delete a remedy entity by ID
+// @Description get remedy by ID
+// @ID delete-remedy
 // @Produce  json
-// @Param id path int true "Remedy ID"
+// @Param id path int true "remedy ID"
 // @Success 200 {object} gin.H
 // @Failure 400 {object} gin.H
 // @Failure 404 {object} gin.H
 // @Failure 500 {object} gin.H
-// @Router /Remedys/{id} [delete]
+// @Router /remedys/{id} [delete]
 func (ctl *RemedyController) DeleteRemedy(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
@@ -162,17 +162,17 @@ func (ctl *RemedyController) DeleteRemedy(c *gin.Context) {
 }
 
 // UpdateRemedy handles PUT requests to update a Remedy entity
-// @Summary Update a Remedy entity by ID
-// @Description update Remedy by ID
-// @ID update-Remedy
+// @Summary Update a remedy entity by ID
+// @Description update remedy by ID
+// @ID update-remedy
 // @Accept   json
 // @Produce  json
-// @Param id path int true "Remedy ID"
-// @Param Remedy body ent.Remedy true "Remedy entity"
+// @Param id path int true "remedy ID"
+// @Param remedy body ent.Remedy true "remedy entity"
 // @Success 200 {object} ent.Remedy
 // @Failure 400 {object} gin.H
 // @Failure 500 {object} gin.H
-// @Router /Remedys/{id} [put]
+// @Router /remedys/{id} [put]
 func (ctl *RemedyController) UpdateRemedy(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
@@ -214,7 +214,7 @@ func NewRemedyController(router gin.IRouter, client *ent.Client) *RemedyControll
 
 // InitRemedyController registers routes to the main engine
 func (ctl *RemedyController) register() {
-	Remedy := ctl.router.Group("/Remedys")
+	Remedy := ctl.router.Group("/remedys")
 	Remedy.GET("", ctl.ListRemedy)
 	// CRUD
 	Remedy.POST("", ctl.CreateRemedy)
