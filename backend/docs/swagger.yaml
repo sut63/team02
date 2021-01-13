@@ -26,6 +26,17 @@ definitions:
       personnel:
         type: integer
     type: object
+  controllers.Dentalappointment:
+    properties:
+      appointTime:
+        type: string
+      kindName:
+        type: integer
+      patientID:
+        type: integer
+      personnelID:
+        type: integer
+    type: object
   controllers.Surgeryappointment:
     properties:
       appointtime:
@@ -970,6 +981,246 @@ paths:
           schema:
             $ref: '#/definitions/gin.H'
       summary: Create checksymptoms
+  /dentalappointments:
+    get:
+      description: list dentalappointment entities
+      operationId: list-dentalappointment
+      parameters:
+      - description: Limit
+        in: query
+        name: limit
+        type: integer
+      - description: Offset
+        in: query
+        name: offset
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/ent.Dentalappointment'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: List dentalappointment entities
+    post:
+      consumes:
+      - application/json
+      description: Create dentalappointment
+      operationId: create-dentalappointment
+      parameters:
+      - description: dentalappointment entity
+        in: body
+        name: dentalappointment
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.Dentalappointment'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ent.Dentalappointment'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Create dentalappointment
+  /dentalappointments/{id}:
+    delete:
+      description: get dentalappointment by ID
+      operationId: delete-dentalappointment
+      parameters:
+      - description: dentalappointment ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/gin.H'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Delete a dentalappointment entity by ID
+  /dentalkinds:
+    get:
+      description: list dentalkind entities
+      operationId: list-dentalkind
+      parameters:
+      - description: Limit
+        in: query
+        name: limit
+        type: integer
+      - description: Offset
+        in: query
+        name: offset
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/ent.Dentalkind'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: List dentalkind entities
+    post:
+      consumes:
+      - application/json
+      description: Create dentalkind
+      operationId: create-dentalkind
+      parameters:
+      - description: dentalkind entity
+        in: body
+        name: dentalkind
+        required: true
+        schema:
+          $ref: '#/definitions/ent.Dentalkind'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ent.Dentalkind'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Create dentalkind
+  /dentalkinds/{id}:
+    delete:
+      description: get dentalkind by ID
+      operationId: delete-dentalkind
+      parameters:
+      - description: Dentalkind ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/gin.H'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Delete a dentalkind entity by ID
+    get:
+      description: get dentalkind by ID
+      operationId: get-dentalkind
+      parameters:
+      - description: Dentalkind ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ent.Dentalkind'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Get a dentalkind entity by ID
+    put:
+      consumes:
+      - application/json
+      description: update dentalkind by ID
+      operationId: update-dentalkind
+      parameters:
+      - description: Dentalkind ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Dentalkind entity
+        in: body
+        name: dentalkind
+        required: true
+        schema:
+          $ref: '#/definitions/ent.Dentalkind'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ent.Dentalkind'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Update a dentalkind entity by ID
   /diseases:
     get:
       description: list disease entities

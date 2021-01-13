@@ -78,6 +78,22 @@ type Dentalkind struct {
 	KindName string
 }
 
+type Pregnancystatuss struct {
+	Pregnancystatus []Pregnancystatus
+}
+
+type Pregnancystatus struct {
+	Pregnancystatus string
+}
+
+type Riskss struct {
+	Risks []Risks
+}
+
+type Risks struct {
+	Risks string
+}
+
 // @title SUT SA Example API
 // @version 1.0
 // @description This is a sample server for SUT SE 2563
@@ -142,6 +158,9 @@ func main() {
 	controllers.NewRemedyController(v1, client)
 	controllers.NewDentalkindController(v1, client)
 	controllers.NewDentalappointmentController(v1, client)
+	controllers.NewPregnancystatusController(v1, client)
+   	controllers.NewRisksController(v1, client)
+   	controllers.NewAntenatalinformationController(v1, client)
 
 	// Set Personnel Data
 	personnels := Personnels{
@@ -235,6 +254,43 @@ func main() {
 		client.Dentalkind.
 			Create().
 			SetKindname(dentalkinds.KindName).
+			Save(context.Background())
+	}
+
+	// Set Pregnancystatus Data
+	Pregnancystatuss := Pregnancystatuss{
+		Pregnancystatus: []Pregnancystatus{
+			Pregnancystatus{"ตั้งครรภ์"},
+			Pregnancystatus{"ภาวะเสี่ยง"},
+			Pregnancystatus{"รอคลอด"},
+			Pregnancystatus{"แท้งบุตร"},
+		},
+	}
+
+	for _, Pregnancystatuss := range Pregnancystatuss.Pregnancystatus {
+
+		client.Pregnancystatus.
+			Create().
+			SetPregnancystatus(Pregnancystatuss.Pregnancystatus).
+			Save(context.Background())
+	}
+
+	// Set Risks Data
+	Riskss := Riskss{
+		Risks: []Risks{
+			Risks{"เคยผ่าตัดที่มดลูก"},
+			Risks{"มีประวัติโรคแทรกซ้อน"},
+			Risks{"มีประวัติแท้งตั้งแต่ 3 ครั้งขึ้นไป"},
+			Risks{"เป็นโรคโลหิตจาง"},
+			Risks{"ตรวจ HIV ได้ผลบวก"},
+		},
+	}
+
+	for _, Riskss := range Riskss.Risks {
+
+		client.Risks.
+			Create().
+			SetRisks(Riskss.Risks).
 			Save(context.Background())
 	}
 
