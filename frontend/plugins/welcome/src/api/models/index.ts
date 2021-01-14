@@ -1,5 +1,7 @@
 export * from './ControllersBonedisease';
 export * from './ControllersChecksymptoms';
+export * from './ControllersDentalappointment';
+export * from './ControllersPhysicaltherapyrecord';
 export * from './ControllersSurgeryappointment';
 export * from './EntAntenatalinformation';
 export * from './EntAntenatalinformationEdges';

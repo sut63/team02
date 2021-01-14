@@ -21,6 +21,12 @@ import {
     ControllersChecksymptoms,
     ControllersChecksymptomsFromJSON,
     ControllersChecksymptomsToJSON,
+    ControllersDentalappointment,
+    ControllersDentalappointmentFromJSON,
+    ControllersDentalappointmentToJSON,
+    ControllersPhysicaltherapyrecord,
+    ControllersPhysicaltherapyrecordFromJSON,
+    ControllersPhysicaltherapyrecordToJSON,
     ControllersSurgeryappointment,
     ControllersSurgeryappointmentFromJSON,
     ControllersSurgeryappointmentToJSON,
@@ -33,6 +39,12 @@ import {
     EntChecksymptoms,
     EntChecksymptomsFromJSON,
     EntChecksymptomsToJSON,
+    EntDentalappointment,
+    EntDentalappointmentFromJSON,
+    EntDentalappointmentToJSON,
+    EntDentalkind,
+    EntDentalkindFromJSON,
+    EntDentalkindToJSON,
     EntDisease,
     EntDiseaseFromJSON,
     EntDiseaseToJSON,
@@ -45,6 +57,12 @@ import {
     EntPersonnel,
     EntPersonnelFromJSON,
     EntPersonnelToJSON,
+    EntPhysicaltherapyrecord,
+    EntPhysicaltherapyrecordFromJSON,
+    EntPhysicaltherapyrecordToJSON,
+    EntPhysicaltherapyroom,
+    EntPhysicaltherapyroomFromJSON,
+    EntPhysicaltherapyroomToJSON,
     EntPregnancystatus,
     EntPregnancystatusFromJSON,
     EntPregnancystatusToJSON,
@@ -54,6 +72,9 @@ import {
     EntRisks,
     EntRisksFromJSON,
     EntRisksToJSON,
+    EntStatus,
+    EntStatusFromJSON,
+    EntStatusToJSON,
     EntSurgeryappointment,
     EntSurgeryappointmentFromJSON,
     EntSurgeryappointmentToJSON,
@@ -74,6 +95,14 @@ export interface CreateChecksymptomsRequest {
     checksymptoms: ControllersChecksymptoms;
 }
 
+export interface CreateDentalappointmentRequest {
+    dentalappointment: ControllersDentalappointment;
+}
+
+export interface CreateDentalkindRequest {
+    dentalkind: EntDentalkind;
+}
+
 export interface CreateDiseaseRequest {
     disease: EntDisease;
 }
@@ -90,6 +119,14 @@ export interface CreatePersonnelRequest {
     personnel: EntPersonnel;
 }
 
+export interface CreatePhysicaltherapyrecordRequest {
+    physicaltherapyrecord: ControllersPhysicaltherapyrecord;
+}
+
+export interface CreatePhysicaltherapyroomRequest {
+    physicaltherapyroom: EntPhysicaltherapyroom;
+}
+
 export interface CreatePregnancystatusRequest {
     pregnancystatus: EntPregnancystatus;
 }
@@ -102,6 +139,10 @@ export interface CreateRisksRequest {
     risks: EntRisks;
 }
 
+export interface CreateStatusRequest {
+    status: EntStatus;
+}
+
 export interface CreateSurgeryappointmentRequest {
     surgeryappointment: ControllersSurgeryappointment;
 }
@@ -110,7 +151,19 @@ export interface DeleteAntenatalinformationRequest {
     id: number;
 }
 
+export interface DeleteApprovedresultRequest {
+    id: number;
+}
+
 export interface DeleteBonediseaseRequest {
+    id: number;
+}
+
+export interface DeleteDentalappointmentRequest {
+    id: number;
+}
+
+export interface DeleteDentalkindRequest {
     id: number;
 }
 
@@ -146,6 +199,10 @@ export interface GetAntenatalinformationRequest {
     id: number;
 }
 
+export interface GetDentalkindRequest {
+    id: number;
+}
+
 export interface GetDiseaseRequest {
     id: number;
 }
@@ -162,6 +219,10 @@ export interface GetPersonnelRequest {
     id: number;
 }
 
+export interface GetPhysicaltherapyroomRequest {
+    id: number;
+}
+
 export interface GetPregnancystatusRequest {
     id: number;
 }
@@ -171,6 +232,10 @@ export interface GetRemedyRequest {
 }
 
 export interface GetRisksRequest {
+    id: number;
+}
+
+export interface GetStatusRequest {
     id: number;
 }
 
@@ -197,6 +262,16 @@ export interface ListChecksymptomsRequest {
     offset?: number;
 }
 
+export interface ListDentalappointmentRequest {
+    limit?: number;
+    offset?: number;
+}
+
+export interface ListDentalkindRequest {
+    limit?: number;
+    offset?: number;
+}
+
 export interface ListDiseaseRequest {
     limit?: number;
     offset?: number;
@@ -217,6 +292,16 @@ export interface ListPersonnelRequest {
     offset?: number;
 }
 
+export interface ListPhysicaltherapyrecordRequest {
+    limit?: number;
+    offset?: number;
+}
+
+export interface ListPhysicaltherapyroomRequest {
+    limit?: number;
+    offset?: number;
+}
+
 export interface ListPregnancystatusRequest {
     limit?: number;
     offset?: number;
@@ -228,6 +313,11 @@ export interface ListRemedyRequest {
 }
 
 export interface ListRisksRequest {
+    limit?: number;
+    offset?: number;
+}
+
+export interface ListStatusRequest {
     limit?: number;
     offset?: number;
 }
@@ -245,6 +335,11 @@ export interface ListSurgerytypeRequest {
 export interface UpdateAntenatalinformationRequest {
     id: number;
     antenatalinformation: EntAntenatalinformation;
+}
+
+export interface UpdateDentalkindRequest {
+    id: number;
+    dentalkind: EntDentalkind;
 }
 
 export interface UpdateDiseaseRequest {
@@ -393,6 +488,76 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
+     * Create dentalappointment
+     * Create dentalappointment
+     */
+    async createDentalappointmentRaw(requestParameters: CreateDentalappointmentRequest): Promise<runtime.ApiResponse<EntDentalappointment>> {
+        if (requestParameters.dentalappointment === null || requestParameters.dentalappointment === undefined) {
+            throw new runtime.RequiredError('dentalappointment','Required parameter requestParameters.dentalappointment was null or undefined when calling createDentalappointment.');
+        }
+
+        const queryParameters: runtime.HTTPQuery = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/dentalappointments`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: ControllersDentalappointmentToJSON(requestParameters.dentalappointment),
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => EntDentalappointmentFromJSON(jsonValue));
+    }
+
+    /**
+     * Create dentalappointment
+     * Create dentalappointment
+     */
+    async createDentalappointment(requestParameters: CreateDentalappointmentRequest): Promise<EntDentalappointment> {
+        const response = await this.createDentalappointmentRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
+     * Create dentalkind
+     * Create dentalkind
+     */
+    async createDentalkindRaw(requestParameters: CreateDentalkindRequest): Promise<runtime.ApiResponse<EntDentalkind>> {
+        if (requestParameters.dentalkind === null || requestParameters.dentalkind === undefined) {
+            throw new runtime.RequiredError('dentalkind','Required parameter requestParameters.dentalkind was null or undefined when calling createDentalkind.');
+        }
+
+        const queryParameters: runtime.HTTPQuery = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/dentalkinds`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: EntDentalkindToJSON(requestParameters.dentalkind),
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => EntDentalkindFromJSON(jsonValue));
+    }
+
+    /**
+     * Create dentalkind
+     * Create dentalkind
+     */
+    async createDentalkind(requestParameters: CreateDentalkindRequest): Promise<EntDentalkind> {
+        const response = await this.createDentalkindRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
      * Create disease
      * Create disease
      */
@@ -533,6 +698,76 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
+     * Create physicaltherapyrecord
+     * Create physicaltherapyrecord
+     */
+    async createPhysicaltherapyrecordRaw(requestParameters: CreatePhysicaltherapyrecordRequest): Promise<runtime.ApiResponse<Array<EntPhysicaltherapyrecord>>> {
+        if (requestParameters.physicaltherapyrecord === null || requestParameters.physicaltherapyrecord === undefined) {
+            throw new runtime.RequiredError('physicaltherapyrecord','Required parameter requestParameters.physicaltherapyrecord was null or undefined when calling createPhysicaltherapyrecord.');
+        }
+
+        const queryParameters: runtime.HTTPQuery = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/physicaltherapyrecords`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: ControllersPhysicaltherapyrecordToJSON(requestParameters.physicaltherapyrecord),
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(EntPhysicaltherapyrecordFromJSON));
+    }
+
+    /**
+     * Create physicaltherapyrecord
+     * Create physicaltherapyrecord
+     */
+    async createPhysicaltherapyrecord(requestParameters: CreatePhysicaltherapyrecordRequest): Promise<Array<EntPhysicaltherapyrecord>> {
+        const response = await this.createPhysicaltherapyrecordRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
+     * Create physicaltherapyroom
+     * Create physicaltherapyroom
+     */
+    async createPhysicaltherapyroomRaw(requestParameters: CreatePhysicaltherapyroomRequest): Promise<runtime.ApiResponse<EntPhysicaltherapyroom>> {
+        if (requestParameters.physicaltherapyroom === null || requestParameters.physicaltherapyroom === undefined) {
+            throw new runtime.RequiredError('physicaltherapyroom','Required parameter requestParameters.physicaltherapyroom was null or undefined when calling createPhysicaltherapyroom.');
+        }
+
+        const queryParameters: runtime.HTTPQuery = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/physicaltherapyrooms`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: EntPhysicaltherapyroomToJSON(requestParameters.physicaltherapyroom),
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => EntPhysicaltherapyroomFromJSON(jsonValue));
+    }
+
+    /**
+     * Create physicaltherapyroom
+     * Create physicaltherapyroom
+     */
+    async createPhysicaltherapyroom(requestParameters: CreatePhysicaltherapyroomRequest): Promise<EntPhysicaltherapyroom> {
+        const response = await this.createPhysicaltherapyroomRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
      * Create pregnancystatus
      * Create pregnancystatus
      */
@@ -638,6 +873,41 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
+     * Create status
+     * Create status
+     */
+    async createStatusRaw(requestParameters: CreateStatusRequest): Promise<runtime.ApiResponse<EntStatus>> {
+        if (requestParameters.status === null || requestParameters.status === undefined) {
+            throw new runtime.RequiredError('status','Required parameter requestParameters.status was null or undefined when calling createStatus.');
+        }
+
+        const queryParameters: runtime.HTTPQuery = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/statuss`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: EntStatusToJSON(requestParameters.status),
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => EntStatusFromJSON(jsonValue));
+    }
+
+    /**
+     * Create status
+     * Create status
+     */
+    async createStatus(requestParameters: CreateStatusRequest): Promise<EntStatus> {
+        const response = await this.createStatusRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
      * Create Surgeryappointment
      * Create Surgeryappointment
      */
@@ -705,6 +975,38 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
+     * get approvedresult by ID
+     * Delete a approvedresult entity by ID
+     */
+    async deleteApprovedresultRaw(requestParameters: DeleteApprovedresultRequest): Promise<runtime.ApiResponse<object>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deleteApprovedresult.');
+        }
+
+        const queryParameters: runtime.HTTPQuery = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/physicaltherapyrecords/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse<any>(response);
+    }
+
+    /**
+     * get approvedresult by ID
+     * Delete a approvedresult entity by ID
+     */
+    async deleteApprovedresult(requestParameters: DeleteApprovedresultRequest): Promise<object> {
+        const response = await this.deleteApprovedresultRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
      * get bonedisease by ID
      * Delete a bonedisease entity by ID
      */
@@ -733,6 +1035,70 @@ export class DefaultApi extends runtime.BaseAPI {
      */
     async deleteBonedisease(requestParameters: DeleteBonediseaseRequest): Promise<object> {
         const response = await this.deleteBonediseaseRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
+     * get dentalappointment by ID
+     * Delete a dentalappointment entity by ID
+     */
+    async deleteDentalappointmentRaw(requestParameters: DeleteDentalappointmentRequest): Promise<runtime.ApiResponse<object>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deleteDentalappointment.');
+        }
+
+        const queryParameters: runtime.HTTPQuery = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/dentalappointments/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse<any>(response);
+    }
+
+    /**
+     * get dentalappointment by ID
+     * Delete a dentalappointment entity by ID
+     */
+    async deleteDentalappointment(requestParameters: DeleteDentalappointmentRequest): Promise<object> {
+        const response = await this.deleteDentalappointmentRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
+     * get dentalkind by ID
+     * Delete a dentalkind entity by ID
+     */
+    async deleteDentalkindRaw(requestParameters: DeleteDentalkindRequest): Promise<runtime.ApiResponse<object>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deleteDentalkind.');
+        }
+
+        const queryParameters: runtime.HTTPQuery = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/dentalkinds/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse<any>(response);
+    }
+
+    /**
+     * get dentalkind by ID
+     * Delete a dentalkind entity by ID
+     */
+    async deleteDentalkind(requestParameters: DeleteDentalkindRequest): Promise<object> {
+        const response = await this.deleteDentalkindRaw(requestParameters);
         return await response.value();
     }
 
@@ -993,6 +1359,38 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
+     * get dentalkind by ID
+     * Get a dentalkind entity by ID
+     */
+    async getDentalkindRaw(requestParameters: GetDentalkindRequest): Promise<runtime.ApiResponse<EntDentalkind>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getDentalkind.');
+        }
+
+        const queryParameters: runtime.HTTPQuery = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/dentalkinds/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => EntDentalkindFromJSON(jsonValue));
+    }
+
+    /**
+     * get dentalkind by ID
+     * Get a dentalkind entity by ID
+     */
+    async getDentalkind(requestParameters: GetDentalkindRequest): Promise<EntDentalkind> {
+        const response = await this.getDentalkindRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
      * get disease by ID
      * Get a disease entity by ID
      */
@@ -1121,6 +1519,38 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
+     * get physicaltherapyroom by ID
+     * Get a physicaltherapyroom entity by ID
+     */
+    async getPhysicaltherapyroomRaw(requestParameters: GetPhysicaltherapyroomRequest): Promise<runtime.ApiResponse<EntPhysicaltherapyroom>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getPhysicaltherapyroom.');
+        }
+
+        const queryParameters: runtime.HTTPQuery = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/physicaltherapyrooms/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => EntPhysicaltherapyroomFromJSON(jsonValue));
+    }
+
+    /**
+     * get physicaltherapyroom by ID
+     * Get a physicaltherapyroom entity by ID
+     */
+    async getPhysicaltherapyroom(requestParameters: GetPhysicaltherapyroomRequest): Promise<EntPhysicaltherapyroom> {
+        const response = await this.getPhysicaltherapyroomRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
      * get pregnancystatus by ID
      * Get a pregnancystatus entity by ID
      */
@@ -1213,6 +1643,38 @@ export class DefaultApi extends runtime.BaseAPI {
      */
     async getRisks(requestParameters: GetRisksRequest): Promise<EntRisks> {
         const response = await this.getRisksRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
+     * get status by ID
+     * Get a status entity by ID
+     */
+    async getStatusRaw(requestParameters: GetStatusRequest): Promise<runtime.ApiResponse<EntStatus>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getStatus.');
+        }
+
+        const queryParameters: runtime.HTTPQuery = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/statuss/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => EntStatusFromJSON(jsonValue));
+    }
+
+    /**
+     * get status by ID
+     * Get a status entity by ID
+     */
+    async getStatus(requestParameters: GetStatusRequest): Promise<EntStatus> {
+        const response = await this.getStatusRaw(requestParameters);
         return await response.value();
     }
 
@@ -1389,6 +1851,78 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
+     * list dentalappointment entities
+     * List dentalappointment entities
+     */
+    async listDentalappointmentRaw(requestParameters: ListDentalappointmentRequest): Promise<runtime.ApiResponse<Array<EntDentalappointment>>> {
+        const queryParameters: runtime.HTTPQuery = {};
+
+        if (requestParameters.limit !== undefined) {
+            queryParameters['limit'] = requestParameters.limit;
+        }
+
+        if (requestParameters.offset !== undefined) {
+            queryParameters['offset'] = requestParameters.offset;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/dentalappointments`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(EntDentalappointmentFromJSON));
+    }
+
+    /**
+     * list dentalappointment entities
+     * List dentalappointment entities
+     */
+    async listDentalappointment(requestParameters: ListDentalappointmentRequest): Promise<Array<EntDentalappointment>> {
+        const response = await this.listDentalappointmentRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
+     * list dentalkind entities
+     * List dentalkind entities
+     */
+    async listDentalkindRaw(requestParameters: ListDentalkindRequest): Promise<runtime.ApiResponse<Array<EntDentalkind>>> {
+        const queryParameters: runtime.HTTPQuery = {};
+
+        if (requestParameters.limit !== undefined) {
+            queryParameters['limit'] = requestParameters.limit;
+        }
+
+        if (requestParameters.offset !== undefined) {
+            queryParameters['offset'] = requestParameters.offset;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/dentalkinds`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(EntDentalkindFromJSON));
+    }
+
+    /**
+     * list dentalkind entities
+     * List dentalkind entities
+     */
+    async listDentalkind(requestParameters: ListDentalkindRequest): Promise<Array<EntDentalkind>> {
+        const response = await this.listDentalkindRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
      * list disease entities
      * List disease entities
      */
@@ -1533,6 +2067,78 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
+     * list Physicaltherapyrecord entities
+     * List Physicaltherapyrecord entities
+     */
+    async listPhysicaltherapyrecordRaw(requestParameters: ListPhysicaltherapyrecordRequest): Promise<runtime.ApiResponse<Array<Array<EntPhysicaltherapyrecord>>>> {
+        const queryParameters: runtime.HTTPQuery = {};
+
+        if (requestParameters.limit !== undefined) {
+            queryParameters['limit'] = requestParameters.limit;
+        }
+
+        if (requestParameters.offset !== undefined) {
+            queryParameters['offset'] = requestParameters.offset;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/physicaltherapyrecords`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse<any>(response);
+    }
+
+    /**
+     * list Physicaltherapyrecord entities
+     * List Physicaltherapyrecord entities
+     */
+    async listPhysicaltherapyrecord(requestParameters: ListPhysicaltherapyrecordRequest): Promise<Array<Array<EntPhysicaltherapyrecord>>> {
+        const response = await this.listPhysicaltherapyrecordRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
+     * list physicaltherapyroom entities
+     * List physicaltherapyroom entities
+     */
+    async listPhysicaltherapyroomRaw(requestParameters: ListPhysicaltherapyroomRequest): Promise<runtime.ApiResponse<Array<EntPhysicaltherapyroom>>> {
+        const queryParameters: runtime.HTTPQuery = {};
+
+        if (requestParameters.limit !== undefined) {
+            queryParameters['limit'] = requestParameters.limit;
+        }
+
+        if (requestParameters.offset !== undefined) {
+            queryParameters['offset'] = requestParameters.offset;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/physicaltherapyrooms`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(EntPhysicaltherapyroomFromJSON));
+    }
+
+    /**
+     * list physicaltherapyroom entities
+     * List physicaltherapyroom entities
+     */
+    async listPhysicaltherapyroom(requestParameters: ListPhysicaltherapyroomRequest): Promise<Array<EntPhysicaltherapyroom>> {
+        const response = await this.listPhysicaltherapyroomRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
      * list pregnancystatus entities
      * List pregnancystatus entities
      */
@@ -1637,6 +2243,42 @@ export class DefaultApi extends runtime.BaseAPI {
      */
     async listRisks(requestParameters: ListRisksRequest): Promise<Array<EntRisks>> {
         const response = await this.listRisksRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
+     * list status entities
+     * List status entities
+     */
+    async listStatusRaw(requestParameters: ListStatusRequest): Promise<runtime.ApiResponse<Array<EntStatus>>> {
+        const queryParameters: runtime.HTTPQuery = {};
+
+        if (requestParameters.limit !== undefined) {
+            queryParameters['limit'] = requestParameters.limit;
+        }
+
+        if (requestParameters.offset !== undefined) {
+            queryParameters['offset'] = requestParameters.offset;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/statuss`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(EntStatusFromJSON));
+    }
+
+    /**
+     * list status entities
+     * List status entities
+     */
+    async listStatus(requestParameters: ListStatusRequest): Promise<Array<EntStatus>> {
+        const response = await this.listStatusRaw(requestParameters);
         return await response.value();
     }
 
@@ -1748,6 +2390,45 @@ export class DefaultApi extends runtime.BaseAPI {
      */
     async updateAntenatalinformation(requestParameters: UpdateAntenatalinformationRequest): Promise<EntAntenatalinformation> {
         const response = await this.updateAntenatalinformationRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
+     * update dentalkind by ID
+     * Update a dentalkind entity by ID
+     */
+    async updateDentalkindRaw(requestParameters: UpdateDentalkindRequest): Promise<runtime.ApiResponse<EntDentalkind>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling updateDentalkind.');
+        }
+
+        if (requestParameters.dentalkind === null || requestParameters.dentalkind === undefined) {
+            throw new runtime.RequiredError('dentalkind','Required parameter requestParameters.dentalkind was null or undefined when calling updateDentalkind.');
+        }
+
+        const queryParameters: runtime.HTTPQuery = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/dentalkinds/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'PUT',
+            headers: headerParameters,
+            query: queryParameters,
+            body: EntDentalkindToJSON(requestParameters.dentalkind),
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => EntDentalkindFromJSON(jsonValue));
+    }
+
+    /**
+     * update dentalkind by ID
+     * Update a dentalkind entity by ID
+     */
+    async updateDentalkind(requestParameters: UpdateDentalkindRequest): Promise<EntDentalkind> {
+        const response = await this.updateDentalkindRaw(requestParameters);
         return await response.value();
     }
 
