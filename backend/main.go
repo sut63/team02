@@ -70,42 +70,52 @@ type DoctorOrderSheet struct {
 	note string
 }
 
+//Deltalkinds with
 type Dentalkinds struct {
 	Dentalkind []Dentalkind
 }
 
+//Deltalkind with
 type Dentalkind struct {
 	KindName string
 }
 
+//Pregnancystatuss with
 type Pregnancystatuss struct {
 	Pregnancystatus []Pregnancystatus
 }
 
+//Pregnancystatus with
 type Pregnancystatus struct {
 	Pregnancystatus string
 }
 
+//Riskss with
 type Riskss struct {
 	Risks []Risks
 }
 
+//Risks with
 type Risks struct {
 	Risks string
 }
 
+//Physicaltherapyrooms with
 type Physicaltherapyrooms struct {
 	Physicaltherapyroom []Physicaltherapyroom
 }
 
+//Physicaltherapyroom with
 type Physicaltherapyroom struct {
 	Physicaltherapyroom string
 }
 
+//Statuss with
 type Statuss struct {
 	Status []Status
 }
 
+//Status with
 type Status struct {
 	Status string
 }
