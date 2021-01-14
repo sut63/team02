@@ -1,14 +1,14 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import WelcomePage from './WelcomePage';
+import LoginPage from './LoginPage';
 import { ThemeProvider } from '@material-ui/core';
 import { lightTheme } from '@backstage/theme';
 
-describe('WelcomePage', () => {
+describe('LoginPage', () => {
   it('should render', () => {
     const rendered = render(
       <ThemeProvider theme={lightTheme}>
-        <WelcomePage />
+        <LoginPage />
       </ThemeProvider>,
     );
     expect(rendered.baseElement).toBeInTheDocument();
