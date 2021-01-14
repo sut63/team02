@@ -229,7 +229,7 @@ func main() {
 	}
 
 	// Set DoctorOrderSheet Data
-	doctorordersheets := []string{"นายแพทย์อนุสรณ์ ศรีพรหม", "นายแพทย์วัชรพงศ์ ซึ้งศิริทรัพย์", "นายแพทย์ธนาทิพย์ ซื่อตรง"}
+	doctorordersheets := []string{"นายแพทย์อนุสรณ์", "นายแพทย์วัชรพงศ์", "นายแพทย์ธนาทิพย์"}
 	for _, name := range doctorordersheets {
 		client.DoctorOrderSheet.
 			Create().
