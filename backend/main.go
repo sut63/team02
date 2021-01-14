@@ -201,6 +201,7 @@ func main() {
 		},
 	}
 
+
 	for _, personnels := range personnels.Personnel {
 		client.Personnel.
 			Create().

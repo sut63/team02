@@ -41,7 +41,7 @@ const WelcomePage: FC<{}> = () => {
            </td>
       </tr>
       <tr>
-       <Link component={RouterLink} to="/Dentalappointment">
+       <Link component={RouterLink} to="/01">
          <Button variant="contained" color="primary">
              ทำฟัน
            </Button>

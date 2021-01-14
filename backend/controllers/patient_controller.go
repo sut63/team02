@@ -22,7 +22,7 @@ type PatientController struct {
 // @ID create-patient
 // @Accept   json
 // @Produce  json
-// @Param patient body ent.Patient true "patient entity"
+// @Param patient body ent.Patient true "Patient entity"
 // @Success 200 {object} ent.Patient
 // @Failure 400 {object} gin.H
 // @Failure 500 {object} gin.H
@@ -58,12 +58,12 @@ func (ctl *PatientController) CreatePatient(c *gin.Context) {
 // @Description get patient by ID
 // @ID get-patient
 // @Produce  json
-// @Param id path int true "patient ID"
+// @Param id path int true "Patient ID"
 // @Success 200 {object} ent.Patient
 // @Failure 400 {object} gin.H
 // @Failure 404 {object} gin.H
 // @Failure 500 {object} gin.H
-// @Router /patientNames/{id} [get]
+// @Router /patients/{id} [get]
 func (ctl *PatientController) GetPatient(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
@@ -135,7 +135,7 @@ func (ctl *PatientController) ListPatient(c *gin.Context) {
 // @Description get patient by ID
 // @ID delete-patient
 // @Produce  json
-// @Param id path int true "patient ID"
+// @Param id path int true "Patient ID"
 // @Success 200 {object} gin.H
 // @Failure 400 {object} gin.H
 // @Failure 404 {object} gin.H
@@ -169,8 +169,8 @@ func (ctl *PatientController) DeletePatient(c *gin.Context) {
 // @ID update-patient
 // @Accept   json
 // @Produce  json
-// @Param id path int true "patient ID"
-// @Param patient body ent.Patient true "patient entity"
+// @Param id path int true "Patient ID"
+// @Param Patient body ent.Patient true "Patient entity"
 // @Success 200 {object} ent.Patient
 // @Failure 400 {object} gin.H
 // @Failure 500 {object} gin.H

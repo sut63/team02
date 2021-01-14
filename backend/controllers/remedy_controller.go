@@ -22,7 +22,7 @@ type RemedyController struct {
 // @ID create-remedy
 // @Accept   json
 // @Produce  json
-// @Param remedy body ent.Remedy true "remedy entity"
+// @Param remedy body ent.Remedy true "Remedy entity"
 // @Success 200 {object} ent.Remedy
 // @Failure 400 {object} gin.H
 // @Failure 500 {object} gin.H
@@ -56,7 +56,7 @@ func (ctl *RemedyController) CreateRemedy(c *gin.Context) {
 // @Description get remedy by ID
 // @ID get-remedy
 // @Produce  json
-// @Param id path int true "remedy ID"
+// @Param id path int true "Remedy ID"
 // @Success 200 {object} ent.Remedy
 // @Failure 400 {object} gin.H
 // @Failure 404 {object} gin.H
@@ -133,7 +133,7 @@ func (ctl *RemedyController) ListRemedy(c *gin.Context) {
 // @Description get remedy by ID
 // @ID delete-remedy
 // @Produce  json
-// @Param id path int true "remedy ID"
+// @Param id path int true "Remedy ID"
 // @Success 200 {object} gin.H
 // @Failure 400 {object} gin.H
 // @Failure 404 {object} gin.H
@@ -167,8 +167,8 @@ func (ctl *RemedyController) DeleteRemedy(c *gin.Context) {
 // @ID update-remedy
 // @Accept   json
 // @Produce  json
-// @Param id path int true "remedy ID"
-// @Param remedy body ent.Remedy true "remedy entity"
+// @Param id path int true "Remedy ID"
+// @Param Remedy body ent.Remedy true "Remedy entity"
 // @Success 200 {object} ent.Remedy
 // @Failure 400 {object} gin.H
 // @Failure 500 {object} gin.H

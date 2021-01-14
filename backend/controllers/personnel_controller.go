@@ -22,7 +22,7 @@ type PersonnelController struct {
 // @ID create-personnel
 // @Accept   json
 // @Produce  json
-// @Param personnel body ent.Personnel true "personnel entity"
+// @Param personnel body ent.Personnel true "Personnel entity"
 // @Success 200 {object} ent.Personnel
 // @Failure 400 {object} gin.H
 // @Failure 500 {object} gin.H
@@ -59,12 +59,12 @@ func (ctl *PersonnelController) CreatePersonnel(c *gin.Context) {
 // @Description get personnel by ID
 // @ID get-personnel
 // @Produce  json
-// @Param id path int true "personnel ID"
+// @Param id path int true "Personnel ID"
 // @Success 200 {object} ent.Personnel
 // @Failure 400 {object} gin.H
 // @Failure 404 {object} gin.H
 // @Failure 500 {object} gin.H
-// @Router /personnelNames/{id} [get]
+// @Router /personnels/{id} [get]
 func (ctl *PersonnelController) GetPersonnel(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
@@ -90,7 +90,7 @@ func (ctl *PersonnelController) GetPersonnel(c *gin.Context) {
 
 // ListPersonnel handles request to get a list of Personnel entities
 // @Summary List personnel entities
-// @Description list personnel entities
+// @Description list Personnel entities
 // @ID list-personnel
 // @Produce json
 // @Param limit  query int false "Limit"
@@ -136,7 +136,7 @@ func (ctl *PersonnelController) ListPersonnel(c *gin.Context) {
 // @Description get personnel by ID
 // @ID delete-personnel
 // @Produce  json
-// @Param id path int true "personnel ID"
+// @Param id path int true "Personnel ID"
 // @Success 200 {object} gin.H
 // @Failure 400 {object} gin.H
 // @Failure 404 {object} gin.H
@@ -170,8 +170,8 @@ func (ctl *PersonnelController) DeletePersonnel(c *gin.Context) {
 // @ID update-personnel
 // @Accept   json
 // @Produce  json
-// @Param id path int true "personnel ID"
-// @Param personnel body ent.Personnel true "personnel entity"
+// @Param id path int true "Personnel ID"
+// @Param Personnel body ent.Personnel true "Personnel entity"
 // @Success 200 {object} ent.Personnel
 // @Failure 400 {object} gin.H
 // @Failure 500 {object} gin.H

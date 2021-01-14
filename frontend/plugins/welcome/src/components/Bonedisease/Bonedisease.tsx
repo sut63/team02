@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import SaveIcon from '@material-ui/icons/Save'; // icon save
+import { Link as RouterLink } from 'react-router-dom';
 import { Alert } from '@material-ui/lab';
 import {
  Content,
@@ -16,8 +17,8 @@ import {
   InputLabel,
   MenuItem,
   TextField,
-
   Button,
+  Link,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { DefaultApi } from '../../api/apis';
@@ -73,6 +74,7 @@ export default function Create() {
   const [patientid, setPatientid] = useState(Number);
   const [remedyid, setRemedyid] = useState(Number);
   const [addedTime, setAddedTime] = useState(String);
+  const [adviceid, setAdvice] = useState(String);
  
   useEffect(() => {
 // 
@@ -104,15 +106,16 @@ export default function Create() {
   }, [loading]);
  
   const CreateBonedisease = async () => {
-      const Bonedisease = {
-         addedTime      : addedTime + ":00+07:00", //+ "T00:00:00+07:00", //2020-10-20T11:53  yyyy-MM-ddT07:mm
-         patientID          : +patientid,
-         personnelID        : +personnelid,
-         remedyID    : +remedyid,
+      const bonedisease = {
+         addedTime          : addedTime + ":00+07:00", //+ "T00:00:00+07:00", //2020-10-20T11:53  yyyy-MM-ddT07:mm
+         patientID          : patientid,
+         personnelID        : personnelid,
+         remedyID           : remedyid,
+         advice           : adviceid
       }
-      console.log(Bonedisease);
+      console.log(bonedisease);
 
-    const res:any = await api.createBonedisease({ bonedisease : Bonedisease});
+    const res:any = await api.createBonedisease({ bonedisease : bonedisease});
     setStatus(true);
     if (res.id != ''){
       setAlert(true);
@@ -138,6 +141,10 @@ export default function Create() {
      const Added_Time_handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
       setAddedTime(event.target.value as string);
     };
+
+    const AdvicehandleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+      setAdvice(event.target.value as string);
+     };
 
  
   return (
@@ -168,7 +175,7 @@ export default function Create() {
             </Grid>
             <Grid item xs={8}>
               <FormControl variant="outlined" className={classes.formControl}>
-                <InputLabel>TestPersonnel</InputLabel>
+                <InputLabel>เลือกผู้ใช้งาน</InputLabel>
                 <Select
                   name="personnel"
                   value={personnelid || ''}
@@ -190,7 +197,7 @@ export default function Create() {
             </Grid>
             <Grid item xs={8}>
               <FormControl variant="outlined" className={classes.formControl}>
-                <InputLabel>Patient</InputLabel>
+                <InputLabel>เลือกผู้ป่วย</InputLabel>
                 <Select
                   name="patient"
                   value={patientid || ''}
@@ -212,7 +219,7 @@ export default function Create() {
             </Grid>
             <Grid item xs={8}>
               <FormControl variant="outlined" className={classes.formControl}>
-                <InputLabel>Remedy</InputLabel>
+                <InputLabel>เลือกวิธีการรักษา</InputLabel>
                 <Select
                   name="Remedy"
                   value={remedyid || ''}
@@ -227,6 +234,23 @@ export default function Create() {
                   })}
                 </Select>
               </FormControl>
+            </Grid>
+
+
+            <Grid item xs={4}>
+              <div className={classes.paper}>แนะนำ</div>
+            </Grid>
+            <Grid item xs={8}>
+              <TextField
+                id="note"
+                label="Note"
+                variant="outlined"
+                type="string"
+                size="medium"
+                value={adviceid}
+                onChange={AdvicehandleChange}
+                style = {{width: 300}}
+              />
             </Grid>
 
            
@@ -264,6 +288,22 @@ export default function Create() {
                 บันทึก
               </Button>
             </Grid>
+
+            <Grid item xs={4}></Grid>
+            <Grid item xs={4}>
+              <Link component={RouterLink} to="/BonediseaseTable">
+                <Button 
+                  variant="contained" 
+                  color="primary"
+                  size="large"  
+                  startIcon={<SaveIcon />}
+                >
+                  ตาราง
+                </Button>
+              </Link>
+            </Grid>
+        
+
           </Grid>
         </Container>
       </Content>

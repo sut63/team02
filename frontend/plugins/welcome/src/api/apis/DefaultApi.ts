@@ -1468,7 +1468,7 @@ export class DefaultApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
-            path: `/patientNames/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: `/patients/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -1500,7 +1500,7 @@ export class DefaultApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
-            path: `/personnelNames/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: `/personnels/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -2031,7 +2031,7 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * list personnel entities
+     * list Personnel entities
      * List personnel entities
      */
     async listPersonnelRaw(requestParameters: ListPersonnelRequest): Promise<runtime.ApiResponse<Array<EntPersonnel>>> {
@@ -2058,7 +2058,7 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * list personnel entities
+     * list Personnel entities
      * List personnel entities
      */
     async listPersonnel(requestParameters: ListPersonnelRequest): Promise<Array<EntPersonnel>> {

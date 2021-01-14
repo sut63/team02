@@ -887,7 +887,7 @@ paths:
       description: Create bonedisease
       operationId: create-bonedisease
       parameters:
-      - description: bonedisease entity
+      - description: Bonedisease entity
         in: body
         name: bonedisease
         required: true
@@ -914,7 +914,7 @@ paths:
       description: get bonedisease by ID
       operationId: delete-bonedisease
       parameters:
-      - description: bonedisease ID
+      - description: Bonedisease ID
         in: path
         name: id
         required: true
@@ -1539,36 +1539,6 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/gin.H'
-  /patientNames/{id}:
-    get:
-      description: get patient by ID
-      operationId: get-patient
-      parameters:
-      - description: patient ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/ent.Patient'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/gin.H'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/gin.H'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/gin.H'
-      summary: Get a patient entity by ID
   /patients:
     get:
       description: list patient entities
@@ -1606,7 +1576,7 @@ paths:
       description: Create patient
       operationId: create-patient
       parameters:
-      - description: patient entity
+      - description: Patient entity
         in: body
         name: patient
         required: true
@@ -1633,7 +1603,7 @@ paths:
       description: get patient by ID
       operationId: delete-patient
       parameters:
-      - description: patient ID
+      - description: Patient ID
         in: path
         name: id
         required: true
@@ -1658,20 +1628,49 @@ paths:
           schema:
             $ref: '#/definitions/gin.H'
       summary: Delete a patient entity by ID
+    get:
+      description: get patient by ID
+      operationId: get-patient
+      parameters:
+      - description: Patient ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ent.Patient'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Get a patient entity by ID
     put:
       consumes:
       - application/json
       description: update patient by ID
       operationId: update-patient
       parameters:
-      - description: patient ID
+      - description: Patient ID
         in: path
         name: id
         required: true
         type: integer
-      - description: patient entity
+      - description: Patient entity
         in: body
-        name: patient
+        name: Patient
         required: true
         schema:
           $ref: '#/definitions/ent.Patient'
@@ -1691,39 +1690,9 @@ paths:
           schema:
             $ref: '#/definitions/gin.H'
       summary: Update a patient entity by ID
-  /personnelNames/{id}:
-    get:
-      description: get personnel by ID
-      operationId: get-personnel
-      parameters:
-      - description: personnel ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/ent.Personnel'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/gin.H'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/gin.H'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/gin.H'
-      summary: Get a personnel entity by ID
   /personnels:
     get:
-      description: list personnel entities
+      description: list Personnel entities
       operationId: list-personnel
       parameters:
       - description: Limit
@@ -1758,7 +1727,7 @@ paths:
       description: Create personnel
       operationId: create-personnel
       parameters:
-      - description: personnel entity
+      - description: Personnel entity
         in: body
         name: personnel
         required: true
@@ -1785,7 +1754,7 @@ paths:
       description: get personnel by ID
       operationId: delete-personnel
       parameters:
-      - description: personnel ID
+      - description: Personnel ID
         in: path
         name: id
         required: true
@@ -1810,20 +1779,49 @@ paths:
           schema:
             $ref: '#/definitions/gin.H'
       summary: Delete a personnel entity by ID
+    get:
+      description: get personnel by ID
+      operationId: get-personnel
+      parameters:
+      - description: Personnel ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ent.Personnel'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Get a personnel entity by ID
     put:
       consumes:
       - application/json
       description: update personnel by ID
       operationId: update-personnel
       parameters:
-      - description: personnel ID
+      - description: Personnel ID
         in: path
         name: id
         required: true
         type: integer
-      - description: personnel entity
+      - description: Personnel entity
         in: body
-        name: personnel
+        name: Personnel
         required: true
         schema:
           $ref: '#/definitions/ent.Personnel'
@@ -2119,7 +2117,7 @@ paths:
       description: Create remedy
       operationId: create-remedy
       parameters:
-      - description: remedy entity
+      - description: Remedy entity
         in: body
         name: remedy
         required: true
@@ -2146,7 +2144,7 @@ paths:
       description: get remedy by ID
       operationId: delete-remedy
       parameters:
-      - description: remedy ID
+      - description: Remedy ID
         in: path
         name: id
         required: true
@@ -2175,7 +2173,7 @@ paths:
       description: get remedy by ID
       operationId: get-remedy
       parameters:
-      - description: remedy ID
+      - description: Remedy ID
         in: path
         name: id
         required: true
@@ -2206,14 +2204,14 @@ paths:
       description: update remedy by ID
       operationId: update-remedy
       parameters:
-      - description: remedy ID
+      - description: Remedy ID
         in: path
         name: id
         required: true
         type: integer
-      - description: remedy entity
+      - description: Remedy entity
         in: body
-        name: remedy
+        name: Remedy
         required: true
         schema:
           $ref: '#/definitions/ent.Remedy'

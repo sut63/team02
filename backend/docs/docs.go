@@ -449,7 +449,7 @@ var doc = `{
                 "operationId": "create-bonedisease",
                 "parameters": [
                     {
-                        "description": "bonedisease entity",
+                        "description": "Bonedisease entity",
                         "name": "bonedisease",
                         "in": "body",
                         "required": true,
@@ -491,7 +491,7 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "bonedisease ID",
+                        "description": "Bonedisease ID",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -1425,51 +1425,6 @@ var doc = `{
                 }
             }
         },
-        "/patientNames/{id}": {
-            "get": {
-                "description": "get patient by ID",
-                "produces": [
-                    "application/json"
-                ],
-                "summary": "Get a patient entity by ID",
-                "operationId": "get-patient",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "patient ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/ent.Patient"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/gin.H"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/gin.H"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/gin.H"
-                        }
-                    }
-                }
-            }
-        },
         "/patients": {
             "get": {
                 "description": "list patient entities",
@@ -1528,7 +1483,7 @@ var doc = `{
                 "operationId": "create-patient",
                 "parameters": [
                     {
-                        "description": "patient entity",
+                        "description": "Patient entity",
                         "name": "patient",
                         "in": "body",
                         "required": true,
@@ -1560,6 +1515,49 @@ var doc = `{
             }
         },
         "/patients/{id}": {
+            "get": {
+                "description": "get patient by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get a patient entity by ID",
+                "operationId": "get-patient",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Patient ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ent.Patient"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            },
             "put": {
                 "description": "update patient by ID",
                 "consumes": [
@@ -1573,14 +1571,14 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "patient ID",
+                        "description": "Patient ID",
                         "name": "id",
                         "in": "path",
                         "required": true
                     },
                     {
-                        "description": "patient entity",
-                        "name": "patient",
+                        "description": "Patient entity",
+                        "name": "Patient",
                         "in": "body",
                         "required": true,
                         "schema": {
@@ -1619,7 +1617,7 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "patient ID",
+                        "description": "Patient ID",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -1630,51 +1628,6 @@ var doc = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/gin.H"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/gin.H"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/gin.H"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/gin.H"
-                        }
-                    }
-                }
-            }
-        },
-        "/personnelNames/{id}": {
-            "get": {
-                "description": "get personnel by ID",
-                "produces": [
-                    "application/json"
-                ],
-                "summary": "Get a personnel entity by ID",
-                "operationId": "get-personnel",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "personnel ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/ent.Personnel"
                         }
                     },
                     "400": {
@@ -1700,7 +1653,7 @@ var doc = `{
         },
         "/personnels": {
             "get": {
-                "description": "list personnel entities",
+                "description": "list Personnel entities",
                 "produces": [
                     "application/json"
                 ],
@@ -1756,7 +1709,7 @@ var doc = `{
                 "operationId": "create-personnel",
                 "parameters": [
                     {
-                        "description": "personnel entity",
+                        "description": "Personnel entity",
                         "name": "personnel",
                         "in": "body",
                         "required": true,
@@ -1788,6 +1741,49 @@ var doc = `{
             }
         },
         "/personnels/{id}": {
+            "get": {
+                "description": "get personnel by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get a personnel entity by ID",
+                "operationId": "get-personnel",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Personnel ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ent.Personnel"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            },
             "put": {
                 "description": "update personnel by ID",
                 "consumes": [
@@ -1801,14 +1797,14 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "personnel ID",
+                        "description": "Personnel ID",
                         "name": "id",
                         "in": "path",
                         "required": true
                     },
                     {
-                        "description": "personnel entity",
-                        "name": "personnel",
+                        "description": "Personnel entity",
+                        "name": "Personnel",
                         "in": "body",
                         "required": true,
                         "schema": {
@@ -1847,7 +1843,7 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "personnel ID",
+                        "description": "Personnel ID",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -2299,7 +2295,7 @@ var doc = `{
                 "operationId": "create-remedy",
                 "parameters": [
                     {
-                        "description": "remedy entity",
+                        "description": "Remedy entity",
                         "name": "remedy",
                         "in": "body",
                         "required": true,
@@ -2341,7 +2337,7 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "remedy ID",
+                        "description": "Remedy ID",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -2387,14 +2383,14 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "remedy ID",
+                        "description": "Remedy ID",
                         "name": "id",
                         "in": "path",
                         "required": true
                     },
                     {
-                        "description": "remedy entity",
-                        "name": "remedy",
+                        "description": "Remedy entity",
+                        "name": "Remedy",
                         "in": "body",
                         "required": true,
                         "schema": {
@@ -2433,7 +2429,7 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "remedy ID",
+                        "description": "Remedy ID",
                         "name": "id",
                         "in": "path",
                         "required": true

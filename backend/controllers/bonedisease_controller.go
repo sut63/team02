@@ -35,7 +35,7 @@ type Bonedisease struct {
 // @ID create-bonedisease
 // @Accept   json
 // @Produce  json
-// @Param bonedisease body Bonedisease true "bonedisease entity"
+// @Param bonedisease body Bonedisease true "Bonedisease entity"
 // @Success 200 {object} ent.Bonedisease
 // @Failure 400 {object} gin.H
 // @Failure 500 {object} gin.H
@@ -49,7 +49,6 @@ func (ctl *BonediseaseController) CreateBonedisease(c *gin.Context) {
 		return
 	}
 
-	
 	patient, err := ctl.client.Patient.
 	Query().
 	Where(patient.IDEQ(int(obj.PatientID))).
@@ -61,7 +60,7 @@ func (ctl *BonediseaseController) CreateBonedisease(c *gin.Context) {
 		})
 		return
 	}
-	
+
 	personnel, err := ctl.client.Personnel.
 	Query().
 	Where(personnel.IDEQ(int(obj.PersonnelID))).
@@ -90,11 +89,11 @@ func (ctl *BonediseaseController) CreateBonedisease(c *gin.Context) {
 	t2 := t1.Format("2020-01-02T15:04:14Z07:00")
 	time,err := time.Parse(time.RFC3339, t2)
 
-	bondisease, err := ctl.client.Bonedisease.
+	bonedisease, err := ctl.client.Bonedisease.
 
 	Create().
-	SetPatient(patient).
 	SetPersonnel(personnel).
+	SetPatient(patient).
 	SetRemedy(remedy).
 	SetAdvice(obj.Advice).
 	SetAddedTime(time).
@@ -106,8 +105,9 @@ func (ctl *BonediseaseController) CreateBonedisease(c *gin.Context) {
 		return
 	}
 
-	c.JSON(200, bondisease)
+	c.JSON(200, bonedisease)
 }
+
 
 // ListBonedisease handles request to get a list of Bonedisease entities
 // @Summary List bonedisease entities
@@ -155,12 +155,14 @@ func (ctl *BonediseaseController) ListBonedisease(c *gin.Context) {
 	c.JSON(200, bonediseases)
 }
 
+
+
 // DeleteBonedisease handles DELETE requests to delete a Bonedisease entity
 // @Summary Delete a bonedisease entity by ID
 // @Description get bonedisease by ID
 // @ID delete-bonedisease
 // @Produce  json
-// @Param id path int true "bonedisease ID"
+// @Param id path int true "Bonedisease ID"
 // @Success 200 {object} gin.H
 // @Failure 400 {object} gin.H
 // @Failure 404 {object} gin.H
@@ -190,12 +192,12 @@ func (ctl *BonediseaseController) DeleteBonedisease(c *gin.Context) {
 
 // NewBonediseaseController creates and registers handles for the Bonedisease controller
 func NewBonediseaseController(router gin.IRouter, client *ent.Client) *BonediseaseController {
-	bondiseaseController := &BonediseaseController{
+	bonediseaseController := &BonediseaseController{
 		client: client,
 		router: router,
 	}
-	bondiseaseController.register()
-	return bondiseaseController
+	bonediseaseController.register()
+	return bonediseaseController
 }
 
 // InitBonediseaseController registers routes to the main engine

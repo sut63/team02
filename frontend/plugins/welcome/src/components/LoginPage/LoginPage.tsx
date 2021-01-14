@@ -111,7 +111,7 @@ export default function Login(props: any) {
                 </Alert>
               ) : (
                   <Alert severity="error" onClose={() => { setStatus(false) }}>
-                    เข้าสู่ระบบไม่สำเร็จ กรุณาตรวจสอบ Email หรือ Password
+                    เข้าสู่ระบบไม่สำเร็จ กรุณาตรวจสอบ Name หรือ Password
                   </Alert>
                 )}
             </div>
@@ -154,7 +154,9 @@ export default function Login(props: any) {
                 />
               </FormControl>
             </div>
+                
 
+                
             <div className={classes.margin}>
               <Button
                 style={{ width: 400, backgroundColor: "#0E9AFF" }}
@@ -167,6 +169,8 @@ export default function Login(props: any) {
                 Enter
              </Button>
             </div>
+
+            
           </form>
         </div>
       </Content>
