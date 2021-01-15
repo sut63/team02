@@ -15,6 +15,9 @@
 
 import * as runtime from '../runtime';
 import {
+    ControllersAntenatalinformation,
+    ControllersAntenatalinformationFromJSON,
+    ControllersAntenatalinformationToJSON,
     ControllersBonedisease,
     ControllersBonediseaseFromJSON,
     ControllersBonediseaseToJSON,
@@ -84,7 +87,7 @@ import {
 } from '../models';
 
 export interface CreateAntenatalinformationRequest {
-    antenatalinformation: EntAntenatalinformation;
+    antenatalinformation: ControllersAntenatalinformation;
 }
 
 export interface CreateBonediseaseRequest {
@@ -402,7 +405,7 @@ export class DefaultApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: EntAntenatalinformationToJSON(requestParameters.antenatalinformation),
+            body: ControllersAntenatalinformationToJSON(requestParameters.antenatalinformation),
         });
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EntAntenatalinformationFromJSON(jsonValue));
