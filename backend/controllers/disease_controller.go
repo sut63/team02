@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"context"
+	"context" 
 	"fmt"
 	"strconv"
 
@@ -10,13 +10,13 @@ import (
 	"github.com/to63/app/ent/disease"
 )
 
-// DiseaseController defines the struct for the disease controller
+// DiseaseController defines the struct for the Disease controller
 type DiseaseController struct {
 	client *ent.Client
 	router gin.IRouter
 }
 
-// CreateDisease handles POST requests for adding disease entities
+// CreateDisease handles POST requests for adding Disease entities
 // @Summary Create disease
 // @Description Create disease
 // @ID create-disease
@@ -31,15 +31,16 @@ func (ctl *DiseaseController) CreateDisease(c *gin.Context) {
 	obj := ent.Disease{}
 	if err := c.ShouldBind(&obj); err != nil {
 		c.JSON(400, gin.H{
-			"error": "disease binding failed",
+			"error": "Disease binding failed",
 		})
 		return
 	}
-
-	d, err := ctl.client.Disease.
+ 
+	ar, err := ctl.client.Disease.
 		Create().
-		SetName(obj.Name).
+		SetDisease(obj.Disease).
 		Save(context.Background())
+
 	if err != nil {
 		c.JSON(400, gin.H{
 			"error": "saving failed",
@@ -47,15 +48,15 @@ func (ctl *DiseaseController) CreateDisease(c *gin.Context) {
 		return
 	}
 
-	c.JSON(200, d)
+	c.JSON(200, ar)
 }
 
-// GetDisease handles GET requests to retrieve a disease entity
+// GetDisease handles GET requests to retrieve a Disease entity
 // @Summary Get a disease entity by ID
 // @Description get disease by ID
 // @ID get-disease
 // @Produce  json
-// @Param id path int true "Disease ID"
+// @Param id path int true "disease ID"
 // @Success 200 {object} ent.Disease
 // @Failure 400 {object} gin.H
 // @Failure 404 {object} gin.H
@@ -70,7 +71,7 @@ func (ctl *DiseaseController) GetDisease(c *gin.Context) {
 		return
 	}
 
-	u, err := ctl.client.Disease.
+	disease, err := ctl.client.Disease.
 		Query().
 		Where(disease.IDEQ(int(id))).
 		Only(context.Background())
@@ -81,10 +82,10 @@ func (ctl *DiseaseController) GetDisease(c *gin.Context) {
 		return
 	}
 
-	c.JSON(200, u)
+	c.JSON(200, disease)
 }
 
-// ListDisease handles request to get a list of disease entities
+// ListDisease handles request to get a list of Disease entities
 // @Summary List disease entities
 // @Description list disease entities
 // @ID list-disease
@@ -114,7 +115,7 @@ func (ctl *DiseaseController) ListDisease(c *gin.Context) {
 		}
 	}
 
-	diseases, err := ctl.client.Disease.
+	disease, err := ctl.client.Disease.
 		Query().
 		Limit(limit).
 		Offset(offset).
@@ -124,15 +125,15 @@ func (ctl *DiseaseController) ListDisease(c *gin.Context) {
 		return
 	}
 
-	c.JSON(200, diseases)
+	c.JSON(200, disease)
 }
 
-// DeleteDisease handles DELETE requests to delete a disease entity
+// DeleteDisease handles DELETE requests to delete a Disease entity
 // @Summary Delete a disease entity by ID
 // @Description get disease by ID
 // @ID delete-disease
 // @Produce  json
-// @Param id path int true "Disease ID"
+// @Param id path int true "disease ID"
 // @Success 200 {object} gin.H
 // @Failure 400 {object} gin.H
 // @Failure 404 {object} gin.H
@@ -160,14 +161,14 @@ func (ctl *DiseaseController) DeleteDisease(c *gin.Context) {
 	c.JSON(200, gin.H{"result": fmt.Sprintf("ok deleted %v", id)})
 }
 
-// UpdateDisease handles PUT requests to update a disease entity
+// UpdateDisease handles PUT requests to update a Disease entity
 // @Summary Update a disease entity by ID
 // @Description update disease by ID
 // @ID update-disease
 // @Accept   json
 // @Produce  json
-// @Param id path int true "Disease ID"
-// @Param disease body ent.Disease true "Disease entity"
+// @Param id path int true "disease ID"
+// @Param disease body ent.Disease true "disease entity"
 // @Success 200 {object} ent.Disease
 // @Failure 400 {object} gin.H
 // @Failure 500 {object} gin.H
@@ -184,41 +185,40 @@ func (ctl *DiseaseController) UpdateDisease(c *gin.Context) {
 	obj := ent.Disease{}
 	if err := c.ShouldBind(&obj); err != nil {
 		c.JSON(400, gin.H{
-			"error": "disease binding failed",
+			"error": "Disease binding failed",
 		})
 		return
 	}
 	obj.ID = int(id)
-	u, err := ctl.client.Disease.
-		UpdateOne(&obj).
+	disease, err := ctl.client.Disease.
+		UpdateOneID(int(id)).
+		SetDisease(obj.Disease).
 		Save(context.Background())
 	if err != nil {
 		c.JSON(400, gin.H{"error": "update failed"})
 		return
 	}
 
-	c.JSON(200, u)
+	c.JSON(200, disease)
 }
 
-// NewDiseaseController creates and registers handles for the disease controller
+// NewDiseaseController creates and registers handles for the DiseaseController
 func NewDiseaseController(router gin.IRouter, client *ent.Client) *DiseaseController {
-	uc := &DiseaseController{
+	diseaseController := &DiseaseController{
 		client: client,
 		router: router,
 	}
-	uc.register()
-	return uc
+	diseaseController.register()
+	return diseaseController
 }
 
 // InitDiseaseController registers routes to the main engine
 func (ctl *DiseaseController) register() {
-	diseases := ctl.router.Group("/diseases")
-
-	diseases.GET("", ctl.ListDisease)
-
+	Disease := ctl.router.Group("/diseases")
+	Disease.GET("", ctl.ListDisease)
 	// CRUD
-	diseases.POST("", ctl.CreateDisease)
-	diseases.GET(":id", ctl.GetDisease)
-	diseases.PUT(":id", ctl.UpdateDisease)
-	diseases.DELETE(":id", ctl.DeleteDisease)
+	Disease.POST("", ctl.CreateDisease)
+	Disease.GET(":id", ctl.GetDisease)
+	Disease.PUT(":id", ctl.UpdateDisease)
+	Disease.DELETE(":id", ctl.DeleteDisease)
 }

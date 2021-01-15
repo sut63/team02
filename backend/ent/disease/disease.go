@@ -7,27 +7,27 @@ const (
 	Label = "disease"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
-	// FieldName holds the string denoting the name field in the database.
-	FieldName = "name"
+	// FieldDisease holds the string denoting the disease field in the database.
+	FieldDisease = "disease"
 
-	// EdgeChecksymptoms holds the string denoting the checksymptoms edge name in mutations.
-	EdgeChecksymptoms = "Checksymptoms"
+	// EdgeChecksymptom holds the string denoting the checksymptom edge name in mutations.
+	EdgeChecksymptom = "Checksymptom"
 
 	// Table holds the table name of the disease in the database.
 	Table = "diseases"
-	// ChecksymptomsTable is the table the holds the Checksymptoms relation/edge.
-	ChecksymptomsTable = "checksymptoms"
-	// ChecksymptomsInverseTable is the table name for the Checksymptoms entity.
-	// It exists in this package in order to avoid circular dependency with the "checksymptoms" package.
-	ChecksymptomsInverseTable = "checksymptoms"
-	// ChecksymptomsColumn is the table column denoting the Checksymptoms relation/edge.
-	ChecksymptomsColumn = "Disease_id"
+	// ChecksymptomTable is the table the holds the Checksymptom relation/edge.
+	ChecksymptomTable = "checksymptoms"
+	// ChecksymptomInverseTable is the table name for the Checksymptom entity.
+	// It exists in this package in order to avoid circular dependency with the "checksymptom" package.
+	ChecksymptomInverseTable = "checksymptoms"
+	// ChecksymptomColumn is the table column denoting the Checksymptom relation/edge.
+	ChecksymptomColumn = "disease_id"
 )
 
 // Columns holds all SQL columns for disease fields.
 var Columns = []string{
 	FieldID,
-	FieldName,
+	FieldDisease,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -41,6 +41,6 @@ func ValidColumn(column string) bool {
 }
 
 var (
-	// NameValidator is a validator for the "name" field. It is called by the builders before save.
-	NameValidator func(string) error
+	// DiseaseValidator is a validator for the "disease" field. It is called by the builders before save.
+	DiseaseValidator func(string) error
 )

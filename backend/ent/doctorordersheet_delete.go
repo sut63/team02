@@ -13,42 +13,42 @@ import (
 	"github.com/to63/app/ent/predicate"
 )
 
-// DoctorOrderSheetDelete is the builder for deleting a DoctorOrderSheet entity.
-type DoctorOrderSheetDelete struct {
+// DoctorordersheetDelete is the builder for deleting a Doctorordersheet entity.
+type DoctorordersheetDelete struct {
 	config
 	hooks    []Hook
-	mutation *DoctorOrderSheetMutation
+	mutation *DoctorordersheetMutation
 }
 
-// Where adds a new predicate to the DoctorOrderSheetDelete builder.
-func (dosd *DoctorOrderSheetDelete) Where(ps ...predicate.DoctorOrderSheet) *DoctorOrderSheetDelete {
-	dosd.mutation.predicates = append(dosd.mutation.predicates, ps...)
-	return dosd
+// Where adds a new predicate to the DoctorordersheetDelete builder.
+func (dd *DoctorordersheetDelete) Where(ps ...predicate.Doctorordersheet) *DoctorordersheetDelete {
+	dd.mutation.predicates = append(dd.mutation.predicates, ps...)
+	return dd
 }
 
 // Exec executes the deletion query and returns how many vertices were deleted.
-func (dosd *DoctorOrderSheetDelete) Exec(ctx context.Context) (int, error) {
+func (dd *DoctorordersheetDelete) Exec(ctx context.Context) (int, error) {
 	var (
 		err      error
 		affected int
 	)
-	if len(dosd.hooks) == 0 {
-		affected, err = dosd.sqlExec(ctx)
+	if len(dd.hooks) == 0 {
+		affected, err = dd.sqlExec(ctx)
 	} else {
 		var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
-			mutation, ok := m.(*DoctorOrderSheetMutation)
+			mutation, ok := m.(*DoctorordersheetMutation)
 			if !ok {
 				return nil, fmt.Errorf("unexpected mutation type %T", m)
 			}
-			dosd.mutation = mutation
-			affected, err = dosd.sqlExec(ctx)
+			dd.mutation = mutation
+			affected, err = dd.sqlExec(ctx)
 			mutation.done = true
 			return affected, err
 		})
-		for i := len(dosd.hooks) - 1; i >= 0; i-- {
-			mut = dosd.hooks[i](mut)
+		for i := len(dd.hooks) - 1; i >= 0; i-- {
+			mut = dd.hooks[i](mut)
 		}
-		if _, err := mut.Mutate(ctx, dosd.mutation); err != nil {
+		if _, err := mut.Mutate(ctx, dd.mutation); err != nil {
 			return 0, err
 		}
 	}
@@ -56,15 +56,15 @@ func (dosd *DoctorOrderSheetDelete) Exec(ctx context.Context) (int, error) {
 }
 
 // ExecX is like Exec, but panics if an error occurs.
-func (dosd *DoctorOrderSheetDelete) ExecX(ctx context.Context) int {
-	n, err := dosd.Exec(ctx)
+func (dd *DoctorordersheetDelete) ExecX(ctx context.Context) int {
+	n, err := dd.Exec(ctx)
 	if err != nil {
 		panic(err)
 	}
 	return n
 }
 
-func (dosd *DoctorOrderSheetDelete) sqlExec(ctx context.Context) (int, error) {
+func (dd *DoctorordersheetDelete) sqlExec(ctx context.Context) (int, error) {
 	_spec := &sqlgraph.DeleteSpec{
 		Node: &sqlgraph.NodeSpec{
 			Table: doctorordersheet.Table,
@@ -74,24 +74,24 @@ func (dosd *DoctorOrderSheetDelete) sqlExec(ctx context.Context) (int, error) {
 			},
 		},
 	}
-	if ps := dosd.mutation.predicates; len(ps) > 0 {
+	if ps := dd.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
 			for i := range ps {
 				ps[i](selector)
 			}
 		}
 	}
-	return sqlgraph.DeleteNodes(ctx, dosd.driver, _spec)
+	return sqlgraph.DeleteNodes(ctx, dd.driver, _spec)
 }
 
-// DoctorOrderSheetDeleteOne is the builder for deleting a single DoctorOrderSheet entity.
-type DoctorOrderSheetDeleteOne struct {
-	dosd *DoctorOrderSheetDelete
+// DoctorordersheetDeleteOne is the builder for deleting a single Doctorordersheet entity.
+type DoctorordersheetDeleteOne struct {
+	dd *DoctorordersheetDelete
 }
 
 // Exec executes the deletion query.
-func (dosdo *DoctorOrderSheetDeleteOne) Exec(ctx context.Context) error {
-	n, err := dosdo.dosd.Exec(ctx)
+func (ddo *DoctorordersheetDeleteOne) Exec(ctx context.Context) error {
+	n, err := ddo.dd.Exec(ctx)
 	switch {
 	case err != nil:
 		return err
@@ -103,6 +103,6 @@ func (dosdo *DoctorOrderSheetDeleteOne) Exec(ctx context.Context) error {
 }
 
 // ExecX is like Exec, but panics if an error occurs.
-func (dosdo *DoctorOrderSheetDeleteOne) ExecX(ctx context.Context) {
-	dosdo.dosd.ExecX(ctx)
+func (ddo *DoctorordersheetDeleteOne) ExecX(ctx context.Context) {
+	ddo.dd.ExecX(ctx)
 }

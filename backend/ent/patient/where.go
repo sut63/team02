@@ -501,25 +501,25 @@ func HasBonediseaseWith(preds ...predicate.Bonedisease) predicate.Patient {
 	})
 }
 
-// HasChecksymptoms applies the HasEdge predicate on the "Checksymptoms" edge.
-func HasChecksymptoms() predicate.Patient {
+// HasChecksymptom applies the HasEdge predicate on the "Checksymptom" edge.
+func HasChecksymptom() predicate.Patient {
 	return predicate.Patient(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
-			sqlgraph.To(ChecksymptomsTable, FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, ChecksymptomsTable, ChecksymptomsColumn),
+			sqlgraph.To(ChecksymptomTable, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, ChecksymptomTable, ChecksymptomColumn),
 		)
 		sqlgraph.HasNeighbors(s, step)
 	})
 }
 
-// HasChecksymptomsWith applies the HasEdge predicate on the "Checksymptoms" edge with a given conditions (other predicates).
-func HasChecksymptomsWith(preds ...predicate.Checksymptoms) predicate.Patient {
+// HasChecksymptomWith applies the HasEdge predicate on the "Checksymptom" edge with a given conditions (other predicates).
+func HasChecksymptomWith(preds ...predicate.Checksymptom) predicate.Patient {
 	return predicate.Patient(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
-			sqlgraph.To(ChecksymptomsInverseTable, FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, ChecksymptomsTable, ChecksymptomsColumn),
+			sqlgraph.To(ChecksymptomInverseTable, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, ChecksymptomTable, ChecksymptomColumn),
 		)
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {

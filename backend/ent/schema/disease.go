@@ -1,11 +1,11 @@
 package schema
 
-import  (
-
+import (
 	"github.com/facebook/ent"
 	"github.com/facebook/ent/schema/edge"
 	"github.com/facebook/ent/schema/field"
 )
+
 // Disease holds the schema definition for the Disease entity.
 type Disease struct {
 	ent.Schema
@@ -14,13 +14,13 @@ type Disease struct {
 // Fields of the Disease.
 func (Disease) Fields() []ent.Field {
 	return []ent.Field{
-		field.String("name").NotEmpty(),
+		field.String("disease").NotEmpty(),
 	}
 }
 
 // Edges of the Disease.
 func (Disease) Edges() []ent.Edge {
 	return []ent.Edge{
-	edge.To("Checksymptoms", Checksymptoms.Type).StorageKey(edge.Column("Disease_id")),
+		edge.To("Checksymptom", Checksymptom.Type).StorageKey(edge.Column("disease_id")),
 	}
 }

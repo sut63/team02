@@ -4,36 +4,30 @@ package doctorordersheet
 
 const (
 	// Label holds the string label denoting the doctorordersheet type in the database.
-	Label = "doctor_order_sheet"
+	Label = "doctorordersheet"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
 	// FieldName holds the string denoting the name field in the database.
 	FieldName = "name"
-	// FieldTime holds the string denoting the time field in the database.
-	FieldTime = "time"
-	// FieldNote holds the string denoting the note field in the database.
-	FieldNote = "note"
 
-	// EdgeChecksymptoms holds the string denoting the checksymptoms edge name in mutations.
-	EdgeChecksymptoms = "Checksymptoms"
+	// EdgeChecksymptom holds the string denoting the checksymptom edge name in mutations.
+	EdgeChecksymptom = "Checksymptom"
 
 	// Table holds the table name of the doctorordersheet in the database.
-	Table = "doctor_order_sheets"
-	// ChecksymptomsTable is the table the holds the Checksymptoms relation/edge.
-	ChecksymptomsTable = "checksymptoms"
-	// ChecksymptomsInverseTable is the table name for the Checksymptoms entity.
-	// It exists in this package in order to avoid circular dependency with the "checksymptoms" package.
-	ChecksymptomsInverseTable = "checksymptoms"
-	// ChecksymptomsColumn is the table column denoting the Checksymptoms relation/edge.
-	ChecksymptomsColumn = "DoctorOrderSheet_id"
+	Table = "doctorordersheets"
+	// ChecksymptomTable is the table the holds the Checksymptom relation/edge.
+	ChecksymptomTable = "checksymptoms"
+	// ChecksymptomInverseTable is the table name for the Checksymptom entity.
+	// It exists in this package in order to avoid circular dependency with the "checksymptom" package.
+	ChecksymptomInverseTable = "checksymptoms"
+	// ChecksymptomColumn is the table column denoting the Checksymptom relation/edge.
+	ChecksymptomColumn = "Doctorordersheet_id"
 )
 
 // Columns holds all SQL columns for doctorordersheet fields.
 var Columns = []string{
 	FieldID,
 	FieldName,
-	FieldTime,
-	FieldNote,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -49,8 +43,4 @@ func ValidColumn(column string) bool {
 var (
 	// NameValidator is a validator for the "Name" field. It is called by the builders before save.
 	NameValidator func(string) error
-	// TimeValidator is a validator for the "time" field. It is called by the builders before save.
-	TimeValidator func(string) error
-	// NoteValidator is a validator for the "note" field. It is called by the builders before save.
-	NoteValidator func(string) error
 )

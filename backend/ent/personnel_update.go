@@ -11,7 +11,7 @@ import (
 	"github.com/facebook/ent/schema/field"
 	"github.com/to63/app/ent/antenatalinformation"
 	"github.com/to63/app/ent/bonedisease"
-	"github.com/to63/app/ent/checksymptoms"
+	"github.com/to63/app/ent/checksymptom"
 	"github.com/to63/app/ent/dentalappointment"
 	"github.com/to63/app/ent/personnel"
 	"github.com/to63/app/ent/physicaltherapyrecord"
@@ -86,14 +86,14 @@ func (pu *PersonnelUpdate) AddBonedisease(b ...*Bonedisease) *PersonnelUpdate {
 	return pu.AddBonediseaseIDs(ids...)
 }
 
-// AddChecksymptomIDs adds the "Checksymptoms" edge to the Checksymptoms entity by IDs.
+// AddChecksymptomIDs adds the "Checksymptom" edge to the Checksymptom entity by IDs.
 func (pu *PersonnelUpdate) AddChecksymptomIDs(ids ...int) *PersonnelUpdate {
 	pu.mutation.AddChecksymptomIDs(ids...)
 	return pu
 }
 
-// AddChecksymptoms adds the "Checksymptoms" edges to the Checksymptoms entity.
-func (pu *PersonnelUpdate) AddChecksymptoms(c ...*Checksymptoms) *PersonnelUpdate {
+// AddChecksymptom adds the "Checksymptom" edges to the Checksymptom entity.
+func (pu *PersonnelUpdate) AddChecksymptom(c ...*Checksymptom) *PersonnelUpdate {
 	ids := make([]int, len(c))
 	for i := range c {
 		ids[i] = c[i].ID
@@ -193,20 +193,20 @@ func (pu *PersonnelUpdate) RemoveBonedisease(b ...*Bonedisease) *PersonnelUpdate
 	return pu.RemoveBonediseaseIDs(ids...)
 }
 
-// ClearChecksymptoms clears all "Checksymptoms" edges to the Checksymptoms entity.
-func (pu *PersonnelUpdate) ClearChecksymptoms() *PersonnelUpdate {
-	pu.mutation.ClearChecksymptoms()
+// ClearChecksymptom clears all "Checksymptom" edges to the Checksymptom entity.
+func (pu *PersonnelUpdate) ClearChecksymptom() *PersonnelUpdate {
+	pu.mutation.ClearChecksymptom()
 	return pu
 }
 
-// RemoveChecksymptomIDs removes the "Checksymptoms" edge to Checksymptoms entities by IDs.
+// RemoveChecksymptomIDs removes the "Checksymptom" edge to Checksymptom entities by IDs.
 func (pu *PersonnelUpdate) RemoveChecksymptomIDs(ids ...int) *PersonnelUpdate {
 	pu.mutation.RemoveChecksymptomIDs(ids...)
 	return pu
 }
 
-// RemoveChecksymptoms removes "Checksymptoms" edges to Checksymptoms entities.
-func (pu *PersonnelUpdate) RemoveChecksymptoms(c ...*Checksymptoms) *PersonnelUpdate {
+// RemoveChecksymptom removes "Checksymptom" edges to Checksymptom entities.
+func (pu *PersonnelUpdate) RemoveChecksymptom(c ...*Checksymptom) *PersonnelUpdate {
 	ids := make([]int, len(c))
 	for i := range c {
 		ids[i] = c[i].ID
@@ -513,33 +513,33 @@ func (pu *PersonnelUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if pu.mutation.ChecksymptomsCleared() {
+	if pu.mutation.ChecksymptomCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   personnel.ChecksymptomsTable,
-			Columns: []string{personnel.ChecksymptomsColumn},
+			Table:   personnel.ChecksymptomTable,
+			Columns: []string{personnel.ChecksymptomColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
-					Column: checksymptoms.FieldID,
+					Column: checksymptom.FieldID,
 				},
 			},
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := pu.mutation.RemovedChecksymptomsIDs(); len(nodes) > 0 && !pu.mutation.ChecksymptomsCleared() {
+	if nodes := pu.mutation.RemovedChecksymptomIDs(); len(nodes) > 0 && !pu.mutation.ChecksymptomCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   personnel.ChecksymptomsTable,
-			Columns: []string{personnel.ChecksymptomsColumn},
+			Table:   personnel.ChecksymptomTable,
+			Columns: []string{personnel.ChecksymptomColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
-					Column: checksymptoms.FieldID,
+					Column: checksymptom.FieldID,
 				},
 			},
 		}
@@ -548,17 +548,17 @@ func (pu *PersonnelUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := pu.mutation.ChecksymptomsIDs(); len(nodes) > 0 {
+	if nodes := pu.mutation.ChecksymptomIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   personnel.ChecksymptomsTable,
-			Columns: []string{personnel.ChecksymptomsColumn},
+			Table:   personnel.ChecksymptomTable,
+			Columns: []string{personnel.ChecksymptomColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
-					Column: checksymptoms.FieldID,
+					Column: checksymptom.FieldID,
 				},
 			},
 		}
@@ -801,14 +801,14 @@ func (puo *PersonnelUpdateOne) AddBonedisease(b ...*Bonedisease) *PersonnelUpdat
 	return puo.AddBonediseaseIDs(ids...)
 }
 
-// AddChecksymptomIDs adds the "Checksymptoms" edge to the Checksymptoms entity by IDs.
+// AddChecksymptomIDs adds the "Checksymptom" edge to the Checksymptom entity by IDs.
 func (puo *PersonnelUpdateOne) AddChecksymptomIDs(ids ...int) *PersonnelUpdateOne {
 	puo.mutation.AddChecksymptomIDs(ids...)
 	return puo
 }
 
-// AddChecksymptoms adds the "Checksymptoms" edges to the Checksymptoms entity.
-func (puo *PersonnelUpdateOne) AddChecksymptoms(c ...*Checksymptoms) *PersonnelUpdateOne {
+// AddChecksymptom adds the "Checksymptom" edges to the Checksymptom entity.
+func (puo *PersonnelUpdateOne) AddChecksymptom(c ...*Checksymptom) *PersonnelUpdateOne {
 	ids := make([]int, len(c))
 	for i := range c {
 		ids[i] = c[i].ID
@@ -908,20 +908,20 @@ func (puo *PersonnelUpdateOne) RemoveBonedisease(b ...*Bonedisease) *PersonnelUp
 	return puo.RemoveBonediseaseIDs(ids...)
 }
 
-// ClearChecksymptoms clears all "Checksymptoms" edges to the Checksymptoms entity.
-func (puo *PersonnelUpdateOne) ClearChecksymptoms() *PersonnelUpdateOne {
-	puo.mutation.ClearChecksymptoms()
+// ClearChecksymptom clears all "Checksymptom" edges to the Checksymptom entity.
+func (puo *PersonnelUpdateOne) ClearChecksymptom() *PersonnelUpdateOne {
+	puo.mutation.ClearChecksymptom()
 	return puo
 }
 
-// RemoveChecksymptomIDs removes the "Checksymptoms" edge to Checksymptoms entities by IDs.
+// RemoveChecksymptomIDs removes the "Checksymptom" edge to Checksymptom entities by IDs.
 func (puo *PersonnelUpdateOne) RemoveChecksymptomIDs(ids ...int) *PersonnelUpdateOne {
 	puo.mutation.RemoveChecksymptomIDs(ids...)
 	return puo
 }
 
-// RemoveChecksymptoms removes "Checksymptoms" edges to Checksymptoms entities.
-func (puo *PersonnelUpdateOne) RemoveChecksymptoms(c ...*Checksymptoms) *PersonnelUpdateOne {
+// RemoveChecksymptom removes "Checksymptom" edges to Checksymptom entities.
+func (puo *PersonnelUpdateOne) RemoveChecksymptom(c ...*Checksymptom) *PersonnelUpdateOne {
 	ids := make([]int, len(c))
 	for i := range c {
 		ids[i] = c[i].ID
@@ -1226,33 +1226,33 @@ func (puo *PersonnelUpdateOne) sqlSave(ctx context.Context) (_node *Personnel, e
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if puo.mutation.ChecksymptomsCleared() {
+	if puo.mutation.ChecksymptomCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   personnel.ChecksymptomsTable,
-			Columns: []string{personnel.ChecksymptomsColumn},
+			Table:   personnel.ChecksymptomTable,
+			Columns: []string{personnel.ChecksymptomColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
-					Column: checksymptoms.FieldID,
+					Column: checksymptom.FieldID,
 				},
 			},
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := puo.mutation.RemovedChecksymptomsIDs(); len(nodes) > 0 && !puo.mutation.ChecksymptomsCleared() {
+	if nodes := puo.mutation.RemovedChecksymptomIDs(); len(nodes) > 0 && !puo.mutation.ChecksymptomCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   personnel.ChecksymptomsTable,
-			Columns: []string{personnel.ChecksymptomsColumn},
+			Table:   personnel.ChecksymptomTable,
+			Columns: []string{personnel.ChecksymptomColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
-					Column: checksymptoms.FieldID,
+					Column: checksymptom.FieldID,
 				},
 			},
 		}
@@ -1261,17 +1261,17 @@ func (puo *PersonnelUpdateOne) sqlSave(ctx context.Context) (_node *Personnel, e
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := puo.mutation.ChecksymptomsIDs(); len(nodes) > 0 {
+	if nodes := puo.mutation.ChecksymptomIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   personnel.ChecksymptomsTable,
-			Columns: []string{personnel.ChecksymptomsColumn},
+			Table:   personnel.ChecksymptomTable,
+			Columns: []string{personnel.ChecksymptomColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
-					Column: checksymptoms.FieldID,
+					Column: checksymptom.FieldID,
 				},
 			},
 		}

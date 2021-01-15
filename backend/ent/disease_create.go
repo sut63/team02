@@ -9,7 +9,7 @@ import (
 
 	"github.com/facebook/ent/dialect/sql/sqlgraph"
 	"github.com/facebook/ent/schema/field"
-	"github.com/to63/app/ent/checksymptoms"
+	"github.com/to63/app/ent/checksymptom"
 	"github.com/to63/app/ent/disease"
 )
 
@@ -20,20 +20,20 @@ type DiseaseCreate struct {
 	hooks    []Hook
 }
 
-// SetName sets the "name" field.
-func (dc *DiseaseCreate) SetName(s string) *DiseaseCreate {
-	dc.mutation.SetName(s)
+// SetDisease sets the "disease" field.
+func (dc *DiseaseCreate) SetDisease(s string) *DiseaseCreate {
+	dc.mutation.SetDisease(s)
 	return dc
 }
 
-// AddChecksymptomIDs adds the "Checksymptoms" edge to the Checksymptoms entity by IDs.
+// AddChecksymptomIDs adds the "Checksymptom" edge to the Checksymptom entity by IDs.
 func (dc *DiseaseCreate) AddChecksymptomIDs(ids ...int) *DiseaseCreate {
 	dc.mutation.AddChecksymptomIDs(ids...)
 	return dc
 }
 
-// AddChecksymptoms adds the "Checksymptoms" edges to the Checksymptoms entity.
-func (dc *DiseaseCreate) AddChecksymptoms(c ...*Checksymptoms) *DiseaseCreate {
+// AddChecksymptom adds the "Checksymptom" edges to the Checksymptom entity.
+func (dc *DiseaseCreate) AddChecksymptom(c ...*Checksymptom) *DiseaseCreate {
 	ids := make([]int, len(c))
 	for i := range c {
 		ids[i] = c[i].ID
@@ -92,12 +92,12 @@ func (dc *DiseaseCreate) SaveX(ctx context.Context) *Disease {
 
 // check runs all checks and user-defined validators on the builder.
 func (dc *DiseaseCreate) check() error {
-	if _, ok := dc.mutation.Name(); !ok {
-		return &ValidationError{Name: "name", err: errors.New("ent: missing required field \"name\"")}
+	if _, ok := dc.mutation.Disease(); !ok {
+		return &ValidationError{Name: "disease", err: errors.New("ent: missing required field \"disease\"")}
 	}
-	if v, ok := dc.mutation.Name(); ok {
-		if err := disease.NameValidator(v); err != nil {
-			return &ValidationError{Name: "name", err: fmt.Errorf("ent: validator failed for field \"name\": %w", err)}
+	if v, ok := dc.mutation.Disease(); ok {
+		if err := disease.DiseaseValidator(v); err != nil {
+			return &ValidationError{Name: "disease", err: fmt.Errorf("ent: validator failed for field \"disease\": %w", err)}
 		}
 	}
 	return nil
@@ -127,25 +127,25 @@ func (dc *DiseaseCreate) createSpec() (*Disease, *sqlgraph.CreateSpec) {
 			},
 		}
 	)
-	if value, ok := dc.mutation.Name(); ok {
+	if value, ok := dc.mutation.Disease(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: disease.FieldName,
+			Column: disease.FieldDisease,
 		})
-		_node.Name = value
+		_node.Disease = value
 	}
-	if nodes := dc.mutation.ChecksymptomsIDs(); len(nodes) > 0 {
+	if nodes := dc.mutation.ChecksymptomIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   disease.ChecksymptomsTable,
-			Columns: []string{disease.ChecksymptomsColumn},
+			Table:   disease.ChecksymptomTable,
+			Columns: []string{disease.ChecksymptomColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
-					Column: checksymptoms.FieldID,
+					Column: checksymptom.FieldID,
 				},
 			},
 		}

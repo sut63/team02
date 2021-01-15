@@ -525,14 +525,14 @@ var doc = `{
                 }
             }
         },
-        "/checksymptomss": {
+        "/checksymptoms": {
             "get": {
-                "description": "list checksymptoms entities",
+                "description": "list checksymptom entities",
                 "produces": [
                     "application/json"
                 ],
-                "summary": "List checksymptoms entities",
-                "operationId": "list-checksymptoms",
+                "summary": "List checksymptom entities",
+                "operationId": "list-checksymptom",
                 "parameters": [
                     {
                         "type": "integer",
@@ -553,7 +553,7 @@ var doc = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/ent.Checksymptoms"
+                                "$ref": "#/definitions/ent.Checksymptom"
                             }
                         }
                     },
@@ -572,23 +572,23 @@ var doc = `{
                 }
             },
             "post": {
-                "description": "Create checksymptoms",
+                "description": "Create checksymptom",
                 "consumes": [
                     "application/json"
                 ],
                 "produces": [
                     "application/json"
                 ],
-                "summary": "Create checksymptoms",
-                "operationId": "create-checksymptoms",
+                "summary": "Create checksymptom",
+                "operationId": "create-checksymptom",
                 "parameters": [
                     {
-                        "description": "Checksymptoms entity",
-                        "name": "checksymptoms",
+                        "description": "Checksymptom entity",
+                        "name": "checksymptom",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/controllers.Checksymptoms"
+                            "$ref": "#/definitions/controllers.Checksymptom"
                         }
                     }
                 ],
@@ -596,7 +596,7 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/ent.Checksymptoms"
+                            "$ref": "#/definitions/ent.Checksymptom"
                         }
                     },
                     "400": {
@@ -1074,7 +1074,7 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "Disease ID",
+                        "description": "disease ID",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -1120,13 +1120,13 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "Disease ID",
+                        "description": "disease ID",
                         "name": "id",
                         "in": "path",
                         "required": true
                     },
                     {
-                        "description": "Disease entity",
+                        "description": "disease entity",
                         "name": "disease",
                         "in": "body",
                         "required": true,
@@ -1166,7 +1166,7 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "Disease ID",
+                        "description": "disease ID",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -1228,7 +1228,7 @@ var doc = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/ent.DoctorOrderSheet"
+                                "$ref": "#/definitions/ent.Doctorordersheet"
                             }
                         }
                     },
@@ -1263,7 +1263,7 @@ var doc = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/ent.DoctorOrderSheet"
+                            "$ref": "#/definitions/ent.Doctorordersheet"
                         }
                     }
                 ],
@@ -1271,7 +1271,7 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/ent.DoctorOrderSheet"
+                            "$ref": "#/definitions/ent.Doctorordersheet"
                         }
                     },
                     "400": {
@@ -1300,7 +1300,7 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "DoctorOrderSheet ID",
+                        "description": "Doctorordersheet ID",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -1310,7 +1310,7 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/ent.DoctorOrderSheet"
+                            "$ref": "#/definitions/ent.Doctorordersheet"
                         }
                     },
                     "400": {
@@ -1345,18 +1345,18 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "DoctorOrderSheet ID",
+                        "description": "Doctorordersheet ID",
                         "name": "id",
                         "in": "path",
                         "required": true
                     },
                     {
-                        "description": "DoctorOrderSheet entity",
+                        "description": "Doctorordersheet entity",
                         "name": "doctorordersheet",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/ent.DoctorOrderSheet"
+                            "$ref": "#/definitions/ent.Doctorordersheet"
                         }
                     }
                 ],
@@ -1364,7 +1364,7 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/ent.DoctorOrderSheet"
+                            "$ref": "#/definitions/ent.Doctorordersheet"
                         }
                     },
                     "400": {
@@ -1391,7 +1391,7 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "DeleteDoctorOrderSheet ID",
+                        "description": "DeleteDoctorordersheet ID",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -3079,16 +3079,13 @@ var doc = `{
                 }
             }
         },
-        "controllers.Checksymptoms": {
+        "controllers.Checksymptom": {
             "type": "object",
             "properties": {
-                "date": {
-                    "type": "string"
-                },
                 "disease": {
                     "type": "integer"
                 },
-                "doctorOrderSheet": {
+                "doctorordersheet": {
                     "type": "integer"
                 },
                 "patient": {
@@ -3242,7 +3239,7 @@ var doc = `{
                 }
             }
         },
-        "ent.Checksymptoms": {
+        "ent.Checksymptom": {
             "type": "object",
             "properties": {
                 "date": {
@@ -3250,17 +3247,25 @@ var doc = `{
                     "type": "string"
                 },
                 "edges": {
-                    "description": "Edges holds the relations/edges for other nodes in the graph.\nThe values are being populated by the ChecksymptomsQuery when eager-loading is set.",
+                    "description": "Edges holds the relations/edges for other nodes in the graph.\nThe values are being populated by the ChecksymptomQuery when eager-loading is set.",
                     "type": "object",
-                    "$ref": "#/definitions/ent.ChecksymptomsEdges"
+                    "$ref": "#/definitions/ent.ChecksymptomEdges"
                 },
                 "id": {
                     "description": "ID of the ent.",
                     "type": "integer"
+                },
+                "note": {
+                    "description": "Note holds the value of the \"note\" field.",
+                    "type": "string"
+                },
+                "times": {
+                    "description": "Times holds the value of the \"times\" field.",
+                    "type": "string"
                 }
             }
         },
-        "ent.ChecksymptomsEdges": {
+        "ent.ChecksymptomEdges": {
             "type": "object",
             "properties": {
                 "disease": {
@@ -3271,7 +3276,7 @@ var doc = `{
                 "doctorordersheet": {
                     "description": "Doctorordersheet holds the value of the doctorordersheet edge.",
                     "type": "object",
-                    "$ref": "#/definitions/ent.DoctorOrderSheet"
+                    "$ref": "#/definitions/ent.Doctorordersheet"
                 },
                 "patient": {
                     "description": "Patient holds the value of the patient edge.",
@@ -3356,6 +3361,10 @@ var doc = `{
         "ent.Disease": {
             "type": "object",
             "properties": {
+                "disease": {
+                    "description": "Disease holds the value of the \"disease\" field.",
+                    "type": "string"
+                },
                 "edges": {
                     "description": "Edges holds the relations/edges for other nodes in the graph.\nThe values are being populated by the DiseaseQuery when eager-loading is set.",
                     "type": "object",
@@ -3364,26 +3373,22 @@ var doc = `{
                 "id": {
                     "description": "ID of the ent.",
                     "type": "integer"
-                },
-                "name": {
-                    "description": "Name holds the value of the \"name\" field.",
-                    "type": "string"
                 }
             }
         },
         "ent.DiseaseEdges": {
             "type": "object",
             "properties": {
-                "checksymptoms": {
-                    "description": "Checksymptoms holds the value of the Checksymptoms edge.",
+                "checksymptom": {
+                    "description": "Checksymptom holds the value of the Checksymptom edge.",
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/ent.Checksymptoms"
+                        "$ref": "#/definitions/ent.Checksymptom"
                     }
                 }
             }
         },
-        "ent.DoctorOrderSheet": {
+        "ent.Doctorordersheet": {
             "type": "object",
             "properties": {
                 "Name": {
@@ -3391,32 +3396,24 @@ var doc = `{
                     "type": "string"
                 },
                 "edges": {
-                    "description": "Edges holds the relations/edges for other nodes in the graph.\nThe values are being populated by the DoctorOrderSheetQuery when eager-loading is set.",
+                    "description": "Edges holds the relations/edges for other nodes in the graph.\nThe values are being populated by the DoctorordersheetQuery when eager-loading is set.",
                     "type": "object",
-                    "$ref": "#/definitions/ent.DoctorOrderSheetEdges"
+                    "$ref": "#/definitions/ent.DoctorordersheetEdges"
                 },
                 "id": {
                     "description": "ID of the ent.",
                     "type": "integer"
-                },
-                "note": {
-                    "description": "Note holds the value of the \"note\" field.",
-                    "type": "string"
-                },
-                "time": {
-                    "description": "Time holds the value of the \"time\" field.",
-                    "type": "string"
                 }
             }
         },
-        "ent.DoctorOrderSheetEdges": {
+        "ent.DoctorordersheetEdges": {
             "type": "object",
             "properties": {
-                "checksymptoms": {
-                    "description": "Checksymptoms holds the value of the Checksymptoms edge.",
+                "checksymptom": {
+                    "description": "Checksymptom holds the value of the Checksymptom edge.",
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/ent.Checksymptoms"
+                        "$ref": "#/definitions/ent.Checksymptom"
                     }
                 }
             }
@@ -3464,11 +3461,11 @@ var doc = `{
                         "$ref": "#/definitions/ent.Bonedisease"
                     }
                 },
-                "checksymptoms": {
-                    "description": "Checksymptoms holds the value of the Checksymptoms edge.",
+                "checksymptom": {
+                    "description": "Checksymptom holds the value of the Checksymptom edge.",
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/ent.Checksymptoms"
+                        "$ref": "#/definitions/ent.Checksymptom"
                     }
                 },
                 "dentalappointment": {
@@ -3541,11 +3538,11 @@ var doc = `{
                         "$ref": "#/definitions/ent.Bonedisease"
                     }
                 },
-                "checksymptoms": {
-                    "description": "Checksymptoms holds the value of the Checksymptoms edge.",
+                "checksymptom": {
+                    "description": "Checksymptom holds the value of the Checksymptom edge.",
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/ent.Checksymptoms"
+                        "$ref": "#/definitions/ent.Checksymptom"
                     }
                 },
                 "dentalappointment": {

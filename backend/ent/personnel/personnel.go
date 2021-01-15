@@ -20,8 +20,8 @@ const (
 	EdgePhysicaltherapyrecord = "physicaltherapyrecord"
 	// EdgeBonedisease holds the string denoting the bonedisease edge name in mutations.
 	EdgeBonedisease = "Bonedisease"
-	// EdgeChecksymptoms holds the string denoting the checksymptoms edge name in mutations.
-	EdgeChecksymptoms = "Checksymptoms"
+	// EdgeChecksymptom holds the string denoting the checksymptom edge name in mutations.
+	EdgeChecksymptom = "Checksymptom"
 	// EdgeDentalappointment holds the string denoting the dentalappointment edge name in mutations.
 	EdgeDentalappointment = "Dentalappointment"
 	// EdgeSurgeryappointment holds the string denoting the surgeryappointment edge name in mutations.
@@ -45,13 +45,13 @@ const (
 	BonediseaseInverseTable = "bonediseases"
 	// BonediseaseColumn is the table column denoting the Bonedisease relation/edge.
 	BonediseaseColumn = "Personnel_id"
-	// ChecksymptomsTable is the table the holds the Checksymptoms relation/edge.
-	ChecksymptomsTable = "checksymptoms"
-	// ChecksymptomsInverseTable is the table name for the Checksymptoms entity.
-	// It exists in this package in order to avoid circular dependency with the "checksymptoms" package.
-	ChecksymptomsInverseTable = "checksymptoms"
-	// ChecksymptomsColumn is the table column denoting the Checksymptoms relation/edge.
-	ChecksymptomsColumn = "Personnel_id"
+	// ChecksymptomTable is the table the holds the Checksymptom relation/edge.
+	ChecksymptomTable = "checksymptoms"
+	// ChecksymptomInverseTable is the table name for the Checksymptom entity.
+	// It exists in this package in order to avoid circular dependency with the "checksymptom" package.
+	ChecksymptomInverseTable = "checksymptoms"
+	// ChecksymptomColumn is the table column denoting the Checksymptom relation/edge.
+	ChecksymptomColumn = "Personnel_id"
 	// DentalappointmentTable is the table the holds the Dentalappointment relation/edge.
 	DentalappointmentTable = "dentalappointments"
 	// DentalappointmentInverseTable is the table name for the Dentalappointment entity.

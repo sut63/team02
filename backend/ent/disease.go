@@ -15,8 +15,8 @@ type Disease struct {
 	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
-	// Name holds the value of the "name" field.
-	Name string `json:"name,omitempty"`
+	// Disease holds the value of the "disease" field.
+	Disease string `json:"disease,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the DiseaseQuery when eager-loading is set.
 	Edges DiseaseEdges `json:"edges"`
@@ -24,20 +24,20 @@ type Disease struct {
 
 // DiseaseEdges holds the relations/edges for other nodes in the graph.
 type DiseaseEdges struct {
-	// Checksymptoms holds the value of the Checksymptoms edge.
-	Checksymptoms []*Checksymptoms
+	// Checksymptom holds the value of the Checksymptom edge.
+	Checksymptom []*Checksymptom
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
 	loadedTypes [1]bool
 }
 
-// ChecksymptomsOrErr returns the Checksymptoms value or an error if the edge
+// ChecksymptomOrErr returns the Checksymptom value or an error if the edge
 // was not loaded in eager-loading.
-func (e DiseaseEdges) ChecksymptomsOrErr() ([]*Checksymptoms, error) {
+func (e DiseaseEdges) ChecksymptomOrErr() ([]*Checksymptom, error) {
 	if e.loadedTypes[0] {
-		return e.Checksymptoms, nil
+		return e.Checksymptom, nil
 	}
-	return nil, &NotLoadedError{edge: "Checksymptoms"}
+	return nil, &NotLoadedError{edge: "Checksymptom"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -47,7 +47,7 @@ func (*Disease) scanValues(columns []string) ([]interface{}, error) {
 		switch columns[i] {
 		case disease.FieldID:
 			values[i] = &sql.NullInt64{}
-		case disease.FieldName:
+		case disease.FieldDisease:
 			values[i] = &sql.NullString{}
 		default:
 			return nil, fmt.Errorf("unexpected column %q for type Disease", columns[i])
@@ -70,20 +70,20 @@ func (d *Disease) assignValues(columns []string, values []interface{}) error {
 				return fmt.Errorf("unexpected type %T for field id", value)
 			}
 			d.ID = int(value.Int64)
-		case disease.FieldName:
+		case disease.FieldDisease:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field name", values[i])
+				return fmt.Errorf("unexpected type %T for field disease", values[i])
 			} else if value.Valid {
-				d.Name = value.String
+				d.Disease = value.String
 			}
 		}
 	}
 	return nil
 }
 
-// QueryChecksymptoms queries the "Checksymptoms" edge of the Disease entity.
-func (d *Disease) QueryChecksymptoms() *ChecksymptomsQuery {
-	return (&DiseaseClient{config: d.config}).QueryChecksymptoms(d)
+// QueryChecksymptom queries the "Checksymptom" edge of the Disease entity.
+func (d *Disease) QueryChecksymptom() *ChecksymptomQuery {
+	return (&DiseaseClient{config: d.config}).QueryChecksymptom(d)
 }
 
 // Update returns a builder for updating this Disease.
@@ -109,8 +109,8 @@ func (d *Disease) String() string {
 	var builder strings.Builder
 	builder.WriteString("Disease(")
 	builder.WriteString(fmt.Sprintf("id=%v", d.ID))
-	builder.WriteString(", name=")
-	builder.WriteString(d.Name)
+	builder.WriteString(", disease=")
+	builder.WriteString(d.Disease)
 	builder.WriteByte(')')
 	return builder.String()
 }

@@ -9,84 +9,72 @@ import (
 
 	"github.com/facebook/ent/dialect/sql/sqlgraph"
 	"github.com/facebook/ent/schema/field"
-	"github.com/to63/app/ent/checksymptoms"
+	"github.com/to63/app/ent/checksymptom"
 	"github.com/to63/app/ent/doctorordersheet"
 )
 
-// DoctorOrderSheetCreate is the builder for creating a DoctorOrderSheet entity.
-type DoctorOrderSheetCreate struct {
+// DoctorordersheetCreate is the builder for creating a Doctorordersheet entity.
+type DoctorordersheetCreate struct {
 	config
-	mutation *DoctorOrderSheetMutation
+	mutation *DoctorordersheetMutation
 	hooks    []Hook
 }
 
 // SetName sets the "Name" field.
-func (dosc *DoctorOrderSheetCreate) SetName(s string) *DoctorOrderSheetCreate {
-	dosc.mutation.SetName(s)
-	return dosc
+func (dc *DoctorordersheetCreate) SetName(s string) *DoctorordersheetCreate {
+	dc.mutation.SetName(s)
+	return dc
 }
 
-// SetTime sets the "time" field.
-func (dosc *DoctorOrderSheetCreate) SetTime(s string) *DoctorOrderSheetCreate {
-	dosc.mutation.SetTime(s)
-	return dosc
+// AddChecksymptomIDs adds the "Checksymptom" edge to the Checksymptom entity by IDs.
+func (dc *DoctorordersheetCreate) AddChecksymptomIDs(ids ...int) *DoctorordersheetCreate {
+	dc.mutation.AddChecksymptomIDs(ids...)
+	return dc
 }
 
-// SetNote sets the "note" field.
-func (dosc *DoctorOrderSheetCreate) SetNote(s string) *DoctorOrderSheetCreate {
-	dosc.mutation.SetNote(s)
-	return dosc
-}
-
-// AddChecksymptomIDs adds the "Checksymptoms" edge to the Checksymptoms entity by IDs.
-func (dosc *DoctorOrderSheetCreate) AddChecksymptomIDs(ids ...int) *DoctorOrderSheetCreate {
-	dosc.mutation.AddChecksymptomIDs(ids...)
-	return dosc
-}
-
-// AddChecksymptoms adds the "Checksymptoms" edges to the Checksymptoms entity.
-func (dosc *DoctorOrderSheetCreate) AddChecksymptoms(c ...*Checksymptoms) *DoctorOrderSheetCreate {
+// AddChecksymptom adds the "Checksymptom" edges to the Checksymptom entity.
+func (dc *DoctorordersheetCreate) AddChecksymptom(c ...*Checksymptom) *DoctorordersheetCreate {
 	ids := make([]int, len(c))
 	for i := range c {
 		ids[i] = c[i].ID
 	}
-	return dosc.AddChecksymptomIDs(ids...)
+	return dc.AddChecksymptomIDs(ids...)
 }
 
-// Mutation returns the DoctorOrderSheetMutation object of the builder.
-func (dosc *DoctorOrderSheetCreate) Mutation() *DoctorOrderSheetMutation {
-	return dosc.mutation
+// Mutation returns the DoctorordersheetMutation object of the builder.
+func (dc *DoctorordersheetCreate) Mutation() *DoctorordersheetMutation {
+	return dc.mutation
 }
 
-// Save creates the DoctorOrderSheet in the database.
-func (dosc *DoctorOrderSheetCreate) Save(ctx context.Context) (*DoctorOrderSheet, error) {
+// Save creates the Doctorordersheet in the database.
+func (dc *DoctorordersheetCreate) Save(ctx context.Context) (*Doctorordersheet, error) {
 	var (
 		err  error
-		node *DoctorOrderSheet
+		node *Doctorordersheet
 	)
-	if len(dosc.hooks) == 0 {
-		if err = dosc.check(); err != nil {
+	if len(dc.hooks) == 0 {
+		if err = dc.check(); err != nil {
 			return nil, err
 		}
-		node, err = dosc.sqlSave(ctx)
+		node, err = dc.sqlSave(ctx)
 	} else {
 		var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
-			mutation, ok := m.(*DoctorOrderSheetMutation)
+			mutation, ok := m.(*DoctorordersheetMutation)
 			if !ok {
 				return nil, fmt.Errorf("unexpected mutation type %T", m)
 			}
-			if err = dosc.check(); err != nil {
+			if err = dc.check(); err != nil {
 				return nil, err
 			}
-			dosc.mutation = mutation
-			node, err = dosc.sqlSave(ctx)
+			dc.mutation = mutation
+			node, err = dc.sqlSave(ctx)
 			mutation.done = true
 			return node, err
 		})
-		for i := len(dosc.hooks) - 1; i >= 0; i-- {
-			mut = dosc.hooks[i](mut)
+		for i := len(dc.hooks) - 1; i >= 0; i-- {
+			mut = dc.hooks[i](mut)
 		}
-		if _, err := mut.Mutate(ctx, dosc.mutation); err != nil {
+		if _, err := mut.Mutate(ctx, dc.mutation); err != nil {
 			return nil, err
 		}
 	}
@@ -94,8 +82,8 @@ func (dosc *DoctorOrderSheetCreate) Save(ctx context.Context) (*DoctorOrderSheet
 }
 
 // SaveX calls Save and panics if Save returns an error.
-func (dosc *DoctorOrderSheetCreate) SaveX(ctx context.Context) *DoctorOrderSheet {
-	v, err := dosc.Save(ctx)
+func (dc *DoctorordersheetCreate) SaveX(ctx context.Context) *Doctorordersheet {
+	v, err := dc.Save(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -103,37 +91,21 @@ func (dosc *DoctorOrderSheetCreate) SaveX(ctx context.Context) *DoctorOrderSheet
 }
 
 // check runs all checks and user-defined validators on the builder.
-func (dosc *DoctorOrderSheetCreate) check() error {
-	if _, ok := dosc.mutation.Name(); !ok {
+func (dc *DoctorordersheetCreate) check() error {
+	if _, ok := dc.mutation.Name(); !ok {
 		return &ValidationError{Name: "Name", err: errors.New("ent: missing required field \"Name\"")}
 	}
-	if v, ok := dosc.mutation.Name(); ok {
+	if v, ok := dc.mutation.Name(); ok {
 		if err := doctorordersheet.NameValidator(v); err != nil {
 			return &ValidationError{Name: "Name", err: fmt.Errorf("ent: validator failed for field \"Name\": %w", err)}
-		}
-	}
-	if _, ok := dosc.mutation.Time(); !ok {
-		return &ValidationError{Name: "time", err: errors.New("ent: missing required field \"time\"")}
-	}
-	if v, ok := dosc.mutation.Time(); ok {
-		if err := doctorordersheet.TimeValidator(v); err != nil {
-			return &ValidationError{Name: "time", err: fmt.Errorf("ent: validator failed for field \"time\": %w", err)}
-		}
-	}
-	if _, ok := dosc.mutation.Note(); !ok {
-		return &ValidationError{Name: "note", err: errors.New("ent: missing required field \"note\"")}
-	}
-	if v, ok := dosc.mutation.Note(); ok {
-		if err := doctorordersheet.NoteValidator(v); err != nil {
-			return &ValidationError{Name: "note", err: fmt.Errorf("ent: validator failed for field \"note\": %w", err)}
 		}
 	}
 	return nil
 }
 
-func (dosc *DoctorOrderSheetCreate) sqlSave(ctx context.Context) (*DoctorOrderSheet, error) {
-	_node, _spec := dosc.createSpec()
-	if err := sqlgraph.CreateNode(ctx, dosc.driver, _spec); err != nil {
+func (dc *DoctorordersheetCreate) sqlSave(ctx context.Context) (*Doctorordersheet, error) {
+	_node, _spec := dc.createSpec()
+	if err := sqlgraph.CreateNode(ctx, dc.driver, _spec); err != nil {
 		if cerr, ok := isSQLConstraintError(err); ok {
 			err = cerr
 		}
@@ -144,9 +116,9 @@ func (dosc *DoctorOrderSheetCreate) sqlSave(ctx context.Context) (*DoctorOrderSh
 	return _node, nil
 }
 
-func (dosc *DoctorOrderSheetCreate) createSpec() (*DoctorOrderSheet, *sqlgraph.CreateSpec) {
+func (dc *DoctorordersheetCreate) createSpec() (*Doctorordersheet, *sqlgraph.CreateSpec) {
 	var (
-		_node = &DoctorOrderSheet{config: dosc.config}
+		_node = &Doctorordersheet{config: dc.config}
 		_spec = &sqlgraph.CreateSpec{
 			Table: doctorordersheet.Table,
 			ID: &sqlgraph.FieldSpec{
@@ -155,7 +127,7 @@ func (dosc *DoctorOrderSheetCreate) createSpec() (*DoctorOrderSheet, *sqlgraph.C
 			},
 		}
 	)
-	if value, ok := dosc.mutation.Name(); ok {
+	if value, ok := dc.mutation.Name(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
@@ -163,33 +135,17 @@ func (dosc *DoctorOrderSheetCreate) createSpec() (*DoctorOrderSheet, *sqlgraph.C
 		})
 		_node.Name = value
 	}
-	if value, ok := dosc.mutation.Time(); ok {
-		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
-			Value:  value,
-			Column: doctorordersheet.FieldTime,
-		})
-		_node.Time = value
-	}
-	if value, ok := dosc.mutation.Note(); ok {
-		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
-			Value:  value,
-			Column: doctorordersheet.FieldNote,
-		})
-		_node.Note = value
-	}
-	if nodes := dosc.mutation.ChecksymptomsIDs(); len(nodes) > 0 {
+	if nodes := dc.mutation.ChecksymptomIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   doctorordersheet.ChecksymptomsTable,
-			Columns: []string{doctorordersheet.ChecksymptomsColumn},
+			Table:   doctorordersheet.ChecksymptomTable,
+			Columns: []string{doctorordersheet.ChecksymptomColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
-					Column: checksymptoms.FieldID,
+					Column: checksymptom.FieldID,
 				},
 			},
 		}
@@ -201,22 +157,22 @@ func (dosc *DoctorOrderSheetCreate) createSpec() (*DoctorOrderSheet, *sqlgraph.C
 	return _node, _spec
 }
 
-// DoctorOrderSheetCreateBulk is the builder for creating many DoctorOrderSheet entities in bulk.
-type DoctorOrderSheetCreateBulk struct {
+// DoctorordersheetCreateBulk is the builder for creating many Doctorordersheet entities in bulk.
+type DoctorordersheetCreateBulk struct {
 	config
-	builders []*DoctorOrderSheetCreate
+	builders []*DoctorordersheetCreate
 }
 
-// Save creates the DoctorOrderSheet entities in the database.
-func (doscb *DoctorOrderSheetCreateBulk) Save(ctx context.Context) ([]*DoctorOrderSheet, error) {
-	specs := make([]*sqlgraph.CreateSpec, len(doscb.builders))
-	nodes := make([]*DoctorOrderSheet, len(doscb.builders))
-	mutators := make([]Mutator, len(doscb.builders))
-	for i := range doscb.builders {
+// Save creates the Doctorordersheet entities in the database.
+func (dcb *DoctorordersheetCreateBulk) Save(ctx context.Context) ([]*Doctorordersheet, error) {
+	specs := make([]*sqlgraph.CreateSpec, len(dcb.builders))
+	nodes := make([]*Doctorordersheet, len(dcb.builders))
+	mutators := make([]Mutator, len(dcb.builders))
+	for i := range dcb.builders {
 		func(i int, root context.Context) {
-			builder := doscb.builders[i]
+			builder := dcb.builders[i]
 			var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
-				mutation, ok := m.(*DoctorOrderSheetMutation)
+				mutation, ok := m.(*DoctorordersheetMutation)
 				if !ok {
 					return nil, fmt.Errorf("unexpected mutation type %T", m)
 				}
@@ -227,10 +183,10 @@ func (doscb *DoctorOrderSheetCreateBulk) Save(ctx context.Context) ([]*DoctorOrd
 				nodes[i], specs[i] = builder.createSpec()
 				var err error
 				if i < len(mutators)-1 {
-					_, err = mutators[i+1].Mutate(root, doscb.builders[i+1].mutation)
+					_, err = mutators[i+1].Mutate(root, dcb.builders[i+1].mutation)
 				} else {
 					// Invoke the actual operation on the latest mutation in the chain.
-					if err = sqlgraph.BatchCreate(ctx, doscb.driver, &sqlgraph.BatchCreateSpec{Nodes: specs}); err != nil {
+					if err = sqlgraph.BatchCreate(ctx, dcb.driver, &sqlgraph.BatchCreateSpec{Nodes: specs}); err != nil {
 						if cerr, ok := isSQLConstraintError(err); ok {
 							err = cerr
 						}
@@ -251,7 +207,7 @@ func (doscb *DoctorOrderSheetCreateBulk) Save(ctx context.Context) ([]*DoctorOrd
 		}(i, ctx)
 	}
 	if len(mutators) > 0 {
-		if _, err := mutators[0].Mutate(ctx, doscb.builders[0].mutation); err != nil {
+		if _, err := mutators[0].Mutate(ctx, dcb.builders[0].mutation); err != nil {
 			return nil, err
 		}
 	}
@@ -259,8 +215,8 @@ func (doscb *DoctorOrderSheetCreateBulk) Save(ctx context.Context) ([]*DoctorOrd
 }
 
 // SaveX is like Save, but panics if an error occurs.
-func (doscb *DoctorOrderSheetCreateBulk) SaveX(ctx context.Context) []*DoctorOrderSheet {
-	v, err := doscb.Save(ctx)
+func (dcb *DoctorordersheetCreateBulk) SaveX(ctx context.Context) []*Doctorordersheet {
+	v, err := dcb.Save(ctx)
 	if err != nil {
 		panic(err)
 	}

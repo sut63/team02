@@ -96,8 +96,10 @@ var (
 	ChecksymptomsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "date", Type: field.TypeTime},
-		{Name: "Disease_id", Type: field.TypeInt, Nullable: true},
-		{Name: "DoctorOrderSheet_id", Type: field.TypeInt, Nullable: true},
+		{Name: "times", Type: field.TypeString},
+		{Name: "note", Type: field.TypeString},
+		{Name: "disease_id", Type: field.TypeInt, Nullable: true},
+		{Name: "Doctorordersheet_id", Type: field.TypeInt, Nullable: true},
 		{Name: "Patient_id", Type: field.TypeInt, Nullable: true},
 		{Name: "Personnel_id", Type: field.TypeInt, Nullable: true},
 	}
@@ -108,29 +110,29 @@ var (
 		PrimaryKey: []*schema.Column{ChecksymptomsColumns[0]},
 		ForeignKeys: []*schema.ForeignKey{
 			{
-				Symbol:  "checksymptoms_diseases_Checksymptoms",
-				Columns: []*schema.Column{ChecksymptomsColumns[2]},
+				Symbol:  "checksymptoms_diseases_Checksymptom",
+				Columns: []*schema.Column{ChecksymptomsColumns[4]},
 
 				RefColumns: []*schema.Column{DiseasesColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
-				Symbol:  "checksymptoms_doctor_order_sheets_Checksymptoms",
-				Columns: []*schema.Column{ChecksymptomsColumns[3]},
+				Symbol:  "checksymptoms_doctorordersheets_Checksymptom",
+				Columns: []*schema.Column{ChecksymptomsColumns[5]},
 
-				RefColumns: []*schema.Column{DoctorOrderSheetsColumns[0]},
+				RefColumns: []*schema.Column{DoctorordersheetsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
-				Symbol:  "checksymptoms_patients_Checksymptoms",
-				Columns: []*schema.Column{ChecksymptomsColumns[4]},
+				Symbol:  "checksymptoms_patients_Checksymptom",
+				Columns: []*schema.Column{ChecksymptomsColumns[6]},
 
 				RefColumns: []*schema.Column{PatientsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
-				Symbol:  "checksymptoms_personnels_Checksymptoms",
-				Columns: []*schema.Column{ChecksymptomsColumns[5]},
+				Symbol:  "checksymptoms_personnels_Checksymptom",
+				Columns: []*schema.Column{ChecksymptomsColumns[7]},
 
 				RefColumns: []*schema.Column{PersonnelsColumns[0]},
 				OnDelete:   schema.SetNull,
@@ -189,7 +191,7 @@ var (
 	// DiseasesColumns holds the columns for the "diseases" table.
 	DiseasesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
-		{Name: "name", Type: field.TypeString},
+		{Name: "disease", Type: field.TypeString},
 	}
 	// DiseasesTable holds the schema information for the "diseases" table.
 	DiseasesTable = &schema.Table{
@@ -198,18 +200,16 @@ var (
 		PrimaryKey:  []*schema.Column{DiseasesColumns[0]},
 		ForeignKeys: []*schema.ForeignKey{},
 	}
-	// DoctorOrderSheetsColumns holds the columns for the "doctor_order_sheets" table.
-	DoctorOrderSheetsColumns = []*schema.Column{
+	// DoctorordersheetsColumns holds the columns for the "doctorordersheets" table.
+	DoctorordersheetsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "name", Type: field.TypeString},
-		{Name: "time", Type: field.TypeString},
-		{Name: "note", Type: field.TypeString},
 	}
-	// DoctorOrderSheetsTable holds the schema information for the "doctor_order_sheets" table.
-	DoctorOrderSheetsTable = &schema.Table{
-		Name:        "doctor_order_sheets",
-		Columns:     DoctorOrderSheetsColumns,
-		PrimaryKey:  []*schema.Column{DoctorOrderSheetsColumns[0]},
+	// DoctorordersheetsTable holds the schema information for the "doctorordersheets" table.
+	DoctorordersheetsTable = &schema.Table{
+		Name:        "doctorordersheets",
+		Columns:     DoctorordersheetsColumns,
+		PrimaryKey:  []*schema.Column{DoctorordersheetsColumns[0]},
 		ForeignKeys: []*schema.ForeignKey{},
 	}
 	// PatientsColumns holds the columns for the "patients" table.
@@ -403,7 +403,7 @@ var (
 		DentalappointmentsTable,
 		DentalkindsTable,
 		DiseasesTable,
-		DoctorOrderSheetsTable,
+		DoctorordersheetsTable,
 		PatientsTable,
 		PersonnelsTable,
 		PhysicaltherapyrecordsTable,
@@ -426,7 +426,7 @@ func init() {
 	BonediseasesTable.ForeignKeys[1].RefTable = PersonnelsTable
 	BonediseasesTable.ForeignKeys[2].RefTable = RemediesTable
 	ChecksymptomsTable.ForeignKeys[0].RefTable = DiseasesTable
-	ChecksymptomsTable.ForeignKeys[1].RefTable = DoctorOrderSheetsTable
+	ChecksymptomsTable.ForeignKeys[1].RefTable = DoctorordersheetsTable
 	ChecksymptomsTable.ForeignKeys[2].RefTable = PatientsTable
 	ChecksymptomsTable.ForeignKeys[3].RefTable = PersonnelsTable
 	DentalappointmentsTable.ForeignKeys[0].RefTable = DentalkindsTable

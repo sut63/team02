@@ -12,7 +12,7 @@ import (
 	"github.com/facebook/ent/dialect/sql"
 	"github.com/facebook/ent/dialect/sql/sqlgraph"
 	"github.com/facebook/ent/schema/field"
-	"github.com/to63/app/ent/checksymptoms"
+	"github.com/to63/app/ent/checksymptom"
 	"github.com/to63/app/ent/disease"
 	"github.com/to63/app/ent/predicate"
 )
@@ -26,7 +26,7 @@ type DiseaseQuery struct {
 	fields     []string
 	predicates []predicate.Disease
 	// eager-loading edges.
-	withChecksymptoms *ChecksymptomsQuery
+	withChecksymptom *ChecksymptomQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -56,9 +56,9 @@ func (dq *DiseaseQuery) Order(o ...OrderFunc) *DiseaseQuery {
 	return dq
 }
 
-// QueryChecksymptoms chains the current query on the "Checksymptoms" edge.
-func (dq *DiseaseQuery) QueryChecksymptoms() *ChecksymptomsQuery {
-	query := &ChecksymptomsQuery{config: dq.config}
+// QueryChecksymptom chains the current query on the "Checksymptom" edge.
+func (dq *DiseaseQuery) QueryChecksymptom() *ChecksymptomQuery {
+	query := &ChecksymptomQuery{config: dq.config}
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
 		if err := dq.prepareQuery(ctx); err != nil {
 			return nil, err
@@ -69,8 +69,8 @@ func (dq *DiseaseQuery) QueryChecksymptoms() *ChecksymptomsQuery {
 		}
 		step := sqlgraph.NewStep(
 			sqlgraph.From(disease.Table, disease.FieldID, selector),
-			sqlgraph.To(checksymptoms.Table, checksymptoms.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, disease.ChecksymptomsTable, disease.ChecksymptomsColumn),
+			sqlgraph.To(checksymptom.Table, checksymptom.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, disease.ChecksymptomTable, disease.ChecksymptomColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(dq.driver.Dialect(), step)
 		return fromU, nil
@@ -254,26 +254,26 @@ func (dq *DiseaseQuery) Clone() *DiseaseQuery {
 		return nil
 	}
 	return &DiseaseQuery{
-		config:            dq.config,
-		limit:             dq.limit,
-		offset:            dq.offset,
-		order:             append([]OrderFunc{}, dq.order...),
-		predicates:        append([]predicate.Disease{}, dq.predicates...),
-		withChecksymptoms: dq.withChecksymptoms.Clone(),
+		config:           dq.config,
+		limit:            dq.limit,
+		offset:           dq.offset,
+		order:            append([]OrderFunc{}, dq.order...),
+		predicates:       append([]predicate.Disease{}, dq.predicates...),
+		withChecksymptom: dq.withChecksymptom.Clone(),
 		// clone intermediate query.
 		sql:  dq.sql.Clone(),
 		path: dq.path,
 	}
 }
 
-// WithChecksymptoms tells the query-builder to eager-load the nodes that are connected to
-// the "Checksymptoms" edge. The optional arguments are used to configure the query builder of the edge.
-func (dq *DiseaseQuery) WithChecksymptoms(opts ...func(*ChecksymptomsQuery)) *DiseaseQuery {
-	query := &ChecksymptomsQuery{config: dq.config}
+// WithChecksymptom tells the query-builder to eager-load the nodes that are connected to
+// the "Checksymptom" edge. The optional arguments are used to configure the query builder of the edge.
+func (dq *DiseaseQuery) WithChecksymptom(opts ...func(*ChecksymptomQuery)) *DiseaseQuery {
+	query := &ChecksymptomQuery{config: dq.config}
 	for _, opt := range opts {
 		opt(query)
 	}
-	dq.withChecksymptoms = query
+	dq.withChecksymptom = query
 	return dq
 }
 
@@ -283,12 +283,12 @@ func (dq *DiseaseQuery) WithChecksymptoms(opts ...func(*ChecksymptomsQuery)) *Di
 // Example:
 //
 //	var v []struct {
-//		Name string `json:"name,omitempty"`
+//		Disease string `json:"disease,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
 //	client.Disease.Query().
-//		GroupBy(disease.FieldName).
+//		GroupBy(disease.FieldDisease).
 //		Aggregate(ent.Count()).
 //		Scan(ctx, &v)
 //
@@ -310,11 +310,11 @@ func (dq *DiseaseQuery) GroupBy(field string, fields ...string) *DiseaseGroupBy 
 // Example:
 //
 //	var v []struct {
-//		Name string `json:"name,omitempty"`
+//		Disease string `json:"disease,omitempty"`
 //	}
 //
 //	client.Disease.Query().
-//		Select(disease.FieldName).
+//		Select(disease.FieldDisease).
 //		Scan(ctx, &v)
 //
 func (dq *DiseaseQuery) Select(field string, fields ...string) *DiseaseSelect {
@@ -343,7 +343,7 @@ func (dq *DiseaseQuery) sqlAll(ctx context.Context) ([]*Disease, error) {
 		nodes       = []*Disease{}
 		_spec       = dq.querySpec()
 		loadedTypes = [1]bool{
-			dq.withChecksymptoms != nil,
+			dq.withChecksymptom != nil,
 		}
 	)
 	_spec.ScanValues = func(columns []string) ([]interface{}, error) {
@@ -366,32 +366,32 @@ func (dq *DiseaseQuery) sqlAll(ctx context.Context) ([]*Disease, error) {
 		return nodes, nil
 	}
 
-	if query := dq.withChecksymptoms; query != nil {
+	if query := dq.withChecksymptom; query != nil {
 		fks := make([]driver.Value, 0, len(nodes))
 		nodeids := make(map[int]*Disease)
 		for i := range nodes {
 			fks = append(fks, nodes[i].ID)
 			nodeids[nodes[i].ID] = nodes[i]
-			nodes[i].Edges.Checksymptoms = []*Checksymptoms{}
+			nodes[i].Edges.Checksymptom = []*Checksymptom{}
 		}
 		query.withFKs = true
-		query.Where(predicate.Checksymptoms(func(s *sql.Selector) {
-			s.Where(sql.InValues(disease.ChecksymptomsColumn, fks...))
+		query.Where(predicate.Checksymptom(func(s *sql.Selector) {
+			s.Where(sql.InValues(disease.ChecksymptomColumn, fks...))
 		}))
 		neighbors, err := query.All(ctx)
 		if err != nil {
 			return nil, err
 		}
 		for _, n := range neighbors {
-			fk := n._Disease_id
+			fk := n.disease_id
 			if fk == nil {
-				return nil, fmt.Errorf(`foreign-key "_Disease_id" is nil for node %v`, n.ID)
+				return nil, fmt.Errorf(`foreign-key "disease_id" is nil for node %v`, n.ID)
 			}
 			node, ok := nodeids[*fk]
 			if !ok {
-				return nil, fmt.Errorf(`unexpected foreign-key "_Disease_id" returned %v for node %v`, *fk, n.ID)
+				return nil, fmt.Errorf(`unexpected foreign-key "disease_id" returned %v for node %v`, *fk, n.ID)
 			}
-			node.Edges.Checksymptoms = append(node.Edges.Checksymptoms, n)
+			node.Edges.Checksymptom = append(node.Edges.Checksymptom, n)
 		}
 	}
 

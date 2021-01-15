@@ -14,41 +14,41 @@
 
 import { exists, mapValues } from '../runtime';
 import {
-    EntChecksymptoms,
-    EntChecksymptomsFromJSON,
-    EntChecksymptomsFromJSONTyped,
-    EntChecksymptomsToJSON,
+    EntChecksymptom,
+    EntChecksymptomFromJSON,
+    EntChecksymptomFromJSONTyped,
+    EntChecksymptomToJSON,
 } from './';
 
 /**
  * 
  * @export
- * @interface EntDoctorOrderSheetEdges
+ * @interface EntDoctorordersheetEdges
  */
-export interface EntDoctorOrderSheetEdges {
+export interface EntDoctorordersheetEdges {
     /**
-     * Checksymptoms holds the value of the Checksymptoms edge.
-     * @type {Array<EntChecksymptoms>}
-     * @memberof EntDoctorOrderSheetEdges
+     * Checksymptom holds the value of the Checksymptom edge.
+     * @type {Array<EntChecksymptom>}
+     * @memberof EntDoctorordersheetEdges
      */
-    checksymptoms?: Array<EntChecksymptoms>;
+    checksymptom?: Array<EntChecksymptom>;
 }
 
-export function EntDoctorOrderSheetEdgesFromJSON(json: any): EntDoctorOrderSheetEdges {
-    return EntDoctorOrderSheetEdgesFromJSONTyped(json, false);
+export function EntDoctorordersheetEdgesFromJSON(json: any): EntDoctorordersheetEdges {
+    return EntDoctorordersheetEdgesFromJSONTyped(json, false);
 }
 
-export function EntDoctorOrderSheetEdgesFromJSONTyped(json: any, ignoreDiscriminator: boolean): EntDoctorOrderSheetEdges {
+export function EntDoctorordersheetEdgesFromJSONTyped(json: any, ignoreDiscriminator: boolean): EntDoctorordersheetEdges {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'checksymptoms': !exists(json, 'checksymptoms') ? undefined : ((json['checksymptoms'] as Array<any>).map(EntChecksymptomsFromJSON)),
+        'checksymptom': !exists(json, 'checksymptom') ? undefined : ((json['checksymptom'] as Array<any>).map(EntChecksymptomFromJSON)),
     };
 }
 
-export function EntDoctorOrderSheetEdgesToJSON(value?: EntDoctorOrderSheetEdges | null): any {
+export function EntDoctorordersheetEdgesToJSON(value?: EntDoctorordersheetEdges | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -57,7 +57,7 @@ export function EntDoctorOrderSheetEdgesToJSON(value?: EntDoctorOrderSheetEdges 
     }
     return {
         
-        'checksymptoms': value.checksymptoms === undefined ? undefined : ((value.checksymptoms as Array<any>).map(EntChecksymptomsToJSON)),
+        'checksymptom': value.checksymptom === undefined ? undefined : ((value.checksymptom as Array<any>).map(EntChecksymptomToJSON)),
     };
 }
 

@@ -27,6 +27,12 @@ import {
  */
 export interface EntDisease {
     /**
+     * Disease holds the value of the "disease" field.
+     * @type {string}
+     * @memberof EntDisease
+     */
+    disease?: string;
+    /**
      * 
      * @type {EntDiseaseEdges}
      * @memberof EntDisease
@@ -38,12 +44,6 @@ export interface EntDisease {
      * @memberof EntDisease
      */
     id?: number;
-    /**
-     * Name holds the value of the "name" field.
-     * @type {string}
-     * @memberof EntDisease
-     */
-    name?: string;
 }
 
 export function EntDiseaseFromJSON(json: any): EntDisease {
@@ -56,9 +56,9 @@ export function EntDiseaseFromJSONTyped(json: any, ignoreDiscriminator: boolean)
     }
     return {
         
+        'disease': !exists(json, 'disease') ? undefined : json['disease'],
         'edges': !exists(json, 'edges') ? undefined : EntDiseaseEdgesFromJSON(json['edges']),
         'id': !exists(json, 'id') ? undefined : json['id'],
-        'name': !exists(json, 'name') ? undefined : json['name'],
     };
 }
 
@@ -71,9 +71,9 @@ export function EntDiseaseToJSON(value?: EntDisease | null): any {
     }
     return {
         
+        'disease': value.disease,
         'edges': EntDiseaseEdgesToJSON(value.edges),
         'id': value.id,
-        'name': value.name,
     };
 }
 

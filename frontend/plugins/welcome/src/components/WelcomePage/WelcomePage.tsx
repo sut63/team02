@@ -33,7 +33,7 @@ const WelcomePage: FC<{}> = () => {
        </ContentHeader>
        <tr>
          <td>
-       <Link component={RouterLink} to="/01">
+       <Link component={RouterLink} to="/Checksymptom">
          <Button variant="contained" color="primary">
              ตรวจอาการ
            </Button>

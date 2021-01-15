@@ -26,11 +26,11 @@ type config struct {
 type hooks struct {
 	Antenatalinformation  []ent.Hook
 	Bonedisease           []ent.Hook
-	Checksymptoms         []ent.Hook
+	Checksymptom          []ent.Hook
 	Dentalappointment     []ent.Hook
 	Dentalkind            []ent.Hook
 	Disease               []ent.Hook
-	DoctorOrderSheet      []ent.Hook
+	Doctorordersheet      []ent.Hook
 	Patient               []ent.Hook
 	Personnel             []ent.Hook
 	Physicaltherapyrecord []ent.Hook

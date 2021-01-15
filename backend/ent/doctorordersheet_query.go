@@ -12,76 +12,76 @@ import (
 	"github.com/facebook/ent/dialect/sql"
 	"github.com/facebook/ent/dialect/sql/sqlgraph"
 	"github.com/facebook/ent/schema/field"
-	"github.com/to63/app/ent/checksymptoms"
+	"github.com/to63/app/ent/checksymptom"
 	"github.com/to63/app/ent/doctorordersheet"
 	"github.com/to63/app/ent/predicate"
 )
 
-// DoctorOrderSheetQuery is the builder for querying DoctorOrderSheet entities.
-type DoctorOrderSheetQuery struct {
+// DoctorordersheetQuery is the builder for querying Doctorordersheet entities.
+type DoctorordersheetQuery struct {
 	config
 	limit      *int
 	offset     *int
 	order      []OrderFunc
 	fields     []string
-	predicates []predicate.DoctorOrderSheet
+	predicates []predicate.Doctorordersheet
 	// eager-loading edges.
-	withChecksymptoms *ChecksymptomsQuery
+	withChecksymptom *ChecksymptomQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
 }
 
-// Where adds a new predicate for the DoctorOrderSheetQuery builder.
-func (dosq *DoctorOrderSheetQuery) Where(ps ...predicate.DoctorOrderSheet) *DoctorOrderSheetQuery {
-	dosq.predicates = append(dosq.predicates, ps...)
-	return dosq
+// Where adds a new predicate for the DoctorordersheetQuery builder.
+func (dq *DoctorordersheetQuery) Where(ps ...predicate.Doctorordersheet) *DoctorordersheetQuery {
+	dq.predicates = append(dq.predicates, ps...)
+	return dq
 }
 
 // Limit adds a limit step to the query.
-func (dosq *DoctorOrderSheetQuery) Limit(limit int) *DoctorOrderSheetQuery {
-	dosq.limit = &limit
-	return dosq
+func (dq *DoctorordersheetQuery) Limit(limit int) *DoctorordersheetQuery {
+	dq.limit = &limit
+	return dq
 }
 
 // Offset adds an offset step to the query.
-func (dosq *DoctorOrderSheetQuery) Offset(offset int) *DoctorOrderSheetQuery {
-	dosq.offset = &offset
-	return dosq
+func (dq *DoctorordersheetQuery) Offset(offset int) *DoctorordersheetQuery {
+	dq.offset = &offset
+	return dq
 }
 
 // Order adds an order step to the query.
-func (dosq *DoctorOrderSheetQuery) Order(o ...OrderFunc) *DoctorOrderSheetQuery {
-	dosq.order = append(dosq.order, o...)
-	return dosq
+func (dq *DoctorordersheetQuery) Order(o ...OrderFunc) *DoctorordersheetQuery {
+	dq.order = append(dq.order, o...)
+	return dq
 }
 
-// QueryChecksymptoms chains the current query on the "Checksymptoms" edge.
-func (dosq *DoctorOrderSheetQuery) QueryChecksymptoms() *ChecksymptomsQuery {
-	query := &ChecksymptomsQuery{config: dosq.config}
+// QueryChecksymptom chains the current query on the "Checksymptom" edge.
+func (dq *DoctorordersheetQuery) QueryChecksymptom() *ChecksymptomQuery {
+	query := &ChecksymptomQuery{config: dq.config}
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
-		if err := dosq.prepareQuery(ctx); err != nil {
+		if err := dq.prepareQuery(ctx); err != nil {
 			return nil, err
 		}
-		selector := dosq.sqlQuery()
+		selector := dq.sqlQuery()
 		if err := selector.Err(); err != nil {
 			return nil, err
 		}
 		step := sqlgraph.NewStep(
 			sqlgraph.From(doctorordersheet.Table, doctorordersheet.FieldID, selector),
-			sqlgraph.To(checksymptoms.Table, checksymptoms.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, doctorordersheet.ChecksymptomsTable, doctorordersheet.ChecksymptomsColumn),
+			sqlgraph.To(checksymptom.Table, checksymptom.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, doctorordersheet.ChecksymptomTable, doctorordersheet.ChecksymptomColumn),
 		)
-		fromU = sqlgraph.SetNeighbors(dosq.driver.Dialect(), step)
+		fromU = sqlgraph.SetNeighbors(dq.driver.Dialect(), step)
 		return fromU, nil
 	}
 	return query
 }
 
-// First returns the first DoctorOrderSheet entity from the query.
-// Returns a *NotFoundError when no DoctorOrderSheet was found.
-func (dosq *DoctorOrderSheetQuery) First(ctx context.Context) (*DoctorOrderSheet, error) {
-	nodes, err := dosq.Limit(1).All(ctx)
+// First returns the first Doctorordersheet entity from the query.
+// Returns a *NotFoundError when no Doctorordersheet was found.
+func (dq *DoctorordersheetQuery) First(ctx context.Context) (*Doctorordersheet, error) {
+	nodes, err := dq.Limit(1).All(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -92,19 +92,19 @@ func (dosq *DoctorOrderSheetQuery) First(ctx context.Context) (*DoctorOrderSheet
 }
 
 // FirstX is like First, but panics if an error occurs.
-func (dosq *DoctorOrderSheetQuery) FirstX(ctx context.Context) *DoctorOrderSheet {
-	node, err := dosq.First(ctx)
+func (dq *DoctorordersheetQuery) FirstX(ctx context.Context) *Doctorordersheet {
+	node, err := dq.First(ctx)
 	if err != nil && !IsNotFound(err) {
 		panic(err)
 	}
 	return node
 }
 
-// FirstID returns the first DoctorOrderSheet ID from the query.
-// Returns a *NotFoundError when no DoctorOrderSheet ID was found.
-func (dosq *DoctorOrderSheetQuery) FirstID(ctx context.Context) (id int, err error) {
+// FirstID returns the first Doctorordersheet ID from the query.
+// Returns a *NotFoundError when no Doctorordersheet ID was found.
+func (dq *DoctorordersheetQuery) FirstID(ctx context.Context) (id int, err error) {
 	var ids []int
-	if ids, err = dosq.Limit(1).IDs(ctx); err != nil {
+	if ids, err = dq.Limit(1).IDs(ctx); err != nil {
 		return
 	}
 	if len(ids) == 0 {
@@ -115,19 +115,19 @@ func (dosq *DoctorOrderSheetQuery) FirstID(ctx context.Context) (id int, err err
 }
 
 // FirstIDX is like FirstID, but panics if an error occurs.
-func (dosq *DoctorOrderSheetQuery) FirstIDX(ctx context.Context) int {
-	id, err := dosq.FirstID(ctx)
+func (dq *DoctorordersheetQuery) FirstIDX(ctx context.Context) int {
+	id, err := dq.FirstID(ctx)
 	if err != nil && !IsNotFound(err) {
 		panic(err)
 	}
 	return id
 }
 
-// Only returns a single DoctorOrderSheet entity found by the query, ensuring it only returns one.
-// Returns a *NotSingularError when exactly one DoctorOrderSheet entity is not found.
-// Returns a *NotFoundError when no DoctorOrderSheet entities are found.
-func (dosq *DoctorOrderSheetQuery) Only(ctx context.Context) (*DoctorOrderSheet, error) {
-	nodes, err := dosq.Limit(2).All(ctx)
+// Only returns a single Doctorordersheet entity found by the query, ensuring it only returns one.
+// Returns a *NotSingularError when exactly one Doctorordersheet entity is not found.
+// Returns a *NotFoundError when no Doctorordersheet entities are found.
+func (dq *DoctorordersheetQuery) Only(ctx context.Context) (*Doctorordersheet, error) {
+	nodes, err := dq.Limit(2).All(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -142,20 +142,20 @@ func (dosq *DoctorOrderSheetQuery) Only(ctx context.Context) (*DoctorOrderSheet,
 }
 
 // OnlyX is like Only, but panics if an error occurs.
-func (dosq *DoctorOrderSheetQuery) OnlyX(ctx context.Context) *DoctorOrderSheet {
-	node, err := dosq.Only(ctx)
+func (dq *DoctorordersheetQuery) OnlyX(ctx context.Context) *Doctorordersheet {
+	node, err := dq.Only(ctx)
 	if err != nil {
 		panic(err)
 	}
 	return node
 }
 
-// OnlyID is like Only, but returns the only DoctorOrderSheet ID in the query.
-// Returns a *NotSingularError when exactly one DoctorOrderSheet ID is not found.
+// OnlyID is like Only, but returns the only Doctorordersheet ID in the query.
+// Returns a *NotSingularError when exactly one Doctorordersheet ID is not found.
 // Returns a *NotFoundError when no entities are found.
-func (dosq *DoctorOrderSheetQuery) OnlyID(ctx context.Context) (id int, err error) {
+func (dq *DoctorordersheetQuery) OnlyID(ctx context.Context) (id int, err error) {
 	var ids []int
-	if ids, err = dosq.Limit(2).IDs(ctx); err != nil {
+	if ids, err = dq.Limit(2).IDs(ctx); err != nil {
 		return
 	}
 	switch len(ids) {
@@ -170,43 +170,43 @@ func (dosq *DoctorOrderSheetQuery) OnlyID(ctx context.Context) (id int, err erro
 }
 
 // OnlyIDX is like OnlyID, but panics if an error occurs.
-func (dosq *DoctorOrderSheetQuery) OnlyIDX(ctx context.Context) int {
-	id, err := dosq.OnlyID(ctx)
+func (dq *DoctorordersheetQuery) OnlyIDX(ctx context.Context) int {
+	id, err := dq.OnlyID(ctx)
 	if err != nil {
 		panic(err)
 	}
 	return id
 }
 
-// All executes the query and returns a list of DoctorOrderSheets.
-func (dosq *DoctorOrderSheetQuery) All(ctx context.Context) ([]*DoctorOrderSheet, error) {
-	if err := dosq.prepareQuery(ctx); err != nil {
+// All executes the query and returns a list of Doctorordersheets.
+func (dq *DoctorordersheetQuery) All(ctx context.Context) ([]*Doctorordersheet, error) {
+	if err := dq.prepareQuery(ctx); err != nil {
 		return nil, err
 	}
-	return dosq.sqlAll(ctx)
+	return dq.sqlAll(ctx)
 }
 
 // AllX is like All, but panics if an error occurs.
-func (dosq *DoctorOrderSheetQuery) AllX(ctx context.Context) []*DoctorOrderSheet {
-	nodes, err := dosq.All(ctx)
+func (dq *DoctorordersheetQuery) AllX(ctx context.Context) []*Doctorordersheet {
+	nodes, err := dq.All(ctx)
 	if err != nil {
 		panic(err)
 	}
 	return nodes
 }
 
-// IDs executes the query and returns a list of DoctorOrderSheet IDs.
-func (dosq *DoctorOrderSheetQuery) IDs(ctx context.Context) ([]int, error) {
+// IDs executes the query and returns a list of Doctorordersheet IDs.
+func (dq *DoctorordersheetQuery) IDs(ctx context.Context) ([]int, error) {
 	var ids []int
-	if err := dosq.Select(doctorordersheet.FieldID).Scan(ctx, &ids); err != nil {
+	if err := dq.Select(doctorordersheet.FieldID).Scan(ctx, &ids); err != nil {
 		return nil, err
 	}
 	return ids, nil
 }
 
 // IDsX is like IDs, but panics if an error occurs.
-func (dosq *DoctorOrderSheetQuery) IDsX(ctx context.Context) []int {
-	ids, err := dosq.IDs(ctx)
+func (dq *DoctorordersheetQuery) IDsX(ctx context.Context) []int {
+	ids, err := dq.IDs(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -214,16 +214,16 @@ func (dosq *DoctorOrderSheetQuery) IDsX(ctx context.Context) []int {
 }
 
 // Count returns the count of the given query.
-func (dosq *DoctorOrderSheetQuery) Count(ctx context.Context) (int, error) {
-	if err := dosq.prepareQuery(ctx); err != nil {
+func (dq *DoctorordersheetQuery) Count(ctx context.Context) (int, error) {
+	if err := dq.prepareQuery(ctx); err != nil {
 		return 0, err
 	}
-	return dosq.sqlCount(ctx)
+	return dq.sqlCount(ctx)
 }
 
 // CountX is like Count, but panics if an error occurs.
-func (dosq *DoctorOrderSheetQuery) CountX(ctx context.Context) int {
-	count, err := dosq.Count(ctx)
+func (dq *DoctorordersheetQuery) CountX(ctx context.Context) int {
+	count, err := dq.Count(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -231,50 +231,50 @@ func (dosq *DoctorOrderSheetQuery) CountX(ctx context.Context) int {
 }
 
 // Exist returns true if the query has elements in the graph.
-func (dosq *DoctorOrderSheetQuery) Exist(ctx context.Context) (bool, error) {
-	if err := dosq.prepareQuery(ctx); err != nil {
+func (dq *DoctorordersheetQuery) Exist(ctx context.Context) (bool, error) {
+	if err := dq.prepareQuery(ctx); err != nil {
 		return false, err
 	}
-	return dosq.sqlExist(ctx)
+	return dq.sqlExist(ctx)
 }
 
 // ExistX is like Exist, but panics if an error occurs.
-func (dosq *DoctorOrderSheetQuery) ExistX(ctx context.Context) bool {
-	exist, err := dosq.Exist(ctx)
+func (dq *DoctorordersheetQuery) ExistX(ctx context.Context) bool {
+	exist, err := dq.Exist(ctx)
 	if err != nil {
 		panic(err)
 	}
 	return exist
 }
 
-// Clone returns a duplicate of the DoctorOrderSheetQuery builder, including all associated steps. It can be
+// Clone returns a duplicate of the DoctorordersheetQuery builder, including all associated steps. It can be
 // used to prepare common query builders and use them differently after the clone is made.
-func (dosq *DoctorOrderSheetQuery) Clone() *DoctorOrderSheetQuery {
-	if dosq == nil {
+func (dq *DoctorordersheetQuery) Clone() *DoctorordersheetQuery {
+	if dq == nil {
 		return nil
 	}
-	return &DoctorOrderSheetQuery{
-		config:            dosq.config,
-		limit:             dosq.limit,
-		offset:            dosq.offset,
-		order:             append([]OrderFunc{}, dosq.order...),
-		predicates:        append([]predicate.DoctorOrderSheet{}, dosq.predicates...),
-		withChecksymptoms: dosq.withChecksymptoms.Clone(),
+	return &DoctorordersheetQuery{
+		config:           dq.config,
+		limit:            dq.limit,
+		offset:           dq.offset,
+		order:            append([]OrderFunc{}, dq.order...),
+		predicates:       append([]predicate.Doctorordersheet{}, dq.predicates...),
+		withChecksymptom: dq.withChecksymptom.Clone(),
 		// clone intermediate query.
-		sql:  dosq.sql.Clone(),
-		path: dosq.path,
+		sql:  dq.sql.Clone(),
+		path: dq.path,
 	}
 }
 
-// WithChecksymptoms tells the query-builder to eager-load the nodes that are connected to
-// the "Checksymptoms" edge. The optional arguments are used to configure the query builder of the edge.
-func (dosq *DoctorOrderSheetQuery) WithChecksymptoms(opts ...func(*ChecksymptomsQuery)) *DoctorOrderSheetQuery {
-	query := &ChecksymptomsQuery{config: dosq.config}
+// WithChecksymptom tells the query-builder to eager-load the nodes that are connected to
+// the "Checksymptom" edge. The optional arguments are used to configure the query builder of the edge.
+func (dq *DoctorordersheetQuery) WithChecksymptom(opts ...func(*ChecksymptomQuery)) *DoctorordersheetQuery {
+	query := &ChecksymptomQuery{config: dq.config}
 	for _, opt := range opts {
 		opt(query)
 	}
-	dosq.withChecksymptoms = query
-	return dosq
+	dq.withChecksymptom = query
+	return dq
 }
 
 // GroupBy is used to group vertices by one or more fields/columns.
@@ -287,19 +287,19 @@ func (dosq *DoctorOrderSheetQuery) WithChecksymptoms(opts ...func(*Checksymptoms
 //		Count int `json:"count,omitempty"`
 //	}
 //
-//	client.DoctorOrderSheet.Query().
+//	client.Doctorordersheet.Query().
 //		GroupBy(doctorordersheet.FieldName).
 //		Aggregate(ent.Count()).
 //		Scan(ctx, &v)
 //
-func (dosq *DoctorOrderSheetQuery) GroupBy(field string, fields ...string) *DoctorOrderSheetGroupBy {
-	group := &DoctorOrderSheetGroupBy{config: dosq.config}
+func (dq *DoctorordersheetQuery) GroupBy(field string, fields ...string) *DoctorordersheetGroupBy {
+	group := &DoctorordersheetGroupBy{config: dq.config}
 	group.fields = append([]string{field}, fields...)
 	group.path = func(ctx context.Context) (prev *sql.Selector, err error) {
-		if err := dosq.prepareQuery(ctx); err != nil {
+		if err := dq.prepareQuery(ctx); err != nil {
 			return nil, err
 		}
-		return dosq.sqlQuery(), nil
+		return dq.sqlQuery(), nil
 	}
 	return group
 }
@@ -313,41 +313,41 @@ func (dosq *DoctorOrderSheetQuery) GroupBy(field string, fields ...string) *Doct
 //		Name string `json:"Name,omitempty"`
 //	}
 //
-//	client.DoctorOrderSheet.Query().
+//	client.Doctorordersheet.Query().
 //		Select(doctorordersheet.FieldName).
 //		Scan(ctx, &v)
 //
-func (dosq *DoctorOrderSheetQuery) Select(field string, fields ...string) *DoctorOrderSheetSelect {
-	dosq.fields = append([]string{field}, fields...)
-	return &DoctorOrderSheetSelect{DoctorOrderSheetQuery: dosq}
+func (dq *DoctorordersheetQuery) Select(field string, fields ...string) *DoctorordersheetSelect {
+	dq.fields = append([]string{field}, fields...)
+	return &DoctorordersheetSelect{DoctorordersheetQuery: dq}
 }
 
-func (dosq *DoctorOrderSheetQuery) prepareQuery(ctx context.Context) error {
-	for _, f := range dosq.fields {
+func (dq *DoctorordersheetQuery) prepareQuery(ctx context.Context) error {
+	for _, f := range dq.fields {
 		if !doctorordersheet.ValidColumn(f) {
 			return &ValidationError{Name: f, err: fmt.Errorf("ent: invalid field %q for query", f)}
 		}
 	}
-	if dosq.path != nil {
-		prev, err := dosq.path(ctx)
+	if dq.path != nil {
+		prev, err := dq.path(ctx)
 		if err != nil {
 			return err
 		}
-		dosq.sql = prev
+		dq.sql = prev
 	}
 	return nil
 }
 
-func (dosq *DoctorOrderSheetQuery) sqlAll(ctx context.Context) ([]*DoctorOrderSheet, error) {
+func (dq *DoctorordersheetQuery) sqlAll(ctx context.Context) ([]*Doctorordersheet, error) {
 	var (
-		nodes       = []*DoctorOrderSheet{}
-		_spec       = dosq.querySpec()
+		nodes       = []*Doctorordersheet{}
+		_spec       = dq.querySpec()
 		loadedTypes = [1]bool{
-			dosq.withChecksymptoms != nil,
+			dq.withChecksymptom != nil,
 		}
 	)
 	_spec.ScanValues = func(columns []string) ([]interface{}, error) {
-		node := &DoctorOrderSheet{config: dosq.config}
+		node := &Doctorordersheet{config: dq.config}
 		nodes = append(nodes, node)
 		return node.scanValues(columns)
 	}
@@ -359,59 +359,59 @@ func (dosq *DoctorOrderSheetQuery) sqlAll(ctx context.Context) ([]*DoctorOrderSh
 		node.Edges.loadedTypes = loadedTypes
 		return node.assignValues(columns, values)
 	}
-	if err := sqlgraph.QueryNodes(ctx, dosq.driver, _spec); err != nil {
+	if err := sqlgraph.QueryNodes(ctx, dq.driver, _spec); err != nil {
 		return nil, err
 	}
 	if len(nodes) == 0 {
 		return nodes, nil
 	}
 
-	if query := dosq.withChecksymptoms; query != nil {
+	if query := dq.withChecksymptom; query != nil {
 		fks := make([]driver.Value, 0, len(nodes))
-		nodeids := make(map[int]*DoctorOrderSheet)
+		nodeids := make(map[int]*Doctorordersheet)
 		for i := range nodes {
 			fks = append(fks, nodes[i].ID)
 			nodeids[nodes[i].ID] = nodes[i]
-			nodes[i].Edges.Checksymptoms = []*Checksymptoms{}
+			nodes[i].Edges.Checksymptom = []*Checksymptom{}
 		}
 		query.withFKs = true
-		query.Where(predicate.Checksymptoms(func(s *sql.Selector) {
-			s.Where(sql.InValues(doctorordersheet.ChecksymptomsColumn, fks...))
+		query.Where(predicate.Checksymptom(func(s *sql.Selector) {
+			s.Where(sql.InValues(doctorordersheet.ChecksymptomColumn, fks...))
 		}))
 		neighbors, err := query.All(ctx)
 		if err != nil {
 			return nil, err
 		}
 		for _, n := range neighbors {
-			fk := n._DoctorOrderSheet_id
+			fk := n._Doctorordersheet_id
 			if fk == nil {
-				return nil, fmt.Errorf(`foreign-key "_DoctorOrderSheet_id" is nil for node %v`, n.ID)
+				return nil, fmt.Errorf(`foreign-key "_Doctorordersheet_id" is nil for node %v`, n.ID)
 			}
 			node, ok := nodeids[*fk]
 			if !ok {
-				return nil, fmt.Errorf(`unexpected foreign-key "_DoctorOrderSheet_id" returned %v for node %v`, *fk, n.ID)
+				return nil, fmt.Errorf(`unexpected foreign-key "_Doctorordersheet_id" returned %v for node %v`, *fk, n.ID)
 			}
-			node.Edges.Checksymptoms = append(node.Edges.Checksymptoms, n)
+			node.Edges.Checksymptom = append(node.Edges.Checksymptom, n)
 		}
 	}
 
 	return nodes, nil
 }
 
-func (dosq *DoctorOrderSheetQuery) sqlCount(ctx context.Context) (int, error) {
-	_spec := dosq.querySpec()
-	return sqlgraph.CountNodes(ctx, dosq.driver, _spec)
+func (dq *DoctorordersheetQuery) sqlCount(ctx context.Context) (int, error) {
+	_spec := dq.querySpec()
+	return sqlgraph.CountNodes(ctx, dq.driver, _spec)
 }
 
-func (dosq *DoctorOrderSheetQuery) sqlExist(ctx context.Context) (bool, error) {
-	n, err := dosq.sqlCount(ctx)
+func (dq *DoctorordersheetQuery) sqlExist(ctx context.Context) (bool, error) {
+	n, err := dq.sqlCount(ctx)
 	if err != nil {
 		return false, fmt.Errorf("ent: check existence: %v", err)
 	}
 	return n > 0, nil
 }
 
-func (dosq *DoctorOrderSheetQuery) querySpec() *sqlgraph.QuerySpec {
+func (dq *DoctorordersheetQuery) querySpec() *sqlgraph.QuerySpec {
 	_spec := &sqlgraph.QuerySpec{
 		Node: &sqlgraph.NodeSpec{
 			Table:   doctorordersheet.Table,
@@ -421,10 +421,10 @@ func (dosq *DoctorOrderSheetQuery) querySpec() *sqlgraph.QuerySpec {
 				Column: doctorordersheet.FieldID,
 			},
 		},
-		From:   dosq.sql,
+		From:   dq.sql,
 		Unique: true,
 	}
-	if fields := dosq.fields; len(fields) > 0 {
+	if fields := dq.fields; len(fields) > 0 {
 		_spec.Node.Columns = make([]string, 0, len(fields))
 		_spec.Node.Columns = append(_spec.Node.Columns, doctorordersheet.FieldID)
 		for i := range fields {
@@ -433,20 +433,20 @@ func (dosq *DoctorOrderSheetQuery) querySpec() *sqlgraph.QuerySpec {
 			}
 		}
 	}
-	if ps := dosq.predicates; len(ps) > 0 {
+	if ps := dq.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
 			for i := range ps {
 				ps[i](selector)
 			}
 		}
 	}
-	if limit := dosq.limit; limit != nil {
+	if limit := dq.limit; limit != nil {
 		_spec.Limit = *limit
 	}
-	if offset := dosq.offset; offset != nil {
+	if offset := dq.offset; offset != nil {
 		_spec.Offset = *offset
 	}
-	if ps := dosq.order; len(ps) > 0 {
+	if ps := dq.order; len(ps) > 0 {
 		_spec.Order = func(selector *sql.Selector) {
 			for i := range ps {
 				ps[i](selector, doctorordersheet.ValidColumn)
@@ -456,33 +456,33 @@ func (dosq *DoctorOrderSheetQuery) querySpec() *sqlgraph.QuerySpec {
 	return _spec
 }
 
-func (dosq *DoctorOrderSheetQuery) sqlQuery() *sql.Selector {
-	builder := sql.Dialect(dosq.driver.Dialect())
+func (dq *DoctorordersheetQuery) sqlQuery() *sql.Selector {
+	builder := sql.Dialect(dq.driver.Dialect())
 	t1 := builder.Table(doctorordersheet.Table)
 	selector := builder.Select(t1.Columns(doctorordersheet.Columns...)...).From(t1)
-	if dosq.sql != nil {
-		selector = dosq.sql
+	if dq.sql != nil {
+		selector = dq.sql
 		selector.Select(selector.Columns(doctorordersheet.Columns...)...)
 	}
-	for _, p := range dosq.predicates {
+	for _, p := range dq.predicates {
 		p(selector)
 	}
-	for _, p := range dosq.order {
+	for _, p := range dq.order {
 		p(selector, doctorordersheet.ValidColumn)
 	}
-	if offset := dosq.offset; offset != nil {
+	if offset := dq.offset; offset != nil {
 		// limit is mandatory for offset clause. We start
 		// with default value, and override it below if needed.
 		selector.Offset(*offset).Limit(math.MaxInt32)
 	}
-	if limit := dosq.limit; limit != nil {
+	if limit := dq.limit; limit != nil {
 		selector.Limit(*limit)
 	}
 	return selector
 }
 
-// DoctorOrderSheetGroupBy is the group-by builder for DoctorOrderSheet entities.
-type DoctorOrderSheetGroupBy struct {
+// DoctorordersheetGroupBy is the group-by builder for Doctorordersheet entities.
+type DoctorordersheetGroupBy struct {
 	config
 	fields []string
 	fns    []AggregateFunc
@@ -492,44 +492,44 @@ type DoctorOrderSheetGroupBy struct {
 }
 
 // Aggregate adds the given aggregation functions to the group-by query.
-func (dosgb *DoctorOrderSheetGroupBy) Aggregate(fns ...AggregateFunc) *DoctorOrderSheetGroupBy {
-	dosgb.fns = append(dosgb.fns, fns...)
-	return dosgb
+func (dgb *DoctorordersheetGroupBy) Aggregate(fns ...AggregateFunc) *DoctorordersheetGroupBy {
+	dgb.fns = append(dgb.fns, fns...)
+	return dgb
 }
 
 // Scan applies the group-by query and scans the result into the given value.
-func (dosgb *DoctorOrderSheetGroupBy) Scan(ctx context.Context, v interface{}) error {
-	query, err := dosgb.path(ctx)
+func (dgb *DoctorordersheetGroupBy) Scan(ctx context.Context, v interface{}) error {
+	query, err := dgb.path(ctx)
 	if err != nil {
 		return err
 	}
-	dosgb.sql = query
-	return dosgb.sqlScan(ctx, v)
+	dgb.sql = query
+	return dgb.sqlScan(ctx, v)
 }
 
 // ScanX is like Scan, but panics if an error occurs.
-func (dosgb *DoctorOrderSheetGroupBy) ScanX(ctx context.Context, v interface{}) {
-	if err := dosgb.Scan(ctx, v); err != nil {
+func (dgb *DoctorordersheetGroupBy) ScanX(ctx context.Context, v interface{}) {
+	if err := dgb.Scan(ctx, v); err != nil {
 		panic(err)
 	}
 }
 
 // Strings returns list of strings from group-by.
 // It is only allowed when executing a group-by query with one field.
-func (dosgb *DoctorOrderSheetGroupBy) Strings(ctx context.Context) ([]string, error) {
-	if len(dosgb.fields) > 1 {
-		return nil, errors.New("ent: DoctorOrderSheetGroupBy.Strings is not achievable when grouping more than 1 field")
+func (dgb *DoctorordersheetGroupBy) Strings(ctx context.Context) ([]string, error) {
+	if len(dgb.fields) > 1 {
+		return nil, errors.New("ent: DoctorordersheetGroupBy.Strings is not achievable when grouping more than 1 field")
 	}
 	var v []string
-	if err := dosgb.Scan(ctx, &v); err != nil {
+	if err := dgb.Scan(ctx, &v); err != nil {
 		return nil, err
 	}
 	return v, nil
 }
 
 // StringsX is like Strings, but panics if an error occurs.
-func (dosgb *DoctorOrderSheetGroupBy) StringsX(ctx context.Context) []string {
-	v, err := dosgb.Strings(ctx)
+func (dgb *DoctorordersheetGroupBy) StringsX(ctx context.Context) []string {
+	v, err := dgb.Strings(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -538,9 +538,9 @@ func (dosgb *DoctorOrderSheetGroupBy) StringsX(ctx context.Context) []string {
 
 // String returns a single string from a group-by query.
 // It is only allowed when executing a group-by query with one field.
-func (dosgb *DoctorOrderSheetGroupBy) String(ctx context.Context) (_ string, err error) {
+func (dgb *DoctorordersheetGroupBy) String(ctx context.Context) (_ string, err error) {
 	var v []string
-	if v, err = dosgb.Strings(ctx); err != nil {
+	if v, err = dgb.Strings(ctx); err != nil {
 		return
 	}
 	switch len(v) {
@@ -549,14 +549,14 @@ func (dosgb *DoctorOrderSheetGroupBy) String(ctx context.Context) (_ string, err
 	case 0:
 		err = &NotFoundError{doctorordersheet.Label}
 	default:
-		err = fmt.Errorf("ent: DoctorOrderSheetGroupBy.Strings returned %d results when one was expected", len(v))
+		err = fmt.Errorf("ent: DoctorordersheetGroupBy.Strings returned %d results when one was expected", len(v))
 	}
 	return
 }
 
 // StringX is like String, but panics if an error occurs.
-func (dosgb *DoctorOrderSheetGroupBy) StringX(ctx context.Context) string {
-	v, err := dosgb.String(ctx)
+func (dgb *DoctorordersheetGroupBy) StringX(ctx context.Context) string {
+	v, err := dgb.String(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -565,20 +565,20 @@ func (dosgb *DoctorOrderSheetGroupBy) StringX(ctx context.Context) string {
 
 // Ints returns list of ints from group-by.
 // It is only allowed when executing a group-by query with one field.
-func (dosgb *DoctorOrderSheetGroupBy) Ints(ctx context.Context) ([]int, error) {
-	if len(dosgb.fields) > 1 {
-		return nil, errors.New("ent: DoctorOrderSheetGroupBy.Ints is not achievable when grouping more than 1 field")
+func (dgb *DoctorordersheetGroupBy) Ints(ctx context.Context) ([]int, error) {
+	if len(dgb.fields) > 1 {
+		return nil, errors.New("ent: DoctorordersheetGroupBy.Ints is not achievable when grouping more than 1 field")
 	}
 	var v []int
-	if err := dosgb.Scan(ctx, &v); err != nil {
+	if err := dgb.Scan(ctx, &v); err != nil {
 		return nil, err
 	}
 	return v, nil
 }
 
 // IntsX is like Ints, but panics if an error occurs.
-func (dosgb *DoctorOrderSheetGroupBy) IntsX(ctx context.Context) []int {
-	v, err := dosgb.Ints(ctx)
+func (dgb *DoctorordersheetGroupBy) IntsX(ctx context.Context) []int {
+	v, err := dgb.Ints(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -587,9 +587,9 @@ func (dosgb *DoctorOrderSheetGroupBy) IntsX(ctx context.Context) []int {
 
 // Int returns a single int from a group-by query.
 // It is only allowed when executing a group-by query with one field.
-func (dosgb *DoctorOrderSheetGroupBy) Int(ctx context.Context) (_ int, err error) {
+func (dgb *DoctorordersheetGroupBy) Int(ctx context.Context) (_ int, err error) {
 	var v []int
-	if v, err = dosgb.Ints(ctx); err != nil {
+	if v, err = dgb.Ints(ctx); err != nil {
 		return
 	}
 	switch len(v) {
@@ -598,14 +598,14 @@ func (dosgb *DoctorOrderSheetGroupBy) Int(ctx context.Context) (_ int, err error
 	case 0:
 		err = &NotFoundError{doctorordersheet.Label}
 	default:
-		err = fmt.Errorf("ent: DoctorOrderSheetGroupBy.Ints returned %d results when one was expected", len(v))
+		err = fmt.Errorf("ent: DoctorordersheetGroupBy.Ints returned %d results when one was expected", len(v))
 	}
 	return
 }
 
 // IntX is like Int, but panics if an error occurs.
-func (dosgb *DoctorOrderSheetGroupBy) IntX(ctx context.Context) int {
-	v, err := dosgb.Int(ctx)
+func (dgb *DoctorordersheetGroupBy) IntX(ctx context.Context) int {
+	v, err := dgb.Int(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -614,20 +614,20 @@ func (dosgb *DoctorOrderSheetGroupBy) IntX(ctx context.Context) int {
 
 // Float64s returns list of float64s from group-by.
 // It is only allowed when executing a group-by query with one field.
-func (dosgb *DoctorOrderSheetGroupBy) Float64s(ctx context.Context) ([]float64, error) {
-	if len(dosgb.fields) > 1 {
-		return nil, errors.New("ent: DoctorOrderSheetGroupBy.Float64s is not achievable when grouping more than 1 field")
+func (dgb *DoctorordersheetGroupBy) Float64s(ctx context.Context) ([]float64, error) {
+	if len(dgb.fields) > 1 {
+		return nil, errors.New("ent: DoctorordersheetGroupBy.Float64s is not achievable when grouping more than 1 field")
 	}
 	var v []float64
-	if err := dosgb.Scan(ctx, &v); err != nil {
+	if err := dgb.Scan(ctx, &v); err != nil {
 		return nil, err
 	}
 	return v, nil
 }
 
 // Float64sX is like Float64s, but panics if an error occurs.
-func (dosgb *DoctorOrderSheetGroupBy) Float64sX(ctx context.Context) []float64 {
-	v, err := dosgb.Float64s(ctx)
+func (dgb *DoctorordersheetGroupBy) Float64sX(ctx context.Context) []float64 {
+	v, err := dgb.Float64s(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -636,9 +636,9 @@ func (dosgb *DoctorOrderSheetGroupBy) Float64sX(ctx context.Context) []float64 {
 
 // Float64 returns a single float64 from a group-by query.
 // It is only allowed when executing a group-by query with one field.
-func (dosgb *DoctorOrderSheetGroupBy) Float64(ctx context.Context) (_ float64, err error) {
+func (dgb *DoctorordersheetGroupBy) Float64(ctx context.Context) (_ float64, err error) {
 	var v []float64
-	if v, err = dosgb.Float64s(ctx); err != nil {
+	if v, err = dgb.Float64s(ctx); err != nil {
 		return
 	}
 	switch len(v) {
@@ -647,14 +647,14 @@ func (dosgb *DoctorOrderSheetGroupBy) Float64(ctx context.Context) (_ float64, e
 	case 0:
 		err = &NotFoundError{doctorordersheet.Label}
 	default:
-		err = fmt.Errorf("ent: DoctorOrderSheetGroupBy.Float64s returned %d results when one was expected", len(v))
+		err = fmt.Errorf("ent: DoctorordersheetGroupBy.Float64s returned %d results when one was expected", len(v))
 	}
 	return
 }
 
 // Float64X is like Float64, but panics if an error occurs.
-func (dosgb *DoctorOrderSheetGroupBy) Float64X(ctx context.Context) float64 {
-	v, err := dosgb.Float64(ctx)
+func (dgb *DoctorordersheetGroupBy) Float64X(ctx context.Context) float64 {
+	v, err := dgb.Float64(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -663,20 +663,20 @@ func (dosgb *DoctorOrderSheetGroupBy) Float64X(ctx context.Context) float64 {
 
 // Bools returns list of bools from group-by.
 // It is only allowed when executing a group-by query with one field.
-func (dosgb *DoctorOrderSheetGroupBy) Bools(ctx context.Context) ([]bool, error) {
-	if len(dosgb.fields) > 1 {
-		return nil, errors.New("ent: DoctorOrderSheetGroupBy.Bools is not achievable when grouping more than 1 field")
+func (dgb *DoctorordersheetGroupBy) Bools(ctx context.Context) ([]bool, error) {
+	if len(dgb.fields) > 1 {
+		return nil, errors.New("ent: DoctorordersheetGroupBy.Bools is not achievable when grouping more than 1 field")
 	}
 	var v []bool
-	if err := dosgb.Scan(ctx, &v); err != nil {
+	if err := dgb.Scan(ctx, &v); err != nil {
 		return nil, err
 	}
 	return v, nil
 }
 
 // BoolsX is like Bools, but panics if an error occurs.
-func (dosgb *DoctorOrderSheetGroupBy) BoolsX(ctx context.Context) []bool {
-	v, err := dosgb.Bools(ctx)
+func (dgb *DoctorordersheetGroupBy) BoolsX(ctx context.Context) []bool {
+	v, err := dgb.Bools(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -685,9 +685,9 @@ func (dosgb *DoctorOrderSheetGroupBy) BoolsX(ctx context.Context) []bool {
 
 // Bool returns a single bool from a group-by query.
 // It is only allowed when executing a group-by query with one field.
-func (dosgb *DoctorOrderSheetGroupBy) Bool(ctx context.Context) (_ bool, err error) {
+func (dgb *DoctorordersheetGroupBy) Bool(ctx context.Context) (_ bool, err error) {
 	var v []bool
-	if v, err = dosgb.Bools(ctx); err != nil {
+	if v, err = dgb.Bools(ctx); err != nil {
 		return
 	}
 	switch len(v) {
@@ -696,87 +696,87 @@ func (dosgb *DoctorOrderSheetGroupBy) Bool(ctx context.Context) (_ bool, err err
 	case 0:
 		err = &NotFoundError{doctorordersheet.Label}
 	default:
-		err = fmt.Errorf("ent: DoctorOrderSheetGroupBy.Bools returned %d results when one was expected", len(v))
+		err = fmt.Errorf("ent: DoctorordersheetGroupBy.Bools returned %d results when one was expected", len(v))
 	}
 	return
 }
 
 // BoolX is like Bool, but panics if an error occurs.
-func (dosgb *DoctorOrderSheetGroupBy) BoolX(ctx context.Context) bool {
-	v, err := dosgb.Bool(ctx)
+func (dgb *DoctorordersheetGroupBy) BoolX(ctx context.Context) bool {
+	v, err := dgb.Bool(ctx)
 	if err != nil {
 		panic(err)
 	}
 	return v
 }
 
-func (dosgb *DoctorOrderSheetGroupBy) sqlScan(ctx context.Context, v interface{}) error {
-	for _, f := range dosgb.fields {
+func (dgb *DoctorordersheetGroupBy) sqlScan(ctx context.Context, v interface{}) error {
+	for _, f := range dgb.fields {
 		if !doctorordersheet.ValidColumn(f) {
 			return &ValidationError{Name: f, err: fmt.Errorf("invalid field %q for group-by", f)}
 		}
 	}
-	selector := dosgb.sqlQuery()
+	selector := dgb.sqlQuery()
 	if err := selector.Err(); err != nil {
 		return err
 	}
 	rows := &sql.Rows{}
 	query, args := selector.Query()
-	if err := dosgb.driver.Query(ctx, query, args, rows); err != nil {
+	if err := dgb.driver.Query(ctx, query, args, rows); err != nil {
 		return err
 	}
 	defer rows.Close()
 	return sql.ScanSlice(rows, v)
 }
 
-func (dosgb *DoctorOrderSheetGroupBy) sqlQuery() *sql.Selector {
-	selector := dosgb.sql
-	columns := make([]string, 0, len(dosgb.fields)+len(dosgb.fns))
-	columns = append(columns, dosgb.fields...)
-	for _, fn := range dosgb.fns {
+func (dgb *DoctorordersheetGroupBy) sqlQuery() *sql.Selector {
+	selector := dgb.sql
+	columns := make([]string, 0, len(dgb.fields)+len(dgb.fns))
+	columns = append(columns, dgb.fields...)
+	for _, fn := range dgb.fns {
 		columns = append(columns, fn(selector, doctorordersheet.ValidColumn))
 	}
-	return selector.Select(columns...).GroupBy(dosgb.fields...)
+	return selector.Select(columns...).GroupBy(dgb.fields...)
 }
 
-// DoctorOrderSheetSelect is the builder for selecting fields of DoctorOrderSheet entities.
-type DoctorOrderSheetSelect struct {
-	*DoctorOrderSheetQuery
+// DoctorordersheetSelect is the builder for selecting fields of Doctorordersheet entities.
+type DoctorordersheetSelect struct {
+	*DoctorordersheetQuery
 	// intermediate query (i.e. traversal path).
 	sql *sql.Selector
 }
 
 // Scan applies the selector query and scans the result into the given value.
-func (doss *DoctorOrderSheetSelect) Scan(ctx context.Context, v interface{}) error {
-	if err := doss.prepareQuery(ctx); err != nil {
+func (ds *DoctorordersheetSelect) Scan(ctx context.Context, v interface{}) error {
+	if err := ds.prepareQuery(ctx); err != nil {
 		return err
 	}
-	doss.sql = doss.DoctorOrderSheetQuery.sqlQuery()
-	return doss.sqlScan(ctx, v)
+	ds.sql = ds.DoctorordersheetQuery.sqlQuery()
+	return ds.sqlScan(ctx, v)
 }
 
 // ScanX is like Scan, but panics if an error occurs.
-func (doss *DoctorOrderSheetSelect) ScanX(ctx context.Context, v interface{}) {
-	if err := doss.Scan(ctx, v); err != nil {
+func (ds *DoctorordersheetSelect) ScanX(ctx context.Context, v interface{}) {
+	if err := ds.Scan(ctx, v); err != nil {
 		panic(err)
 	}
 }
 
 // Strings returns list of strings from a selector. It is only allowed when selecting one field.
-func (doss *DoctorOrderSheetSelect) Strings(ctx context.Context) ([]string, error) {
-	if len(doss.fields) > 1 {
-		return nil, errors.New("ent: DoctorOrderSheetSelect.Strings is not achievable when selecting more than 1 field")
+func (ds *DoctorordersheetSelect) Strings(ctx context.Context) ([]string, error) {
+	if len(ds.fields) > 1 {
+		return nil, errors.New("ent: DoctorordersheetSelect.Strings is not achievable when selecting more than 1 field")
 	}
 	var v []string
-	if err := doss.Scan(ctx, &v); err != nil {
+	if err := ds.Scan(ctx, &v); err != nil {
 		return nil, err
 	}
 	return v, nil
 }
 
 // StringsX is like Strings, but panics if an error occurs.
-func (doss *DoctorOrderSheetSelect) StringsX(ctx context.Context) []string {
-	v, err := doss.Strings(ctx)
+func (ds *DoctorordersheetSelect) StringsX(ctx context.Context) []string {
+	v, err := ds.Strings(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -784,9 +784,9 @@ func (doss *DoctorOrderSheetSelect) StringsX(ctx context.Context) []string {
 }
 
 // String returns a single string from a selector. It is only allowed when selecting one field.
-func (doss *DoctorOrderSheetSelect) String(ctx context.Context) (_ string, err error) {
+func (ds *DoctorordersheetSelect) String(ctx context.Context) (_ string, err error) {
 	var v []string
-	if v, err = doss.Strings(ctx); err != nil {
+	if v, err = ds.Strings(ctx); err != nil {
 		return
 	}
 	switch len(v) {
@@ -795,14 +795,14 @@ func (doss *DoctorOrderSheetSelect) String(ctx context.Context) (_ string, err e
 	case 0:
 		err = &NotFoundError{doctorordersheet.Label}
 	default:
-		err = fmt.Errorf("ent: DoctorOrderSheetSelect.Strings returned %d results when one was expected", len(v))
+		err = fmt.Errorf("ent: DoctorordersheetSelect.Strings returned %d results when one was expected", len(v))
 	}
 	return
 }
 
 // StringX is like String, but panics if an error occurs.
-func (doss *DoctorOrderSheetSelect) StringX(ctx context.Context) string {
-	v, err := doss.String(ctx)
+func (ds *DoctorordersheetSelect) StringX(ctx context.Context) string {
+	v, err := ds.String(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -810,20 +810,20 @@ func (doss *DoctorOrderSheetSelect) StringX(ctx context.Context) string {
 }
 
 // Ints returns list of ints from a selector. It is only allowed when selecting one field.
-func (doss *DoctorOrderSheetSelect) Ints(ctx context.Context) ([]int, error) {
-	if len(doss.fields) > 1 {
-		return nil, errors.New("ent: DoctorOrderSheetSelect.Ints is not achievable when selecting more than 1 field")
+func (ds *DoctorordersheetSelect) Ints(ctx context.Context) ([]int, error) {
+	if len(ds.fields) > 1 {
+		return nil, errors.New("ent: DoctorordersheetSelect.Ints is not achievable when selecting more than 1 field")
 	}
 	var v []int
-	if err := doss.Scan(ctx, &v); err != nil {
+	if err := ds.Scan(ctx, &v); err != nil {
 		return nil, err
 	}
 	return v, nil
 }
 
 // IntsX is like Ints, but panics if an error occurs.
-func (doss *DoctorOrderSheetSelect) IntsX(ctx context.Context) []int {
-	v, err := doss.Ints(ctx)
+func (ds *DoctorordersheetSelect) IntsX(ctx context.Context) []int {
+	v, err := ds.Ints(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -831,9 +831,9 @@ func (doss *DoctorOrderSheetSelect) IntsX(ctx context.Context) []int {
 }
 
 // Int returns a single int from a selector. It is only allowed when selecting one field.
-func (doss *DoctorOrderSheetSelect) Int(ctx context.Context) (_ int, err error) {
+func (ds *DoctorordersheetSelect) Int(ctx context.Context) (_ int, err error) {
 	var v []int
-	if v, err = doss.Ints(ctx); err != nil {
+	if v, err = ds.Ints(ctx); err != nil {
 		return
 	}
 	switch len(v) {
@@ -842,14 +842,14 @@ func (doss *DoctorOrderSheetSelect) Int(ctx context.Context) (_ int, err error) 
 	case 0:
 		err = &NotFoundError{doctorordersheet.Label}
 	default:
-		err = fmt.Errorf("ent: DoctorOrderSheetSelect.Ints returned %d results when one was expected", len(v))
+		err = fmt.Errorf("ent: DoctorordersheetSelect.Ints returned %d results when one was expected", len(v))
 	}
 	return
 }
 
 // IntX is like Int, but panics if an error occurs.
-func (doss *DoctorOrderSheetSelect) IntX(ctx context.Context) int {
-	v, err := doss.Int(ctx)
+func (ds *DoctorordersheetSelect) IntX(ctx context.Context) int {
+	v, err := ds.Int(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -857,20 +857,20 @@ func (doss *DoctorOrderSheetSelect) IntX(ctx context.Context) int {
 }
 
 // Float64s returns list of float64s from a selector. It is only allowed when selecting one field.
-func (doss *DoctorOrderSheetSelect) Float64s(ctx context.Context) ([]float64, error) {
-	if len(doss.fields) > 1 {
-		return nil, errors.New("ent: DoctorOrderSheetSelect.Float64s is not achievable when selecting more than 1 field")
+func (ds *DoctorordersheetSelect) Float64s(ctx context.Context) ([]float64, error) {
+	if len(ds.fields) > 1 {
+		return nil, errors.New("ent: DoctorordersheetSelect.Float64s is not achievable when selecting more than 1 field")
 	}
 	var v []float64
-	if err := doss.Scan(ctx, &v); err != nil {
+	if err := ds.Scan(ctx, &v); err != nil {
 		return nil, err
 	}
 	return v, nil
 }
 
 // Float64sX is like Float64s, but panics if an error occurs.
-func (doss *DoctorOrderSheetSelect) Float64sX(ctx context.Context) []float64 {
-	v, err := doss.Float64s(ctx)
+func (ds *DoctorordersheetSelect) Float64sX(ctx context.Context) []float64 {
+	v, err := ds.Float64s(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -878,9 +878,9 @@ func (doss *DoctorOrderSheetSelect) Float64sX(ctx context.Context) []float64 {
 }
 
 // Float64 returns a single float64 from a selector. It is only allowed when selecting one field.
-func (doss *DoctorOrderSheetSelect) Float64(ctx context.Context) (_ float64, err error) {
+func (ds *DoctorordersheetSelect) Float64(ctx context.Context) (_ float64, err error) {
 	var v []float64
-	if v, err = doss.Float64s(ctx); err != nil {
+	if v, err = ds.Float64s(ctx); err != nil {
 		return
 	}
 	switch len(v) {
@@ -889,14 +889,14 @@ func (doss *DoctorOrderSheetSelect) Float64(ctx context.Context) (_ float64, err
 	case 0:
 		err = &NotFoundError{doctorordersheet.Label}
 	default:
-		err = fmt.Errorf("ent: DoctorOrderSheetSelect.Float64s returned %d results when one was expected", len(v))
+		err = fmt.Errorf("ent: DoctorordersheetSelect.Float64s returned %d results when one was expected", len(v))
 	}
 	return
 }
 
 // Float64X is like Float64, but panics if an error occurs.
-func (doss *DoctorOrderSheetSelect) Float64X(ctx context.Context) float64 {
-	v, err := doss.Float64(ctx)
+func (ds *DoctorordersheetSelect) Float64X(ctx context.Context) float64 {
+	v, err := ds.Float64(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -904,20 +904,20 @@ func (doss *DoctorOrderSheetSelect) Float64X(ctx context.Context) float64 {
 }
 
 // Bools returns list of bools from a selector. It is only allowed when selecting one field.
-func (doss *DoctorOrderSheetSelect) Bools(ctx context.Context) ([]bool, error) {
-	if len(doss.fields) > 1 {
-		return nil, errors.New("ent: DoctorOrderSheetSelect.Bools is not achievable when selecting more than 1 field")
+func (ds *DoctorordersheetSelect) Bools(ctx context.Context) ([]bool, error) {
+	if len(ds.fields) > 1 {
+		return nil, errors.New("ent: DoctorordersheetSelect.Bools is not achievable when selecting more than 1 field")
 	}
 	var v []bool
-	if err := doss.Scan(ctx, &v); err != nil {
+	if err := ds.Scan(ctx, &v); err != nil {
 		return nil, err
 	}
 	return v, nil
 }
 
 // BoolsX is like Bools, but panics if an error occurs.
-func (doss *DoctorOrderSheetSelect) BoolsX(ctx context.Context) []bool {
-	v, err := doss.Bools(ctx)
+func (ds *DoctorordersheetSelect) BoolsX(ctx context.Context) []bool {
+	v, err := ds.Bools(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -925,9 +925,9 @@ func (doss *DoctorOrderSheetSelect) BoolsX(ctx context.Context) []bool {
 }
 
 // Bool returns a single bool from a selector. It is only allowed when selecting one field.
-func (doss *DoctorOrderSheetSelect) Bool(ctx context.Context) (_ bool, err error) {
+func (ds *DoctorordersheetSelect) Bool(ctx context.Context) (_ bool, err error) {
 	var v []bool
-	if v, err = doss.Bools(ctx); err != nil {
+	if v, err = ds.Bools(ctx); err != nil {
 		return
 	}
 	switch len(v) {
@@ -936,32 +936,32 @@ func (doss *DoctorOrderSheetSelect) Bool(ctx context.Context) (_ bool, err error
 	case 0:
 		err = &NotFoundError{doctorordersheet.Label}
 	default:
-		err = fmt.Errorf("ent: DoctorOrderSheetSelect.Bools returned %d results when one was expected", len(v))
+		err = fmt.Errorf("ent: DoctorordersheetSelect.Bools returned %d results when one was expected", len(v))
 	}
 	return
 }
 
 // BoolX is like Bool, but panics if an error occurs.
-func (doss *DoctorOrderSheetSelect) BoolX(ctx context.Context) bool {
-	v, err := doss.Bool(ctx)
+func (ds *DoctorordersheetSelect) BoolX(ctx context.Context) bool {
+	v, err := ds.Bool(ctx)
 	if err != nil {
 		panic(err)
 	}
 	return v
 }
 
-func (doss *DoctorOrderSheetSelect) sqlScan(ctx context.Context, v interface{}) error {
+func (ds *DoctorordersheetSelect) sqlScan(ctx context.Context, v interface{}) error {
 	rows := &sql.Rows{}
-	query, args := doss.sqlQuery().Query()
-	if err := doss.driver.Query(ctx, query, args, rows); err != nil {
+	query, args := ds.sqlQuery().Query()
+	if err := ds.driver.Query(ctx, query, args, rows); err != nil {
 		return err
 	}
 	defer rows.Close()
 	return sql.ScanSlice(rows, v)
 }
 
-func (doss *DoctorOrderSheetSelect) sqlQuery() sql.Querier {
-	selector := doss.sql
-	selector.Select(selector.Columns(doss.fields...)...)
+func (ds *DoctorordersheetSelect) sqlQuery() sql.Querier {
+	selector := ds.sql
+	selector.Select(selector.Columns(ds.fields...)...)
 	return selector
 }

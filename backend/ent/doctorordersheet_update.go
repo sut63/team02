@@ -9,112 +9,100 @@ import (
 	"github.com/facebook/ent/dialect/sql"
 	"github.com/facebook/ent/dialect/sql/sqlgraph"
 	"github.com/facebook/ent/schema/field"
-	"github.com/to63/app/ent/checksymptoms"
+	"github.com/to63/app/ent/checksymptom"
 	"github.com/to63/app/ent/doctorordersheet"
 	"github.com/to63/app/ent/predicate"
 )
 
-// DoctorOrderSheetUpdate is the builder for updating DoctorOrderSheet entities.
-type DoctorOrderSheetUpdate struct {
+// DoctorordersheetUpdate is the builder for updating Doctorordersheet entities.
+type DoctorordersheetUpdate struct {
 	config
 	hooks    []Hook
-	mutation *DoctorOrderSheetMutation
+	mutation *DoctorordersheetMutation
 }
 
-// Where adds a new predicate for the DoctorOrderSheetUpdate builder.
-func (dosu *DoctorOrderSheetUpdate) Where(ps ...predicate.DoctorOrderSheet) *DoctorOrderSheetUpdate {
-	dosu.mutation.predicates = append(dosu.mutation.predicates, ps...)
-	return dosu
+// Where adds a new predicate for the DoctorordersheetUpdate builder.
+func (du *DoctorordersheetUpdate) Where(ps ...predicate.Doctorordersheet) *DoctorordersheetUpdate {
+	du.mutation.predicates = append(du.mutation.predicates, ps...)
+	return du
 }
 
 // SetName sets the "Name" field.
-func (dosu *DoctorOrderSheetUpdate) SetName(s string) *DoctorOrderSheetUpdate {
-	dosu.mutation.SetName(s)
-	return dosu
+func (du *DoctorordersheetUpdate) SetName(s string) *DoctorordersheetUpdate {
+	du.mutation.SetName(s)
+	return du
 }
 
-// SetTime sets the "time" field.
-func (dosu *DoctorOrderSheetUpdate) SetTime(s string) *DoctorOrderSheetUpdate {
-	dosu.mutation.SetTime(s)
-	return dosu
+// AddChecksymptomIDs adds the "Checksymptom" edge to the Checksymptom entity by IDs.
+func (du *DoctorordersheetUpdate) AddChecksymptomIDs(ids ...int) *DoctorordersheetUpdate {
+	du.mutation.AddChecksymptomIDs(ids...)
+	return du
 }
 
-// SetNote sets the "note" field.
-func (dosu *DoctorOrderSheetUpdate) SetNote(s string) *DoctorOrderSheetUpdate {
-	dosu.mutation.SetNote(s)
-	return dosu
-}
-
-// AddChecksymptomIDs adds the "Checksymptoms" edge to the Checksymptoms entity by IDs.
-func (dosu *DoctorOrderSheetUpdate) AddChecksymptomIDs(ids ...int) *DoctorOrderSheetUpdate {
-	dosu.mutation.AddChecksymptomIDs(ids...)
-	return dosu
-}
-
-// AddChecksymptoms adds the "Checksymptoms" edges to the Checksymptoms entity.
-func (dosu *DoctorOrderSheetUpdate) AddChecksymptoms(c ...*Checksymptoms) *DoctorOrderSheetUpdate {
+// AddChecksymptom adds the "Checksymptom" edges to the Checksymptom entity.
+func (du *DoctorordersheetUpdate) AddChecksymptom(c ...*Checksymptom) *DoctorordersheetUpdate {
 	ids := make([]int, len(c))
 	for i := range c {
 		ids[i] = c[i].ID
 	}
-	return dosu.AddChecksymptomIDs(ids...)
+	return du.AddChecksymptomIDs(ids...)
 }
 
-// Mutation returns the DoctorOrderSheetMutation object of the builder.
-func (dosu *DoctorOrderSheetUpdate) Mutation() *DoctorOrderSheetMutation {
-	return dosu.mutation
+// Mutation returns the DoctorordersheetMutation object of the builder.
+func (du *DoctorordersheetUpdate) Mutation() *DoctorordersheetMutation {
+	return du.mutation
 }
 
-// ClearChecksymptoms clears all "Checksymptoms" edges to the Checksymptoms entity.
-func (dosu *DoctorOrderSheetUpdate) ClearChecksymptoms() *DoctorOrderSheetUpdate {
-	dosu.mutation.ClearChecksymptoms()
-	return dosu
+// ClearChecksymptom clears all "Checksymptom" edges to the Checksymptom entity.
+func (du *DoctorordersheetUpdate) ClearChecksymptom() *DoctorordersheetUpdate {
+	du.mutation.ClearChecksymptom()
+	return du
 }
 
-// RemoveChecksymptomIDs removes the "Checksymptoms" edge to Checksymptoms entities by IDs.
-func (dosu *DoctorOrderSheetUpdate) RemoveChecksymptomIDs(ids ...int) *DoctorOrderSheetUpdate {
-	dosu.mutation.RemoveChecksymptomIDs(ids...)
-	return dosu
+// RemoveChecksymptomIDs removes the "Checksymptom" edge to Checksymptom entities by IDs.
+func (du *DoctorordersheetUpdate) RemoveChecksymptomIDs(ids ...int) *DoctorordersheetUpdate {
+	du.mutation.RemoveChecksymptomIDs(ids...)
+	return du
 }
 
-// RemoveChecksymptoms removes "Checksymptoms" edges to Checksymptoms entities.
-func (dosu *DoctorOrderSheetUpdate) RemoveChecksymptoms(c ...*Checksymptoms) *DoctorOrderSheetUpdate {
+// RemoveChecksymptom removes "Checksymptom" edges to Checksymptom entities.
+func (du *DoctorordersheetUpdate) RemoveChecksymptom(c ...*Checksymptom) *DoctorordersheetUpdate {
 	ids := make([]int, len(c))
 	for i := range c {
 		ids[i] = c[i].ID
 	}
-	return dosu.RemoveChecksymptomIDs(ids...)
+	return du.RemoveChecksymptomIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
-func (dosu *DoctorOrderSheetUpdate) Save(ctx context.Context) (int, error) {
+func (du *DoctorordersheetUpdate) Save(ctx context.Context) (int, error) {
 	var (
 		err      error
 		affected int
 	)
-	if len(dosu.hooks) == 0 {
-		if err = dosu.check(); err != nil {
+	if len(du.hooks) == 0 {
+		if err = du.check(); err != nil {
 			return 0, err
 		}
-		affected, err = dosu.sqlSave(ctx)
+		affected, err = du.sqlSave(ctx)
 	} else {
 		var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
-			mutation, ok := m.(*DoctorOrderSheetMutation)
+			mutation, ok := m.(*DoctorordersheetMutation)
 			if !ok {
 				return nil, fmt.Errorf("unexpected mutation type %T", m)
 			}
-			if err = dosu.check(); err != nil {
+			if err = du.check(); err != nil {
 				return 0, err
 			}
-			dosu.mutation = mutation
-			affected, err = dosu.sqlSave(ctx)
+			du.mutation = mutation
+			affected, err = du.sqlSave(ctx)
 			mutation.done = true
 			return affected, err
 		})
-		for i := len(dosu.hooks) - 1; i >= 0; i-- {
-			mut = dosu.hooks[i](mut)
+		for i := len(du.hooks) - 1; i >= 0; i-- {
+			mut = du.hooks[i](mut)
 		}
-		if _, err := mut.Mutate(ctx, dosu.mutation); err != nil {
+		if _, err := mut.Mutate(ctx, du.mutation); err != nil {
 			return 0, err
 		}
 	}
@@ -122,8 +110,8 @@ func (dosu *DoctorOrderSheetUpdate) Save(ctx context.Context) (int, error) {
 }
 
 // SaveX is like Save, but panics if an error occurs.
-func (dosu *DoctorOrderSheetUpdate) SaveX(ctx context.Context) int {
-	affected, err := dosu.Save(ctx)
+func (du *DoctorordersheetUpdate) SaveX(ctx context.Context) int {
+	affected, err := du.Save(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -131,39 +119,29 @@ func (dosu *DoctorOrderSheetUpdate) SaveX(ctx context.Context) int {
 }
 
 // Exec executes the query.
-func (dosu *DoctorOrderSheetUpdate) Exec(ctx context.Context) error {
-	_, err := dosu.Save(ctx)
+func (du *DoctorordersheetUpdate) Exec(ctx context.Context) error {
+	_, err := du.Save(ctx)
 	return err
 }
 
 // ExecX is like Exec, but panics if an error occurs.
-func (dosu *DoctorOrderSheetUpdate) ExecX(ctx context.Context) {
-	if err := dosu.Exec(ctx); err != nil {
+func (du *DoctorordersheetUpdate) ExecX(ctx context.Context) {
+	if err := du.Exec(ctx); err != nil {
 		panic(err)
 	}
 }
 
 // check runs all checks and user-defined validators on the builder.
-func (dosu *DoctorOrderSheetUpdate) check() error {
-	if v, ok := dosu.mutation.Name(); ok {
+func (du *DoctorordersheetUpdate) check() error {
+	if v, ok := du.mutation.Name(); ok {
 		if err := doctorordersheet.NameValidator(v); err != nil {
 			return &ValidationError{Name: "Name", err: fmt.Errorf("ent: validator failed for field \"Name\": %w", err)}
-		}
-	}
-	if v, ok := dosu.mutation.Time(); ok {
-		if err := doctorordersheet.TimeValidator(v); err != nil {
-			return &ValidationError{Name: "time", err: fmt.Errorf("ent: validator failed for field \"time\": %w", err)}
-		}
-	}
-	if v, ok := dosu.mutation.Note(); ok {
-		if err := doctorordersheet.NoteValidator(v); err != nil {
-			return &ValidationError{Name: "note", err: fmt.Errorf("ent: validator failed for field \"note\": %w", err)}
 		}
 	}
 	return nil
 }
 
-func (dosu *DoctorOrderSheetUpdate) sqlSave(ctx context.Context) (n int, err error) {
+func (du *DoctorordersheetUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	_spec := &sqlgraph.UpdateSpec{
 		Node: &sqlgraph.NodeSpec{
 			Table:   doctorordersheet.Table,
@@ -174,61 +152,47 @@ func (dosu *DoctorOrderSheetUpdate) sqlSave(ctx context.Context) (n int, err err
 			},
 		},
 	}
-	if ps := dosu.mutation.predicates; len(ps) > 0 {
+	if ps := du.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
 			for i := range ps {
 				ps[i](selector)
 			}
 		}
 	}
-	if value, ok := dosu.mutation.Name(); ok {
+	if value, ok := du.mutation.Name(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
 			Column: doctorordersheet.FieldName,
 		})
 	}
-	if value, ok := dosu.mutation.Time(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
-			Value:  value,
-			Column: doctorordersheet.FieldTime,
-		})
-	}
-	if value, ok := dosu.mutation.Note(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
-			Value:  value,
-			Column: doctorordersheet.FieldNote,
-		})
-	}
-	if dosu.mutation.ChecksymptomsCleared() {
+	if du.mutation.ChecksymptomCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   doctorordersheet.ChecksymptomsTable,
-			Columns: []string{doctorordersheet.ChecksymptomsColumn},
+			Table:   doctorordersheet.ChecksymptomTable,
+			Columns: []string{doctorordersheet.ChecksymptomColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
-					Column: checksymptoms.FieldID,
+					Column: checksymptom.FieldID,
 				},
 			},
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := dosu.mutation.RemovedChecksymptomsIDs(); len(nodes) > 0 && !dosu.mutation.ChecksymptomsCleared() {
+	if nodes := du.mutation.RemovedChecksymptomIDs(); len(nodes) > 0 && !du.mutation.ChecksymptomCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   doctorordersheet.ChecksymptomsTable,
-			Columns: []string{doctorordersheet.ChecksymptomsColumn},
+			Table:   doctorordersheet.ChecksymptomTable,
+			Columns: []string{doctorordersheet.ChecksymptomColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
-					Column: checksymptoms.FieldID,
+					Column: checksymptom.FieldID,
 				},
 			},
 		}
@@ -237,17 +201,17 @@ func (dosu *DoctorOrderSheetUpdate) sqlSave(ctx context.Context) (n int, err err
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := dosu.mutation.ChecksymptomsIDs(); len(nodes) > 0 {
+	if nodes := du.mutation.ChecksymptomIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   doctorordersheet.ChecksymptomsTable,
-			Columns: []string{doctorordersheet.ChecksymptomsColumn},
+			Table:   doctorordersheet.ChecksymptomTable,
+			Columns: []string{doctorordersheet.ChecksymptomColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
-					Column: checksymptoms.FieldID,
+					Column: checksymptom.FieldID,
 				},
 			},
 		}
@@ -256,7 +220,7 @@ func (dosu *DoctorOrderSheetUpdate) sqlSave(ctx context.Context) (n int, err err
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if n, err = sqlgraph.UpdateNodes(ctx, dosu.driver, _spec); err != nil {
+	if n, err = sqlgraph.UpdateNodes(ctx, du.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{doctorordersheet.Label}
 		} else if cerr, ok := isSQLConstraintError(err); ok {
@@ -267,101 +231,89 @@ func (dosu *DoctorOrderSheetUpdate) sqlSave(ctx context.Context) (n int, err err
 	return n, nil
 }
 
-// DoctorOrderSheetUpdateOne is the builder for updating a single DoctorOrderSheet entity.
-type DoctorOrderSheetUpdateOne struct {
+// DoctorordersheetUpdateOne is the builder for updating a single Doctorordersheet entity.
+type DoctorordersheetUpdateOne struct {
 	config
 	hooks    []Hook
-	mutation *DoctorOrderSheetMutation
+	mutation *DoctorordersheetMutation
 }
 
 // SetName sets the "Name" field.
-func (dosuo *DoctorOrderSheetUpdateOne) SetName(s string) *DoctorOrderSheetUpdateOne {
-	dosuo.mutation.SetName(s)
-	return dosuo
+func (duo *DoctorordersheetUpdateOne) SetName(s string) *DoctorordersheetUpdateOne {
+	duo.mutation.SetName(s)
+	return duo
 }
 
-// SetTime sets the "time" field.
-func (dosuo *DoctorOrderSheetUpdateOne) SetTime(s string) *DoctorOrderSheetUpdateOne {
-	dosuo.mutation.SetTime(s)
-	return dosuo
+// AddChecksymptomIDs adds the "Checksymptom" edge to the Checksymptom entity by IDs.
+func (duo *DoctorordersheetUpdateOne) AddChecksymptomIDs(ids ...int) *DoctorordersheetUpdateOne {
+	duo.mutation.AddChecksymptomIDs(ids...)
+	return duo
 }
 
-// SetNote sets the "note" field.
-func (dosuo *DoctorOrderSheetUpdateOne) SetNote(s string) *DoctorOrderSheetUpdateOne {
-	dosuo.mutation.SetNote(s)
-	return dosuo
-}
-
-// AddChecksymptomIDs adds the "Checksymptoms" edge to the Checksymptoms entity by IDs.
-func (dosuo *DoctorOrderSheetUpdateOne) AddChecksymptomIDs(ids ...int) *DoctorOrderSheetUpdateOne {
-	dosuo.mutation.AddChecksymptomIDs(ids...)
-	return dosuo
-}
-
-// AddChecksymptoms adds the "Checksymptoms" edges to the Checksymptoms entity.
-func (dosuo *DoctorOrderSheetUpdateOne) AddChecksymptoms(c ...*Checksymptoms) *DoctorOrderSheetUpdateOne {
+// AddChecksymptom adds the "Checksymptom" edges to the Checksymptom entity.
+func (duo *DoctorordersheetUpdateOne) AddChecksymptom(c ...*Checksymptom) *DoctorordersheetUpdateOne {
 	ids := make([]int, len(c))
 	for i := range c {
 		ids[i] = c[i].ID
 	}
-	return dosuo.AddChecksymptomIDs(ids...)
+	return duo.AddChecksymptomIDs(ids...)
 }
 
-// Mutation returns the DoctorOrderSheetMutation object of the builder.
-func (dosuo *DoctorOrderSheetUpdateOne) Mutation() *DoctorOrderSheetMutation {
-	return dosuo.mutation
+// Mutation returns the DoctorordersheetMutation object of the builder.
+func (duo *DoctorordersheetUpdateOne) Mutation() *DoctorordersheetMutation {
+	return duo.mutation
 }
 
-// ClearChecksymptoms clears all "Checksymptoms" edges to the Checksymptoms entity.
-func (dosuo *DoctorOrderSheetUpdateOne) ClearChecksymptoms() *DoctorOrderSheetUpdateOne {
-	dosuo.mutation.ClearChecksymptoms()
-	return dosuo
+// ClearChecksymptom clears all "Checksymptom" edges to the Checksymptom entity.
+func (duo *DoctorordersheetUpdateOne) ClearChecksymptom() *DoctorordersheetUpdateOne {
+	duo.mutation.ClearChecksymptom()
+	return duo
 }
 
-// RemoveChecksymptomIDs removes the "Checksymptoms" edge to Checksymptoms entities by IDs.
-func (dosuo *DoctorOrderSheetUpdateOne) RemoveChecksymptomIDs(ids ...int) *DoctorOrderSheetUpdateOne {
-	dosuo.mutation.RemoveChecksymptomIDs(ids...)
-	return dosuo
+// RemoveChecksymptomIDs removes the "Checksymptom" edge to Checksymptom entities by IDs.
+func (duo *DoctorordersheetUpdateOne) RemoveChecksymptomIDs(ids ...int) *DoctorordersheetUpdateOne {
+	duo.mutation.RemoveChecksymptomIDs(ids...)
+	return duo
 }
 
-// RemoveChecksymptoms removes "Checksymptoms" edges to Checksymptoms entities.
-func (dosuo *DoctorOrderSheetUpdateOne) RemoveChecksymptoms(c ...*Checksymptoms) *DoctorOrderSheetUpdateOne {
+// RemoveChecksymptom removes "Checksymptom" edges to Checksymptom entities.
+func (duo *DoctorordersheetUpdateOne) RemoveChecksymptom(c ...*Checksymptom) *DoctorordersheetUpdateOne {
 	ids := make([]int, len(c))
 	for i := range c {
 		ids[i] = c[i].ID
 	}
-	return dosuo.RemoveChecksymptomIDs(ids...)
+	return duo.RemoveChecksymptomIDs(ids...)
 }
 
-// Save executes the query and returns the updated DoctorOrderSheet entity.
-func (dosuo *DoctorOrderSheetUpdateOne) Save(ctx context.Context) (*DoctorOrderSheet, error) {
+// Save executes the query and returns the updated Doctorordersheet entity.
+func (duo *DoctorordersheetUpdateOne) Save(ctx context.Context) (*Doctorordersheet, error) {
 	var (
 		err  error
-		node *DoctorOrderSheet
+		node *Doctorordersheet
 	)
-	if len(dosuo.hooks) == 0 {
-		if err = dosuo.check(); err != nil {
+	if len(duo.hooks) == 0 {
+		if err = duo.check(); err != nil {
 			return nil, err
 		}
-		node, err = dosuo.sqlSave(ctx)
+		node, err = duo.sqlSave(ctx)
 	} else {
 		var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
-			mutation, ok := m.(*DoctorOrderSheetMutation)
+			mutation, ok := m.(*DoctorordersheetMutation)
 			if !ok {
 				return nil, fmt.Errorf("unexpected mutation type %T", m)
 			}
-			if err = dosuo.check(); err != nil {
+			if err = duo.check(); err != nil {
 				return nil, err
 			}
-			dosuo.mutation = mutation
-			node, err = dosuo.sqlSave(ctx)
+			duo.mutation = mutation
+			node, err = duo.sqlSave(ctx)
 			mutation.done = true
 			return node, err
 		})
-		for i := len(dosuo.hooks) - 1; i >= 0; i-- {
-			mut = dosuo.hooks[i](mut)
+		for i := len(duo.hooks) - 1; i >= 0; i-- {
+			mut = duo.hooks[i](mut)
 		}
-		if _, err := mut.Mutate(ctx, dosuo.mutation); err != nil {
+		if _, err := mut.Mutate(ctx, duo.mutation); err != nil {
 			return nil, err
 		}
 	}
@@ -369,8 +321,8 @@ func (dosuo *DoctorOrderSheetUpdateOne) Save(ctx context.Context) (*DoctorOrderS
 }
 
 // SaveX is like Save, but panics if an error occurs.
-func (dosuo *DoctorOrderSheetUpdateOne) SaveX(ctx context.Context) *DoctorOrderSheet {
-	node, err := dosuo.Save(ctx)
+func (duo *DoctorordersheetUpdateOne) SaveX(ctx context.Context) *Doctorordersheet {
+	node, err := duo.Save(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -378,39 +330,29 @@ func (dosuo *DoctorOrderSheetUpdateOne) SaveX(ctx context.Context) *DoctorOrderS
 }
 
 // Exec executes the query on the entity.
-func (dosuo *DoctorOrderSheetUpdateOne) Exec(ctx context.Context) error {
-	_, err := dosuo.Save(ctx)
+func (duo *DoctorordersheetUpdateOne) Exec(ctx context.Context) error {
+	_, err := duo.Save(ctx)
 	return err
 }
 
 // ExecX is like Exec, but panics if an error occurs.
-func (dosuo *DoctorOrderSheetUpdateOne) ExecX(ctx context.Context) {
-	if err := dosuo.Exec(ctx); err != nil {
+func (duo *DoctorordersheetUpdateOne) ExecX(ctx context.Context) {
+	if err := duo.Exec(ctx); err != nil {
 		panic(err)
 	}
 }
 
 // check runs all checks and user-defined validators on the builder.
-func (dosuo *DoctorOrderSheetUpdateOne) check() error {
-	if v, ok := dosuo.mutation.Name(); ok {
+func (duo *DoctorordersheetUpdateOne) check() error {
+	if v, ok := duo.mutation.Name(); ok {
 		if err := doctorordersheet.NameValidator(v); err != nil {
 			return &ValidationError{Name: "Name", err: fmt.Errorf("ent: validator failed for field \"Name\": %w", err)}
-		}
-	}
-	if v, ok := dosuo.mutation.Time(); ok {
-		if err := doctorordersheet.TimeValidator(v); err != nil {
-			return &ValidationError{Name: "time", err: fmt.Errorf("ent: validator failed for field \"time\": %w", err)}
-		}
-	}
-	if v, ok := dosuo.mutation.Note(); ok {
-		if err := doctorordersheet.NoteValidator(v); err != nil {
-			return &ValidationError{Name: "note", err: fmt.Errorf("ent: validator failed for field \"note\": %w", err)}
 		}
 	}
 	return nil
 }
 
-func (dosuo *DoctorOrderSheetUpdateOne) sqlSave(ctx context.Context) (_node *DoctorOrderSheet, err error) {
+func (duo *DoctorordersheetUpdateOne) sqlSave(ctx context.Context) (_node *Doctorordersheet, err error) {
 	_spec := &sqlgraph.UpdateSpec{
 		Node: &sqlgraph.NodeSpec{
 			Table:   doctorordersheet.Table,
@@ -421,59 +363,45 @@ func (dosuo *DoctorOrderSheetUpdateOne) sqlSave(ctx context.Context) (_node *Doc
 			},
 		},
 	}
-	id, ok := dosuo.mutation.ID()
+	id, ok := duo.mutation.ID()
 	if !ok {
-		return nil, &ValidationError{Name: "ID", err: fmt.Errorf("missing DoctorOrderSheet.ID for update")}
+		return nil, &ValidationError{Name: "ID", err: fmt.Errorf("missing Doctorordersheet.ID for update")}
 	}
 	_spec.Node.ID.Value = id
-	if value, ok := dosuo.mutation.Name(); ok {
+	if value, ok := duo.mutation.Name(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
 			Column: doctorordersheet.FieldName,
 		})
 	}
-	if value, ok := dosuo.mutation.Time(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
-			Value:  value,
-			Column: doctorordersheet.FieldTime,
-		})
-	}
-	if value, ok := dosuo.mutation.Note(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
-			Value:  value,
-			Column: doctorordersheet.FieldNote,
-		})
-	}
-	if dosuo.mutation.ChecksymptomsCleared() {
+	if duo.mutation.ChecksymptomCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   doctorordersheet.ChecksymptomsTable,
-			Columns: []string{doctorordersheet.ChecksymptomsColumn},
+			Table:   doctorordersheet.ChecksymptomTable,
+			Columns: []string{doctorordersheet.ChecksymptomColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
-					Column: checksymptoms.FieldID,
+					Column: checksymptom.FieldID,
 				},
 			},
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := dosuo.mutation.RemovedChecksymptomsIDs(); len(nodes) > 0 && !dosuo.mutation.ChecksymptomsCleared() {
+	if nodes := duo.mutation.RemovedChecksymptomIDs(); len(nodes) > 0 && !duo.mutation.ChecksymptomCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   doctorordersheet.ChecksymptomsTable,
-			Columns: []string{doctorordersheet.ChecksymptomsColumn},
+			Table:   doctorordersheet.ChecksymptomTable,
+			Columns: []string{doctorordersheet.ChecksymptomColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
-					Column: checksymptoms.FieldID,
+					Column: checksymptom.FieldID,
 				},
 			},
 		}
@@ -482,17 +410,17 @@ func (dosuo *DoctorOrderSheetUpdateOne) sqlSave(ctx context.Context) (_node *Doc
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := dosuo.mutation.ChecksymptomsIDs(); len(nodes) > 0 {
+	if nodes := duo.mutation.ChecksymptomIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   doctorordersheet.ChecksymptomsTable,
-			Columns: []string{doctorordersheet.ChecksymptomsColumn},
+			Table:   doctorordersheet.ChecksymptomTable,
+			Columns: []string{doctorordersheet.ChecksymptomColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
-					Column: checksymptoms.FieldID,
+					Column: checksymptom.FieldID,
 				},
 			},
 		}
@@ -501,10 +429,10 @@ func (dosuo *DoctorOrderSheetUpdateOne) sqlSave(ctx context.Context) (_node *Doc
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	_node = &DoctorOrderSheet{config: dosuo.config}
+	_node = &Doctorordersheet{config: duo.config}
 	_spec.Assign = _node.assignValues
 	_spec.ScanValues = _node.scanValues
-	if err = sqlgraph.UpdateNode(ctx, dosuo.driver, _spec); err != nil {
+	if err = sqlgraph.UpdateNode(ctx, duo.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{doctorordersheet.Label}
 		} else if cerr, ok := isSQLConstraintError(err); ok {

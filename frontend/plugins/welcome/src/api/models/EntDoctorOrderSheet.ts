@@ -14,69 +14,55 @@
 
 import { exists, mapValues } from '../runtime';
 import {
-    EntDoctorOrderSheetEdges,
-    EntDoctorOrderSheetEdgesFromJSON,
-    EntDoctorOrderSheetEdgesFromJSONTyped,
-    EntDoctorOrderSheetEdgesToJSON,
+    EntDoctorordersheetEdges,
+    EntDoctorordersheetEdgesFromJSON,
+    EntDoctorordersheetEdgesFromJSONTyped,
+    EntDoctorordersheetEdgesToJSON,
 } from './';
 
 /**
  * 
  * @export
- * @interface EntDoctorOrderSheet
+ * @interface EntDoctorordersheet
  */
-export interface EntDoctorOrderSheet {
+export interface EntDoctorordersheet {
     /**
      * Name holds the value of the "Name" field.
      * @type {string}
-     * @memberof EntDoctorOrderSheet
+     * @memberof EntDoctorordersheet
      */
     name?: string;
     /**
      * 
-     * @type {EntDoctorOrderSheetEdges}
-     * @memberof EntDoctorOrderSheet
+     * @type {EntDoctorordersheetEdges}
+     * @memberof EntDoctorordersheet
      */
-    edges?: EntDoctorOrderSheetEdges;
+    edges?: EntDoctorordersheetEdges;
     /**
      * ID of the ent.
      * @type {number}
-     * @memberof EntDoctorOrderSheet
+     * @memberof EntDoctorordersheet
      */
     id?: number;
-    /**
-     * Note holds the value of the "note" field.
-     * @type {string}
-     * @memberof EntDoctorOrderSheet
-     */
-    note?: string;
-    /**
-     * Time holds the value of the "time" field.
-     * @type {string}
-     * @memberof EntDoctorOrderSheet
-     */
-    time?: string;
 }
 
-export function EntDoctorOrderSheetFromJSON(json: any): EntDoctorOrderSheet {
-    return EntDoctorOrderSheetFromJSONTyped(json, false);
+export function EntDoctorordersheetFromJSON(json: any): EntDoctorordersheet {
+    return EntDoctorordersheetFromJSONTyped(json, false);
 }
 
-export function EntDoctorOrderSheetFromJSONTyped(json: any, ignoreDiscriminator: boolean): EntDoctorOrderSheet {
+export function EntDoctorordersheetFromJSONTyped(json: any, ignoreDiscriminator: boolean): EntDoctorordersheet {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
         'name': !exists(json, 'Name') ? undefined : json['Name'],
-        'edges': !exists(json, 'edges') ? undefined : EntDoctorOrderSheetEdgesFromJSON(json['edges']),
+        'edges': !exists(json, 'edges') ? undefined : EntDoctorordersheetEdgesFromJSON(json['edges']),
         'id': !exists(json, 'id') ? undefined : json['id'],
-        'note': !exists(json, 'note') ? undefined : json['note'],
-        'time': !exists(json, 'time') ? undefined : json['time'],
     };
 }
 
-export function EntDoctorOrderSheetToJSON(value?: EntDoctorOrderSheet | null): any {
+export function EntDoctorordersheetToJSON(value?: EntDoctorordersheet | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -86,10 +72,8 @@ export function EntDoctorOrderSheetToJSON(value?: EntDoctorOrderSheet | null): a
     return {
         
         'Name': value.name,
-        'edges': EntDoctorOrderSheetEdgesToJSON(value.edges),
+        'edges': EntDoctorordersheetEdgesToJSON(value.edges),
         'id': value.id,
-        'note': value.note,
-        'time': value.time,
     };
 }
 

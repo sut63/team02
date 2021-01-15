@@ -16,16 +16,16 @@ type Tx struct {
 	Antenatalinformation *AntenatalinformationClient
 	// Bonedisease is the client for interacting with the Bonedisease builders.
 	Bonedisease *BonediseaseClient
-	// Checksymptoms is the client for interacting with the Checksymptoms builders.
-	Checksymptoms *ChecksymptomsClient
+	// Checksymptom is the client for interacting with the Checksymptom builders.
+	Checksymptom *ChecksymptomClient
 	// Dentalappointment is the client for interacting with the Dentalappointment builders.
 	Dentalappointment *DentalappointmentClient
 	// Dentalkind is the client for interacting with the Dentalkind builders.
 	Dentalkind *DentalkindClient
 	// Disease is the client for interacting with the Disease builders.
 	Disease *DiseaseClient
-	// DoctorOrderSheet is the client for interacting with the DoctorOrderSheet builders.
-	DoctorOrderSheet *DoctorOrderSheetClient
+	// Doctorordersheet is the client for interacting with the Doctorordersheet builders.
+	Doctorordersheet *DoctorordersheetClient
 	// Patient is the client for interacting with the Patient builders.
 	Patient *PatientClient
 	// Personnel is the client for interacting with the Personnel builders.
@@ -183,11 +183,11 @@ func (tx *Tx) Client() *Client {
 func (tx *Tx) init() {
 	tx.Antenatalinformation = NewAntenatalinformationClient(tx.config)
 	tx.Bonedisease = NewBonediseaseClient(tx.config)
-	tx.Checksymptoms = NewChecksymptomsClient(tx.config)
+	tx.Checksymptom = NewChecksymptomClient(tx.config)
 	tx.Dentalappointment = NewDentalappointmentClient(tx.config)
 	tx.Dentalkind = NewDentalkindClient(tx.config)
 	tx.Disease = NewDiseaseClient(tx.config)
-	tx.DoctorOrderSheet = NewDoctorOrderSheetClient(tx.config)
+	tx.Doctorordersheet = NewDoctorordersheetClient(tx.config)
 	tx.Patient = NewPatientClient(tx.config)
 	tx.Personnel = NewPersonnelClient(tx.config)
 	tx.Physicaltherapyrecord = NewPhysicaltherapyrecordClient(tx.config)

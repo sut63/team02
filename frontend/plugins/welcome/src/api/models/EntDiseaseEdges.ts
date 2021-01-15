@@ -14,10 +14,10 @@
 
 import { exists, mapValues } from '../runtime';
 import {
-    EntChecksymptoms,
-    EntChecksymptomsFromJSON,
-    EntChecksymptomsFromJSONTyped,
-    EntChecksymptomsToJSON,
+    EntChecksymptom,
+    EntChecksymptomFromJSON,
+    EntChecksymptomFromJSONTyped,
+    EntChecksymptomToJSON,
 } from './';
 
 /**
@@ -27,11 +27,11 @@ import {
  */
 export interface EntDiseaseEdges {
     /**
-     * Checksymptoms holds the value of the Checksymptoms edge.
-     * @type {Array<EntChecksymptoms>}
+     * Checksymptom holds the value of the Checksymptom edge.
+     * @type {Array<EntChecksymptom>}
      * @memberof EntDiseaseEdges
      */
-    checksymptoms?: Array<EntChecksymptoms>;
+    checksymptom?: Array<EntChecksymptom>;
 }
 
 export function EntDiseaseEdgesFromJSON(json: any): EntDiseaseEdges {
@@ -44,7 +44,7 @@ export function EntDiseaseEdgesFromJSONTyped(json: any, ignoreDiscriminator: boo
     }
     return {
         
-        'checksymptoms': !exists(json, 'checksymptoms') ? undefined : ((json['checksymptoms'] as Array<any>).map(EntChecksymptomsFromJSON)),
+        'checksymptom': !exists(json, 'checksymptom') ? undefined : ((json['checksymptom'] as Array<any>).map(EntChecksymptomFromJSON)),
     };
 }
 
@@ -57,7 +57,7 @@ export function EntDiseaseEdgesToJSON(value?: EntDiseaseEdges | null): any {
     }
     return {
         
-        'checksymptoms': value.checksymptoms === undefined ? undefined : ((value.checksymptoms as Array<any>).map(EntChecksymptomsToJSON)),
+        'checksymptom': value.checksymptom === undefined ? undefined : ((value.checksymptom as Array<any>).map(EntChecksymptomToJSON)),
     };
 }
 

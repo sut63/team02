@@ -18,9 +18,9 @@ import {
     ControllersBonedisease,
     ControllersBonediseaseFromJSON,
     ControllersBonediseaseToJSON,
-    ControllersChecksymptoms,
-    ControllersChecksymptomsFromJSON,
-    ControllersChecksymptomsToJSON,
+    ControllersChecksymptom,
+    ControllersChecksymptomFromJSON,
+    ControllersChecksymptomToJSON,
     ControllersDentalappointment,
     ControllersDentalappointmentFromJSON,
     ControllersDentalappointmentToJSON,
@@ -36,9 +36,9 @@ import {
     EntBonedisease,
     EntBonediseaseFromJSON,
     EntBonediseaseToJSON,
-    EntChecksymptoms,
-    EntChecksymptomsFromJSON,
-    EntChecksymptomsToJSON,
+    EntChecksymptom,
+    EntChecksymptomFromJSON,
+    EntChecksymptomToJSON,
     EntDentalappointment,
     EntDentalappointmentFromJSON,
     EntDentalappointmentToJSON,
@@ -48,9 +48,9 @@ import {
     EntDisease,
     EntDiseaseFromJSON,
     EntDiseaseToJSON,
-    EntDoctorOrderSheet,
-    EntDoctorOrderSheetFromJSON,
-    EntDoctorOrderSheetToJSON,
+    EntDoctorordersheet,
+    EntDoctorordersheetFromJSON,
+    EntDoctorordersheetToJSON,
     EntPatient,
     EntPatientFromJSON,
     EntPatientToJSON,
@@ -91,8 +91,8 @@ export interface CreateBonediseaseRequest {
     bonedisease: ControllersBonedisease;
 }
 
-export interface CreateChecksymptomsRequest {
-    checksymptoms: ControllersChecksymptoms;
+export interface CreateChecksymptomRequest {
+    checksymptom: ControllersChecksymptom;
 }
 
 export interface CreateDentalappointmentRequest {
@@ -108,7 +108,7 @@ export interface CreateDiseaseRequest {
 }
 
 export interface CreateDoctorordersheetRequest {
-    doctorordersheet: EntDoctorOrderSheet;
+    doctorordersheet: EntDoctorordersheet;
 }
 
 export interface CreatePatientRequest {
@@ -257,7 +257,7 @@ export interface ListBonediseaseRequest {
     offset?: number;
 }
 
-export interface ListChecksymptomsRequest {
+export interface ListChecksymptomRequest {
     limit?: number;
     offset?: number;
 }
@@ -349,7 +349,7 @@ export interface UpdateDiseaseRequest {
 
 export interface UpdateDoctorordersheetRequest {
     id: number;
-    doctorordersheet: EntDoctorOrderSheet;
+    doctorordersheet: EntDoctorordersheet;
 }
 
 export interface UpdatePatientRequest {
@@ -453,12 +453,12 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * Create checksymptoms
-     * Create checksymptoms
+     * Create checksymptom
+     * Create checksymptom
      */
-    async createChecksymptomsRaw(requestParameters: CreateChecksymptomsRequest): Promise<runtime.ApiResponse<EntChecksymptoms>> {
-        if (requestParameters.checksymptoms === null || requestParameters.checksymptoms === undefined) {
-            throw new runtime.RequiredError('checksymptoms','Required parameter requestParameters.checksymptoms was null or undefined when calling createChecksymptoms.');
+    async createChecksymptomRaw(requestParameters: CreateChecksymptomRequest): Promise<runtime.ApiResponse<EntChecksymptom>> {
+        if (requestParameters.checksymptom === null || requestParameters.checksymptom === undefined) {
+            throw new runtime.RequiredError('checksymptom','Required parameter requestParameters.checksymptom was null or undefined when calling createChecksymptom.');
         }
 
         const queryParameters: runtime.HTTPQuery = {};
@@ -468,22 +468,22 @@ export class DefaultApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
-            path: `/checksymptomss`,
+            path: `/checksymptoms`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: ControllersChecksymptomsToJSON(requestParameters.checksymptoms),
+            body: ControllersChecksymptomToJSON(requestParameters.checksymptom),
         });
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => EntChecksymptomsFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => EntChecksymptomFromJSON(jsonValue));
     }
 
     /**
-     * Create checksymptoms
-     * Create checksymptoms
+     * Create checksymptom
+     * Create checksymptom
      */
-    async createChecksymptoms(requestParameters: CreateChecksymptomsRequest): Promise<EntChecksymptoms> {
-        const response = await this.createChecksymptomsRaw(requestParameters);
+    async createChecksymptom(requestParameters: CreateChecksymptomRequest): Promise<EntChecksymptom> {
+        const response = await this.createChecksymptomRaw(requestParameters);
         return await response.value();
     }
 
@@ -596,7 +596,7 @@ export class DefaultApi extends runtime.BaseAPI {
      * Create doctorordersheet
      * Create doctorordersheet
      */
-    async createDoctorordersheetRaw(requestParameters: CreateDoctorordersheetRequest): Promise<runtime.ApiResponse<EntDoctorOrderSheet>> {
+    async createDoctorordersheetRaw(requestParameters: CreateDoctorordersheetRequest): Promise<runtime.ApiResponse<EntDoctorordersheet>> {
         if (requestParameters.doctorordersheet === null || requestParameters.doctorordersheet === undefined) {
             throw new runtime.RequiredError('doctorordersheet','Required parameter requestParameters.doctorordersheet was null or undefined when calling createDoctorordersheet.');
         }
@@ -612,17 +612,17 @@ export class DefaultApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: EntDoctorOrderSheetToJSON(requestParameters.doctorordersheet),
+            body: EntDoctorordersheetToJSON(requestParameters.doctorordersheet),
         });
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => EntDoctorOrderSheetFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => EntDoctorordersheetFromJSON(jsonValue));
     }
 
     /**
      * Create doctorordersheet
      * Create doctorordersheet
      */
-    async createDoctorordersheet(requestParameters: CreateDoctorordersheetRequest): Promise<EntDoctorOrderSheet> {
+    async createDoctorordersheet(requestParameters: CreateDoctorordersheetRequest): Promise<EntDoctorordersheet> {
         const response = await this.createDoctorordersheetRaw(requestParameters);
         return await response.value();
     }
@@ -1426,7 +1426,7 @@ export class DefaultApi extends runtime.BaseAPI {
      * get doctorordersheet by ID
      * Get a doctorordersheet entity by ID
      */
-    async getDoctorordersheetRaw(requestParameters: GetDoctorordersheetRequest): Promise<runtime.ApiResponse<EntDoctorOrderSheet>> {
+    async getDoctorordersheetRaw(requestParameters: GetDoctorordersheetRequest): Promise<runtime.ApiResponse<EntDoctorordersheet>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getDoctorordersheet.');
         }
@@ -1442,14 +1442,14 @@ export class DefaultApi extends runtime.BaseAPI {
             query: queryParameters,
         });
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => EntDoctorOrderSheetFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => EntDoctorordersheetFromJSON(jsonValue));
     }
 
     /**
      * get doctorordersheet by ID
      * Get a doctorordersheet entity by ID
      */
-    async getDoctorordersheet(requestParameters: GetDoctorordersheetRequest): Promise<EntDoctorOrderSheet> {
+    async getDoctorordersheet(requestParameters: GetDoctorordersheetRequest): Promise<EntDoctorordersheet> {
         const response = await this.getDoctorordersheetRaw(requestParameters);
         return await response.value();
     }
@@ -1815,10 +1815,10 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * list checksymptoms entities
-     * List checksymptoms entities
+     * list checksymptom entities
+     * List checksymptom entities
      */
-    async listChecksymptomsRaw(requestParameters: ListChecksymptomsRequest): Promise<runtime.ApiResponse<Array<EntChecksymptoms>>> {
+    async listChecksymptomRaw(requestParameters: ListChecksymptomRequest): Promise<runtime.ApiResponse<Array<EntChecksymptom>>> {
         const queryParameters: runtime.HTTPQuery = {};
 
         if (requestParameters.limit !== undefined) {
@@ -1832,21 +1832,21 @@ export class DefaultApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
-            path: `/checksymptomss`,
+            path: `/checksymptoms`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
         });
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(EntChecksymptomsFromJSON));
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(EntChecksymptomFromJSON));
     }
 
     /**
-     * list checksymptoms entities
-     * List checksymptoms entities
+     * list checksymptom entities
+     * List checksymptom entities
      */
-    async listChecksymptoms(requestParameters: ListChecksymptomsRequest): Promise<Array<EntChecksymptoms>> {
-        const response = await this.listChecksymptomsRaw(requestParameters);
+    async listChecksymptom(requestParameters: ListChecksymptomRequest): Promise<Array<EntChecksymptom>> {
+        const response = await this.listChecksymptomRaw(requestParameters);
         return await response.value();
     }
 
@@ -1962,7 +1962,7 @@ export class DefaultApi extends runtime.BaseAPI {
      * list doctorordersheet entities
      * List doctorordersheet entities
      */
-    async listDoctorordersheetRaw(requestParameters: ListDoctorordersheetRequest): Promise<runtime.ApiResponse<Array<EntDoctorOrderSheet>>> {
+    async listDoctorordersheetRaw(requestParameters: ListDoctorordersheetRequest): Promise<runtime.ApiResponse<Array<EntDoctorordersheet>>> {
         const queryParameters: runtime.HTTPQuery = {};
 
         if (requestParameters.limit !== undefined) {
@@ -1982,14 +1982,14 @@ export class DefaultApi extends runtime.BaseAPI {
             query: queryParameters,
         });
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(EntDoctorOrderSheetFromJSON));
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(EntDoctorordersheetFromJSON));
     }
 
     /**
      * list doctorordersheet entities
      * List doctorordersheet entities
      */
-    async listDoctorordersheet(requestParameters: ListDoctorordersheetRequest): Promise<Array<EntDoctorOrderSheet>> {
+    async listDoctorordersheet(requestParameters: ListDoctorordersheetRequest): Promise<Array<EntDoctorordersheet>> {
         const response = await this.listDoctorordersheetRaw(requestParameters);
         return await response.value();
     }
@@ -2474,7 +2474,7 @@ export class DefaultApi extends runtime.BaseAPI {
     /**
      * update doctorordersheet by ID
      */
-    async updateDoctorordersheetRaw(requestParameters: UpdateDoctorordersheetRequest): Promise<runtime.ApiResponse<EntDoctorOrderSheet>> {
+    async updateDoctorordersheetRaw(requestParameters: UpdateDoctorordersheetRequest): Promise<runtime.ApiResponse<EntDoctorordersheet>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling updateDoctorordersheet.');
         }
@@ -2494,16 +2494,16 @@ export class DefaultApi extends runtime.BaseAPI {
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: EntDoctorOrderSheetToJSON(requestParameters.doctorordersheet),
+            body: EntDoctorordersheetToJSON(requestParameters.doctorordersheet),
         });
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => EntDoctorOrderSheetFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => EntDoctorordersheetFromJSON(jsonValue));
     }
 
     /**
      * update doctorordersheet by ID
      */
-    async updateDoctorordersheet(requestParameters: UpdateDoctorordersheetRequest): Promise<EntDoctorOrderSheet> {
+    async updateDoctorordersheet(requestParameters: UpdateDoctorordersheetRequest): Promise<EntDoctorordersheet> {
         const response = await this.updateDoctorordersheetRaw(requestParameters);
         return await response.value();
     }

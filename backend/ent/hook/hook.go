@@ -35,15 +35,15 @@ func (f BonediseaseFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value,
 	return f(ctx, mv)
 }
 
-// The ChecksymptomsFunc type is an adapter to allow the use of ordinary
-// function as Checksymptoms mutator.
-type ChecksymptomsFunc func(context.Context, *ent.ChecksymptomsMutation) (ent.Value, error)
+// The ChecksymptomFunc type is an adapter to allow the use of ordinary
+// function as Checksymptom mutator.
+type ChecksymptomFunc func(context.Context, *ent.ChecksymptomMutation) (ent.Value, error)
 
 // Mutate calls f(ctx, m).
-func (f ChecksymptomsFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
-	mv, ok := m.(*ent.ChecksymptomsMutation)
+func (f ChecksymptomFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	mv, ok := m.(*ent.ChecksymptomMutation)
 	if !ok {
-		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.ChecksymptomsMutation", m)
+		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.ChecksymptomMutation", m)
 	}
 	return f(ctx, mv)
 }
@@ -87,15 +87,15 @@ func (f DiseaseFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, err
 	return f(ctx, mv)
 }
 
-// The DoctorOrderSheetFunc type is an adapter to allow the use of ordinary
-// function as DoctorOrderSheet mutator.
-type DoctorOrderSheetFunc func(context.Context, *ent.DoctorOrderSheetMutation) (ent.Value, error)
+// The DoctorordersheetFunc type is an adapter to allow the use of ordinary
+// function as Doctorordersheet mutator.
+type DoctorordersheetFunc func(context.Context, *ent.DoctorordersheetMutation) (ent.Value, error)
 
 // Mutate calls f(ctx, m).
-func (f DoctorOrderSheetFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
-	mv, ok := m.(*ent.DoctorOrderSheetMutation)
+func (f DoctorordersheetFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	mv, ok := m.(*ent.DoctorordersheetMutation)
 	if !ok {
-		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.DoctorOrderSheetMutation", m)
+		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.DoctorordersheetMutation", m)
 	}
 	return f(ctx, mv)
 }

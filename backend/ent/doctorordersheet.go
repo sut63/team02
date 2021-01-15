@@ -10,59 +10,55 @@ import (
 	"github.com/to63/app/ent/doctorordersheet"
 )
 
-// DoctorOrderSheet is the model entity for the DoctorOrderSheet schema.
-type DoctorOrderSheet struct {
+// Doctorordersheet is the model entity for the Doctorordersheet schema.
+type Doctorordersheet struct {
 	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
 	// Name holds the value of the "Name" field.
 	Name string `json:"Name,omitempty"`
-	// Time holds the value of the "time" field.
-	Time string `json:"time,omitempty"`
-	// Note holds the value of the "note" field.
-	Note string `json:"note,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
-	// The values are being populated by the DoctorOrderSheetQuery when eager-loading is set.
-	Edges DoctorOrderSheetEdges `json:"edges"`
+	// The values are being populated by the DoctorordersheetQuery when eager-loading is set.
+	Edges DoctorordersheetEdges `json:"edges"`
 }
 
-// DoctorOrderSheetEdges holds the relations/edges for other nodes in the graph.
-type DoctorOrderSheetEdges struct {
-	// Checksymptoms holds the value of the Checksymptoms edge.
-	Checksymptoms []*Checksymptoms
+// DoctorordersheetEdges holds the relations/edges for other nodes in the graph.
+type DoctorordersheetEdges struct {
+	// Checksymptom holds the value of the Checksymptom edge.
+	Checksymptom []*Checksymptom
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
 	loadedTypes [1]bool
 }
 
-// ChecksymptomsOrErr returns the Checksymptoms value or an error if the edge
+// ChecksymptomOrErr returns the Checksymptom value or an error if the edge
 // was not loaded in eager-loading.
-func (e DoctorOrderSheetEdges) ChecksymptomsOrErr() ([]*Checksymptoms, error) {
+func (e DoctorordersheetEdges) ChecksymptomOrErr() ([]*Checksymptom, error) {
 	if e.loadedTypes[0] {
-		return e.Checksymptoms, nil
+		return e.Checksymptom, nil
 	}
-	return nil, &NotLoadedError{edge: "Checksymptoms"}
+	return nil, &NotLoadedError{edge: "Checksymptom"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
-func (*DoctorOrderSheet) scanValues(columns []string) ([]interface{}, error) {
+func (*Doctorordersheet) scanValues(columns []string) ([]interface{}, error) {
 	values := make([]interface{}, len(columns))
 	for i := range columns {
 		switch columns[i] {
 		case doctorordersheet.FieldID:
 			values[i] = &sql.NullInt64{}
-		case doctorordersheet.FieldName, doctorordersheet.FieldTime, doctorordersheet.FieldNote:
+		case doctorordersheet.FieldName:
 			values[i] = &sql.NullString{}
 		default:
-			return nil, fmt.Errorf("unexpected column %q for type DoctorOrderSheet", columns[i])
+			return nil, fmt.Errorf("unexpected column %q for type Doctorordersheet", columns[i])
 		}
 	}
 	return values, nil
 }
 
 // assignValues assigns the values that were returned from sql.Rows (after scanning)
-// to the DoctorOrderSheet fields.
-func (dos *DoctorOrderSheet) assignValues(columns []string, values []interface{}) error {
+// to the Doctorordersheet fields.
+func (d *Doctorordersheet) assignValues(columns []string, values []interface{}) error {
 	if m, n := len(values), len(columns); m < n {
 		return fmt.Errorf("mismatch number of scan values: %d != %d", m, n)
 	}
@@ -73,73 +69,57 @@ func (dos *DoctorOrderSheet) assignValues(columns []string, values []interface{}
 			if !ok {
 				return fmt.Errorf("unexpected type %T for field id", value)
 			}
-			dos.ID = int(value.Int64)
+			d.ID = int(value.Int64)
 		case doctorordersheet.FieldName:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field Name", values[i])
 			} else if value.Valid {
-				dos.Name = value.String
-			}
-		case doctorordersheet.FieldTime:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field time", values[i])
-			} else if value.Valid {
-				dos.Time = value.String
-			}
-		case doctorordersheet.FieldNote:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field note", values[i])
-			} else if value.Valid {
-				dos.Note = value.String
+				d.Name = value.String
 			}
 		}
 	}
 	return nil
 }
 
-// QueryChecksymptoms queries the "Checksymptoms" edge of the DoctorOrderSheet entity.
-func (dos *DoctorOrderSheet) QueryChecksymptoms() *ChecksymptomsQuery {
-	return (&DoctorOrderSheetClient{config: dos.config}).QueryChecksymptoms(dos)
+// QueryChecksymptom queries the "Checksymptom" edge of the Doctorordersheet entity.
+func (d *Doctorordersheet) QueryChecksymptom() *ChecksymptomQuery {
+	return (&DoctorordersheetClient{config: d.config}).QueryChecksymptom(d)
 }
 
-// Update returns a builder for updating this DoctorOrderSheet.
-// Note that you need to call DoctorOrderSheet.Unwrap() before calling this method if this DoctorOrderSheet
+// Update returns a builder for updating this Doctorordersheet.
+// Note that you need to call Doctorordersheet.Unwrap() before calling this method if this Doctorordersheet
 // was returned from a transaction, and the transaction was committed or rolled back.
-func (dos *DoctorOrderSheet) Update() *DoctorOrderSheetUpdateOne {
-	return (&DoctorOrderSheetClient{config: dos.config}).UpdateOne(dos)
+func (d *Doctorordersheet) Update() *DoctorordersheetUpdateOne {
+	return (&DoctorordersheetClient{config: d.config}).UpdateOne(d)
 }
 
-// Unwrap unwraps the DoctorOrderSheet entity that was returned from a transaction after it was closed,
+// Unwrap unwraps the Doctorordersheet entity that was returned from a transaction after it was closed,
 // so that all future queries will be executed through the driver which created the transaction.
-func (dos *DoctorOrderSheet) Unwrap() *DoctorOrderSheet {
-	tx, ok := dos.config.driver.(*txDriver)
+func (d *Doctorordersheet) Unwrap() *Doctorordersheet {
+	tx, ok := d.config.driver.(*txDriver)
 	if !ok {
-		panic("ent: DoctorOrderSheet is not a transactional entity")
+		panic("ent: Doctorordersheet is not a transactional entity")
 	}
-	dos.config.driver = tx.drv
-	return dos
+	d.config.driver = tx.drv
+	return d
 }
 
 // String implements the fmt.Stringer.
-func (dos *DoctorOrderSheet) String() string {
+func (d *Doctorordersheet) String() string {
 	var builder strings.Builder
-	builder.WriteString("DoctorOrderSheet(")
-	builder.WriteString(fmt.Sprintf("id=%v", dos.ID))
+	builder.WriteString("Doctorordersheet(")
+	builder.WriteString(fmt.Sprintf("id=%v", d.ID))
 	builder.WriteString(", Name=")
-	builder.WriteString(dos.Name)
-	builder.WriteString(", time=")
-	builder.WriteString(dos.Time)
-	builder.WriteString(", note=")
-	builder.WriteString(dos.Note)
+	builder.WriteString(d.Name)
 	builder.WriteByte(')')
 	return builder.String()
 }
 
-// DoctorOrderSheets is a parsable slice of DoctorOrderSheet.
-type DoctorOrderSheets []*DoctorOrderSheet
+// Doctorordersheets is a parsable slice of Doctorordersheet.
+type Doctorordersheets []*Doctorordersheet
 
-func (dos DoctorOrderSheets) config(cfg config) {
-	for _i := range dos {
-		dos[_i].config = cfg
+func (d Doctorordersheets) config(cfg config) {
+	for _i := range d {
+		d[_i].config = cfg
 	}
 }

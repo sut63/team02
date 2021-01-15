@@ -14,7 +14,7 @@ import (
 	"github.com/facebook/ent/schema/field"
 	"github.com/to63/app/ent/antenatalinformation"
 	"github.com/to63/app/ent/bonedisease"
-	"github.com/to63/app/ent/checksymptoms"
+	"github.com/to63/app/ent/checksymptom"
 	"github.com/to63/app/ent/dentalappointment"
 	"github.com/to63/app/ent/personnel"
 	"github.com/to63/app/ent/physicaltherapyrecord"
@@ -33,7 +33,7 @@ type PersonnelQuery struct {
 	// eager-loading edges.
 	withPhysicaltherapyrecord *PhysicaltherapyrecordQuery
 	withBonedisease           *BonediseaseQuery
-	withChecksymptoms         *ChecksymptomsQuery
+	withChecksymptom          *ChecksymptomQuery
 	withDentalappointment     *DentalappointmentQuery
 	withSurgeryappointment    *SurgeryappointmentQuery
 	withAntenatalinformation  *AntenatalinformationQuery
@@ -110,9 +110,9 @@ func (pq *PersonnelQuery) QueryBonedisease() *BonediseaseQuery {
 	return query
 }
 
-// QueryChecksymptoms chains the current query on the "Checksymptoms" edge.
-func (pq *PersonnelQuery) QueryChecksymptoms() *ChecksymptomsQuery {
-	query := &ChecksymptomsQuery{config: pq.config}
+// QueryChecksymptom chains the current query on the "Checksymptom" edge.
+func (pq *PersonnelQuery) QueryChecksymptom() *ChecksymptomQuery {
+	query := &ChecksymptomQuery{config: pq.config}
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
 		if err := pq.prepareQuery(ctx); err != nil {
 			return nil, err
@@ -123,8 +123,8 @@ func (pq *PersonnelQuery) QueryChecksymptoms() *ChecksymptomsQuery {
 		}
 		step := sqlgraph.NewStep(
 			sqlgraph.From(personnel.Table, personnel.FieldID, selector),
-			sqlgraph.To(checksymptoms.Table, checksymptoms.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, personnel.ChecksymptomsTable, personnel.ChecksymptomsColumn),
+			sqlgraph.To(checksymptom.Table, checksymptom.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, personnel.ChecksymptomTable, personnel.ChecksymptomColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(pq.driver.Dialect(), step)
 		return fromU, nil
@@ -381,7 +381,7 @@ func (pq *PersonnelQuery) Clone() *PersonnelQuery {
 		predicates:                append([]predicate.Personnel{}, pq.predicates...),
 		withPhysicaltherapyrecord: pq.withPhysicaltherapyrecord.Clone(),
 		withBonedisease:           pq.withBonedisease.Clone(),
-		withChecksymptoms:         pq.withChecksymptoms.Clone(),
+		withChecksymptom:          pq.withChecksymptom.Clone(),
 		withDentalappointment:     pq.withDentalappointment.Clone(),
 		withSurgeryappointment:    pq.withSurgeryappointment.Clone(),
 		withAntenatalinformation:  pq.withAntenatalinformation.Clone(),
@@ -413,14 +413,14 @@ func (pq *PersonnelQuery) WithBonedisease(opts ...func(*BonediseaseQuery)) *Pers
 	return pq
 }
 
-// WithChecksymptoms tells the query-builder to eager-load the nodes that are connected to
-// the "Checksymptoms" edge. The optional arguments are used to configure the query builder of the edge.
-func (pq *PersonnelQuery) WithChecksymptoms(opts ...func(*ChecksymptomsQuery)) *PersonnelQuery {
-	query := &ChecksymptomsQuery{config: pq.config}
+// WithChecksymptom tells the query-builder to eager-load the nodes that are connected to
+// the "Checksymptom" edge. The optional arguments are used to configure the query builder of the edge.
+func (pq *PersonnelQuery) WithChecksymptom(opts ...func(*ChecksymptomQuery)) *PersonnelQuery {
+	query := &ChecksymptomQuery{config: pq.config}
 	for _, opt := range opts {
 		opt(query)
 	}
-	pq.withChecksymptoms = query
+	pq.withChecksymptom = query
 	return pq
 }
 
@@ -525,7 +525,7 @@ func (pq *PersonnelQuery) sqlAll(ctx context.Context) ([]*Personnel, error) {
 		loadedTypes = [6]bool{
 			pq.withPhysicaltherapyrecord != nil,
 			pq.withBonedisease != nil,
-			pq.withChecksymptoms != nil,
+			pq.withChecksymptom != nil,
 			pq.withDentalappointment != nil,
 			pq.withSurgeryappointment != nil,
 			pq.withAntenatalinformation != nil,
@@ -609,17 +609,17 @@ func (pq *PersonnelQuery) sqlAll(ctx context.Context) ([]*Personnel, error) {
 		}
 	}
 
-	if query := pq.withChecksymptoms; query != nil {
+	if query := pq.withChecksymptom; query != nil {
 		fks := make([]driver.Value, 0, len(nodes))
 		nodeids := make(map[int]*Personnel)
 		for i := range nodes {
 			fks = append(fks, nodes[i].ID)
 			nodeids[nodes[i].ID] = nodes[i]
-			nodes[i].Edges.Checksymptoms = []*Checksymptoms{}
+			nodes[i].Edges.Checksymptom = []*Checksymptom{}
 		}
 		query.withFKs = true
-		query.Where(predicate.Checksymptoms(func(s *sql.Selector) {
-			s.Where(sql.InValues(personnel.ChecksymptomsColumn, fks...))
+		query.Where(predicate.Checksymptom(func(s *sql.Selector) {
+			s.Where(sql.InValues(personnel.ChecksymptomColumn, fks...))
 		}))
 		neighbors, err := query.All(ctx)
 		if err != nil {
@@ -634,7 +634,7 @@ func (pq *PersonnelQuery) sqlAll(ctx context.Context) ([]*Personnel, error) {
 			if !ok {
 				return nil, fmt.Errorf(`unexpected foreign-key "_Personnel_id" returned %v for node %v`, *fk, n.ID)
 			}
-			node.Edges.Checksymptoms = append(node.Edges.Checksymptoms, n)
+			node.Edges.Checksymptom = append(node.Edges.Checksymptom, n)
 		}
 	}
 

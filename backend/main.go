@@ -186,8 +186,9 @@ func main() {
 	}
 
 	v1 := router.Group("/api/v1")
+	controllers.NewChecksymptomController(v1, client) 
 	controllers.NewDiseaseController(v1, client)          //ของเจม
-	controllers.NewDoctorOrderSheetController(v1, client) //ของเจม
+	controllers.NewDoctorordersheetController(v1, client) //ของเจม
 	controllers.NewBonediseaseController(v1, client)
 	controllers.NewPatientController(v1, client)
 	controllers.NewPersonnelController(v1, client)
@@ -240,20 +241,28 @@ func main() {
 			Save(context.Background())
 	}
 
-	diseases := []string{"โรคกระดูก", "ผ่าตัด", "กายภาพบำบัด", "ทันตกรรม", "ฝากครรภ์"}
-	for _, disease := range diseases {
+	diseases := Diseases{
+		Disease: []Disease{
+			Disease{"โรคกระดูก"},
+			Disease{"กายภาพบำบัด"},
+		},
+	}
+
+	for _, diseases := range diseases.Disease {
+
 		client.Disease.
 			Create().
-			SetName(disease).
+			SetDisease(diseases.Name).
 			Save(context.Background())
 	}
 
+
 	// Set DoctorOrderSheet Data
-	doctorordersheets := []string{"นายแพทย์อนุสรณ์", "นายแพทย์วัชรพงศ์", "นายแพทย์ธนาทิพย์"}
-	for _, name := range doctorordersheets {
-		client.DoctorOrderSheet.
+	doctorordersheets := []string{"นายแพทย์อนุสรณ์ ศรีพรหม", "นายแพทย์วัชรพงศ์ ซึ้งศิริทรัพย์","นายแพทย์หญิงวริศรา ตันดิลกตระกูล"}
+	for _, doctorordersheet := range doctorordersheets {
+		client.Doctorordersheet.
 			Create().
-			SetName(name).
+			SetName(doctorordersheet).
 			Save(context.Background())
 	}
 

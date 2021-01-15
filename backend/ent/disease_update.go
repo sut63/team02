@@ -9,7 +9,7 @@ import (
 	"github.com/facebook/ent/dialect/sql"
 	"github.com/facebook/ent/dialect/sql/sqlgraph"
 	"github.com/facebook/ent/schema/field"
-	"github.com/to63/app/ent/checksymptoms"
+	"github.com/to63/app/ent/checksymptom"
 	"github.com/to63/app/ent/disease"
 	"github.com/to63/app/ent/predicate"
 )
@@ -27,20 +27,20 @@ func (du *DiseaseUpdate) Where(ps ...predicate.Disease) *DiseaseUpdate {
 	return du
 }
 
-// SetName sets the "name" field.
-func (du *DiseaseUpdate) SetName(s string) *DiseaseUpdate {
-	du.mutation.SetName(s)
+// SetDisease sets the "disease" field.
+func (du *DiseaseUpdate) SetDisease(s string) *DiseaseUpdate {
+	du.mutation.SetDisease(s)
 	return du
 }
 
-// AddChecksymptomIDs adds the "Checksymptoms" edge to the Checksymptoms entity by IDs.
+// AddChecksymptomIDs adds the "Checksymptom" edge to the Checksymptom entity by IDs.
 func (du *DiseaseUpdate) AddChecksymptomIDs(ids ...int) *DiseaseUpdate {
 	du.mutation.AddChecksymptomIDs(ids...)
 	return du
 }
 
-// AddChecksymptoms adds the "Checksymptoms" edges to the Checksymptoms entity.
-func (du *DiseaseUpdate) AddChecksymptoms(c ...*Checksymptoms) *DiseaseUpdate {
+// AddChecksymptom adds the "Checksymptom" edges to the Checksymptom entity.
+func (du *DiseaseUpdate) AddChecksymptom(c ...*Checksymptom) *DiseaseUpdate {
 	ids := make([]int, len(c))
 	for i := range c {
 		ids[i] = c[i].ID
@@ -53,20 +53,20 @@ func (du *DiseaseUpdate) Mutation() *DiseaseMutation {
 	return du.mutation
 }
 
-// ClearChecksymptoms clears all "Checksymptoms" edges to the Checksymptoms entity.
-func (du *DiseaseUpdate) ClearChecksymptoms() *DiseaseUpdate {
-	du.mutation.ClearChecksymptoms()
+// ClearChecksymptom clears all "Checksymptom" edges to the Checksymptom entity.
+func (du *DiseaseUpdate) ClearChecksymptom() *DiseaseUpdate {
+	du.mutation.ClearChecksymptom()
 	return du
 }
 
-// RemoveChecksymptomIDs removes the "Checksymptoms" edge to Checksymptoms entities by IDs.
+// RemoveChecksymptomIDs removes the "Checksymptom" edge to Checksymptom entities by IDs.
 func (du *DiseaseUpdate) RemoveChecksymptomIDs(ids ...int) *DiseaseUpdate {
 	du.mutation.RemoveChecksymptomIDs(ids...)
 	return du
 }
 
-// RemoveChecksymptoms removes "Checksymptoms" edges to Checksymptoms entities.
-func (du *DiseaseUpdate) RemoveChecksymptoms(c ...*Checksymptoms) *DiseaseUpdate {
+// RemoveChecksymptom removes "Checksymptom" edges to Checksymptom entities.
+func (du *DiseaseUpdate) RemoveChecksymptom(c ...*Checksymptom) *DiseaseUpdate {
 	ids := make([]int, len(c))
 	for i := range c {
 		ids[i] = c[i].ID
@@ -133,9 +133,9 @@ func (du *DiseaseUpdate) ExecX(ctx context.Context) {
 
 // check runs all checks and user-defined validators on the builder.
 func (du *DiseaseUpdate) check() error {
-	if v, ok := du.mutation.Name(); ok {
-		if err := disease.NameValidator(v); err != nil {
-			return &ValidationError{Name: "name", err: fmt.Errorf("ent: validator failed for field \"name\": %w", err)}
+	if v, ok := du.mutation.Disease(); ok {
+		if err := disease.DiseaseValidator(v); err != nil {
+			return &ValidationError{Name: "disease", err: fmt.Errorf("ent: validator failed for field \"disease\": %w", err)}
 		}
 	}
 	return nil
@@ -159,40 +159,40 @@ func (du *DiseaseUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			}
 		}
 	}
-	if value, ok := du.mutation.Name(); ok {
+	if value, ok := du.mutation.Disease(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: disease.FieldName,
+			Column: disease.FieldDisease,
 		})
 	}
-	if du.mutation.ChecksymptomsCleared() {
+	if du.mutation.ChecksymptomCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   disease.ChecksymptomsTable,
-			Columns: []string{disease.ChecksymptomsColumn},
+			Table:   disease.ChecksymptomTable,
+			Columns: []string{disease.ChecksymptomColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
-					Column: checksymptoms.FieldID,
+					Column: checksymptom.FieldID,
 				},
 			},
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := du.mutation.RemovedChecksymptomsIDs(); len(nodes) > 0 && !du.mutation.ChecksymptomsCleared() {
+	if nodes := du.mutation.RemovedChecksymptomIDs(); len(nodes) > 0 && !du.mutation.ChecksymptomCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   disease.ChecksymptomsTable,
-			Columns: []string{disease.ChecksymptomsColumn},
+			Table:   disease.ChecksymptomTable,
+			Columns: []string{disease.ChecksymptomColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
-					Column: checksymptoms.FieldID,
+					Column: checksymptom.FieldID,
 				},
 			},
 		}
@@ -201,17 +201,17 @@ func (du *DiseaseUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := du.mutation.ChecksymptomsIDs(); len(nodes) > 0 {
+	if nodes := du.mutation.ChecksymptomIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   disease.ChecksymptomsTable,
-			Columns: []string{disease.ChecksymptomsColumn},
+			Table:   disease.ChecksymptomTable,
+			Columns: []string{disease.ChecksymptomColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
-					Column: checksymptoms.FieldID,
+					Column: checksymptom.FieldID,
 				},
 			},
 		}
@@ -238,20 +238,20 @@ type DiseaseUpdateOne struct {
 	mutation *DiseaseMutation
 }
 
-// SetName sets the "name" field.
-func (duo *DiseaseUpdateOne) SetName(s string) *DiseaseUpdateOne {
-	duo.mutation.SetName(s)
+// SetDisease sets the "disease" field.
+func (duo *DiseaseUpdateOne) SetDisease(s string) *DiseaseUpdateOne {
+	duo.mutation.SetDisease(s)
 	return duo
 }
 
-// AddChecksymptomIDs adds the "Checksymptoms" edge to the Checksymptoms entity by IDs.
+// AddChecksymptomIDs adds the "Checksymptom" edge to the Checksymptom entity by IDs.
 func (duo *DiseaseUpdateOne) AddChecksymptomIDs(ids ...int) *DiseaseUpdateOne {
 	duo.mutation.AddChecksymptomIDs(ids...)
 	return duo
 }
 
-// AddChecksymptoms adds the "Checksymptoms" edges to the Checksymptoms entity.
-func (duo *DiseaseUpdateOne) AddChecksymptoms(c ...*Checksymptoms) *DiseaseUpdateOne {
+// AddChecksymptom adds the "Checksymptom" edges to the Checksymptom entity.
+func (duo *DiseaseUpdateOne) AddChecksymptom(c ...*Checksymptom) *DiseaseUpdateOne {
 	ids := make([]int, len(c))
 	for i := range c {
 		ids[i] = c[i].ID
@@ -264,20 +264,20 @@ func (duo *DiseaseUpdateOne) Mutation() *DiseaseMutation {
 	return duo.mutation
 }
 
-// ClearChecksymptoms clears all "Checksymptoms" edges to the Checksymptoms entity.
-func (duo *DiseaseUpdateOne) ClearChecksymptoms() *DiseaseUpdateOne {
-	duo.mutation.ClearChecksymptoms()
+// ClearChecksymptom clears all "Checksymptom" edges to the Checksymptom entity.
+func (duo *DiseaseUpdateOne) ClearChecksymptom() *DiseaseUpdateOne {
+	duo.mutation.ClearChecksymptom()
 	return duo
 }
 
-// RemoveChecksymptomIDs removes the "Checksymptoms" edge to Checksymptoms entities by IDs.
+// RemoveChecksymptomIDs removes the "Checksymptom" edge to Checksymptom entities by IDs.
 func (duo *DiseaseUpdateOne) RemoveChecksymptomIDs(ids ...int) *DiseaseUpdateOne {
 	duo.mutation.RemoveChecksymptomIDs(ids...)
 	return duo
 }
 
-// RemoveChecksymptoms removes "Checksymptoms" edges to Checksymptoms entities.
-func (duo *DiseaseUpdateOne) RemoveChecksymptoms(c ...*Checksymptoms) *DiseaseUpdateOne {
+// RemoveChecksymptom removes "Checksymptom" edges to Checksymptom entities.
+func (duo *DiseaseUpdateOne) RemoveChecksymptom(c ...*Checksymptom) *DiseaseUpdateOne {
 	ids := make([]int, len(c))
 	for i := range c {
 		ids[i] = c[i].ID
@@ -344,9 +344,9 @@ func (duo *DiseaseUpdateOne) ExecX(ctx context.Context) {
 
 // check runs all checks and user-defined validators on the builder.
 func (duo *DiseaseUpdateOne) check() error {
-	if v, ok := duo.mutation.Name(); ok {
-		if err := disease.NameValidator(v); err != nil {
-			return &ValidationError{Name: "name", err: fmt.Errorf("ent: validator failed for field \"name\": %w", err)}
+	if v, ok := duo.mutation.Disease(); ok {
+		if err := disease.DiseaseValidator(v); err != nil {
+			return &ValidationError{Name: "disease", err: fmt.Errorf("ent: validator failed for field \"disease\": %w", err)}
 		}
 	}
 	return nil
@@ -368,40 +368,40 @@ func (duo *DiseaseUpdateOne) sqlSave(ctx context.Context) (_node *Disease, err e
 		return nil, &ValidationError{Name: "ID", err: fmt.Errorf("missing Disease.ID for update")}
 	}
 	_spec.Node.ID.Value = id
-	if value, ok := duo.mutation.Name(); ok {
+	if value, ok := duo.mutation.Disease(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: disease.FieldName,
+			Column: disease.FieldDisease,
 		})
 	}
-	if duo.mutation.ChecksymptomsCleared() {
+	if duo.mutation.ChecksymptomCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   disease.ChecksymptomsTable,
-			Columns: []string{disease.ChecksymptomsColumn},
+			Table:   disease.ChecksymptomTable,
+			Columns: []string{disease.ChecksymptomColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
-					Column: checksymptoms.FieldID,
+					Column: checksymptom.FieldID,
 				},
 			},
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := duo.mutation.RemovedChecksymptomsIDs(); len(nodes) > 0 && !duo.mutation.ChecksymptomsCleared() {
+	if nodes := duo.mutation.RemovedChecksymptomIDs(); len(nodes) > 0 && !duo.mutation.ChecksymptomCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   disease.ChecksymptomsTable,
-			Columns: []string{disease.ChecksymptomsColumn},
+			Table:   disease.ChecksymptomTable,
+			Columns: []string{disease.ChecksymptomColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
-					Column: checksymptoms.FieldID,
+					Column: checksymptom.FieldID,
 				},
 			},
 		}
@@ -410,17 +410,17 @@ func (duo *DiseaseUpdateOne) sqlSave(ctx context.Context) (_node *Disease, err e
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := duo.mutation.ChecksymptomsIDs(); len(nodes) > 0 {
+	if nodes := duo.mutation.ChecksymptomIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   disease.ChecksymptomsTable,
-			Columns: []string{disease.ChecksymptomsColumn},
+			Table:   disease.ChecksymptomTable,
+			Columns: []string{disease.ChecksymptomColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
-					Column: checksymptoms.FieldID,
+					Column: checksymptom.FieldID,
 				},
 			},
 		}

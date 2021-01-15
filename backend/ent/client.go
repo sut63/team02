@@ -11,7 +11,7 @@ import (
 
 	"github.com/to63/app/ent/antenatalinformation"
 	"github.com/to63/app/ent/bonedisease"
-	"github.com/to63/app/ent/checksymptoms"
+	"github.com/to63/app/ent/checksymptom"
 	"github.com/to63/app/ent/dentalappointment"
 	"github.com/to63/app/ent/dentalkind"
 	"github.com/to63/app/ent/disease"
@@ -41,16 +41,16 @@ type Client struct {
 	Antenatalinformation *AntenatalinformationClient
 	// Bonedisease is the client for interacting with the Bonedisease builders.
 	Bonedisease *BonediseaseClient
-	// Checksymptoms is the client for interacting with the Checksymptoms builders.
-	Checksymptoms *ChecksymptomsClient
+	// Checksymptom is the client for interacting with the Checksymptom builders.
+	Checksymptom *ChecksymptomClient
 	// Dentalappointment is the client for interacting with the Dentalappointment builders.
 	Dentalappointment *DentalappointmentClient
 	// Dentalkind is the client for interacting with the Dentalkind builders.
 	Dentalkind *DentalkindClient
 	// Disease is the client for interacting with the Disease builders.
 	Disease *DiseaseClient
-	// DoctorOrderSheet is the client for interacting with the DoctorOrderSheet builders.
-	DoctorOrderSheet *DoctorOrderSheetClient
+	// Doctorordersheet is the client for interacting with the Doctorordersheet builders.
+	Doctorordersheet *DoctorordersheetClient
 	// Patient is the client for interacting with the Patient builders.
 	Patient *PatientClient
 	// Personnel is the client for interacting with the Personnel builders.
@@ -86,11 +86,11 @@ func (c *Client) init() {
 	c.Schema = migrate.NewSchema(c.driver)
 	c.Antenatalinformation = NewAntenatalinformationClient(c.config)
 	c.Bonedisease = NewBonediseaseClient(c.config)
-	c.Checksymptoms = NewChecksymptomsClient(c.config)
+	c.Checksymptom = NewChecksymptomClient(c.config)
 	c.Dentalappointment = NewDentalappointmentClient(c.config)
 	c.Dentalkind = NewDentalkindClient(c.config)
 	c.Disease = NewDiseaseClient(c.config)
-	c.DoctorOrderSheet = NewDoctorOrderSheetClient(c.config)
+	c.Doctorordersheet = NewDoctorordersheetClient(c.config)
 	c.Patient = NewPatientClient(c.config)
 	c.Personnel = NewPersonnelClient(c.config)
 	c.Physicaltherapyrecord = NewPhysicaltherapyrecordClient(c.config)
@@ -135,11 +135,11 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 		config:                cfg,
 		Antenatalinformation:  NewAntenatalinformationClient(cfg),
 		Bonedisease:           NewBonediseaseClient(cfg),
-		Checksymptoms:         NewChecksymptomsClient(cfg),
+		Checksymptom:          NewChecksymptomClient(cfg),
 		Dentalappointment:     NewDentalappointmentClient(cfg),
 		Dentalkind:            NewDentalkindClient(cfg),
 		Disease:               NewDiseaseClient(cfg),
-		DoctorOrderSheet:      NewDoctorOrderSheetClient(cfg),
+		Doctorordersheet:      NewDoctorordersheetClient(cfg),
 		Patient:               NewPatientClient(cfg),
 		Personnel:             NewPersonnelClient(cfg),
 		Physicaltherapyrecord: NewPhysicaltherapyrecordClient(cfg),
@@ -167,11 +167,11 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 		config:                cfg,
 		Antenatalinformation:  NewAntenatalinformationClient(cfg),
 		Bonedisease:           NewBonediseaseClient(cfg),
-		Checksymptoms:         NewChecksymptomsClient(cfg),
+		Checksymptom:          NewChecksymptomClient(cfg),
 		Dentalappointment:     NewDentalappointmentClient(cfg),
 		Dentalkind:            NewDentalkindClient(cfg),
 		Disease:               NewDiseaseClient(cfg),
-		DoctorOrderSheet:      NewDoctorOrderSheetClient(cfg),
+		Doctorordersheet:      NewDoctorordersheetClient(cfg),
 		Patient:               NewPatientClient(cfg),
 		Personnel:             NewPersonnelClient(cfg),
 		Physicaltherapyrecord: NewPhysicaltherapyrecordClient(cfg),
@@ -212,11 +212,11 @@ func (c *Client) Close() error {
 func (c *Client) Use(hooks ...Hook) {
 	c.Antenatalinformation.Use(hooks...)
 	c.Bonedisease.Use(hooks...)
-	c.Checksymptoms.Use(hooks...)
+	c.Checksymptom.Use(hooks...)
 	c.Dentalappointment.Use(hooks...)
 	c.Dentalkind.Use(hooks...)
 	c.Disease.Use(hooks...)
-	c.DoctorOrderSheet.Use(hooks...)
+	c.Doctorordersheet.Use(hooks...)
 	c.Patient.Use(hooks...)
 	c.Personnel.Use(hooks...)
 	c.Physicaltherapyrecord.Use(hooks...)
@@ -517,82 +517,82 @@ func (c *BonediseaseClient) Hooks() []Hook {
 	return c.hooks.Bonedisease
 }
 
-// ChecksymptomsClient is a client for the Checksymptoms schema.
-type ChecksymptomsClient struct {
+// ChecksymptomClient is a client for the Checksymptom schema.
+type ChecksymptomClient struct {
 	config
 }
 
-// NewChecksymptomsClient returns a client for the Checksymptoms from the given config.
-func NewChecksymptomsClient(c config) *ChecksymptomsClient {
-	return &ChecksymptomsClient{config: c}
+// NewChecksymptomClient returns a client for the Checksymptom from the given config.
+func NewChecksymptomClient(c config) *ChecksymptomClient {
+	return &ChecksymptomClient{config: c}
 }
 
 // Use adds a list of mutation hooks to the hooks stack.
-// A call to `Use(f, g, h)` equals to `checksymptoms.Hooks(f(g(h())))`.
-func (c *ChecksymptomsClient) Use(hooks ...Hook) {
-	c.hooks.Checksymptoms = append(c.hooks.Checksymptoms, hooks...)
+// A call to `Use(f, g, h)` equals to `checksymptom.Hooks(f(g(h())))`.
+func (c *ChecksymptomClient) Use(hooks ...Hook) {
+	c.hooks.Checksymptom = append(c.hooks.Checksymptom, hooks...)
 }
 
-// Create returns a create builder for Checksymptoms.
-func (c *ChecksymptomsClient) Create() *ChecksymptomsCreate {
-	mutation := newChecksymptomsMutation(c.config, OpCreate)
-	return &ChecksymptomsCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+// Create returns a create builder for Checksymptom.
+func (c *ChecksymptomClient) Create() *ChecksymptomCreate {
+	mutation := newChecksymptomMutation(c.config, OpCreate)
+	return &ChecksymptomCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
-// CreateBulk returns a builder for creating a bulk of Checksymptoms entities.
-func (c *ChecksymptomsClient) CreateBulk(builders ...*ChecksymptomsCreate) *ChecksymptomsCreateBulk {
-	return &ChecksymptomsCreateBulk{config: c.config, builders: builders}
+// CreateBulk returns a builder for creating a bulk of Checksymptom entities.
+func (c *ChecksymptomClient) CreateBulk(builders ...*ChecksymptomCreate) *ChecksymptomCreateBulk {
+	return &ChecksymptomCreateBulk{config: c.config, builders: builders}
 }
 
-// Update returns an update builder for Checksymptoms.
-func (c *ChecksymptomsClient) Update() *ChecksymptomsUpdate {
-	mutation := newChecksymptomsMutation(c.config, OpUpdate)
-	return &ChecksymptomsUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+// Update returns an update builder for Checksymptom.
+func (c *ChecksymptomClient) Update() *ChecksymptomUpdate {
+	mutation := newChecksymptomMutation(c.config, OpUpdate)
+	return &ChecksymptomUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
 // UpdateOne returns an update builder for the given entity.
-func (c *ChecksymptomsClient) UpdateOne(ch *Checksymptoms) *ChecksymptomsUpdateOne {
-	mutation := newChecksymptomsMutation(c.config, OpUpdateOne, withChecksymptoms(ch))
-	return &ChecksymptomsUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+func (c *ChecksymptomClient) UpdateOne(ch *Checksymptom) *ChecksymptomUpdateOne {
+	mutation := newChecksymptomMutation(c.config, OpUpdateOne, withChecksymptom(ch))
+	return &ChecksymptomUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
 // UpdateOneID returns an update builder for the given id.
-func (c *ChecksymptomsClient) UpdateOneID(id int) *ChecksymptomsUpdateOne {
-	mutation := newChecksymptomsMutation(c.config, OpUpdateOne, withChecksymptomsID(id))
-	return &ChecksymptomsUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+func (c *ChecksymptomClient) UpdateOneID(id int) *ChecksymptomUpdateOne {
+	mutation := newChecksymptomMutation(c.config, OpUpdateOne, withChecksymptomID(id))
+	return &ChecksymptomUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
-// Delete returns a delete builder for Checksymptoms.
-func (c *ChecksymptomsClient) Delete() *ChecksymptomsDelete {
-	mutation := newChecksymptomsMutation(c.config, OpDelete)
-	return &ChecksymptomsDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+// Delete returns a delete builder for Checksymptom.
+func (c *ChecksymptomClient) Delete() *ChecksymptomDelete {
+	mutation := newChecksymptomMutation(c.config, OpDelete)
+	return &ChecksymptomDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
 // DeleteOne returns a delete builder for the given entity.
-func (c *ChecksymptomsClient) DeleteOne(ch *Checksymptoms) *ChecksymptomsDeleteOne {
+func (c *ChecksymptomClient) DeleteOne(ch *Checksymptom) *ChecksymptomDeleteOne {
 	return c.DeleteOneID(ch.ID)
 }
 
 // DeleteOneID returns a delete builder for the given id.
-func (c *ChecksymptomsClient) DeleteOneID(id int) *ChecksymptomsDeleteOne {
-	builder := c.Delete().Where(checksymptoms.ID(id))
+func (c *ChecksymptomClient) DeleteOneID(id int) *ChecksymptomDeleteOne {
+	builder := c.Delete().Where(checksymptom.ID(id))
 	builder.mutation.id = &id
 	builder.mutation.op = OpDeleteOne
-	return &ChecksymptomsDeleteOne{builder}
+	return &ChecksymptomDeleteOne{builder}
 }
 
-// Query returns a query builder for Checksymptoms.
-func (c *ChecksymptomsClient) Query() *ChecksymptomsQuery {
-	return &ChecksymptomsQuery{config: c.config}
+// Query returns a query builder for Checksymptom.
+func (c *ChecksymptomClient) Query() *ChecksymptomQuery {
+	return &ChecksymptomQuery{config: c.config}
 }
 
-// Get returns a Checksymptoms entity by its id.
-func (c *ChecksymptomsClient) Get(ctx context.Context, id int) (*Checksymptoms, error) {
-	return c.Query().Where(checksymptoms.ID(id)).Only(ctx)
+// Get returns a Checksymptom entity by its id.
+func (c *ChecksymptomClient) Get(ctx context.Context, id int) (*Checksymptom, error) {
+	return c.Query().Where(checksymptom.ID(id)).Only(ctx)
 }
 
 // GetX is like Get, but panics if an error occurs.
-func (c *ChecksymptomsClient) GetX(ctx context.Context, id int) *Checksymptoms {
+func (c *ChecksymptomClient) GetX(ctx context.Context, id int) *Checksymptom {
 	obj, err := c.Get(ctx, id)
 	if err != nil {
 		panic(err)
@@ -600,31 +600,15 @@ func (c *ChecksymptomsClient) GetX(ctx context.Context, id int) *Checksymptoms {
 	return obj
 }
 
-// QueryDisease queries the disease edge of a Checksymptoms.
-func (c *ChecksymptomsClient) QueryDisease(ch *Checksymptoms) *DiseaseQuery {
-	query := &DiseaseQuery{config: c.config}
-	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
-		id := ch.ID
-		step := sqlgraph.NewStep(
-			sqlgraph.From(checksymptoms.Table, checksymptoms.FieldID, id),
-			sqlgraph.To(disease.Table, disease.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, checksymptoms.DiseaseTable, checksymptoms.DiseaseColumn),
-		)
-		fromV = sqlgraph.Neighbors(ch.driver.Dialect(), step)
-		return fromV, nil
-	}
-	return query
-}
-
-// QueryPatient queries the patient edge of a Checksymptoms.
-func (c *ChecksymptomsClient) QueryPatient(ch *Checksymptoms) *PatientQuery {
+// QueryPatient queries the patient edge of a Checksymptom.
+func (c *ChecksymptomClient) QueryPatient(ch *Checksymptom) *PatientQuery {
 	query := &PatientQuery{config: c.config}
 	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
 		id := ch.ID
 		step := sqlgraph.NewStep(
-			sqlgraph.From(checksymptoms.Table, checksymptoms.FieldID, id),
+			sqlgraph.From(checksymptom.Table, checksymptom.FieldID, id),
 			sqlgraph.To(patient.Table, patient.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, checksymptoms.PatientTable, checksymptoms.PatientColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, checksymptom.PatientTable, checksymptom.PatientColumn),
 		)
 		fromV = sqlgraph.Neighbors(ch.driver.Dialect(), step)
 		return fromV, nil
@@ -632,15 +616,15 @@ func (c *ChecksymptomsClient) QueryPatient(ch *Checksymptoms) *PatientQuery {
 	return query
 }
 
-// QueryPersonnel queries the personnel edge of a Checksymptoms.
-func (c *ChecksymptomsClient) QueryPersonnel(ch *Checksymptoms) *PersonnelQuery {
+// QueryPersonnel queries the personnel edge of a Checksymptom.
+func (c *ChecksymptomClient) QueryPersonnel(ch *Checksymptom) *PersonnelQuery {
 	query := &PersonnelQuery{config: c.config}
 	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
 		id := ch.ID
 		step := sqlgraph.NewStep(
-			sqlgraph.From(checksymptoms.Table, checksymptoms.FieldID, id),
+			sqlgraph.From(checksymptom.Table, checksymptom.FieldID, id),
 			sqlgraph.To(personnel.Table, personnel.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, checksymptoms.PersonnelTable, checksymptoms.PersonnelColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, checksymptom.PersonnelTable, checksymptom.PersonnelColumn),
 		)
 		fromV = sqlgraph.Neighbors(ch.driver.Dialect(), step)
 		return fromV, nil
@@ -648,15 +632,31 @@ func (c *ChecksymptomsClient) QueryPersonnel(ch *Checksymptoms) *PersonnelQuery 
 	return query
 }
 
-// QueryDoctorordersheet queries the doctorordersheet edge of a Checksymptoms.
-func (c *ChecksymptomsClient) QueryDoctorordersheet(ch *Checksymptoms) *DoctorOrderSheetQuery {
-	query := &DoctorOrderSheetQuery{config: c.config}
+// QueryDoctorordersheet queries the doctorordersheet edge of a Checksymptom.
+func (c *ChecksymptomClient) QueryDoctorordersheet(ch *Checksymptom) *DoctorordersheetQuery {
+	query := &DoctorordersheetQuery{config: c.config}
 	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
 		id := ch.ID
 		step := sqlgraph.NewStep(
-			sqlgraph.From(checksymptoms.Table, checksymptoms.FieldID, id),
+			sqlgraph.From(checksymptom.Table, checksymptom.FieldID, id),
 			sqlgraph.To(doctorordersheet.Table, doctorordersheet.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, checksymptoms.DoctorordersheetTable, checksymptoms.DoctorordersheetColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, checksymptom.DoctorordersheetTable, checksymptom.DoctorordersheetColumn),
+		)
+		fromV = sqlgraph.Neighbors(ch.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryDisease queries the disease edge of a Checksymptom.
+func (c *ChecksymptomClient) QueryDisease(ch *Checksymptom) *DiseaseQuery {
+	query := &DiseaseQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := ch.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(checksymptom.Table, checksymptom.FieldID, id),
+			sqlgraph.To(disease.Table, disease.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, checksymptom.DiseaseTable, checksymptom.DiseaseColumn),
 		)
 		fromV = sqlgraph.Neighbors(ch.driver.Dialect(), step)
 		return fromV, nil
@@ -665,8 +665,8 @@ func (c *ChecksymptomsClient) QueryDoctorordersheet(ch *Checksymptoms) *DoctorOr
 }
 
 // Hooks returns the client hooks.
-func (c *ChecksymptomsClient) Hooks() []Hook {
-	return c.hooks.Checksymptoms
+func (c *ChecksymptomClient) Hooks() []Hook {
+	return c.hooks.Checksymptom
 }
 
 // DentalappointmentClient is a client for the Dentalappointment schema.
@@ -992,15 +992,15 @@ func (c *DiseaseClient) GetX(ctx context.Context, id int) *Disease {
 	return obj
 }
 
-// QueryChecksymptoms queries the Checksymptoms edge of a Disease.
-func (c *DiseaseClient) QueryChecksymptoms(d *Disease) *ChecksymptomsQuery {
-	query := &ChecksymptomsQuery{config: c.config}
+// QueryChecksymptom queries the Checksymptom edge of a Disease.
+func (c *DiseaseClient) QueryChecksymptom(d *Disease) *ChecksymptomQuery {
+	query := &ChecksymptomQuery{config: c.config}
 	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
 		id := d.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(disease.Table, disease.FieldID, id),
-			sqlgraph.To(checksymptoms.Table, checksymptoms.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, disease.ChecksymptomsTable, disease.ChecksymptomsColumn),
+			sqlgraph.To(checksymptom.Table, checksymptom.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, disease.ChecksymptomTable, disease.ChecksymptomColumn),
 		)
 		fromV = sqlgraph.Neighbors(d.driver.Dialect(), step)
 		return fromV, nil
@@ -1013,82 +1013,82 @@ func (c *DiseaseClient) Hooks() []Hook {
 	return c.hooks.Disease
 }
 
-// DoctorOrderSheetClient is a client for the DoctorOrderSheet schema.
-type DoctorOrderSheetClient struct {
+// DoctorordersheetClient is a client for the Doctorordersheet schema.
+type DoctorordersheetClient struct {
 	config
 }
 
-// NewDoctorOrderSheetClient returns a client for the DoctorOrderSheet from the given config.
-func NewDoctorOrderSheetClient(c config) *DoctorOrderSheetClient {
-	return &DoctorOrderSheetClient{config: c}
+// NewDoctorordersheetClient returns a client for the Doctorordersheet from the given config.
+func NewDoctorordersheetClient(c config) *DoctorordersheetClient {
+	return &DoctorordersheetClient{config: c}
 }
 
 // Use adds a list of mutation hooks to the hooks stack.
 // A call to `Use(f, g, h)` equals to `doctorordersheet.Hooks(f(g(h())))`.
-func (c *DoctorOrderSheetClient) Use(hooks ...Hook) {
-	c.hooks.DoctorOrderSheet = append(c.hooks.DoctorOrderSheet, hooks...)
+func (c *DoctorordersheetClient) Use(hooks ...Hook) {
+	c.hooks.Doctorordersheet = append(c.hooks.Doctorordersheet, hooks...)
 }
 
-// Create returns a create builder for DoctorOrderSheet.
-func (c *DoctorOrderSheetClient) Create() *DoctorOrderSheetCreate {
-	mutation := newDoctorOrderSheetMutation(c.config, OpCreate)
-	return &DoctorOrderSheetCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+// Create returns a create builder for Doctorordersheet.
+func (c *DoctorordersheetClient) Create() *DoctorordersheetCreate {
+	mutation := newDoctorordersheetMutation(c.config, OpCreate)
+	return &DoctorordersheetCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
-// CreateBulk returns a builder for creating a bulk of DoctorOrderSheet entities.
-func (c *DoctorOrderSheetClient) CreateBulk(builders ...*DoctorOrderSheetCreate) *DoctorOrderSheetCreateBulk {
-	return &DoctorOrderSheetCreateBulk{config: c.config, builders: builders}
+// CreateBulk returns a builder for creating a bulk of Doctorordersheet entities.
+func (c *DoctorordersheetClient) CreateBulk(builders ...*DoctorordersheetCreate) *DoctorordersheetCreateBulk {
+	return &DoctorordersheetCreateBulk{config: c.config, builders: builders}
 }
 
-// Update returns an update builder for DoctorOrderSheet.
-func (c *DoctorOrderSheetClient) Update() *DoctorOrderSheetUpdate {
-	mutation := newDoctorOrderSheetMutation(c.config, OpUpdate)
-	return &DoctorOrderSheetUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+// Update returns an update builder for Doctorordersheet.
+func (c *DoctorordersheetClient) Update() *DoctorordersheetUpdate {
+	mutation := newDoctorordersheetMutation(c.config, OpUpdate)
+	return &DoctorordersheetUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
 // UpdateOne returns an update builder for the given entity.
-func (c *DoctorOrderSheetClient) UpdateOne(dos *DoctorOrderSheet) *DoctorOrderSheetUpdateOne {
-	mutation := newDoctorOrderSheetMutation(c.config, OpUpdateOne, withDoctorOrderSheet(dos))
-	return &DoctorOrderSheetUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+func (c *DoctorordersheetClient) UpdateOne(d *Doctorordersheet) *DoctorordersheetUpdateOne {
+	mutation := newDoctorordersheetMutation(c.config, OpUpdateOne, withDoctorordersheet(d))
+	return &DoctorordersheetUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
 // UpdateOneID returns an update builder for the given id.
-func (c *DoctorOrderSheetClient) UpdateOneID(id int) *DoctorOrderSheetUpdateOne {
-	mutation := newDoctorOrderSheetMutation(c.config, OpUpdateOne, withDoctorOrderSheetID(id))
-	return &DoctorOrderSheetUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+func (c *DoctorordersheetClient) UpdateOneID(id int) *DoctorordersheetUpdateOne {
+	mutation := newDoctorordersheetMutation(c.config, OpUpdateOne, withDoctorordersheetID(id))
+	return &DoctorordersheetUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
-// Delete returns a delete builder for DoctorOrderSheet.
-func (c *DoctorOrderSheetClient) Delete() *DoctorOrderSheetDelete {
-	mutation := newDoctorOrderSheetMutation(c.config, OpDelete)
-	return &DoctorOrderSheetDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+// Delete returns a delete builder for Doctorordersheet.
+func (c *DoctorordersheetClient) Delete() *DoctorordersheetDelete {
+	mutation := newDoctorordersheetMutation(c.config, OpDelete)
+	return &DoctorordersheetDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
 // DeleteOne returns a delete builder for the given entity.
-func (c *DoctorOrderSheetClient) DeleteOne(dos *DoctorOrderSheet) *DoctorOrderSheetDeleteOne {
-	return c.DeleteOneID(dos.ID)
+func (c *DoctorordersheetClient) DeleteOne(d *Doctorordersheet) *DoctorordersheetDeleteOne {
+	return c.DeleteOneID(d.ID)
 }
 
 // DeleteOneID returns a delete builder for the given id.
-func (c *DoctorOrderSheetClient) DeleteOneID(id int) *DoctorOrderSheetDeleteOne {
+func (c *DoctorordersheetClient) DeleteOneID(id int) *DoctorordersheetDeleteOne {
 	builder := c.Delete().Where(doctorordersheet.ID(id))
 	builder.mutation.id = &id
 	builder.mutation.op = OpDeleteOne
-	return &DoctorOrderSheetDeleteOne{builder}
+	return &DoctorordersheetDeleteOne{builder}
 }
 
-// Query returns a query builder for DoctorOrderSheet.
-func (c *DoctorOrderSheetClient) Query() *DoctorOrderSheetQuery {
-	return &DoctorOrderSheetQuery{config: c.config}
+// Query returns a query builder for Doctorordersheet.
+func (c *DoctorordersheetClient) Query() *DoctorordersheetQuery {
+	return &DoctorordersheetQuery{config: c.config}
 }
 
-// Get returns a DoctorOrderSheet entity by its id.
-func (c *DoctorOrderSheetClient) Get(ctx context.Context, id int) (*DoctorOrderSheet, error) {
+// Get returns a Doctorordersheet entity by its id.
+func (c *DoctorordersheetClient) Get(ctx context.Context, id int) (*Doctorordersheet, error) {
 	return c.Query().Where(doctorordersheet.ID(id)).Only(ctx)
 }
 
 // GetX is like Get, but panics if an error occurs.
-func (c *DoctorOrderSheetClient) GetX(ctx context.Context, id int) *DoctorOrderSheet {
+func (c *DoctorordersheetClient) GetX(ctx context.Context, id int) *Doctorordersheet {
 	obj, err := c.Get(ctx, id)
 	if err != nil {
 		panic(err)
@@ -1096,25 +1096,25 @@ func (c *DoctorOrderSheetClient) GetX(ctx context.Context, id int) *DoctorOrderS
 	return obj
 }
 
-// QueryChecksymptoms queries the Checksymptoms edge of a DoctorOrderSheet.
-func (c *DoctorOrderSheetClient) QueryChecksymptoms(dos *DoctorOrderSheet) *ChecksymptomsQuery {
-	query := &ChecksymptomsQuery{config: c.config}
+// QueryChecksymptom queries the Checksymptom edge of a Doctorordersheet.
+func (c *DoctorordersheetClient) QueryChecksymptom(d *Doctorordersheet) *ChecksymptomQuery {
+	query := &ChecksymptomQuery{config: c.config}
 	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
-		id := dos.ID
+		id := d.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(doctorordersheet.Table, doctorordersheet.FieldID, id),
-			sqlgraph.To(checksymptoms.Table, checksymptoms.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, doctorordersheet.ChecksymptomsTable, doctorordersheet.ChecksymptomsColumn),
+			sqlgraph.To(checksymptom.Table, checksymptom.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, doctorordersheet.ChecksymptomTable, doctorordersheet.ChecksymptomColumn),
 		)
-		fromV = sqlgraph.Neighbors(dos.driver.Dialect(), step)
+		fromV = sqlgraph.Neighbors(d.driver.Dialect(), step)
 		return fromV, nil
 	}
 	return query
 }
 
 // Hooks returns the client hooks.
-func (c *DoctorOrderSheetClient) Hooks() []Hook {
-	return c.hooks.DoctorOrderSheet
+func (c *DoctorordersheetClient) Hooks() []Hook {
+	return c.hooks.Doctorordersheet
 }
 
 // PatientClient is a client for the Patient schema.
@@ -1232,15 +1232,15 @@ func (c *PatientClient) QueryBonedisease(pa *Patient) *BonediseaseQuery {
 	return query
 }
 
-// QueryChecksymptoms queries the Checksymptoms edge of a Patient.
-func (c *PatientClient) QueryChecksymptoms(pa *Patient) *ChecksymptomsQuery {
-	query := &ChecksymptomsQuery{config: c.config}
+// QueryChecksymptom queries the Checksymptom edge of a Patient.
+func (c *PatientClient) QueryChecksymptom(pa *Patient) *ChecksymptomQuery {
+	query := &ChecksymptomQuery{config: c.config}
 	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
 		id := pa.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(patient.Table, patient.FieldID, id),
-			sqlgraph.To(checksymptoms.Table, checksymptoms.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, patient.ChecksymptomsTable, patient.ChecksymptomsColumn),
+			sqlgraph.To(checksymptom.Table, checksymptom.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, patient.ChecksymptomTable, patient.ChecksymptomColumn),
 		)
 		fromV = sqlgraph.Neighbors(pa.driver.Dialect(), step)
 		return fromV, nil
@@ -1416,15 +1416,15 @@ func (c *PersonnelClient) QueryBonedisease(pe *Personnel) *BonediseaseQuery {
 	return query
 }
 
-// QueryChecksymptoms queries the Checksymptoms edge of a Personnel.
-func (c *PersonnelClient) QueryChecksymptoms(pe *Personnel) *ChecksymptomsQuery {
-	query := &ChecksymptomsQuery{config: c.config}
+// QueryChecksymptom queries the Checksymptom edge of a Personnel.
+func (c *PersonnelClient) QueryChecksymptom(pe *Personnel) *ChecksymptomQuery {
+	query := &ChecksymptomQuery{config: c.config}
 	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
 		id := pe.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(personnel.Table, personnel.FieldID, id),
-			sqlgraph.To(checksymptoms.Table, checksymptoms.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, personnel.ChecksymptomsTable, personnel.ChecksymptomsColumn),
+			sqlgraph.To(checksymptom.Table, checksymptom.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, personnel.ChecksymptomTable, personnel.ChecksymptomColumn),
 		)
 		fromV = sqlgraph.Neighbors(pe.driver.Dialect(), step)
 		return fromV, nil

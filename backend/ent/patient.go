@@ -32,8 +32,8 @@ type PatientEdges struct {
 	Physicaltherapyrecord []*Physicaltherapyrecord
 	// Bonedisease holds the value of the Bonedisease edge.
 	Bonedisease []*Bonedisease
-	// Checksymptoms holds the value of the Checksymptoms edge.
-	Checksymptoms []*Checksymptoms
+	// Checksymptom holds the value of the Checksymptom edge.
+	Checksymptom []*Checksymptom
 	// Dentalappointment holds the value of the Dentalappointment edge.
 	Dentalappointment []*Dentalappointment
 	// Surgeryappointment holds the value of the Surgeryappointment edge.
@@ -63,13 +63,13 @@ func (e PatientEdges) BonediseaseOrErr() ([]*Bonedisease, error) {
 	return nil, &NotLoadedError{edge: "Bonedisease"}
 }
 
-// ChecksymptomsOrErr returns the Checksymptoms value or an error if the edge
+// ChecksymptomOrErr returns the Checksymptom value or an error if the edge
 // was not loaded in eager-loading.
-func (e PatientEdges) ChecksymptomsOrErr() ([]*Checksymptoms, error) {
+func (e PatientEdges) ChecksymptomOrErr() ([]*Checksymptom, error) {
 	if e.loadedTypes[2] {
-		return e.Checksymptoms, nil
+		return e.Checksymptom, nil
 	}
-	return nil, &NotLoadedError{edge: "Checksymptoms"}
+	return nil, &NotLoadedError{edge: "Checksymptom"}
 }
 
 // DentalappointmentOrErr returns the Dentalappointment value or an error if the edge
@@ -162,9 +162,9 @@ func (pa *Patient) QueryBonedisease() *BonediseaseQuery {
 	return (&PatientClient{config: pa.config}).QueryBonedisease(pa)
 }
 
-// QueryChecksymptoms queries the "Checksymptoms" edge of the Patient entity.
-func (pa *Patient) QueryChecksymptoms() *ChecksymptomsQuery {
-	return (&PatientClient{config: pa.config}).QueryChecksymptoms(pa)
+// QueryChecksymptom queries the "Checksymptom" edge of the Patient entity.
+func (pa *Patient) QueryChecksymptom() *ChecksymptomQuery {
+	return (&PatientClient{config: pa.config}).QueryChecksymptom(pa)
 }
 
 // QueryDentalappointment queries the "Dentalappointment" edge of the Patient entity.

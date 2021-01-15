@@ -10,7 +10,7 @@ import (
 
 	"github.com/to63/app/ent/antenatalinformation"
 	"github.com/to63/app/ent/bonedisease"
-	"github.com/to63/app/ent/checksymptoms"
+	"github.com/to63/app/ent/checksymptom"
 	"github.com/to63/app/ent/dentalappointment"
 	"github.com/to63/app/ent/dentalkind"
 	"github.com/to63/app/ent/disease"
@@ -41,11 +41,11 @@ const (
 	// Node types.
 	TypeAntenatalinformation  = "Antenatalinformation"
 	TypeBonedisease           = "Bonedisease"
-	TypeChecksymptoms         = "Checksymptoms"
+	TypeChecksymptom          = "Checksymptom"
 	TypeDentalappointment     = "Dentalappointment"
 	TypeDentalkind            = "Dentalkind"
 	TypeDisease               = "Disease"
-	TypeDoctorOrderSheet      = "DoctorOrderSheet"
+	TypeDoctorordersheet      = "Doctorordersheet"
 	TypePatient               = "Patient"
 	TypePersonnel             = "Personnel"
 	TypePhysicaltherapyrecord = "Physicaltherapyrecord"
@@ -1209,38 +1209,40 @@ func (m *BonediseaseMutation) ResetEdge(name string) error {
 	return fmt.Errorf("unknown Bonedisease edge %s", name)
 }
 
-// ChecksymptomsMutation represents an operation that mutates the Checksymptoms nodes in the graph.
-type ChecksymptomsMutation struct {
+// ChecksymptomMutation represents an operation that mutates the Checksymptom nodes in the graph.
+type ChecksymptomMutation struct {
 	config
 	op                      Op
 	typ                     string
 	id                      *int
 	date                    *time.Time
+	times                   *string
+	note                    *string
 	clearedFields           map[string]struct{}
-	disease                 *int
-	cleareddisease          bool
 	patient                 *int
 	clearedpatient          bool
 	personnel               *int
 	clearedpersonnel        bool
 	doctorordersheet        *int
 	cleareddoctorordersheet bool
+	disease                 *int
+	cleareddisease          bool
 	done                    bool
-	oldValue                func(context.Context) (*Checksymptoms, error)
-	predicates              []predicate.Checksymptoms
+	oldValue                func(context.Context) (*Checksymptom, error)
+	predicates              []predicate.Checksymptom
 }
 
-var _ ent.Mutation = (*ChecksymptomsMutation)(nil)
+var _ ent.Mutation = (*ChecksymptomMutation)(nil)
 
-// checksymptomsOption allows management of the mutation configuration using functional options.
-type checksymptomsOption func(*ChecksymptomsMutation)
+// checksymptomOption allows management of the mutation configuration using functional options.
+type checksymptomOption func(*ChecksymptomMutation)
 
-// newChecksymptomsMutation creates new mutation for the Checksymptoms entity.
-func newChecksymptomsMutation(c config, op Op, opts ...checksymptomsOption) *ChecksymptomsMutation {
-	m := &ChecksymptomsMutation{
+// newChecksymptomMutation creates new mutation for the Checksymptom entity.
+func newChecksymptomMutation(c config, op Op, opts ...checksymptomOption) *ChecksymptomMutation {
+	m := &ChecksymptomMutation{
 		config:        c,
 		op:            op,
-		typ:           TypeChecksymptoms,
+		typ:           TypeChecksymptom,
 		clearedFields: make(map[string]struct{}),
 	}
 	for _, opt := range opts {
@@ -1249,20 +1251,20 @@ func newChecksymptomsMutation(c config, op Op, opts ...checksymptomsOption) *Che
 	return m
 }
 
-// withChecksymptomsID sets the ID field of the mutation.
-func withChecksymptomsID(id int) checksymptomsOption {
-	return func(m *ChecksymptomsMutation) {
+// withChecksymptomID sets the ID field of the mutation.
+func withChecksymptomID(id int) checksymptomOption {
+	return func(m *ChecksymptomMutation) {
 		var (
 			err   error
 			once  sync.Once
-			value *Checksymptoms
+			value *Checksymptom
 		)
-		m.oldValue = func(ctx context.Context) (*Checksymptoms, error) {
+		m.oldValue = func(ctx context.Context) (*Checksymptom, error) {
 			once.Do(func() {
 				if m.done {
 					err = fmt.Errorf("querying old values post mutation is not allowed")
 				} else {
-					value, err = m.Client().Checksymptoms.Get(ctx, id)
+					value, err = m.Client().Checksymptom.Get(ctx, id)
 				}
 			})
 			return value, err
@@ -1271,10 +1273,10 @@ func withChecksymptomsID(id int) checksymptomsOption {
 	}
 }
 
-// withChecksymptoms sets the old Checksymptoms of the mutation.
-func withChecksymptoms(node *Checksymptoms) checksymptomsOption {
-	return func(m *ChecksymptomsMutation) {
-		m.oldValue = func(context.Context) (*Checksymptoms, error) {
+// withChecksymptom sets the old Checksymptom of the mutation.
+func withChecksymptom(node *Checksymptom) checksymptomOption {
+	return func(m *ChecksymptomMutation) {
+		m.oldValue = func(context.Context) (*Checksymptom, error) {
 			return node, nil
 		}
 		m.id = &node.ID
@@ -1283,7 +1285,7 @@ func withChecksymptoms(node *Checksymptoms) checksymptomsOption {
 
 // Client returns a new `ent.Client` from the mutation. If the mutation was
 // executed in a transaction (ent.Tx), a transactional client is returned.
-func (m ChecksymptomsMutation) Client() *Client {
+func (m ChecksymptomMutation) Client() *Client {
 	client := &Client{config: m.config}
 	client.init()
 	return client
@@ -1291,7 +1293,7 @@ func (m ChecksymptomsMutation) Client() *Client {
 
 // Tx returns an `ent.Tx` for mutations that were executed in transactions;
 // it returns an error otherwise.
-func (m ChecksymptomsMutation) Tx() (*Tx, error) {
+func (m ChecksymptomMutation) Tx() (*Tx, error) {
 	if _, ok := m.driver.(*txDriver); !ok {
 		return nil, fmt.Errorf("ent: mutation is not running in a transaction")
 	}
@@ -1302,7 +1304,7 @@ func (m ChecksymptomsMutation) Tx() (*Tx, error) {
 
 // ID returns the ID value in the mutation. Note that the ID
 // is only available if it was provided to the builder.
-func (m *ChecksymptomsMutation) ID() (id int, exists bool) {
+func (m *ChecksymptomMutation) ID() (id int, exists bool) {
 	if m.id == nil {
 		return
 	}
@@ -1310,12 +1312,12 @@ func (m *ChecksymptomsMutation) ID() (id int, exists bool) {
 }
 
 // SetDate sets the "date" field.
-func (m *ChecksymptomsMutation) SetDate(t time.Time) {
+func (m *ChecksymptomMutation) SetDate(t time.Time) {
 	m.date = &t
 }
 
 // Date returns the value of the "date" field in the mutation.
-func (m *ChecksymptomsMutation) Date() (r time.Time, exists bool) {
+func (m *ChecksymptomMutation) Date() (r time.Time, exists bool) {
 	v := m.date
 	if v == nil {
 		return
@@ -1323,10 +1325,10 @@ func (m *ChecksymptomsMutation) Date() (r time.Time, exists bool) {
 	return *v, true
 }
 
-// OldDate returns the old "date" field's value of the Checksymptoms entity.
-// If the Checksymptoms object wasn't provided to the builder, the object is fetched from the database.
+// OldDate returns the old "date" field's value of the Checksymptom entity.
+// If the Checksymptom object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ChecksymptomsMutation) OldDate(ctx context.Context) (v time.Time, err error) {
+func (m *ChecksymptomMutation) OldDate(ctx context.Context) (v time.Time, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, fmt.Errorf("OldDate is only allowed on UpdateOne operations")
 	}
@@ -1341,66 +1343,99 @@ func (m *ChecksymptomsMutation) OldDate(ctx context.Context) (v time.Time, err e
 }
 
 // ResetDate resets all changes to the "date" field.
-func (m *ChecksymptomsMutation) ResetDate() {
+func (m *ChecksymptomMutation) ResetDate() {
 	m.date = nil
 }
 
-// SetDiseaseID sets the "disease" edge to the Disease entity by id.
-func (m *ChecksymptomsMutation) SetDiseaseID(id int) {
-	m.disease = &id
+// SetTimes sets the "times" field.
+func (m *ChecksymptomMutation) SetTimes(s string) {
+	m.times = &s
 }
 
-// ClearDisease clears the "disease" edge to the Disease entity.
-func (m *ChecksymptomsMutation) ClearDisease() {
-	m.cleareddisease = true
-}
-
-// DiseaseCleared returns if the "disease" edge to the Disease entity was cleared.
-func (m *ChecksymptomsMutation) DiseaseCleared() bool {
-	return m.cleareddisease
-}
-
-// DiseaseID returns the "disease" edge ID in the mutation.
-func (m *ChecksymptomsMutation) DiseaseID() (id int, exists bool) {
-	if m.disease != nil {
-		return *m.disease, true
+// Times returns the value of the "times" field in the mutation.
+func (m *ChecksymptomMutation) Times() (r string, exists bool) {
+	v := m.times
+	if v == nil {
+		return
 	}
-	return
+	return *v, true
 }
 
-// DiseaseIDs returns the "disease" edge IDs in the mutation.
-// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
-// DiseaseID instead. It exists only for internal usage by the builders.
-func (m *ChecksymptomsMutation) DiseaseIDs() (ids []int) {
-	if id := m.disease; id != nil {
-		ids = append(ids, *id)
+// OldTimes returns the old "times" field's value of the Checksymptom entity.
+// If the Checksymptom object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ChecksymptomMutation) OldTimes(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldTimes is only allowed on UpdateOne operations")
 	}
-	return
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldTimes requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldTimes: %w", err)
+	}
+	return oldValue.Times, nil
 }
 
-// ResetDisease resets all changes to the "disease" edge.
-func (m *ChecksymptomsMutation) ResetDisease() {
-	m.disease = nil
-	m.cleareddisease = false
+// ResetTimes resets all changes to the "times" field.
+func (m *ChecksymptomMutation) ResetTimes() {
+	m.times = nil
+}
+
+// SetNote sets the "note" field.
+func (m *ChecksymptomMutation) SetNote(s string) {
+	m.note = &s
+}
+
+// Note returns the value of the "note" field in the mutation.
+func (m *ChecksymptomMutation) Note() (r string, exists bool) {
+	v := m.note
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldNote returns the old "note" field's value of the Checksymptom entity.
+// If the Checksymptom object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ChecksymptomMutation) OldNote(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldNote is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldNote requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldNote: %w", err)
+	}
+	return oldValue.Note, nil
+}
+
+// ResetNote resets all changes to the "note" field.
+func (m *ChecksymptomMutation) ResetNote() {
+	m.note = nil
 }
 
 // SetPatientID sets the "patient" edge to the Patient entity by id.
-func (m *ChecksymptomsMutation) SetPatientID(id int) {
+func (m *ChecksymptomMutation) SetPatientID(id int) {
 	m.patient = &id
 }
 
 // ClearPatient clears the "patient" edge to the Patient entity.
-func (m *ChecksymptomsMutation) ClearPatient() {
+func (m *ChecksymptomMutation) ClearPatient() {
 	m.clearedpatient = true
 }
 
 // PatientCleared returns if the "patient" edge to the Patient entity was cleared.
-func (m *ChecksymptomsMutation) PatientCleared() bool {
+func (m *ChecksymptomMutation) PatientCleared() bool {
 	return m.clearedpatient
 }
 
 // PatientID returns the "patient" edge ID in the mutation.
-func (m *ChecksymptomsMutation) PatientID() (id int, exists bool) {
+func (m *ChecksymptomMutation) PatientID() (id int, exists bool) {
 	if m.patient != nil {
 		return *m.patient, true
 	}
@@ -1410,7 +1445,7 @@ func (m *ChecksymptomsMutation) PatientID() (id int, exists bool) {
 // PatientIDs returns the "patient" edge IDs in the mutation.
 // Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
 // PatientID instead. It exists only for internal usage by the builders.
-func (m *ChecksymptomsMutation) PatientIDs() (ids []int) {
+func (m *ChecksymptomMutation) PatientIDs() (ids []int) {
 	if id := m.patient; id != nil {
 		ids = append(ids, *id)
 	}
@@ -1418,28 +1453,28 @@ func (m *ChecksymptomsMutation) PatientIDs() (ids []int) {
 }
 
 // ResetPatient resets all changes to the "patient" edge.
-func (m *ChecksymptomsMutation) ResetPatient() {
+func (m *ChecksymptomMutation) ResetPatient() {
 	m.patient = nil
 	m.clearedpatient = false
 }
 
 // SetPersonnelID sets the "personnel" edge to the Personnel entity by id.
-func (m *ChecksymptomsMutation) SetPersonnelID(id int) {
+func (m *ChecksymptomMutation) SetPersonnelID(id int) {
 	m.personnel = &id
 }
 
 // ClearPersonnel clears the "personnel" edge to the Personnel entity.
-func (m *ChecksymptomsMutation) ClearPersonnel() {
+func (m *ChecksymptomMutation) ClearPersonnel() {
 	m.clearedpersonnel = true
 }
 
 // PersonnelCleared returns if the "personnel" edge to the Personnel entity was cleared.
-func (m *ChecksymptomsMutation) PersonnelCleared() bool {
+func (m *ChecksymptomMutation) PersonnelCleared() bool {
 	return m.clearedpersonnel
 }
 
 // PersonnelID returns the "personnel" edge ID in the mutation.
-func (m *ChecksymptomsMutation) PersonnelID() (id int, exists bool) {
+func (m *ChecksymptomMutation) PersonnelID() (id int, exists bool) {
 	if m.personnel != nil {
 		return *m.personnel, true
 	}
@@ -1449,7 +1484,7 @@ func (m *ChecksymptomsMutation) PersonnelID() (id int, exists bool) {
 // PersonnelIDs returns the "personnel" edge IDs in the mutation.
 // Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
 // PersonnelID instead. It exists only for internal usage by the builders.
-func (m *ChecksymptomsMutation) PersonnelIDs() (ids []int) {
+func (m *ChecksymptomMutation) PersonnelIDs() (ids []int) {
 	if id := m.personnel; id != nil {
 		ids = append(ids, *id)
 	}
@@ -1457,28 +1492,28 @@ func (m *ChecksymptomsMutation) PersonnelIDs() (ids []int) {
 }
 
 // ResetPersonnel resets all changes to the "personnel" edge.
-func (m *ChecksymptomsMutation) ResetPersonnel() {
+func (m *ChecksymptomMutation) ResetPersonnel() {
 	m.personnel = nil
 	m.clearedpersonnel = false
 }
 
-// SetDoctorordersheetID sets the "doctorordersheet" edge to the DoctorOrderSheet entity by id.
-func (m *ChecksymptomsMutation) SetDoctorordersheetID(id int) {
+// SetDoctorordersheetID sets the "doctorordersheet" edge to the Doctorordersheet entity by id.
+func (m *ChecksymptomMutation) SetDoctorordersheetID(id int) {
 	m.doctorordersheet = &id
 }
 
-// ClearDoctorordersheet clears the "doctorordersheet" edge to the DoctorOrderSheet entity.
-func (m *ChecksymptomsMutation) ClearDoctorordersheet() {
+// ClearDoctorordersheet clears the "doctorordersheet" edge to the Doctorordersheet entity.
+func (m *ChecksymptomMutation) ClearDoctorordersheet() {
 	m.cleareddoctorordersheet = true
 }
 
-// DoctorordersheetCleared returns if the "doctorordersheet" edge to the DoctorOrderSheet entity was cleared.
-func (m *ChecksymptomsMutation) DoctorordersheetCleared() bool {
+// DoctorordersheetCleared returns if the "doctorordersheet" edge to the Doctorordersheet entity was cleared.
+func (m *ChecksymptomMutation) DoctorordersheetCleared() bool {
 	return m.cleareddoctorordersheet
 }
 
 // DoctorordersheetID returns the "doctorordersheet" edge ID in the mutation.
-func (m *ChecksymptomsMutation) DoctorordersheetID() (id int, exists bool) {
+func (m *ChecksymptomMutation) DoctorordersheetID() (id int, exists bool) {
 	if m.doctorordersheet != nil {
 		return *m.doctorordersheet, true
 	}
@@ -1488,7 +1523,7 @@ func (m *ChecksymptomsMutation) DoctorordersheetID() (id int, exists bool) {
 // DoctorordersheetIDs returns the "doctorordersheet" edge IDs in the mutation.
 // Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
 // DoctorordersheetID instead. It exists only for internal usage by the builders.
-func (m *ChecksymptomsMutation) DoctorordersheetIDs() (ids []int) {
+func (m *ChecksymptomMutation) DoctorordersheetIDs() (ids []int) {
 	if id := m.doctorordersheet; id != nil {
 		ids = append(ids, *id)
 	}
@@ -1496,28 +1531,73 @@ func (m *ChecksymptomsMutation) DoctorordersheetIDs() (ids []int) {
 }
 
 // ResetDoctorordersheet resets all changes to the "doctorordersheet" edge.
-func (m *ChecksymptomsMutation) ResetDoctorordersheet() {
+func (m *ChecksymptomMutation) ResetDoctorordersheet() {
 	m.doctorordersheet = nil
 	m.cleareddoctorordersheet = false
 }
 
+// SetDiseaseID sets the "disease" edge to the Disease entity by id.
+func (m *ChecksymptomMutation) SetDiseaseID(id int) {
+	m.disease = &id
+}
+
+// ClearDisease clears the "disease" edge to the Disease entity.
+func (m *ChecksymptomMutation) ClearDisease() {
+	m.cleareddisease = true
+}
+
+// DiseaseCleared returns if the "disease" edge to the Disease entity was cleared.
+func (m *ChecksymptomMutation) DiseaseCleared() bool {
+	return m.cleareddisease
+}
+
+// DiseaseID returns the "disease" edge ID in the mutation.
+func (m *ChecksymptomMutation) DiseaseID() (id int, exists bool) {
+	if m.disease != nil {
+		return *m.disease, true
+	}
+	return
+}
+
+// DiseaseIDs returns the "disease" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// DiseaseID instead. It exists only for internal usage by the builders.
+func (m *ChecksymptomMutation) DiseaseIDs() (ids []int) {
+	if id := m.disease; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetDisease resets all changes to the "disease" edge.
+func (m *ChecksymptomMutation) ResetDisease() {
+	m.disease = nil
+	m.cleareddisease = false
+}
+
 // Op returns the operation name.
-func (m *ChecksymptomsMutation) Op() Op {
+func (m *ChecksymptomMutation) Op() Op {
 	return m.op
 }
 
-// Type returns the node type of this mutation (Checksymptoms).
-func (m *ChecksymptomsMutation) Type() string {
+// Type returns the node type of this mutation (Checksymptom).
+func (m *ChecksymptomMutation) Type() string {
 	return m.typ
 }
 
 // Fields returns all fields that were changed during this mutation. Note that in
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
-func (m *ChecksymptomsMutation) Fields() []string {
-	fields := make([]string, 0, 1)
+func (m *ChecksymptomMutation) Fields() []string {
+	fields := make([]string, 0, 3)
 	if m.date != nil {
-		fields = append(fields, checksymptoms.FieldDate)
+		fields = append(fields, checksymptom.FieldDate)
+	}
+	if m.times != nil {
+		fields = append(fields, checksymptom.FieldTimes)
+	}
+	if m.note != nil {
+		fields = append(fields, checksymptom.FieldNote)
 	}
 	return fields
 }
@@ -1525,10 +1605,14 @@ func (m *ChecksymptomsMutation) Fields() []string {
 // Field returns the value of a field with the given name. The second boolean
 // return value indicates that this field was not set, or was not defined in the
 // schema.
-func (m *ChecksymptomsMutation) Field(name string) (ent.Value, bool) {
+func (m *ChecksymptomMutation) Field(name string) (ent.Value, bool) {
 	switch name {
-	case checksymptoms.FieldDate:
+	case checksymptom.FieldDate:
 		return m.Date()
+	case checksymptom.FieldTimes:
+		return m.Times()
+	case checksymptom.FieldNote:
+		return m.Note()
 	}
 	return nil, false
 }
@@ -1536,118 +1620,142 @@ func (m *ChecksymptomsMutation) Field(name string) (ent.Value, bool) {
 // OldField returns the old value of the field from the database. An error is
 // returned if the mutation operation is not UpdateOne, or the query to the
 // database failed.
-func (m *ChecksymptomsMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+func (m *ChecksymptomMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
 	switch name {
-	case checksymptoms.FieldDate:
+	case checksymptom.FieldDate:
 		return m.OldDate(ctx)
+	case checksymptom.FieldTimes:
+		return m.OldTimes(ctx)
+	case checksymptom.FieldNote:
+		return m.OldNote(ctx)
 	}
-	return nil, fmt.Errorf("unknown Checksymptoms field %s", name)
+	return nil, fmt.Errorf("unknown Checksymptom field %s", name)
 }
 
 // SetField sets the value of a field with the given name. It returns an error if
 // the field is not defined in the schema, or if the type mismatched the field
 // type.
-func (m *ChecksymptomsMutation) SetField(name string, value ent.Value) error {
+func (m *ChecksymptomMutation) SetField(name string, value ent.Value) error {
 	switch name {
-	case checksymptoms.FieldDate:
+	case checksymptom.FieldDate:
 		v, ok := value.(time.Time)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetDate(v)
 		return nil
+	case checksymptom.FieldTimes:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetTimes(v)
+		return nil
+	case checksymptom.FieldNote:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetNote(v)
+		return nil
 	}
-	return fmt.Errorf("unknown Checksymptoms field %s", name)
+	return fmt.Errorf("unknown Checksymptom field %s", name)
 }
 
 // AddedFields returns all numeric fields that were incremented/decremented during
 // this mutation.
-func (m *ChecksymptomsMutation) AddedFields() []string {
+func (m *ChecksymptomMutation) AddedFields() []string {
 	return nil
 }
 
 // AddedField returns the numeric value that was incremented/decremented on a field
 // with the given name. The second boolean return value indicates that this field
 // was not set, or was not defined in the schema.
-func (m *ChecksymptomsMutation) AddedField(name string) (ent.Value, bool) {
+func (m *ChecksymptomMutation) AddedField(name string) (ent.Value, bool) {
 	return nil, false
 }
 
 // AddField adds the value to the field with the given name. It returns an error if
 // the field is not defined in the schema, or if the type mismatched the field
 // type.
-func (m *ChecksymptomsMutation) AddField(name string, value ent.Value) error {
+func (m *ChecksymptomMutation) AddField(name string, value ent.Value) error {
 	switch name {
 	}
-	return fmt.Errorf("unknown Checksymptoms numeric field %s", name)
+	return fmt.Errorf("unknown Checksymptom numeric field %s", name)
 }
 
 // ClearedFields returns all nullable fields that were cleared during this
 // mutation.
-func (m *ChecksymptomsMutation) ClearedFields() []string {
+func (m *ChecksymptomMutation) ClearedFields() []string {
 	return nil
 }
 
 // FieldCleared returns a boolean indicating if a field with the given name was
 // cleared in this mutation.
-func (m *ChecksymptomsMutation) FieldCleared(name string) bool {
+func (m *ChecksymptomMutation) FieldCleared(name string) bool {
 	_, ok := m.clearedFields[name]
 	return ok
 }
 
 // ClearField clears the value of the field with the given name. It returns an
 // error if the field is not defined in the schema.
-func (m *ChecksymptomsMutation) ClearField(name string) error {
-	return fmt.Errorf("unknown Checksymptoms nullable field %s", name)
+func (m *ChecksymptomMutation) ClearField(name string) error {
+	return fmt.Errorf("unknown Checksymptom nullable field %s", name)
 }
 
 // ResetField resets all changes in the mutation for the field with the given name.
 // It returns an error if the field is not defined in the schema.
-func (m *ChecksymptomsMutation) ResetField(name string) error {
+func (m *ChecksymptomMutation) ResetField(name string) error {
 	switch name {
-	case checksymptoms.FieldDate:
+	case checksymptom.FieldDate:
 		m.ResetDate()
 		return nil
+	case checksymptom.FieldTimes:
+		m.ResetTimes()
+		return nil
+	case checksymptom.FieldNote:
+		m.ResetNote()
+		return nil
 	}
-	return fmt.Errorf("unknown Checksymptoms field %s", name)
+	return fmt.Errorf("unknown Checksymptom field %s", name)
 }
 
 // AddedEdges returns all edge names that were set/added in this mutation.
-func (m *ChecksymptomsMutation) AddedEdges() []string {
+func (m *ChecksymptomMutation) AddedEdges() []string {
 	edges := make([]string, 0, 4)
-	if m.disease != nil {
-		edges = append(edges, checksymptoms.EdgeDisease)
-	}
 	if m.patient != nil {
-		edges = append(edges, checksymptoms.EdgePatient)
+		edges = append(edges, checksymptom.EdgePatient)
 	}
 	if m.personnel != nil {
-		edges = append(edges, checksymptoms.EdgePersonnel)
+		edges = append(edges, checksymptom.EdgePersonnel)
 	}
 	if m.doctorordersheet != nil {
-		edges = append(edges, checksymptoms.EdgeDoctorordersheet)
+		edges = append(edges, checksymptom.EdgeDoctorordersheet)
+	}
+	if m.disease != nil {
+		edges = append(edges, checksymptom.EdgeDisease)
 	}
 	return edges
 }
 
 // AddedIDs returns all IDs (to other nodes) that were added for the given edge
 // name in this mutation.
-func (m *ChecksymptomsMutation) AddedIDs(name string) []ent.Value {
+func (m *ChecksymptomMutation) AddedIDs(name string) []ent.Value {
 	switch name {
-	case checksymptoms.EdgeDisease:
-		if id := m.disease; id != nil {
-			return []ent.Value{*id}
-		}
-	case checksymptoms.EdgePatient:
+	case checksymptom.EdgePatient:
 		if id := m.patient; id != nil {
 			return []ent.Value{*id}
 		}
-	case checksymptoms.EdgePersonnel:
+	case checksymptom.EdgePersonnel:
 		if id := m.personnel; id != nil {
 			return []ent.Value{*id}
 		}
-	case checksymptoms.EdgeDoctorordersheet:
+	case checksymptom.EdgeDoctorordersheet:
 		if id := m.doctorordersheet; id != nil {
+			return []ent.Value{*id}
+		}
+	case checksymptom.EdgeDisease:
+		if id := m.disease; id != nil {
 			return []ent.Value{*id}
 		}
 	}
@@ -1655,91 +1763,91 @@ func (m *ChecksymptomsMutation) AddedIDs(name string) []ent.Value {
 }
 
 // RemovedEdges returns all edge names that were removed in this mutation.
-func (m *ChecksymptomsMutation) RemovedEdges() []string {
+func (m *ChecksymptomMutation) RemovedEdges() []string {
 	edges := make([]string, 0, 4)
 	return edges
 }
 
 // RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
 // the given name in this mutation.
-func (m *ChecksymptomsMutation) RemovedIDs(name string) []ent.Value {
+func (m *ChecksymptomMutation) RemovedIDs(name string) []ent.Value {
 	switch name {
 	}
 	return nil
 }
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
-func (m *ChecksymptomsMutation) ClearedEdges() []string {
+func (m *ChecksymptomMutation) ClearedEdges() []string {
 	edges := make([]string, 0, 4)
-	if m.cleareddisease {
-		edges = append(edges, checksymptoms.EdgeDisease)
-	}
 	if m.clearedpatient {
-		edges = append(edges, checksymptoms.EdgePatient)
+		edges = append(edges, checksymptom.EdgePatient)
 	}
 	if m.clearedpersonnel {
-		edges = append(edges, checksymptoms.EdgePersonnel)
+		edges = append(edges, checksymptom.EdgePersonnel)
 	}
 	if m.cleareddoctorordersheet {
-		edges = append(edges, checksymptoms.EdgeDoctorordersheet)
+		edges = append(edges, checksymptom.EdgeDoctorordersheet)
+	}
+	if m.cleareddisease {
+		edges = append(edges, checksymptom.EdgeDisease)
 	}
 	return edges
 }
 
 // EdgeCleared returns a boolean which indicates if the edge with the given name
 // was cleared in this mutation.
-func (m *ChecksymptomsMutation) EdgeCleared(name string) bool {
+func (m *ChecksymptomMutation) EdgeCleared(name string) bool {
 	switch name {
-	case checksymptoms.EdgeDisease:
-		return m.cleareddisease
-	case checksymptoms.EdgePatient:
+	case checksymptom.EdgePatient:
 		return m.clearedpatient
-	case checksymptoms.EdgePersonnel:
+	case checksymptom.EdgePersonnel:
 		return m.clearedpersonnel
-	case checksymptoms.EdgeDoctorordersheet:
+	case checksymptom.EdgeDoctorordersheet:
 		return m.cleareddoctorordersheet
+	case checksymptom.EdgeDisease:
+		return m.cleareddisease
 	}
 	return false
 }
 
 // ClearEdge clears the value of the edge with the given name. It returns an error
 // if that edge is not defined in the schema.
-func (m *ChecksymptomsMutation) ClearEdge(name string) error {
+func (m *ChecksymptomMutation) ClearEdge(name string) error {
 	switch name {
-	case checksymptoms.EdgeDisease:
-		m.ClearDisease()
-		return nil
-	case checksymptoms.EdgePatient:
+	case checksymptom.EdgePatient:
 		m.ClearPatient()
 		return nil
-	case checksymptoms.EdgePersonnel:
+	case checksymptom.EdgePersonnel:
 		m.ClearPersonnel()
 		return nil
-	case checksymptoms.EdgeDoctorordersheet:
+	case checksymptom.EdgeDoctorordersheet:
 		m.ClearDoctorordersheet()
 		return nil
+	case checksymptom.EdgeDisease:
+		m.ClearDisease()
+		return nil
 	}
-	return fmt.Errorf("unknown Checksymptoms unique edge %s", name)
+	return fmt.Errorf("unknown Checksymptom unique edge %s", name)
 }
 
 // ResetEdge resets all changes to the edge with the given name in this mutation.
 // It returns an error if the edge is not defined in the schema.
-func (m *ChecksymptomsMutation) ResetEdge(name string) error {
+func (m *ChecksymptomMutation) ResetEdge(name string) error {
 	switch name {
-	case checksymptoms.EdgeDisease:
-		m.ResetDisease()
-		return nil
-	case checksymptoms.EdgePatient:
+	case checksymptom.EdgePatient:
 		m.ResetPatient()
 		return nil
-	case checksymptoms.EdgePersonnel:
+	case checksymptom.EdgePersonnel:
 		m.ResetPersonnel()
 		return nil
-	case checksymptoms.EdgeDoctorordersheet:
+	case checksymptom.EdgeDoctorordersheet:
 		m.ResetDoctorordersheet()
 		return nil
+	case checksymptom.EdgeDisease:
+		m.ResetDisease()
+		return nil
 	}
-	return fmt.Errorf("unknown Checksymptoms edge %s", name)
+	return fmt.Errorf("unknown Checksymptom edge %s", name)
 }
 
 // DentalappointmentMutation represents an operation that mutates the Dentalappointment nodes in the graph.
@@ -2598,17 +2706,17 @@ func (m *DentalkindMutation) ResetEdge(name string) error {
 // DiseaseMutation represents an operation that mutates the Disease nodes in the graph.
 type DiseaseMutation struct {
 	config
-	op                    Op
-	typ                   string
-	id                    *int
-	name                  *string
-	clearedFields         map[string]struct{}
-	_Checksymptoms        map[int]struct{}
-	removed_Checksymptoms map[int]struct{}
-	cleared_Checksymptoms bool
-	done                  bool
-	oldValue              func(context.Context) (*Disease, error)
-	predicates            []predicate.Disease
+	op                   Op
+	typ                  string
+	id                   *int
+	disease              *string
+	clearedFields        map[string]struct{}
+	_Checksymptom        map[int]struct{}
+	removed_Checksymptom map[int]struct{}
+	cleared_Checksymptom bool
+	done                 bool
+	oldValue             func(context.Context) (*Disease, error)
+	predicates           []predicate.Disease
 }
 
 var _ ent.Mutation = (*DiseaseMutation)(nil)
@@ -2690,93 +2798,93 @@ func (m *DiseaseMutation) ID() (id int, exists bool) {
 	return *m.id, true
 }
 
-// SetName sets the "name" field.
-func (m *DiseaseMutation) SetName(s string) {
-	m.name = &s
+// SetDisease sets the "disease" field.
+func (m *DiseaseMutation) SetDisease(s string) {
+	m.disease = &s
 }
 
-// Name returns the value of the "name" field in the mutation.
-func (m *DiseaseMutation) Name() (r string, exists bool) {
-	v := m.name
+// Disease returns the value of the "disease" field in the mutation.
+func (m *DiseaseMutation) Disease() (r string, exists bool) {
+	v := m.disease
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldName returns the old "name" field's value of the Disease entity.
+// OldDisease returns the old "disease" field's value of the Disease entity.
 // If the Disease object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *DiseaseMutation) OldName(ctx context.Context) (v string, err error) {
+func (m *DiseaseMutation) OldDisease(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, fmt.Errorf("OldName is only allowed on UpdateOne operations")
+		return v, fmt.Errorf("OldDisease is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, fmt.Errorf("OldName requires an ID field in the mutation")
+		return v, fmt.Errorf("OldDisease requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldName: %w", err)
+		return v, fmt.Errorf("querying old value for OldDisease: %w", err)
 	}
-	return oldValue.Name, nil
+	return oldValue.Disease, nil
 }
 
-// ResetName resets all changes to the "name" field.
-func (m *DiseaseMutation) ResetName() {
-	m.name = nil
+// ResetDisease resets all changes to the "disease" field.
+func (m *DiseaseMutation) ResetDisease() {
+	m.disease = nil
 }
 
-// AddChecksymptomIDs adds the "Checksymptoms" edge to the Checksymptoms entity by ids.
+// AddChecksymptomIDs adds the "Checksymptom" edge to the Checksymptom entity by ids.
 func (m *DiseaseMutation) AddChecksymptomIDs(ids ...int) {
-	if m._Checksymptoms == nil {
-		m._Checksymptoms = make(map[int]struct{})
+	if m._Checksymptom == nil {
+		m._Checksymptom = make(map[int]struct{})
 	}
 	for i := range ids {
-		m._Checksymptoms[ids[i]] = struct{}{}
+		m._Checksymptom[ids[i]] = struct{}{}
 	}
 }
 
-// ClearChecksymptoms clears the "Checksymptoms" edge to the Checksymptoms entity.
-func (m *DiseaseMutation) ClearChecksymptoms() {
-	m.cleared_Checksymptoms = true
+// ClearChecksymptom clears the "Checksymptom" edge to the Checksymptom entity.
+func (m *DiseaseMutation) ClearChecksymptom() {
+	m.cleared_Checksymptom = true
 }
 
-// ChecksymptomsCleared returns if the "Checksymptoms" edge to the Checksymptoms entity was cleared.
-func (m *DiseaseMutation) ChecksymptomsCleared() bool {
-	return m.cleared_Checksymptoms
+// ChecksymptomCleared returns if the "Checksymptom" edge to the Checksymptom entity was cleared.
+func (m *DiseaseMutation) ChecksymptomCleared() bool {
+	return m.cleared_Checksymptom
 }
 
-// RemoveChecksymptomIDs removes the "Checksymptoms" edge to the Checksymptoms entity by IDs.
+// RemoveChecksymptomIDs removes the "Checksymptom" edge to the Checksymptom entity by IDs.
 func (m *DiseaseMutation) RemoveChecksymptomIDs(ids ...int) {
-	if m.removed_Checksymptoms == nil {
-		m.removed_Checksymptoms = make(map[int]struct{})
+	if m.removed_Checksymptom == nil {
+		m.removed_Checksymptom = make(map[int]struct{})
 	}
 	for i := range ids {
-		m.removed_Checksymptoms[ids[i]] = struct{}{}
+		m.removed_Checksymptom[ids[i]] = struct{}{}
 	}
 }
 
-// RemovedChecksymptoms returns the removed IDs of the "Checksymptoms" edge to the Checksymptoms entity.
-func (m *DiseaseMutation) RemovedChecksymptomsIDs() (ids []int) {
-	for id := range m.removed_Checksymptoms {
+// RemovedChecksymptom returns the removed IDs of the "Checksymptom" edge to the Checksymptom entity.
+func (m *DiseaseMutation) RemovedChecksymptomIDs() (ids []int) {
+	for id := range m.removed_Checksymptom {
 		ids = append(ids, id)
 	}
 	return
 }
 
-// ChecksymptomsIDs returns the "Checksymptoms" edge IDs in the mutation.
-func (m *DiseaseMutation) ChecksymptomsIDs() (ids []int) {
-	for id := range m._Checksymptoms {
+// ChecksymptomIDs returns the "Checksymptom" edge IDs in the mutation.
+func (m *DiseaseMutation) ChecksymptomIDs() (ids []int) {
+	for id := range m._Checksymptom {
 		ids = append(ids, id)
 	}
 	return
 }
 
-// ResetChecksymptoms resets all changes to the "Checksymptoms" edge.
-func (m *DiseaseMutation) ResetChecksymptoms() {
-	m._Checksymptoms = nil
-	m.cleared_Checksymptoms = false
-	m.removed_Checksymptoms = nil
+// ResetChecksymptom resets all changes to the "Checksymptom" edge.
+func (m *DiseaseMutation) ResetChecksymptom() {
+	m._Checksymptom = nil
+	m.cleared_Checksymptom = false
+	m.removed_Checksymptom = nil
 }
 
 // Op returns the operation name.
@@ -2794,8 +2902,8 @@ func (m *DiseaseMutation) Type() string {
 // AddedFields().
 func (m *DiseaseMutation) Fields() []string {
 	fields := make([]string, 0, 1)
-	if m.name != nil {
-		fields = append(fields, disease.FieldName)
+	if m.disease != nil {
+		fields = append(fields, disease.FieldDisease)
 	}
 	return fields
 }
@@ -2805,8 +2913,8 @@ func (m *DiseaseMutation) Fields() []string {
 // schema.
 func (m *DiseaseMutation) Field(name string) (ent.Value, bool) {
 	switch name {
-	case disease.FieldName:
-		return m.Name()
+	case disease.FieldDisease:
+		return m.Disease()
 	}
 	return nil, false
 }
@@ -2816,8 +2924,8 @@ func (m *DiseaseMutation) Field(name string) (ent.Value, bool) {
 // database failed.
 func (m *DiseaseMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
 	switch name {
-	case disease.FieldName:
-		return m.OldName(ctx)
+	case disease.FieldDisease:
+		return m.OldDisease(ctx)
 	}
 	return nil, fmt.Errorf("unknown Disease field %s", name)
 }
@@ -2827,12 +2935,12 @@ func (m *DiseaseMutation) OldField(ctx context.Context, name string) (ent.Value,
 // type.
 func (m *DiseaseMutation) SetField(name string, value ent.Value) error {
 	switch name {
-	case disease.FieldName:
+	case disease.FieldDisease:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetName(v)
+		m.SetDisease(v)
 		return nil
 	}
 	return fmt.Errorf("unknown Disease field %s", name)
@@ -2883,8 +2991,8 @@ func (m *DiseaseMutation) ClearField(name string) error {
 // It returns an error if the field is not defined in the schema.
 func (m *DiseaseMutation) ResetField(name string) error {
 	switch name {
-	case disease.FieldName:
-		m.ResetName()
+	case disease.FieldDisease:
+		m.ResetDisease()
 		return nil
 	}
 	return fmt.Errorf("unknown Disease field %s", name)
@@ -2893,8 +3001,8 @@ func (m *DiseaseMutation) ResetField(name string) error {
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *DiseaseMutation) AddedEdges() []string {
 	edges := make([]string, 0, 1)
-	if m._Checksymptoms != nil {
-		edges = append(edges, disease.EdgeChecksymptoms)
+	if m._Checksymptom != nil {
+		edges = append(edges, disease.EdgeChecksymptom)
 	}
 	return edges
 }
@@ -2903,9 +3011,9 @@ func (m *DiseaseMutation) AddedEdges() []string {
 // name in this mutation.
 func (m *DiseaseMutation) AddedIDs(name string) []ent.Value {
 	switch name {
-	case disease.EdgeChecksymptoms:
-		ids := make([]ent.Value, 0, len(m._Checksymptoms))
-		for id := range m._Checksymptoms {
+	case disease.EdgeChecksymptom:
+		ids := make([]ent.Value, 0, len(m._Checksymptom))
+		for id := range m._Checksymptom {
 			ids = append(ids, id)
 		}
 		return ids
@@ -2916,8 +3024,8 @@ func (m *DiseaseMutation) AddedIDs(name string) []ent.Value {
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *DiseaseMutation) RemovedEdges() []string {
 	edges := make([]string, 0, 1)
-	if m.removed_Checksymptoms != nil {
-		edges = append(edges, disease.EdgeChecksymptoms)
+	if m.removed_Checksymptom != nil {
+		edges = append(edges, disease.EdgeChecksymptom)
 	}
 	return edges
 }
@@ -2926,9 +3034,9 @@ func (m *DiseaseMutation) RemovedEdges() []string {
 // the given name in this mutation.
 func (m *DiseaseMutation) RemovedIDs(name string) []ent.Value {
 	switch name {
-	case disease.EdgeChecksymptoms:
-		ids := make([]ent.Value, 0, len(m.removed_Checksymptoms))
-		for id := range m.removed_Checksymptoms {
+	case disease.EdgeChecksymptom:
+		ids := make([]ent.Value, 0, len(m.removed_Checksymptom))
+		for id := range m.removed_Checksymptom {
 			ids = append(ids, id)
 		}
 		return ids
@@ -2939,8 +3047,8 @@ func (m *DiseaseMutation) RemovedIDs(name string) []ent.Value {
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *DiseaseMutation) ClearedEdges() []string {
 	edges := make([]string, 0, 1)
-	if m.cleared_Checksymptoms {
-		edges = append(edges, disease.EdgeChecksymptoms)
+	if m.cleared_Checksymptom {
+		edges = append(edges, disease.EdgeChecksymptom)
 	}
 	return edges
 }
@@ -2949,8 +3057,8 @@ func (m *DiseaseMutation) ClearedEdges() []string {
 // was cleared in this mutation.
 func (m *DiseaseMutation) EdgeCleared(name string) bool {
 	switch name {
-	case disease.EdgeChecksymptoms:
-		return m.cleared_Checksymptoms
+	case disease.EdgeChecksymptom:
+		return m.cleared_Checksymptom
 	}
 	return false
 }
@@ -2967,42 +3075,40 @@ func (m *DiseaseMutation) ClearEdge(name string) error {
 // It returns an error if the edge is not defined in the schema.
 func (m *DiseaseMutation) ResetEdge(name string) error {
 	switch name {
-	case disease.EdgeChecksymptoms:
-		m.ResetChecksymptoms()
+	case disease.EdgeChecksymptom:
+		m.ResetChecksymptom()
 		return nil
 	}
 	return fmt.Errorf("unknown Disease edge %s", name)
 }
 
-// DoctorOrderSheetMutation represents an operation that mutates the DoctorOrderSheet nodes in the graph.
-type DoctorOrderSheetMutation struct {
+// DoctorordersheetMutation represents an operation that mutates the Doctorordersheet nodes in the graph.
+type DoctorordersheetMutation struct {
 	config
-	op                    Op
-	typ                   string
-	id                    *int
-	_Name                 *string
-	time                  *string
-	note                  *string
-	clearedFields         map[string]struct{}
-	_Checksymptoms        map[int]struct{}
-	removed_Checksymptoms map[int]struct{}
-	cleared_Checksymptoms bool
-	done                  bool
-	oldValue              func(context.Context) (*DoctorOrderSheet, error)
-	predicates            []predicate.DoctorOrderSheet
+	op                   Op
+	typ                  string
+	id                   *int
+	_Name                *string
+	clearedFields        map[string]struct{}
+	_Checksymptom        map[int]struct{}
+	removed_Checksymptom map[int]struct{}
+	cleared_Checksymptom bool
+	done                 bool
+	oldValue             func(context.Context) (*Doctorordersheet, error)
+	predicates           []predicate.Doctorordersheet
 }
 
-var _ ent.Mutation = (*DoctorOrderSheetMutation)(nil)
+var _ ent.Mutation = (*DoctorordersheetMutation)(nil)
 
 // doctorordersheetOption allows management of the mutation configuration using functional options.
-type doctorordersheetOption func(*DoctorOrderSheetMutation)
+type doctorordersheetOption func(*DoctorordersheetMutation)
 
-// newDoctorOrderSheetMutation creates new mutation for the DoctorOrderSheet entity.
-func newDoctorOrderSheetMutation(c config, op Op, opts ...doctorordersheetOption) *DoctorOrderSheetMutation {
-	m := &DoctorOrderSheetMutation{
+// newDoctorordersheetMutation creates new mutation for the Doctorordersheet entity.
+func newDoctorordersheetMutation(c config, op Op, opts ...doctorordersheetOption) *DoctorordersheetMutation {
+	m := &DoctorordersheetMutation{
 		config:        c,
 		op:            op,
-		typ:           TypeDoctorOrderSheet,
+		typ:           TypeDoctorordersheet,
 		clearedFields: make(map[string]struct{}),
 	}
 	for _, opt := range opts {
@@ -3011,20 +3117,20 @@ func newDoctorOrderSheetMutation(c config, op Op, opts ...doctorordersheetOption
 	return m
 }
 
-// withDoctorOrderSheetID sets the ID field of the mutation.
-func withDoctorOrderSheetID(id int) doctorordersheetOption {
-	return func(m *DoctorOrderSheetMutation) {
+// withDoctorordersheetID sets the ID field of the mutation.
+func withDoctorordersheetID(id int) doctorordersheetOption {
+	return func(m *DoctorordersheetMutation) {
 		var (
 			err   error
 			once  sync.Once
-			value *DoctorOrderSheet
+			value *Doctorordersheet
 		)
-		m.oldValue = func(ctx context.Context) (*DoctorOrderSheet, error) {
+		m.oldValue = func(ctx context.Context) (*Doctorordersheet, error) {
 			once.Do(func() {
 				if m.done {
 					err = fmt.Errorf("querying old values post mutation is not allowed")
 				} else {
-					value, err = m.Client().DoctorOrderSheet.Get(ctx, id)
+					value, err = m.Client().Doctorordersheet.Get(ctx, id)
 				}
 			})
 			return value, err
@@ -3033,10 +3139,10 @@ func withDoctorOrderSheetID(id int) doctorordersheetOption {
 	}
 }
 
-// withDoctorOrderSheet sets the old DoctorOrderSheet of the mutation.
-func withDoctorOrderSheet(node *DoctorOrderSheet) doctorordersheetOption {
-	return func(m *DoctorOrderSheetMutation) {
-		m.oldValue = func(context.Context) (*DoctorOrderSheet, error) {
+// withDoctorordersheet sets the old Doctorordersheet of the mutation.
+func withDoctorordersheet(node *Doctorordersheet) doctorordersheetOption {
+	return func(m *DoctorordersheetMutation) {
+		m.oldValue = func(context.Context) (*Doctorordersheet, error) {
 			return node, nil
 		}
 		m.id = &node.ID
@@ -3045,7 +3151,7 @@ func withDoctorOrderSheet(node *DoctorOrderSheet) doctorordersheetOption {
 
 // Client returns a new `ent.Client` from the mutation. If the mutation was
 // executed in a transaction (ent.Tx), a transactional client is returned.
-func (m DoctorOrderSheetMutation) Client() *Client {
+func (m DoctorordersheetMutation) Client() *Client {
 	client := &Client{config: m.config}
 	client.init()
 	return client
@@ -3053,7 +3159,7 @@ func (m DoctorOrderSheetMutation) Client() *Client {
 
 // Tx returns an `ent.Tx` for mutations that were executed in transactions;
 // it returns an error otherwise.
-func (m DoctorOrderSheetMutation) Tx() (*Tx, error) {
+func (m DoctorordersheetMutation) Tx() (*Tx, error) {
 	if _, ok := m.driver.(*txDriver); !ok {
 		return nil, fmt.Errorf("ent: mutation is not running in a transaction")
 	}
@@ -3064,7 +3170,7 @@ func (m DoctorOrderSheetMutation) Tx() (*Tx, error) {
 
 // ID returns the ID value in the mutation. Note that the ID
 // is only available if it was provided to the builder.
-func (m *DoctorOrderSheetMutation) ID() (id int, exists bool) {
+func (m *DoctorordersheetMutation) ID() (id int, exists bool) {
 	if m.id == nil {
 		return
 	}
@@ -3072,12 +3178,12 @@ func (m *DoctorOrderSheetMutation) ID() (id int, exists bool) {
 }
 
 // SetName sets the "Name" field.
-func (m *DoctorOrderSheetMutation) SetName(s string) {
+func (m *DoctorordersheetMutation) SetName(s string) {
 	m._Name = &s
 }
 
 // Name returns the value of the "Name" field in the mutation.
-func (m *DoctorOrderSheetMutation) Name() (r string, exists bool) {
+func (m *DoctorordersheetMutation) Name() (r string, exists bool) {
 	v := m._Name
 	if v == nil {
 		return
@@ -3085,10 +3191,10 @@ func (m *DoctorOrderSheetMutation) Name() (r string, exists bool) {
 	return *v, true
 }
 
-// OldName returns the old "Name" field's value of the DoctorOrderSheet entity.
-// If the DoctorOrderSheet object wasn't provided to the builder, the object is fetched from the database.
+// OldName returns the old "Name" field's value of the Doctorordersheet entity.
+// If the Doctorordersheet object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *DoctorOrderSheetMutation) OldName(ctx context.Context) (v string, err error) {
+func (m *DoctorordersheetMutation) OldName(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, fmt.Errorf("OldName is only allowed on UpdateOne operations")
 	}
@@ -3103,158 +3209,80 @@ func (m *DoctorOrderSheetMutation) OldName(ctx context.Context) (v string, err e
 }
 
 // ResetName resets all changes to the "Name" field.
-func (m *DoctorOrderSheetMutation) ResetName() {
+func (m *DoctorordersheetMutation) ResetName() {
 	m._Name = nil
 }
 
-// SetTime sets the "time" field.
-func (m *DoctorOrderSheetMutation) SetTime(s string) {
-	m.time = &s
-}
-
-// Time returns the value of the "time" field in the mutation.
-func (m *DoctorOrderSheetMutation) Time() (r string, exists bool) {
-	v := m.time
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldTime returns the old "time" field's value of the DoctorOrderSheet entity.
-// If the DoctorOrderSheet object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *DoctorOrderSheetMutation) OldTime(ctx context.Context) (v string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, fmt.Errorf("OldTime is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, fmt.Errorf("OldTime requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldTime: %w", err)
-	}
-	return oldValue.Time, nil
-}
-
-// ResetTime resets all changes to the "time" field.
-func (m *DoctorOrderSheetMutation) ResetTime() {
-	m.time = nil
-}
-
-// SetNote sets the "note" field.
-func (m *DoctorOrderSheetMutation) SetNote(s string) {
-	m.note = &s
-}
-
-// Note returns the value of the "note" field in the mutation.
-func (m *DoctorOrderSheetMutation) Note() (r string, exists bool) {
-	v := m.note
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldNote returns the old "note" field's value of the DoctorOrderSheet entity.
-// If the DoctorOrderSheet object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *DoctorOrderSheetMutation) OldNote(ctx context.Context) (v string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, fmt.Errorf("OldNote is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, fmt.Errorf("OldNote requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldNote: %w", err)
-	}
-	return oldValue.Note, nil
-}
-
-// ResetNote resets all changes to the "note" field.
-func (m *DoctorOrderSheetMutation) ResetNote() {
-	m.note = nil
-}
-
-// AddChecksymptomIDs adds the "Checksymptoms" edge to the Checksymptoms entity by ids.
-func (m *DoctorOrderSheetMutation) AddChecksymptomIDs(ids ...int) {
-	if m._Checksymptoms == nil {
-		m._Checksymptoms = make(map[int]struct{})
+// AddChecksymptomIDs adds the "Checksymptom" edge to the Checksymptom entity by ids.
+func (m *DoctorordersheetMutation) AddChecksymptomIDs(ids ...int) {
+	if m._Checksymptom == nil {
+		m._Checksymptom = make(map[int]struct{})
 	}
 	for i := range ids {
-		m._Checksymptoms[ids[i]] = struct{}{}
+		m._Checksymptom[ids[i]] = struct{}{}
 	}
 }
 
-// ClearChecksymptoms clears the "Checksymptoms" edge to the Checksymptoms entity.
-func (m *DoctorOrderSheetMutation) ClearChecksymptoms() {
-	m.cleared_Checksymptoms = true
+// ClearChecksymptom clears the "Checksymptom" edge to the Checksymptom entity.
+func (m *DoctorordersheetMutation) ClearChecksymptom() {
+	m.cleared_Checksymptom = true
 }
 
-// ChecksymptomsCleared returns if the "Checksymptoms" edge to the Checksymptoms entity was cleared.
-func (m *DoctorOrderSheetMutation) ChecksymptomsCleared() bool {
-	return m.cleared_Checksymptoms
+// ChecksymptomCleared returns if the "Checksymptom" edge to the Checksymptom entity was cleared.
+func (m *DoctorordersheetMutation) ChecksymptomCleared() bool {
+	return m.cleared_Checksymptom
 }
 
-// RemoveChecksymptomIDs removes the "Checksymptoms" edge to the Checksymptoms entity by IDs.
-func (m *DoctorOrderSheetMutation) RemoveChecksymptomIDs(ids ...int) {
-	if m.removed_Checksymptoms == nil {
-		m.removed_Checksymptoms = make(map[int]struct{})
+// RemoveChecksymptomIDs removes the "Checksymptom" edge to the Checksymptom entity by IDs.
+func (m *DoctorordersheetMutation) RemoveChecksymptomIDs(ids ...int) {
+	if m.removed_Checksymptom == nil {
+		m.removed_Checksymptom = make(map[int]struct{})
 	}
 	for i := range ids {
-		m.removed_Checksymptoms[ids[i]] = struct{}{}
+		m.removed_Checksymptom[ids[i]] = struct{}{}
 	}
 }
 
-// RemovedChecksymptoms returns the removed IDs of the "Checksymptoms" edge to the Checksymptoms entity.
-func (m *DoctorOrderSheetMutation) RemovedChecksymptomsIDs() (ids []int) {
-	for id := range m.removed_Checksymptoms {
+// RemovedChecksymptom returns the removed IDs of the "Checksymptom" edge to the Checksymptom entity.
+func (m *DoctorordersheetMutation) RemovedChecksymptomIDs() (ids []int) {
+	for id := range m.removed_Checksymptom {
 		ids = append(ids, id)
 	}
 	return
 }
 
-// ChecksymptomsIDs returns the "Checksymptoms" edge IDs in the mutation.
-func (m *DoctorOrderSheetMutation) ChecksymptomsIDs() (ids []int) {
-	for id := range m._Checksymptoms {
+// ChecksymptomIDs returns the "Checksymptom" edge IDs in the mutation.
+func (m *DoctorordersheetMutation) ChecksymptomIDs() (ids []int) {
+	for id := range m._Checksymptom {
 		ids = append(ids, id)
 	}
 	return
 }
 
-// ResetChecksymptoms resets all changes to the "Checksymptoms" edge.
-func (m *DoctorOrderSheetMutation) ResetChecksymptoms() {
-	m._Checksymptoms = nil
-	m.cleared_Checksymptoms = false
-	m.removed_Checksymptoms = nil
+// ResetChecksymptom resets all changes to the "Checksymptom" edge.
+func (m *DoctorordersheetMutation) ResetChecksymptom() {
+	m._Checksymptom = nil
+	m.cleared_Checksymptom = false
+	m.removed_Checksymptom = nil
 }
 
 // Op returns the operation name.
-func (m *DoctorOrderSheetMutation) Op() Op {
+func (m *DoctorordersheetMutation) Op() Op {
 	return m.op
 }
 
-// Type returns the node type of this mutation (DoctorOrderSheet).
-func (m *DoctorOrderSheetMutation) Type() string {
+// Type returns the node type of this mutation (Doctorordersheet).
+func (m *DoctorordersheetMutation) Type() string {
 	return m.typ
 }
 
 // Fields returns all fields that were changed during this mutation. Note that in
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
-func (m *DoctorOrderSheetMutation) Fields() []string {
-	fields := make([]string, 0, 3)
+func (m *DoctorordersheetMutation) Fields() []string {
+	fields := make([]string, 0, 1)
 	if m._Name != nil {
 		fields = append(fields, doctorordersheet.FieldName)
-	}
-	if m.time != nil {
-		fields = append(fields, doctorordersheet.FieldTime)
-	}
-	if m.note != nil {
-		fields = append(fields, doctorordersheet.FieldNote)
 	}
 	return fields
 }
@@ -3262,14 +3290,10 @@ func (m *DoctorOrderSheetMutation) Fields() []string {
 // Field returns the value of a field with the given name. The second boolean
 // return value indicates that this field was not set, or was not defined in the
 // schema.
-func (m *DoctorOrderSheetMutation) Field(name string) (ent.Value, bool) {
+func (m *DoctorordersheetMutation) Field(name string) (ent.Value, bool) {
 	switch name {
 	case doctorordersheet.FieldName:
 		return m.Name()
-	case doctorordersheet.FieldTime:
-		return m.Time()
-	case doctorordersheet.FieldNote:
-		return m.Note()
 	}
 	return nil, false
 }
@@ -3277,22 +3301,18 @@ func (m *DoctorOrderSheetMutation) Field(name string) (ent.Value, bool) {
 // OldField returns the old value of the field from the database. An error is
 // returned if the mutation operation is not UpdateOne, or the query to the
 // database failed.
-func (m *DoctorOrderSheetMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+func (m *DoctorordersheetMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
 	switch name {
 	case doctorordersheet.FieldName:
 		return m.OldName(ctx)
-	case doctorordersheet.FieldTime:
-		return m.OldTime(ctx)
-	case doctorordersheet.FieldNote:
-		return m.OldNote(ctx)
 	}
-	return nil, fmt.Errorf("unknown DoctorOrderSheet field %s", name)
+	return nil, fmt.Errorf("unknown Doctorordersheet field %s", name)
 }
 
 // SetField sets the value of a field with the given name. It returns an error if
 // the field is not defined in the schema, or if the type mismatched the field
 // type.
-func (m *DoctorOrderSheetMutation) SetField(name string, value ent.Value) error {
+func (m *DoctorordersheetMutation) SetField(name string, value ent.Value) error {
 	switch name {
 	case doctorordersheet.FieldName:
 		v, ok := value.(string)
@@ -3301,98 +3321,78 @@ func (m *DoctorOrderSheetMutation) SetField(name string, value ent.Value) error 
 		}
 		m.SetName(v)
 		return nil
-	case doctorordersheet.FieldTime:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetTime(v)
-		return nil
-	case doctorordersheet.FieldNote:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetNote(v)
-		return nil
 	}
-	return fmt.Errorf("unknown DoctorOrderSheet field %s", name)
+	return fmt.Errorf("unknown Doctorordersheet field %s", name)
 }
 
 // AddedFields returns all numeric fields that were incremented/decremented during
 // this mutation.
-func (m *DoctorOrderSheetMutation) AddedFields() []string {
+func (m *DoctorordersheetMutation) AddedFields() []string {
 	return nil
 }
 
 // AddedField returns the numeric value that was incremented/decremented on a field
 // with the given name. The second boolean return value indicates that this field
 // was not set, or was not defined in the schema.
-func (m *DoctorOrderSheetMutation) AddedField(name string) (ent.Value, bool) {
+func (m *DoctorordersheetMutation) AddedField(name string) (ent.Value, bool) {
 	return nil, false
 }
 
 // AddField adds the value to the field with the given name. It returns an error if
 // the field is not defined in the schema, or if the type mismatched the field
 // type.
-func (m *DoctorOrderSheetMutation) AddField(name string, value ent.Value) error {
+func (m *DoctorordersheetMutation) AddField(name string, value ent.Value) error {
 	switch name {
 	}
-	return fmt.Errorf("unknown DoctorOrderSheet numeric field %s", name)
+	return fmt.Errorf("unknown Doctorordersheet numeric field %s", name)
 }
 
 // ClearedFields returns all nullable fields that were cleared during this
 // mutation.
-func (m *DoctorOrderSheetMutation) ClearedFields() []string {
+func (m *DoctorordersheetMutation) ClearedFields() []string {
 	return nil
 }
 
 // FieldCleared returns a boolean indicating if a field with the given name was
 // cleared in this mutation.
-func (m *DoctorOrderSheetMutation) FieldCleared(name string) bool {
+func (m *DoctorordersheetMutation) FieldCleared(name string) bool {
 	_, ok := m.clearedFields[name]
 	return ok
 }
 
 // ClearField clears the value of the field with the given name. It returns an
 // error if the field is not defined in the schema.
-func (m *DoctorOrderSheetMutation) ClearField(name string) error {
-	return fmt.Errorf("unknown DoctorOrderSheet nullable field %s", name)
+func (m *DoctorordersheetMutation) ClearField(name string) error {
+	return fmt.Errorf("unknown Doctorordersheet nullable field %s", name)
 }
 
 // ResetField resets all changes in the mutation for the field with the given name.
 // It returns an error if the field is not defined in the schema.
-func (m *DoctorOrderSheetMutation) ResetField(name string) error {
+func (m *DoctorordersheetMutation) ResetField(name string) error {
 	switch name {
 	case doctorordersheet.FieldName:
 		m.ResetName()
 		return nil
-	case doctorordersheet.FieldTime:
-		m.ResetTime()
-		return nil
-	case doctorordersheet.FieldNote:
-		m.ResetNote()
-		return nil
 	}
-	return fmt.Errorf("unknown DoctorOrderSheet field %s", name)
+	return fmt.Errorf("unknown Doctorordersheet field %s", name)
 }
 
 // AddedEdges returns all edge names that were set/added in this mutation.
-func (m *DoctorOrderSheetMutation) AddedEdges() []string {
+func (m *DoctorordersheetMutation) AddedEdges() []string {
 	edges := make([]string, 0, 1)
-	if m._Checksymptoms != nil {
-		edges = append(edges, doctorordersheet.EdgeChecksymptoms)
+	if m._Checksymptom != nil {
+		edges = append(edges, doctorordersheet.EdgeChecksymptom)
 	}
 	return edges
 }
 
 // AddedIDs returns all IDs (to other nodes) that were added for the given edge
 // name in this mutation.
-func (m *DoctorOrderSheetMutation) AddedIDs(name string) []ent.Value {
+func (m *DoctorordersheetMutation) AddedIDs(name string) []ent.Value {
 	switch name {
-	case doctorordersheet.EdgeChecksymptoms:
-		ids := make([]ent.Value, 0, len(m._Checksymptoms))
-		for id := range m._Checksymptoms {
+	case doctorordersheet.EdgeChecksymptom:
+		ids := make([]ent.Value, 0, len(m._Checksymptom))
+		for id := range m._Checksymptom {
 			ids = append(ids, id)
 		}
 		return ids
@@ -3401,21 +3401,21 @@ func (m *DoctorOrderSheetMutation) AddedIDs(name string) []ent.Value {
 }
 
 // RemovedEdges returns all edge names that were removed in this mutation.
-func (m *DoctorOrderSheetMutation) RemovedEdges() []string {
+func (m *DoctorordersheetMutation) RemovedEdges() []string {
 	edges := make([]string, 0, 1)
-	if m.removed_Checksymptoms != nil {
-		edges = append(edges, doctorordersheet.EdgeChecksymptoms)
+	if m.removed_Checksymptom != nil {
+		edges = append(edges, doctorordersheet.EdgeChecksymptom)
 	}
 	return edges
 }
 
 // RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
 // the given name in this mutation.
-func (m *DoctorOrderSheetMutation) RemovedIDs(name string) []ent.Value {
+func (m *DoctorordersheetMutation) RemovedIDs(name string) []ent.Value {
 	switch name {
-	case doctorordersheet.EdgeChecksymptoms:
-		ids := make([]ent.Value, 0, len(m.removed_Checksymptoms))
-		for id := range m.removed_Checksymptoms {
+	case doctorordersheet.EdgeChecksymptom:
+		ids := make([]ent.Value, 0, len(m.removed_Checksymptom))
+		for id := range m.removed_Checksymptom {
 			ids = append(ids, id)
 		}
 		return ids
@@ -3424,41 +3424,41 @@ func (m *DoctorOrderSheetMutation) RemovedIDs(name string) []ent.Value {
 }
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
-func (m *DoctorOrderSheetMutation) ClearedEdges() []string {
+func (m *DoctorordersheetMutation) ClearedEdges() []string {
 	edges := make([]string, 0, 1)
-	if m.cleared_Checksymptoms {
-		edges = append(edges, doctorordersheet.EdgeChecksymptoms)
+	if m.cleared_Checksymptom {
+		edges = append(edges, doctorordersheet.EdgeChecksymptom)
 	}
 	return edges
 }
 
 // EdgeCleared returns a boolean which indicates if the edge with the given name
 // was cleared in this mutation.
-func (m *DoctorOrderSheetMutation) EdgeCleared(name string) bool {
+func (m *DoctorordersheetMutation) EdgeCleared(name string) bool {
 	switch name {
-	case doctorordersheet.EdgeChecksymptoms:
-		return m.cleared_Checksymptoms
+	case doctorordersheet.EdgeChecksymptom:
+		return m.cleared_Checksymptom
 	}
 	return false
 }
 
 // ClearEdge clears the value of the edge with the given name. It returns an error
 // if that edge is not defined in the schema.
-func (m *DoctorOrderSheetMutation) ClearEdge(name string) error {
+func (m *DoctorordersheetMutation) ClearEdge(name string) error {
 	switch name {
 	}
-	return fmt.Errorf("unknown DoctorOrderSheet unique edge %s", name)
+	return fmt.Errorf("unknown Doctorordersheet unique edge %s", name)
 }
 
 // ResetEdge resets all changes to the edge with the given name in this mutation.
 // It returns an error if the edge is not defined in the schema.
-func (m *DoctorOrderSheetMutation) ResetEdge(name string) error {
+func (m *DoctorordersheetMutation) ResetEdge(name string) error {
 	switch name {
-	case doctorordersheet.EdgeChecksymptoms:
-		m.ResetChecksymptoms()
+	case doctorordersheet.EdgeChecksymptom:
+		m.ResetChecksymptom()
 		return nil
 	}
-	return fmt.Errorf("unknown DoctorOrderSheet edge %s", name)
+	return fmt.Errorf("unknown Doctorordersheet edge %s", name)
 }
 
 // PatientMutation represents an operation that mutates the Patient nodes in the graph.
@@ -3477,9 +3477,9 @@ type PatientMutation struct {
 	_Bonedisease                 map[int]struct{}
 	removed_Bonedisease          map[int]struct{}
 	cleared_Bonedisease          bool
-	_Checksymptoms               map[int]struct{}
-	removed_Checksymptoms        map[int]struct{}
-	cleared_Checksymptoms        bool
+	_Checksymptom                map[int]struct{}
+	removed_Checksymptom         map[int]struct{}
+	cleared_Checksymptom         bool
 	_Dentalappointment           map[int]struct{}
 	removed_Dentalappointment    map[int]struct{}
 	cleared_Dentalappointment    bool
@@ -3787,57 +3787,57 @@ func (m *PatientMutation) ResetBonedisease() {
 	m.removed_Bonedisease = nil
 }
 
-// AddChecksymptomIDs adds the "Checksymptoms" edge to the Checksymptoms entity by ids.
+// AddChecksymptomIDs adds the "Checksymptom" edge to the Checksymptom entity by ids.
 func (m *PatientMutation) AddChecksymptomIDs(ids ...int) {
-	if m._Checksymptoms == nil {
-		m._Checksymptoms = make(map[int]struct{})
+	if m._Checksymptom == nil {
+		m._Checksymptom = make(map[int]struct{})
 	}
 	for i := range ids {
-		m._Checksymptoms[ids[i]] = struct{}{}
+		m._Checksymptom[ids[i]] = struct{}{}
 	}
 }
 
-// ClearChecksymptoms clears the "Checksymptoms" edge to the Checksymptoms entity.
-func (m *PatientMutation) ClearChecksymptoms() {
-	m.cleared_Checksymptoms = true
+// ClearChecksymptom clears the "Checksymptom" edge to the Checksymptom entity.
+func (m *PatientMutation) ClearChecksymptom() {
+	m.cleared_Checksymptom = true
 }
 
-// ChecksymptomsCleared returns if the "Checksymptoms" edge to the Checksymptoms entity was cleared.
-func (m *PatientMutation) ChecksymptomsCleared() bool {
-	return m.cleared_Checksymptoms
+// ChecksymptomCleared returns if the "Checksymptom" edge to the Checksymptom entity was cleared.
+func (m *PatientMutation) ChecksymptomCleared() bool {
+	return m.cleared_Checksymptom
 }
 
-// RemoveChecksymptomIDs removes the "Checksymptoms" edge to the Checksymptoms entity by IDs.
+// RemoveChecksymptomIDs removes the "Checksymptom" edge to the Checksymptom entity by IDs.
 func (m *PatientMutation) RemoveChecksymptomIDs(ids ...int) {
-	if m.removed_Checksymptoms == nil {
-		m.removed_Checksymptoms = make(map[int]struct{})
+	if m.removed_Checksymptom == nil {
+		m.removed_Checksymptom = make(map[int]struct{})
 	}
 	for i := range ids {
-		m.removed_Checksymptoms[ids[i]] = struct{}{}
+		m.removed_Checksymptom[ids[i]] = struct{}{}
 	}
 }
 
-// RemovedChecksymptoms returns the removed IDs of the "Checksymptoms" edge to the Checksymptoms entity.
-func (m *PatientMutation) RemovedChecksymptomsIDs() (ids []int) {
-	for id := range m.removed_Checksymptoms {
+// RemovedChecksymptom returns the removed IDs of the "Checksymptom" edge to the Checksymptom entity.
+func (m *PatientMutation) RemovedChecksymptomIDs() (ids []int) {
+	for id := range m.removed_Checksymptom {
 		ids = append(ids, id)
 	}
 	return
 }
 
-// ChecksymptomsIDs returns the "Checksymptoms" edge IDs in the mutation.
-func (m *PatientMutation) ChecksymptomsIDs() (ids []int) {
-	for id := range m._Checksymptoms {
+// ChecksymptomIDs returns the "Checksymptom" edge IDs in the mutation.
+func (m *PatientMutation) ChecksymptomIDs() (ids []int) {
+	for id := range m._Checksymptom {
 		ids = append(ids, id)
 	}
 	return
 }
 
-// ResetChecksymptoms resets all changes to the "Checksymptoms" edge.
-func (m *PatientMutation) ResetChecksymptoms() {
-	m._Checksymptoms = nil
-	m.cleared_Checksymptoms = false
-	m.removed_Checksymptoms = nil
+// ResetChecksymptom resets all changes to the "Checksymptom" edge.
+func (m *PatientMutation) ResetChecksymptom() {
+	m._Checksymptom = nil
+	m.cleared_Checksymptom = false
+	m.removed_Checksymptom = nil
 }
 
 // AddDentalappointmentIDs adds the "Dentalappointment" edge to the Dentalappointment entity by ids.
@@ -4153,8 +4153,8 @@ func (m *PatientMutation) AddedEdges() []string {
 	if m._Bonedisease != nil {
 		edges = append(edges, patient.EdgeBonedisease)
 	}
-	if m._Checksymptoms != nil {
-		edges = append(edges, patient.EdgeChecksymptoms)
+	if m._Checksymptom != nil {
+		edges = append(edges, patient.EdgeChecksymptom)
 	}
 	if m._Dentalappointment != nil {
 		edges = append(edges, patient.EdgeDentalappointment)
@@ -4184,9 +4184,9 @@ func (m *PatientMutation) AddedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
-	case patient.EdgeChecksymptoms:
-		ids := make([]ent.Value, 0, len(m._Checksymptoms))
-		for id := range m._Checksymptoms {
+	case patient.EdgeChecksymptom:
+		ids := make([]ent.Value, 0, len(m._Checksymptom))
+		for id := range m._Checksymptom {
 			ids = append(ids, id)
 		}
 		return ids
@@ -4221,8 +4221,8 @@ func (m *PatientMutation) RemovedEdges() []string {
 	if m.removed_Bonedisease != nil {
 		edges = append(edges, patient.EdgeBonedisease)
 	}
-	if m.removed_Checksymptoms != nil {
-		edges = append(edges, patient.EdgeChecksymptoms)
+	if m.removed_Checksymptom != nil {
+		edges = append(edges, patient.EdgeChecksymptom)
 	}
 	if m.removed_Dentalappointment != nil {
 		edges = append(edges, patient.EdgeDentalappointment)
@@ -4252,9 +4252,9 @@ func (m *PatientMutation) RemovedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
-	case patient.EdgeChecksymptoms:
-		ids := make([]ent.Value, 0, len(m.removed_Checksymptoms))
-		for id := range m.removed_Checksymptoms {
+	case patient.EdgeChecksymptom:
+		ids := make([]ent.Value, 0, len(m.removed_Checksymptom))
+		for id := range m.removed_Checksymptom {
 			ids = append(ids, id)
 		}
 		return ids
@@ -4289,8 +4289,8 @@ func (m *PatientMutation) ClearedEdges() []string {
 	if m.cleared_Bonedisease {
 		edges = append(edges, patient.EdgeBonedisease)
 	}
-	if m.cleared_Checksymptoms {
-		edges = append(edges, patient.EdgeChecksymptoms)
+	if m.cleared_Checksymptom {
+		edges = append(edges, patient.EdgeChecksymptom)
 	}
 	if m.cleared_Dentalappointment {
 		edges = append(edges, patient.EdgeDentalappointment)
@@ -4312,8 +4312,8 @@ func (m *PatientMutation) EdgeCleared(name string) bool {
 		return m.clearedphysicaltherapyrecord
 	case patient.EdgeBonedisease:
 		return m.cleared_Bonedisease
-	case patient.EdgeChecksymptoms:
-		return m.cleared_Checksymptoms
+	case patient.EdgeChecksymptom:
+		return m.cleared_Checksymptom
 	case patient.EdgeDentalappointment:
 		return m.cleared_Dentalappointment
 	case patient.EdgeSurgeryappointment:
@@ -4342,8 +4342,8 @@ func (m *PatientMutation) ResetEdge(name string) error {
 	case patient.EdgeBonedisease:
 		m.ResetBonedisease()
 		return nil
-	case patient.EdgeChecksymptoms:
-		m.ResetChecksymptoms()
+	case patient.EdgeChecksymptom:
+		m.ResetChecksymptom()
 		return nil
 	case patient.EdgeDentalappointment:
 		m.ResetDentalappointment()
@@ -4375,9 +4375,9 @@ type PersonnelMutation struct {
 	_Bonedisease                 map[int]struct{}
 	removed_Bonedisease          map[int]struct{}
 	cleared_Bonedisease          bool
-	_Checksymptoms               map[int]struct{}
-	removed_Checksymptoms        map[int]struct{}
-	cleared_Checksymptoms        bool
+	_Checksymptom                map[int]struct{}
+	removed_Checksymptom         map[int]struct{}
+	cleared_Checksymptom         bool
 	_Dentalappointment           map[int]struct{}
 	removed_Dentalappointment    map[int]struct{}
 	cleared_Dentalappointment    bool
@@ -4721,57 +4721,57 @@ func (m *PersonnelMutation) ResetBonedisease() {
 	m.removed_Bonedisease = nil
 }
 
-// AddChecksymptomIDs adds the "Checksymptoms" edge to the Checksymptoms entity by ids.
+// AddChecksymptomIDs adds the "Checksymptom" edge to the Checksymptom entity by ids.
 func (m *PersonnelMutation) AddChecksymptomIDs(ids ...int) {
-	if m._Checksymptoms == nil {
-		m._Checksymptoms = make(map[int]struct{})
+	if m._Checksymptom == nil {
+		m._Checksymptom = make(map[int]struct{})
 	}
 	for i := range ids {
-		m._Checksymptoms[ids[i]] = struct{}{}
+		m._Checksymptom[ids[i]] = struct{}{}
 	}
 }
 
-// ClearChecksymptoms clears the "Checksymptoms" edge to the Checksymptoms entity.
-func (m *PersonnelMutation) ClearChecksymptoms() {
-	m.cleared_Checksymptoms = true
+// ClearChecksymptom clears the "Checksymptom" edge to the Checksymptom entity.
+func (m *PersonnelMutation) ClearChecksymptom() {
+	m.cleared_Checksymptom = true
 }
 
-// ChecksymptomsCleared returns if the "Checksymptoms" edge to the Checksymptoms entity was cleared.
-func (m *PersonnelMutation) ChecksymptomsCleared() bool {
-	return m.cleared_Checksymptoms
+// ChecksymptomCleared returns if the "Checksymptom" edge to the Checksymptom entity was cleared.
+func (m *PersonnelMutation) ChecksymptomCleared() bool {
+	return m.cleared_Checksymptom
 }
 
-// RemoveChecksymptomIDs removes the "Checksymptoms" edge to the Checksymptoms entity by IDs.
+// RemoveChecksymptomIDs removes the "Checksymptom" edge to the Checksymptom entity by IDs.
 func (m *PersonnelMutation) RemoveChecksymptomIDs(ids ...int) {
-	if m.removed_Checksymptoms == nil {
-		m.removed_Checksymptoms = make(map[int]struct{})
+	if m.removed_Checksymptom == nil {
+		m.removed_Checksymptom = make(map[int]struct{})
 	}
 	for i := range ids {
-		m.removed_Checksymptoms[ids[i]] = struct{}{}
+		m.removed_Checksymptom[ids[i]] = struct{}{}
 	}
 }
 
-// RemovedChecksymptoms returns the removed IDs of the "Checksymptoms" edge to the Checksymptoms entity.
-func (m *PersonnelMutation) RemovedChecksymptomsIDs() (ids []int) {
-	for id := range m.removed_Checksymptoms {
+// RemovedChecksymptom returns the removed IDs of the "Checksymptom" edge to the Checksymptom entity.
+func (m *PersonnelMutation) RemovedChecksymptomIDs() (ids []int) {
+	for id := range m.removed_Checksymptom {
 		ids = append(ids, id)
 	}
 	return
 }
 
-// ChecksymptomsIDs returns the "Checksymptoms" edge IDs in the mutation.
-func (m *PersonnelMutation) ChecksymptomsIDs() (ids []int) {
-	for id := range m._Checksymptoms {
+// ChecksymptomIDs returns the "Checksymptom" edge IDs in the mutation.
+func (m *PersonnelMutation) ChecksymptomIDs() (ids []int) {
+	for id := range m._Checksymptom {
 		ids = append(ids, id)
 	}
 	return
 }
 
-// ResetChecksymptoms resets all changes to the "Checksymptoms" edge.
-func (m *PersonnelMutation) ResetChecksymptoms() {
-	m._Checksymptoms = nil
-	m.cleared_Checksymptoms = false
-	m.removed_Checksymptoms = nil
+// ResetChecksymptom resets all changes to the "Checksymptom" edge.
+func (m *PersonnelMutation) ResetChecksymptom() {
+	m._Checksymptom = nil
+	m.cleared_Checksymptom = false
+	m.removed_Checksymptom = nil
 }
 
 // AddDentalappointmentIDs adds the "Dentalappointment" edge to the Dentalappointment entity by ids.
@@ -5104,8 +5104,8 @@ func (m *PersonnelMutation) AddedEdges() []string {
 	if m._Bonedisease != nil {
 		edges = append(edges, personnel.EdgeBonedisease)
 	}
-	if m._Checksymptoms != nil {
-		edges = append(edges, personnel.EdgeChecksymptoms)
+	if m._Checksymptom != nil {
+		edges = append(edges, personnel.EdgeChecksymptom)
 	}
 	if m._Dentalappointment != nil {
 		edges = append(edges, personnel.EdgeDentalappointment)
@@ -5135,9 +5135,9 @@ func (m *PersonnelMutation) AddedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
-	case personnel.EdgeChecksymptoms:
-		ids := make([]ent.Value, 0, len(m._Checksymptoms))
-		for id := range m._Checksymptoms {
+	case personnel.EdgeChecksymptom:
+		ids := make([]ent.Value, 0, len(m._Checksymptom))
+		for id := range m._Checksymptom {
 			ids = append(ids, id)
 		}
 		return ids
@@ -5172,8 +5172,8 @@ func (m *PersonnelMutation) RemovedEdges() []string {
 	if m.removed_Bonedisease != nil {
 		edges = append(edges, personnel.EdgeBonedisease)
 	}
-	if m.removed_Checksymptoms != nil {
-		edges = append(edges, personnel.EdgeChecksymptoms)
+	if m.removed_Checksymptom != nil {
+		edges = append(edges, personnel.EdgeChecksymptom)
 	}
 	if m.removed_Dentalappointment != nil {
 		edges = append(edges, personnel.EdgeDentalappointment)
@@ -5203,9 +5203,9 @@ func (m *PersonnelMutation) RemovedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
-	case personnel.EdgeChecksymptoms:
-		ids := make([]ent.Value, 0, len(m.removed_Checksymptoms))
-		for id := range m.removed_Checksymptoms {
+	case personnel.EdgeChecksymptom:
+		ids := make([]ent.Value, 0, len(m.removed_Checksymptom))
+		for id := range m.removed_Checksymptom {
 			ids = append(ids, id)
 		}
 		return ids
@@ -5240,8 +5240,8 @@ func (m *PersonnelMutation) ClearedEdges() []string {
 	if m.cleared_Bonedisease {
 		edges = append(edges, personnel.EdgeBonedisease)
 	}
-	if m.cleared_Checksymptoms {
-		edges = append(edges, personnel.EdgeChecksymptoms)
+	if m.cleared_Checksymptom {
+		edges = append(edges, personnel.EdgeChecksymptom)
 	}
 	if m.cleared_Dentalappointment {
 		edges = append(edges, personnel.EdgeDentalappointment)
@@ -5263,8 +5263,8 @@ func (m *PersonnelMutation) EdgeCleared(name string) bool {
 		return m.clearedphysicaltherapyrecord
 	case personnel.EdgeBonedisease:
 		return m.cleared_Bonedisease
-	case personnel.EdgeChecksymptoms:
-		return m.cleared_Checksymptoms
+	case personnel.EdgeChecksymptom:
+		return m.cleared_Checksymptom
 	case personnel.EdgeDentalappointment:
 		return m.cleared_Dentalappointment
 	case personnel.EdgeSurgeryappointment:
@@ -5293,8 +5293,8 @@ func (m *PersonnelMutation) ResetEdge(name string) error {
 	case personnel.EdgeBonedisease:
 		m.ResetBonedisease()
 		return nil
-	case personnel.EdgeChecksymptoms:
-		m.ResetChecksymptoms()
+	case personnel.EdgeChecksymptom:
+		m.ResetChecksymptom()
 		return nil
 	case personnel.EdgeDentalappointment:
 		m.ResetDentalappointment()

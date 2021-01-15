@@ -13,13 +13,11 @@ definitions:
       remedyID:
         type: integer
     type: object
-  controllers.Checksymptoms:
+  controllers.Checksymptom:
     properties:
-      date:
-        type: string
       disease:
         type: integer
-      doctorOrderSheet:
+      doctorordersheet:
         type: integer
       patient:
         type: integer
@@ -131,29 +129,35 @@ definitions:
         description: Remedy holds the value of the remedy edge.
         type: object
     type: object
-  ent.Checksymptoms:
+  ent.Checksymptom:
     properties:
       date:
         description: Date holds the value of the "date" field.
         type: string
       edges:
-        $ref: '#/definitions/ent.ChecksymptomsEdges'
+        $ref: '#/definitions/ent.ChecksymptomEdges'
         description: |-
           Edges holds the relations/edges for other nodes in the graph.
-          The values are being populated by the ChecksymptomsQuery when eager-loading is set.
+          The values are being populated by the ChecksymptomQuery when eager-loading is set.
         type: object
       id:
         description: ID of the ent.
         type: integer
+      note:
+        description: Note holds the value of the "note" field.
+        type: string
+      times:
+        description: Times holds the value of the "times" field.
+        type: string
     type: object
-  ent.ChecksymptomsEdges:
+  ent.ChecksymptomEdges:
     properties:
       disease:
         $ref: '#/definitions/ent.Disease'
         description: Disease holds the value of the disease edge.
         type: object
       doctorordersheet:
-        $ref: '#/definitions/ent.DoctorOrderSheet'
+        $ref: '#/definitions/ent.Doctorordersheet'
         description: Doctorordersheet holds the value of the doctorordersheet edge.
         type: object
       patient:
@@ -220,6 +224,9 @@ definitions:
     type: object
   ent.Disease:
     properties:
+      disease:
+        description: Disease holds the value of the "disease" field.
+        type: string
       edges:
         $ref: '#/definitions/ent.DiseaseEdges'
         description: |-
@@ -229,45 +236,36 @@ definitions:
       id:
         description: ID of the ent.
         type: integer
-      name:
-        description: Name holds the value of the "name" field.
-        type: string
     type: object
   ent.DiseaseEdges:
     properties:
-      checksymptoms:
-        description: Checksymptoms holds the value of the Checksymptoms edge.
+      checksymptom:
+        description: Checksymptom holds the value of the Checksymptom edge.
         items:
-          $ref: '#/definitions/ent.Checksymptoms'
+          $ref: '#/definitions/ent.Checksymptom'
         type: array
     type: object
-  ent.DoctorOrderSheet:
+  ent.Doctorordersheet:
     properties:
       Name:
         description: Name holds the value of the "Name" field.
         type: string
       edges:
-        $ref: '#/definitions/ent.DoctorOrderSheetEdges'
+        $ref: '#/definitions/ent.DoctorordersheetEdges'
         description: |-
           Edges holds the relations/edges for other nodes in the graph.
-          The values are being populated by the DoctorOrderSheetQuery when eager-loading is set.
+          The values are being populated by the DoctorordersheetQuery when eager-loading is set.
         type: object
       id:
         description: ID of the ent.
         type: integer
-      note:
-        description: Note holds the value of the "note" field.
-        type: string
-      time:
-        description: Time holds the value of the "time" field.
-        type: string
     type: object
-  ent.DoctorOrderSheetEdges:
+  ent.DoctorordersheetEdges:
     properties:
-      checksymptoms:
-        description: Checksymptoms holds the value of the Checksymptoms edge.
+      checksymptom:
+        description: Checksymptom holds the value of the Checksymptom edge.
         items:
-          $ref: '#/definitions/ent.Checksymptoms'
+          $ref: '#/definitions/ent.Checksymptom'
         type: array
     type: object
   ent.Patient:
@@ -304,10 +302,10 @@ definitions:
         items:
           $ref: '#/definitions/ent.Bonedisease'
         type: array
-      checksymptoms:
-        description: Checksymptoms holds the value of the Checksymptoms edge.
+      checksymptom:
+        description: Checksymptom holds the value of the Checksymptom edge.
         items:
-          $ref: '#/definitions/ent.Checksymptoms'
+          $ref: '#/definitions/ent.Checksymptom'
         type: array
       dentalappointment:
         description: Dentalappointment holds the value of the Dentalappointment edge.
@@ -364,10 +362,10 @@ definitions:
         items:
           $ref: '#/definitions/ent.Bonedisease'
         type: array
-      checksymptoms:
-        description: Checksymptoms holds the value of the Checksymptoms edge.
+      checksymptom:
+        description: Checksymptom holds the value of the Checksymptom edge.
         items:
-          $ref: '#/definitions/ent.Checksymptoms'
+          $ref: '#/definitions/ent.Checksymptom'
         type: array
       dentalappointment:
         description: Dentalappointment holds the value of the Dentalappointment edge.
@@ -939,10 +937,10 @@ paths:
           schema:
             $ref: '#/definitions/gin.H'
       summary: Delete a bonedisease entity by ID
-  /checksymptomss:
+  /checksymptoms:
     get:
-      description: list checksymptoms entities
-      operationId: list-checksymptoms
+      description: list checksymptom entities
+      operationId: list-checksymptom
       parameters:
       - description: Limit
         in: query
@@ -959,7 +957,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/ent.Checksymptoms'
+              $ref: '#/definitions/ent.Checksymptom'
             type: array
         "400":
           description: Bad Request
@@ -969,26 +967,26 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/gin.H'
-      summary: List checksymptoms entities
+      summary: List checksymptom entities
     post:
       consumes:
       - application/json
-      description: Create checksymptoms
-      operationId: create-checksymptoms
+      description: Create checksymptom
+      operationId: create-checksymptom
       parameters:
-      - description: Checksymptoms entity
+      - description: Checksymptom entity
         in: body
-        name: checksymptoms
+        name: checksymptom
         required: true
         schema:
-          $ref: '#/definitions/controllers.Checksymptoms'
+          $ref: '#/definitions/controllers.Checksymptom'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/ent.Checksymptoms'
+            $ref: '#/definitions/ent.Checksymptom'
         "400":
           description: Bad Request
           schema:
@@ -997,7 +995,7 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/gin.H'
-      summary: Create checksymptoms
+      summary: Create checksymptom
   /dentalappointments:
     get:
       description: list dentalappointment entities
@@ -1302,7 +1300,7 @@ paths:
       description: get disease by ID
       operationId: delete-disease
       parameters:
-      - description: Disease ID
+      - description: disease ID
         in: path
         name: id
         required: true
@@ -1331,7 +1329,7 @@ paths:
       description: get disease by ID
       operationId: get-disease
       parameters:
-      - description: Disease ID
+      - description: disease ID
         in: path
         name: id
         required: true
@@ -1362,12 +1360,12 @@ paths:
       description: update disease by ID
       operationId: update-disease
       parameters:
-      - description: Disease ID
+      - description: disease ID
         in: path
         name: id
         required: true
         type: integer
-      - description: Disease entity
+      - description: disease entity
         in: body
         name: disease
         required: true
@@ -1409,7 +1407,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/ent.DoctorOrderSheet'
+              $ref: '#/definitions/ent.Doctorordersheet'
             type: array
         "400":
           description: Bad Request
@@ -1431,14 +1429,14 @@ paths:
         name: doctorordersheet
         required: true
         schema:
-          $ref: '#/definitions/ent.DoctorOrderSheet'
+          $ref: '#/definitions/ent.Doctorordersheet'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/ent.DoctorOrderSheet'
+            $ref: '#/definitions/ent.Doctorordersheet'
         "400":
           description: Bad Request
           schema:
@@ -1453,7 +1451,7 @@ paths:
       description: get doctorordersheet by ID
       operationId: delete-doctorordersheet
       parameters:
-      - description: DeleteDoctorOrderSheet ID
+      - description: DeleteDoctorordersheet ID
         in: path
         name: id
         required: true
@@ -1482,7 +1480,7 @@ paths:
       description: get doctorordersheet by ID
       operationId: get-doctorordersheet
       parameters:
-      - description: DoctorOrderSheet ID
+      - description: Doctorordersheet ID
         in: path
         name: id
         required: true
@@ -1493,7 +1491,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/ent.DoctorOrderSheet'
+            $ref: '#/definitions/ent.Doctorordersheet'
         "400":
           description: Bad Request
           schema:
@@ -1513,24 +1511,24 @@ paths:
       description: update doctorordersheet by ID
       operationId: update-doctorordersheet
       parameters:
-      - description: DoctorOrderSheet ID
+      - description: Doctorordersheet ID
         in: path
         name: id
         required: true
         type: integer
-      - description: DoctorOrderSheet entity
+      - description: Doctorordersheet entity
         in: body
         name: doctorordersheet
         required: true
         schema:
-          $ref: '#/definitions/ent.DoctorOrderSheet'
+          $ref: '#/definitions/ent.Doctorordersheet'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/ent.DoctorOrderSheet'
+            $ref: '#/definitions/ent.Doctorordersheet'
         "400":
           description: Bad Request
           schema:
