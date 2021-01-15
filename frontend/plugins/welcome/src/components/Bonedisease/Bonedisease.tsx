@@ -289,19 +289,7 @@ export default function Create() {
               </Button>
             </Grid>
 
-            <Grid item xs={4}></Grid>
-            <Grid item xs={4}>
-              <Link component={RouterLink} to="/BonediseaseTable">
-                <Button 
-                  variant="contained" 
-                  color="primary"
-                  size="large"  
-                  startIcon={<SaveIcon />}
-                >
-                  ตาราง
-                </Button>
-              </Link>
-            </Grid>
+        
         
 
           </Grid>
