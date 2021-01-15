@@ -1,5 +1,20 @@
 basePath: /api/v1
 definitions:
+  controllers.Antenatalinformation:
+    properties:
+      gestationalage:
+        type: integer
+      patient:
+        type: integer
+      personnel:
+        type: integer
+      pregnancystatus:
+        type: integer
+      risks:
+        type: integer
+      time:
+        type: string
+    type: object
   controllers.Bonedisease:
     properties:
       addedTime:
@@ -741,7 +756,7 @@ paths:
         name: antenatalinformation
         required: true
         schema:
-          $ref: '#/definitions/ent.Antenatalinformation'
+          $ref: '#/definitions/controllers.Antenatalinformation'
       produces:
       - application/json
       responses:

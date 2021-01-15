@@ -5,7 +5,7 @@ import WelcomePage from './components/WelcomePage';
 import Dentalappointment from './components/Dentalappointment';
 import Surgeryappointment from './components/Surgeryappointment';
 import Physicaltherapyrecord from './components/Physicaltherapyrecord';
-
+import Antenatal from './components/Antenatal';
 
 
 export const plugin = createPlugin({
@@ -17,6 +17,6 @@ export const plugin = createPlugin({
     router.registerRoute('/Dentalappointment', Dentalappointment);
     router.registerRoute('/Surgeryappointment', Surgeryappointment);
     router.registerRoute('/Createphysicaltherapyrecord', Physicaltherapyrecord);
-
+    router.registerRoute('/Antenatal', Antenatal);
   },
 });

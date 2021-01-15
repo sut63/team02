@@ -228,7 +228,7 @@ var doc = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/ent.Antenatalinformation"
+                            "$ref": "#/definitions/controllers.Antenatalinformation"
                         }
                     }
                 ],
@@ -3059,6 +3059,29 @@ var doc = `{
         }
     },
     "definitions": {
+        "controllers.Antenatalinformation": {
+            "type": "object",
+            "properties": {
+                "gestationalage": {
+                    "type": "integer"
+                },
+                "patient": {
+                    "type": "integer"
+                },
+                "personnel": {
+                    "type": "integer"
+                },
+                "pregnancystatus": {
+                    "type": "integer"
+                },
+                "risks": {
+                    "type": "integer"
+                },
+                "time": {
+                    "type": "string"
+                }
+            }
+        },
         "controllers.Bonedisease": {
             "type": "object",
             "properties": {

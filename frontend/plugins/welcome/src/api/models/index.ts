@@ -1,3 +1,4 @@
+export * from './ControllersAntenatalinformation';
 export * from './ControllersBonedisease';
 export * from './ControllersChecksymptoms';
 export * from './ControllersDentalappointment';

@@ -37,7 +37,7 @@ type Antenatalinformation struct {
 // @ID create-antenatalinformation
 // @Accept   json
 // @Produce  json
-// @Param antenatalinformation body ent.Antenatalinformation true "Antenatalinformation entity"
+// @Param antenatalinformation body Antenatalinformation true "Antenatalinformation entity"
 // @Success 200 {object} ent.Antenatalinformation
 // @Failure 400 {object} gin.H
 // @Failure 500 {object} gin.H
