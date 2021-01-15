@@ -120,6 +120,16 @@ type Status struct {
 	Status string
 }
 
+//Surgerytypes with
+type Surgerytypes struct {
+	Surgerytype []Surgerytype
+}
+
+//Surgerytype with
+type Surgerytype struct {
+	Surgerytype string
+}
+
 // @title SUT SA Example API
 // @version 1.0
 // @description This is a sample server for SUT SE 2563
@@ -352,6 +362,23 @@ func main() {
 		client.Status.
 			Create().
 			SetStatusname(statuss.Status).
+			Save(context.Background())
+	}
+
+	// Set Surgerytype Data
+	surgerytypes := Surgerytypes{
+		Surgerytype: []Surgerytype{
+			Surgerytype{"ผ่าตัดทั่วไป"},
+			Surgerytype{"ผ่าคลอด"},
+			Surgerytype{"ผ่าตัดกระดูก"},
+		},
+	}
+
+	for _, surgerytypes := range surgerytypes.Surgerytype {
+
+		client.Surgerytype.
+			Create().
+			SetTypename(surgerytypes.Surgerytype).
 			Save(context.Background())
 	}
 
