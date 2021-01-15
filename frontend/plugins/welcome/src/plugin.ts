@@ -4,6 +4,7 @@ import BonediseaseTable from './components/BonediseaseTable';
 import LoginPage from './components/LoginPage';
 import WelcomePage from './components/WelcomePage';
 import Dentalappointment from './components/Dentalappointment';
+import Surgeryappointment from './components/Surgeryappointment';
 
 
 
@@ -16,5 +17,6 @@ export const plugin = createPlugin({
     router.registerRoute('/Bonedisease', Bonedisease);
     router.registerRoute('/BonediseaseTable', BonediseaseTable);
     router.registerRoute('/Dentalappointment', Dentalappointment);
+    router.registerRoute('/Surgeryappointment', Surgeryappointment);
   },
 });
