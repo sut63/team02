@@ -55,7 +55,7 @@ const WelcomePage: FC<{}> = () => {
            </Link>
       </tr> 
       <tr>
-       <Link component={RouterLink} to="/01">
+       <Link component={RouterLink} to="/Createphysicaltherapyrecord">
          <Button variant="contained" color="primary">
              กายภาพบำบัด
            </Button>

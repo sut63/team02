@@ -12,6 +12,7 @@ import (
 	"github.com/to63/app/ent/doctorordersheet"
 	"github.com/to63/app/ent/patient"
 	"github.com/to63/app/ent/personnel"
+	"github.com/to63/app/ent/physicaltherapyrecord"
 	"github.com/to63/app/ent/physicaltherapyroom"
 	"github.com/to63/app/ent/pregnancystatus"
 	"github.com/to63/app/ent/remedy"
@@ -99,12 +100,18 @@ func init() {
 	personnelDescPassword := personnelFields[3].Descriptor()
 	// personnel.PasswordValidator is a validator for the "password" field. It is called by the builders before save.
 	personnel.PasswordValidator = personnelDescPassword.Validators[0].(func(string) error)
+	physicaltherapyrecordFields := schema.Physicaltherapyrecord{}.Fields()
+	_ = physicaltherapyrecordFields
+	// physicaltherapyrecordDescAddedTime is the schema descriptor for addedTime field.
+	physicaltherapyrecordDescAddedTime := physicaltherapyrecordFields[0].Descriptor()
+	// physicaltherapyrecord.DefaultAddedTime holds the default value on creation for the addedTime field.
+	physicaltherapyrecord.DefaultAddedTime = physicaltherapyrecordDescAddedTime.Default.(func() time.Time)
 	physicaltherapyroomFields := schema.Physicaltherapyroom{}.Fields()
 	_ = physicaltherapyroomFields
-	// physicaltherapyroomDescPhysicalTherapyRoomName is the schema descriptor for physical_therapy_room_name field.
-	physicaltherapyroomDescPhysicalTherapyRoomName := physicaltherapyroomFields[0].Descriptor()
-	// physicaltherapyroom.PhysicalTherapyRoomNameValidator is a validator for the "physical_therapy_room_name" field. It is called by the builders before save.
-	physicaltherapyroom.PhysicalTherapyRoomNameValidator = physicaltherapyroomDescPhysicalTherapyRoomName.Validators[0].(func(string) error)
+	// physicaltherapyroomDescPhysicaltherapyroomname is the schema descriptor for physicaltherapyroomname field.
+	physicaltherapyroomDescPhysicaltherapyroomname := physicaltherapyroomFields[0].Descriptor()
+	// physicaltherapyroom.PhysicaltherapyroomnameValidator is a validator for the "physicaltherapyroomname" field. It is called by the builders before save.
+	physicaltherapyroom.PhysicaltherapyroomnameValidator = physicaltherapyroomDescPhysicaltherapyroomname.Validators[0].(func(string) error)
 	pregnancystatusFields := schema.Pregnancystatus{}.Fields()
 	_ = pregnancystatusFields
 	// pregnancystatusDescPregnancystatus is the schema descriptor for Pregnancystatus field.
@@ -125,10 +132,10 @@ func init() {
 	risks.RisksValidator = risksDescRisks.Validators[0].(func(string) error)
 	statusFields := schema.Status{}.Fields()
 	_ = statusFields
-	// statusDescStatusName is the schema descriptor for status_name field.
-	statusDescStatusName := statusFields[0].Descriptor()
-	// status.StatusNameValidator is a validator for the "status_name" field. It is called by the builders before save.
-	status.StatusNameValidator = statusDescStatusName.Validators[0].(func(string) error)
+	// statusDescStatusname is the schema descriptor for statusname field.
+	statusDescStatusname := statusFields[0].Descriptor()
+	// status.StatusnameValidator is a validator for the "statusname" field. It is called by the builders before save.
+	status.StatusnameValidator = statusDescStatusname.Validators[0].(func(string) error)
 	surgerytypeFields := schema.Surgerytype{}.Fields()
 	_ = surgerytypeFields
 	// surgerytypeDescTypename is the schema descriptor for typename field.

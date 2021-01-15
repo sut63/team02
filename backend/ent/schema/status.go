@@ -14,7 +14,7 @@ type Status struct {
 // Fields of the Status.
 func (Status) Fields() []ent.Field {
 	return []ent.Field{
-		field.String("status_name").NotEmpty(),
+		field.String("statusname").NotEmpty(),
 	}
 }
 

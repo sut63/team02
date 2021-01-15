@@ -91,29 +91,29 @@ func IDLTE(id int) predicate.Status {
 	})
 }
 
-// StatusName applies equality check predicate on the "status_name" field. It's identical to StatusNameEQ.
-func StatusName(v string) predicate.Status {
+// Statusname applies equality check predicate on the "statusname" field. It's identical to StatusnameEQ.
+func Statusname(v string) predicate.Status {
 	return predicate.Status(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldStatusName), v))
+		s.Where(sql.EQ(s.C(FieldStatusname), v))
 	})
 }
 
-// StatusNameEQ applies the EQ predicate on the "status_name" field.
-func StatusNameEQ(v string) predicate.Status {
+// StatusnameEQ applies the EQ predicate on the "statusname" field.
+func StatusnameEQ(v string) predicate.Status {
 	return predicate.Status(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldStatusName), v))
+		s.Where(sql.EQ(s.C(FieldStatusname), v))
 	})
 }
 
-// StatusNameNEQ applies the NEQ predicate on the "status_name" field.
-func StatusNameNEQ(v string) predicate.Status {
+// StatusnameNEQ applies the NEQ predicate on the "statusname" field.
+func StatusnameNEQ(v string) predicate.Status {
 	return predicate.Status(func(s *sql.Selector) {
-		s.Where(sql.NEQ(s.C(FieldStatusName), v))
+		s.Where(sql.NEQ(s.C(FieldStatusname), v))
 	})
 }
 
-// StatusNameIn applies the In predicate on the "status_name" field.
-func StatusNameIn(vs ...string) predicate.Status {
+// StatusnameIn applies the In predicate on the "statusname" field.
+func StatusnameIn(vs ...string) predicate.Status {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -125,12 +125,12 @@ func StatusNameIn(vs ...string) predicate.Status {
 			s.Where(sql.False())
 			return
 		}
-		s.Where(sql.In(s.C(FieldStatusName), v...))
+		s.Where(sql.In(s.C(FieldStatusname), v...))
 	})
 }
 
-// StatusNameNotIn applies the NotIn predicate on the "status_name" field.
-func StatusNameNotIn(vs ...string) predicate.Status {
+// StatusnameNotIn applies the NotIn predicate on the "statusname" field.
+func StatusnameNotIn(vs ...string) predicate.Status {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -142,70 +142,70 @@ func StatusNameNotIn(vs ...string) predicate.Status {
 			s.Where(sql.False())
 			return
 		}
-		s.Where(sql.NotIn(s.C(FieldStatusName), v...))
+		s.Where(sql.NotIn(s.C(FieldStatusname), v...))
 	})
 }
 
-// StatusNameGT applies the GT predicate on the "status_name" field.
-func StatusNameGT(v string) predicate.Status {
+// StatusnameGT applies the GT predicate on the "statusname" field.
+func StatusnameGT(v string) predicate.Status {
 	return predicate.Status(func(s *sql.Selector) {
-		s.Where(sql.GT(s.C(FieldStatusName), v))
+		s.Where(sql.GT(s.C(FieldStatusname), v))
 	})
 }
 
-// StatusNameGTE applies the GTE predicate on the "status_name" field.
-func StatusNameGTE(v string) predicate.Status {
+// StatusnameGTE applies the GTE predicate on the "statusname" field.
+func StatusnameGTE(v string) predicate.Status {
 	return predicate.Status(func(s *sql.Selector) {
-		s.Where(sql.GTE(s.C(FieldStatusName), v))
+		s.Where(sql.GTE(s.C(FieldStatusname), v))
 	})
 }
 
-// StatusNameLT applies the LT predicate on the "status_name" field.
-func StatusNameLT(v string) predicate.Status {
+// StatusnameLT applies the LT predicate on the "statusname" field.
+func StatusnameLT(v string) predicate.Status {
 	return predicate.Status(func(s *sql.Selector) {
-		s.Where(sql.LT(s.C(FieldStatusName), v))
+		s.Where(sql.LT(s.C(FieldStatusname), v))
 	})
 }
 
-// StatusNameLTE applies the LTE predicate on the "status_name" field.
-func StatusNameLTE(v string) predicate.Status {
+// StatusnameLTE applies the LTE predicate on the "statusname" field.
+func StatusnameLTE(v string) predicate.Status {
 	return predicate.Status(func(s *sql.Selector) {
-		s.Where(sql.LTE(s.C(FieldStatusName), v))
+		s.Where(sql.LTE(s.C(FieldStatusname), v))
 	})
 }
 
-// StatusNameContains applies the Contains predicate on the "status_name" field.
-func StatusNameContains(v string) predicate.Status {
+// StatusnameContains applies the Contains predicate on the "statusname" field.
+func StatusnameContains(v string) predicate.Status {
 	return predicate.Status(func(s *sql.Selector) {
-		s.Where(sql.Contains(s.C(FieldStatusName), v))
+		s.Where(sql.Contains(s.C(FieldStatusname), v))
 	})
 }
 
-// StatusNameHasPrefix applies the HasPrefix predicate on the "status_name" field.
-func StatusNameHasPrefix(v string) predicate.Status {
+// StatusnameHasPrefix applies the HasPrefix predicate on the "statusname" field.
+func StatusnameHasPrefix(v string) predicate.Status {
 	return predicate.Status(func(s *sql.Selector) {
-		s.Where(sql.HasPrefix(s.C(FieldStatusName), v))
+		s.Where(sql.HasPrefix(s.C(FieldStatusname), v))
 	})
 }
 
-// StatusNameHasSuffix applies the HasSuffix predicate on the "status_name" field.
-func StatusNameHasSuffix(v string) predicate.Status {
+// StatusnameHasSuffix applies the HasSuffix predicate on the "statusname" field.
+func StatusnameHasSuffix(v string) predicate.Status {
 	return predicate.Status(func(s *sql.Selector) {
-		s.Where(sql.HasSuffix(s.C(FieldStatusName), v))
+		s.Where(sql.HasSuffix(s.C(FieldStatusname), v))
 	})
 }
 
-// StatusNameEqualFold applies the EqualFold predicate on the "status_name" field.
-func StatusNameEqualFold(v string) predicate.Status {
+// StatusnameEqualFold applies the EqualFold predicate on the "statusname" field.
+func StatusnameEqualFold(v string) predicate.Status {
 	return predicate.Status(func(s *sql.Selector) {
-		s.Where(sql.EqualFold(s.C(FieldStatusName), v))
+		s.Where(sql.EqualFold(s.C(FieldStatusname), v))
 	})
 }
 
-// StatusNameContainsFold applies the ContainsFold predicate on the "status_name" field.
-func StatusNameContainsFold(v string) predicate.Status {
+// StatusnameContainsFold applies the ContainsFold predicate on the "statusname" field.
+func StatusnameContainsFold(v string) predicate.Status {
 	return predicate.Status(func(s *sql.Selector) {
-		s.Where(sql.ContainsFold(s.C(FieldStatusName), v))
+		s.Where(sql.ContainsFold(s.C(FieldStatusname), v))
 	})
 }
 

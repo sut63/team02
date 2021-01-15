@@ -20,8 +20,8 @@ type Physicaltherapyrecord struct {
 	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
-	// AddedTime holds the value of the "added_time" field.
-	AddedTime time.Time `json:"added_time,omitempty"`
+	// AddedTime holds the value of the "addedTime" field.
+	AddedTime time.Time `json:"addedTime,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the PhysicaltherapyrecordQuery when eager-loading is set.
 	Edges                                     PhysicaltherapyrecordEdges `json:"edges"`
@@ -142,7 +142,7 @@ func (ph *Physicaltherapyrecord) assignValues(columns []string, values []interfa
 			ph.ID = int(value.Int64)
 		case physicaltherapyrecord.FieldAddedTime:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field added_time", values[i])
+				return fmt.Errorf("unexpected type %T for field addedTime", values[i])
 			} else if value.Valid {
 				ph.AddedTime = value.Time
 			}
@@ -222,7 +222,7 @@ func (ph *Physicaltherapyrecord) String() string {
 	var builder strings.Builder
 	builder.WriteString("Physicaltherapyrecord(")
 	builder.WriteString(fmt.Sprintf("id=%v", ph.ID))
-	builder.WriteString(", added_time=")
+	builder.WriteString(", addedTime=")
 	builder.WriteString(ph.AddedTime.Format(time.ANSIC))
 	builder.WriteByte(')')
 	return builder.String()

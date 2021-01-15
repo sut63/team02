@@ -91,29 +91,29 @@ func IDLTE(id int) predicate.Physicaltherapyroom {
 	})
 }
 
-// PhysicalTherapyRoomName applies equality check predicate on the "physical_therapy_room_name" field. It's identical to PhysicalTherapyRoomNameEQ.
-func PhysicalTherapyRoomName(v string) predicate.Physicaltherapyroom {
+// Physicaltherapyroomname applies equality check predicate on the "physicaltherapyroomname" field. It's identical to PhysicaltherapyroomnameEQ.
+func Physicaltherapyroomname(v string) predicate.Physicaltherapyroom {
 	return predicate.Physicaltherapyroom(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldPhysicalTherapyRoomName), v))
+		s.Where(sql.EQ(s.C(FieldPhysicaltherapyroomname), v))
 	})
 }
 
-// PhysicalTherapyRoomNameEQ applies the EQ predicate on the "physical_therapy_room_name" field.
-func PhysicalTherapyRoomNameEQ(v string) predicate.Physicaltherapyroom {
+// PhysicaltherapyroomnameEQ applies the EQ predicate on the "physicaltherapyroomname" field.
+func PhysicaltherapyroomnameEQ(v string) predicate.Physicaltherapyroom {
 	return predicate.Physicaltherapyroom(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldPhysicalTherapyRoomName), v))
+		s.Where(sql.EQ(s.C(FieldPhysicaltherapyroomname), v))
 	})
 }
 
-// PhysicalTherapyRoomNameNEQ applies the NEQ predicate on the "physical_therapy_room_name" field.
-func PhysicalTherapyRoomNameNEQ(v string) predicate.Physicaltherapyroom {
+// PhysicaltherapyroomnameNEQ applies the NEQ predicate on the "physicaltherapyroomname" field.
+func PhysicaltherapyroomnameNEQ(v string) predicate.Physicaltherapyroom {
 	return predicate.Physicaltherapyroom(func(s *sql.Selector) {
-		s.Where(sql.NEQ(s.C(FieldPhysicalTherapyRoomName), v))
+		s.Where(sql.NEQ(s.C(FieldPhysicaltherapyroomname), v))
 	})
 }
 
-// PhysicalTherapyRoomNameIn applies the In predicate on the "physical_therapy_room_name" field.
-func PhysicalTherapyRoomNameIn(vs ...string) predicate.Physicaltherapyroom {
+// PhysicaltherapyroomnameIn applies the In predicate on the "physicaltherapyroomname" field.
+func PhysicaltherapyroomnameIn(vs ...string) predicate.Physicaltherapyroom {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -125,12 +125,12 @@ func PhysicalTherapyRoomNameIn(vs ...string) predicate.Physicaltherapyroom {
 			s.Where(sql.False())
 			return
 		}
-		s.Where(sql.In(s.C(FieldPhysicalTherapyRoomName), v...))
+		s.Where(sql.In(s.C(FieldPhysicaltherapyroomname), v...))
 	})
 }
 
-// PhysicalTherapyRoomNameNotIn applies the NotIn predicate on the "physical_therapy_room_name" field.
-func PhysicalTherapyRoomNameNotIn(vs ...string) predicate.Physicaltherapyroom {
+// PhysicaltherapyroomnameNotIn applies the NotIn predicate on the "physicaltherapyroomname" field.
+func PhysicaltherapyroomnameNotIn(vs ...string) predicate.Physicaltherapyroom {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -142,70 +142,70 @@ func PhysicalTherapyRoomNameNotIn(vs ...string) predicate.Physicaltherapyroom {
 			s.Where(sql.False())
 			return
 		}
-		s.Where(sql.NotIn(s.C(FieldPhysicalTherapyRoomName), v...))
+		s.Where(sql.NotIn(s.C(FieldPhysicaltherapyroomname), v...))
 	})
 }
 
-// PhysicalTherapyRoomNameGT applies the GT predicate on the "physical_therapy_room_name" field.
-func PhysicalTherapyRoomNameGT(v string) predicate.Physicaltherapyroom {
+// PhysicaltherapyroomnameGT applies the GT predicate on the "physicaltherapyroomname" field.
+func PhysicaltherapyroomnameGT(v string) predicate.Physicaltherapyroom {
 	return predicate.Physicaltherapyroom(func(s *sql.Selector) {
-		s.Where(sql.GT(s.C(FieldPhysicalTherapyRoomName), v))
+		s.Where(sql.GT(s.C(FieldPhysicaltherapyroomname), v))
 	})
 }
 
-// PhysicalTherapyRoomNameGTE applies the GTE predicate on the "physical_therapy_room_name" field.
-func PhysicalTherapyRoomNameGTE(v string) predicate.Physicaltherapyroom {
+// PhysicaltherapyroomnameGTE applies the GTE predicate on the "physicaltherapyroomname" field.
+func PhysicaltherapyroomnameGTE(v string) predicate.Physicaltherapyroom {
 	return predicate.Physicaltherapyroom(func(s *sql.Selector) {
-		s.Where(sql.GTE(s.C(FieldPhysicalTherapyRoomName), v))
+		s.Where(sql.GTE(s.C(FieldPhysicaltherapyroomname), v))
 	})
 }
 
-// PhysicalTherapyRoomNameLT applies the LT predicate on the "physical_therapy_room_name" field.
-func PhysicalTherapyRoomNameLT(v string) predicate.Physicaltherapyroom {
+// PhysicaltherapyroomnameLT applies the LT predicate on the "physicaltherapyroomname" field.
+func PhysicaltherapyroomnameLT(v string) predicate.Physicaltherapyroom {
 	return predicate.Physicaltherapyroom(func(s *sql.Selector) {
-		s.Where(sql.LT(s.C(FieldPhysicalTherapyRoomName), v))
+		s.Where(sql.LT(s.C(FieldPhysicaltherapyroomname), v))
 	})
 }
 
-// PhysicalTherapyRoomNameLTE applies the LTE predicate on the "physical_therapy_room_name" field.
-func PhysicalTherapyRoomNameLTE(v string) predicate.Physicaltherapyroom {
+// PhysicaltherapyroomnameLTE applies the LTE predicate on the "physicaltherapyroomname" field.
+func PhysicaltherapyroomnameLTE(v string) predicate.Physicaltherapyroom {
 	return predicate.Physicaltherapyroom(func(s *sql.Selector) {
-		s.Where(sql.LTE(s.C(FieldPhysicalTherapyRoomName), v))
+		s.Where(sql.LTE(s.C(FieldPhysicaltherapyroomname), v))
 	})
 }
 
-// PhysicalTherapyRoomNameContains applies the Contains predicate on the "physical_therapy_room_name" field.
-func PhysicalTherapyRoomNameContains(v string) predicate.Physicaltherapyroom {
+// PhysicaltherapyroomnameContains applies the Contains predicate on the "physicaltherapyroomname" field.
+func PhysicaltherapyroomnameContains(v string) predicate.Physicaltherapyroom {
 	return predicate.Physicaltherapyroom(func(s *sql.Selector) {
-		s.Where(sql.Contains(s.C(FieldPhysicalTherapyRoomName), v))
+		s.Where(sql.Contains(s.C(FieldPhysicaltherapyroomname), v))
 	})
 }
 
-// PhysicalTherapyRoomNameHasPrefix applies the HasPrefix predicate on the "physical_therapy_room_name" field.
-func PhysicalTherapyRoomNameHasPrefix(v string) predicate.Physicaltherapyroom {
+// PhysicaltherapyroomnameHasPrefix applies the HasPrefix predicate on the "physicaltherapyroomname" field.
+func PhysicaltherapyroomnameHasPrefix(v string) predicate.Physicaltherapyroom {
 	return predicate.Physicaltherapyroom(func(s *sql.Selector) {
-		s.Where(sql.HasPrefix(s.C(FieldPhysicalTherapyRoomName), v))
+		s.Where(sql.HasPrefix(s.C(FieldPhysicaltherapyroomname), v))
 	})
 }
 
-// PhysicalTherapyRoomNameHasSuffix applies the HasSuffix predicate on the "physical_therapy_room_name" field.
-func PhysicalTherapyRoomNameHasSuffix(v string) predicate.Physicaltherapyroom {
+// PhysicaltherapyroomnameHasSuffix applies the HasSuffix predicate on the "physicaltherapyroomname" field.
+func PhysicaltherapyroomnameHasSuffix(v string) predicate.Physicaltherapyroom {
 	return predicate.Physicaltherapyroom(func(s *sql.Selector) {
-		s.Where(sql.HasSuffix(s.C(FieldPhysicalTherapyRoomName), v))
+		s.Where(sql.HasSuffix(s.C(FieldPhysicaltherapyroomname), v))
 	})
 }
 
-// PhysicalTherapyRoomNameEqualFold applies the EqualFold predicate on the "physical_therapy_room_name" field.
-func PhysicalTherapyRoomNameEqualFold(v string) predicate.Physicaltherapyroom {
+// PhysicaltherapyroomnameEqualFold applies the EqualFold predicate on the "physicaltherapyroomname" field.
+func PhysicaltherapyroomnameEqualFold(v string) predicate.Physicaltherapyroom {
 	return predicate.Physicaltherapyroom(func(s *sql.Selector) {
-		s.Where(sql.EqualFold(s.C(FieldPhysicalTherapyRoomName), v))
+		s.Where(sql.EqualFold(s.C(FieldPhysicaltherapyroomname), v))
 	})
 }
 
-// PhysicalTherapyRoomNameContainsFold applies the ContainsFold predicate on the "physical_therapy_room_name" field.
-func PhysicalTherapyRoomNameContainsFold(v string) predicate.Physicaltherapyroom {
+// PhysicaltherapyroomnameContainsFold applies the ContainsFold predicate on the "physicaltherapyroomname" field.
+func PhysicaltherapyroomnameContainsFold(v string) predicate.Physicaltherapyroom {
 	return predicate.Physicaltherapyroom(func(s *sql.Selector) {
-		s.Where(sql.ContainsFold(s.C(FieldPhysicalTherapyRoomName), v))
+		s.Where(sql.ContainsFold(s.C(FieldPhysicaltherapyroomname), v))
 	})
 }
 

@@ -283,12 +283,12 @@ func (sq *StatusQuery) WithPhysicaltherapyrecord(opts ...func(*Physicaltherapyre
 // Example:
 //
 //	var v []struct {
-//		StatusName string `json:"status_name,omitempty"`
+//		Statusname string `json:"statusname,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
 //	client.Status.Query().
-//		GroupBy(status.FieldStatusName).
+//		GroupBy(status.FieldStatusname).
 //		Aggregate(ent.Count()).
 //		Scan(ctx, &v)
 //
@@ -310,11 +310,11 @@ func (sq *StatusQuery) GroupBy(field string, fields ...string) *StatusGroupBy {
 // Example:
 //
 //	var v []struct {
-//		StatusName string `json:"status_name,omitempty"`
+//		Statusname string `json:"statusname,omitempty"`
 //	}
 //
 //	client.Status.Query().
-//		Select(status.FieldStatusName).
+//		Select(status.FieldStatusname).
 //		Scan(ctx, &v)
 //
 func (sq *StatusQuery) Select(field string, fields ...string) *StatusSelect {

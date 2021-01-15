@@ -4,9 +4,9 @@ import (
 	"context"
 	"strconv"
 
-	"github.com/to63/app/ent"
-	"github.com/to63/app/ent/physicaltherapyroom"	
 	"github.com/gin-gonic/gin"
+	"github.com/to63/app/ent"
+	"github.com/to63/app/ent/physicaltherapyroom"
 )
 
 // PhysicaltherapyroomController  handles POST requests for adding physicaltherapyroom entities
@@ -37,7 +37,7 @@ func (ctl *PhysicaltherapyroomController) CreatePhysicaltherapyroom(c *gin.Conte
 
 	phr, err := ctl.client.Physicaltherapyroom.
 		Create().
-		SetPhysicalTherapyRoomName(obj.PhysicalTherapyRoomName).
+		SetPhysicaltherapyroomname(obj.Physicaltherapyroomname).
 		Save(context.Background())
 
 	if err != nil {

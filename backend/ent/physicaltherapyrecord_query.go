@@ -391,7 +391,7 @@ func (pq *PhysicaltherapyrecordQuery) WithStatus(opts ...func(*StatusQuery)) *Ph
 // Example:
 //
 //	var v []struct {
-//		AddedTime time.Time `json:"added_time,omitempty"`
+//		AddedTime time.Time `json:"addedTime,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
@@ -418,7 +418,7 @@ func (pq *PhysicaltherapyrecordQuery) GroupBy(field string, fields ...string) *P
 // Example:
 //
 //	var v []struct {
-//		AddedTime time.Time `json:"added_time,omitempty"`
+//		AddedTime time.Time `json:"addedTime,omitempty"`
 //	}
 //
 //	client.Physicaltherapyrecord.Query().

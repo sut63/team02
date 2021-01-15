@@ -3574,8 +3574,8 @@ var doc = `{
         "ent.Physicaltherapyrecord": {
             "type": "object",
             "properties": {
-                "added_time": {
-                    "description": "AddedTime holds the value of the \"added_time\" field.",
+                "addedTime": {
+                    "description": "AddedTime holds the value of the \"addedTime\" field.",
                     "type": "string"
                 },
                 "edges": {
@@ -3632,8 +3632,8 @@ var doc = `{
                     "description": "ID of the ent.",
                     "type": "integer"
                 },
-                "physical_therapy_room_name": {
-                    "description": "PhysicalTherapyRoomName holds the value of the \"physical_therapy_room_name\" field.",
+                "physicaltherapyroomname": {
+                    "description": "Physicaltherapyroomname holds the value of the \"physicaltherapyroomname\" field.",
                     "type": "string"
                 }
             }
@@ -3746,8 +3746,8 @@ var doc = `{
                     "description": "ID of the ent.",
                     "type": "integer"
                 },
-                "status_name": {
-                    "description": "StatusName holds the value of the \"status_name\" field.",
+                "statusname": {
+                    "description": "Statusname holds the value of the \"statusname\" field.",
                     "type": "string"
                 }
             }

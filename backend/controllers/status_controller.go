@@ -37,7 +37,7 @@ func (ctl *StatusController) CreateStatus(c *gin.Context) {
 
 	s, err := ctl.client.Status.
 		Create().
-		SetStatusName(obj.StatusName).
+		SetStatusname(obj.Statusname).
 		Save(context.Background())
 
 	if err != nil {

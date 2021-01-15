@@ -7,11 +7,11 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/to63/app/ent"
 	"github.com/to63/app/ent/patient"
 	"github.com/to63/app/ent/personnel"
 	"github.com/to63/app/ent/physicaltherapyroom"
 	"github.com/to63/app/ent/status"
-	"github.com/to63/app/ent"
 )
 
 // PhysicaltherapyrecordController handles POST requests for adding Physicaltherapyrecord entities
@@ -218,6 +218,7 @@ func NewPhysicaltherapyrecordController(router gin.IRouter, client *ent.Client) 
 
 func (ctl *PhysicaltherapyrecordController) register() {
 	physicaltherapyrecords := ctl.router.Group("/physicaltherapyrecords")
+	physicaltherapyrecords.GET("", ctl.ListPhysicaltherapyrecord)
 
 	physicaltherapyrecords.POST("", ctl.CreatePhysicaltherapyrecord)
 	physicaltherapyrecords.DELETE(":id", ctl.DeletePhysicaltherapyrecord)

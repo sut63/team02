@@ -39,11 +39,11 @@ export interface EntPhysicaltherapyroom {
      */
     id?: number;
     /**
-     * PhysicalTherapyRoomName holds the value of the "physical_therapy_room_name" field.
+     * Physicaltherapyroomname holds the value of the "physicaltherapyroomname" field.
      * @type {string}
      * @memberof EntPhysicaltherapyroom
      */
-    physicalTherapyRoomName?: string;
+    physicaltherapyroomname?: string;
 }
 
 export function EntPhysicaltherapyroomFromJSON(json: any): EntPhysicaltherapyroom {
@@ -58,7 +58,7 @@ export function EntPhysicaltherapyroomFromJSONTyped(json: any, ignoreDiscriminat
         
         'edges': !exists(json, 'edges') ? undefined : EntPhysicaltherapyroomEdgesFromJSON(json['edges']),
         'id': !exists(json, 'id') ? undefined : json['id'],
-        'physicalTherapyRoomName': !exists(json, 'physical_therapy_room_name') ? undefined : json['physical_therapy_room_name'],
+        'physicaltherapyroomname': !exists(json, 'physicaltherapyroomname') ? undefined : json['physicaltherapyroomname'],
     };
 }
 
@@ -73,7 +73,7 @@ export function EntPhysicaltherapyroomToJSON(value?: EntPhysicaltherapyroom | nu
         
         'edges': EntPhysicaltherapyroomEdgesToJSON(value.edges),
         'id': value.id,
-        'physical_therapy_room_name': value.physicalTherapyRoomName,
+        'physicaltherapyroomname': value.physicaltherapyroomname,
     };
 }
 

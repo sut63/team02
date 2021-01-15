@@ -16,8 +16,8 @@ type Status struct {
 	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
-	// StatusName holds the value of the "status_name" field.
-	StatusName string `json:"status_name,omitempty"`
+	// Statusname holds the value of the "statusname" field.
+	Statusname string `json:"statusname,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the StatusQuery when eager-loading is set.
 	Edges StatusEdges `json:"edges"`
@@ -53,7 +53,7 @@ func (*Status) scanValues(columns []string) ([]interface{}, error) {
 		switch columns[i] {
 		case status.FieldID:
 			values[i] = &sql.NullInt64{}
-		case status.FieldStatusName:
+		case status.FieldStatusname:
 			values[i] = &sql.NullString{}
 		default:
 			return nil, fmt.Errorf("unexpected column %q for type Status", columns[i])
@@ -76,11 +76,11 @@ func (s *Status) assignValues(columns []string, values []interface{}) error {
 				return fmt.Errorf("unexpected type %T for field id", value)
 			}
 			s.ID = int(value.Int64)
-		case status.FieldStatusName:
+		case status.FieldStatusname:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field status_name", values[i])
+				return fmt.Errorf("unexpected type %T for field statusname", values[i])
 			} else if value.Valid {
-				s.StatusName = value.String
+				s.Statusname = value.String
 			}
 		}
 	}
@@ -115,8 +115,8 @@ func (s *Status) String() string {
 	var builder strings.Builder
 	builder.WriteString("Status(")
 	builder.WriteString(fmt.Sprintf("id=%v", s.ID))
-	builder.WriteString(", status_name=")
-	builder.WriteString(s.StatusName)
+	builder.WriteString(", statusname=")
+	builder.WriteString(s.Statusname)
 	builder.WriteByte(')')
 	return builder.String()
 }

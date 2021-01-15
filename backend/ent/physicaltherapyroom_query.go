@@ -283,12 +283,12 @@ func (pq *PhysicaltherapyroomQuery) WithPhysicaltherapyrecord(opts ...func(*Phys
 // Example:
 //
 //	var v []struct {
-//		PhysicalTherapyRoomName string `json:"physical_therapy_room_name,omitempty"`
+//		Physicaltherapyroomname string `json:"physicaltherapyroomname,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
 //	client.Physicaltherapyroom.Query().
-//		GroupBy(physicaltherapyroom.FieldPhysicalTherapyRoomName).
+//		GroupBy(physicaltherapyroom.FieldPhysicaltherapyroomname).
 //		Aggregate(ent.Count()).
 //		Scan(ctx, &v)
 //
@@ -310,11 +310,11 @@ func (pq *PhysicaltherapyroomQuery) GroupBy(field string, fields ...string) *Phy
 // Example:
 //
 //	var v []struct {
-//		PhysicalTherapyRoomName string `json:"physical_therapy_room_name,omitempty"`
+//		Physicaltherapyroomname string `json:"physicaltherapyroomname,omitempty"`
 //	}
 //
 //	client.Physicaltherapyroom.Query().
-//		Select(physicaltherapyroom.FieldPhysicalTherapyRoomName).
+//		Select(physicaltherapyroom.FieldPhysicaltherapyroomname).
 //		Scan(ctx, &v)
 //
 func (pq *PhysicaltherapyroomQuery) Select(field string, fields ...string) *PhysicaltherapyroomSelect {

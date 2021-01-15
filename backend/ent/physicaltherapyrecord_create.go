@@ -24,9 +24,17 @@ type PhysicaltherapyrecordCreate struct {
 	hooks    []Hook
 }
 
-// SetAddedTime sets the "added_time" field.
+// SetAddedTime sets the "addedTime" field.
 func (pc *PhysicaltherapyrecordCreate) SetAddedTime(t time.Time) *PhysicaltherapyrecordCreate {
 	pc.mutation.SetAddedTime(t)
+	return pc
+}
+
+// SetNillableAddedTime sets the "addedTime" field if the given value is not nil.
+func (pc *PhysicaltherapyrecordCreate) SetNillableAddedTime(t *time.Time) *PhysicaltherapyrecordCreate {
+	if t != nil {
+		pc.SetAddedTime(*t)
+	}
 	return pc
 }
 
@@ -117,6 +125,7 @@ func (pc *PhysicaltherapyrecordCreate) Save(ctx context.Context) (*Physicalthera
 		err  error
 		node *Physicaltherapyrecord
 	)
+	pc.defaults()
 	if len(pc.hooks) == 0 {
 		if err = pc.check(); err != nil {
 			return nil, err
@@ -155,10 +164,18 @@ func (pc *PhysicaltherapyrecordCreate) SaveX(ctx context.Context) *Physicalthera
 	return v
 }
 
+// defaults sets the default values of the builder before save.
+func (pc *PhysicaltherapyrecordCreate) defaults() {
+	if _, ok := pc.mutation.AddedTime(); !ok {
+		v := physicaltherapyrecord.DefaultAddedTime()
+		pc.mutation.SetAddedTime(v)
+	}
+}
+
 // check runs all checks and user-defined validators on the builder.
 func (pc *PhysicaltherapyrecordCreate) check() error {
 	if _, ok := pc.mutation.AddedTime(); !ok {
-		return &ValidationError{Name: "added_time", err: errors.New("ent: missing required field \"added_time\"")}
+		return &ValidationError{Name: "addedTime", err: errors.New("ent: missing required field \"addedTime\"")}
 	}
 	return nil
 }
@@ -288,6 +305,7 @@ func (pcb *PhysicaltherapyrecordCreateBulk) Save(ctx context.Context) ([]*Physic
 	for i := range pcb.builders {
 		func(i int, root context.Context) {
 			builder := pcb.builders[i]
+			builder.defaults()
 			var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 				mutation, ok := m.(*PhysicaltherapyrecordMutation)
 				if !ok {

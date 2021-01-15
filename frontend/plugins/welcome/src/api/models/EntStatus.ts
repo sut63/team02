@@ -39,11 +39,11 @@ export interface EntStatus {
      */
     id?: number;
     /**
-     * StatusName holds the value of the "status_name" field.
+     * Statusname holds the value of the "statusname" field.
      * @type {string}
      * @memberof EntStatus
      */
-    statusName?: string;
+    statusname?: string;
 }
 
 export function EntStatusFromJSON(json: any): EntStatus {
@@ -58,7 +58,7 @@ export function EntStatusFromJSONTyped(json: any, ignoreDiscriminator: boolean):
         
         'edges': !exists(json, 'edges') ? undefined : EntStatusEdgesFromJSON(json['edges']),
         'id': !exists(json, 'id') ? undefined : json['id'],
-        'statusName': !exists(json, 'status_name') ? undefined : json['status_name'],
+        'statusname': !exists(json, 'statusname') ? undefined : json['statusname'],
     };
 }
 
@@ -73,7 +73,7 @@ export function EntStatusToJSON(value?: EntStatus | null): any {
         
         'edges': EntStatusEdgesToJSON(value.edges),
         'id': value.id,
-        'status_name': value.statusName,
+        'statusname': value.statusname,
     };
 }
 

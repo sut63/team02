@@ -14,13 +14,13 @@ type Physicaltherapyroom struct {
 // Fields of the Physicaltherapyroom.
 func (Physicaltherapyroom) Fields() []ent.Field {
 	return []ent.Field{
-		field.String("physical_therapy_room_name").NotEmpty(),
+		field.String("physicaltherapyroomname").NotEmpty(),
 	}
 }
 
 // Edges of the Physicaltherapyroom.
 func (Physicaltherapyroom) Edges() []ent.Edge {
 	return []ent.Edge{
-		edge.To("physicaltherapyrecord",Physicaltherapyrecord.Type).Unique(),
+		edge.To("physicaltherapyrecord", Physicaltherapyrecord.Type).Unique(),
 	}
 }

@@ -5315,7 +5315,7 @@ type PhysicaltherapyrecordMutation struct {
 	op                         Op
 	typ                        string
 	id                         *int
-	added_time                 *time.Time
+	addedTime                  *time.Time
 	clearedFields              map[string]struct{}
 	personnel                  *int
 	clearedpersonnel           bool
@@ -5409,21 +5409,21 @@ func (m *PhysicaltherapyrecordMutation) ID() (id int, exists bool) {
 	return *m.id, true
 }
 
-// SetAddedTime sets the "added_time" field.
+// SetAddedTime sets the "addedTime" field.
 func (m *PhysicaltherapyrecordMutation) SetAddedTime(t time.Time) {
-	m.added_time = &t
+	m.addedTime = &t
 }
 
-// AddedTime returns the value of the "added_time" field in the mutation.
+// AddedTime returns the value of the "addedTime" field in the mutation.
 func (m *PhysicaltherapyrecordMutation) AddedTime() (r time.Time, exists bool) {
-	v := m.added_time
+	v := m.addedTime
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldAddedTime returns the old "added_time" field's value of the Physicaltherapyrecord entity.
+// OldAddedTime returns the old "addedTime" field's value of the Physicaltherapyrecord entity.
 // If the Physicaltherapyrecord object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *PhysicaltherapyrecordMutation) OldAddedTime(ctx context.Context) (v time.Time, err error) {
@@ -5440,9 +5440,9 @@ func (m *PhysicaltherapyrecordMutation) OldAddedTime(ctx context.Context) (v tim
 	return oldValue.AddedTime, nil
 }
 
-// ResetAddedTime resets all changes to the "added_time" field.
+// ResetAddedTime resets all changes to the "addedTime" field.
 func (m *PhysicaltherapyrecordMutation) ResetAddedTime() {
-	m.added_time = nil
+	m.addedTime = nil
 }
 
 // SetPersonnelID sets the "personnel" edge to the Personnel entity by id.
@@ -5616,7 +5616,7 @@ func (m *PhysicaltherapyrecordMutation) Type() string {
 // AddedFields().
 func (m *PhysicaltherapyrecordMutation) Fields() []string {
 	fields := make([]string, 0, 1)
-	if m.added_time != nil {
+	if m.addedTime != nil {
 		fields = append(fields, physicaltherapyrecord.FieldAddedTime)
 	}
 	return fields
@@ -5848,7 +5848,7 @@ type PhysicaltherapyroomMutation struct {
 	op                           Op
 	typ                          string
 	id                           *int
-	physical_therapy_room_name   *string
+	physicaltherapyroomname      *string
 	clearedFields                map[string]struct{}
 	physicaltherapyrecord        *int
 	clearedphysicaltherapyrecord bool
@@ -5936,40 +5936,40 @@ func (m *PhysicaltherapyroomMutation) ID() (id int, exists bool) {
 	return *m.id, true
 }
 
-// SetPhysicalTherapyRoomName sets the "physical_therapy_room_name" field.
-func (m *PhysicaltherapyroomMutation) SetPhysicalTherapyRoomName(s string) {
-	m.physical_therapy_room_name = &s
+// SetPhysicaltherapyroomname sets the "physicaltherapyroomname" field.
+func (m *PhysicaltherapyroomMutation) SetPhysicaltherapyroomname(s string) {
+	m.physicaltherapyroomname = &s
 }
 
-// PhysicalTherapyRoomName returns the value of the "physical_therapy_room_name" field in the mutation.
-func (m *PhysicaltherapyroomMutation) PhysicalTherapyRoomName() (r string, exists bool) {
-	v := m.physical_therapy_room_name
+// Physicaltherapyroomname returns the value of the "physicaltherapyroomname" field in the mutation.
+func (m *PhysicaltherapyroomMutation) Physicaltherapyroomname() (r string, exists bool) {
+	v := m.physicaltherapyroomname
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldPhysicalTherapyRoomName returns the old "physical_therapy_room_name" field's value of the Physicaltherapyroom entity.
+// OldPhysicaltherapyroomname returns the old "physicaltherapyroomname" field's value of the Physicaltherapyroom entity.
 // If the Physicaltherapyroom object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *PhysicaltherapyroomMutation) OldPhysicalTherapyRoomName(ctx context.Context) (v string, err error) {
+func (m *PhysicaltherapyroomMutation) OldPhysicaltherapyroomname(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, fmt.Errorf("OldPhysicalTherapyRoomName is only allowed on UpdateOne operations")
+		return v, fmt.Errorf("OldPhysicaltherapyroomname is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, fmt.Errorf("OldPhysicalTherapyRoomName requires an ID field in the mutation")
+		return v, fmt.Errorf("OldPhysicaltherapyroomname requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldPhysicalTherapyRoomName: %w", err)
+		return v, fmt.Errorf("querying old value for OldPhysicaltherapyroomname: %w", err)
 	}
-	return oldValue.PhysicalTherapyRoomName, nil
+	return oldValue.Physicaltherapyroomname, nil
 }
 
-// ResetPhysicalTherapyRoomName resets all changes to the "physical_therapy_room_name" field.
-func (m *PhysicaltherapyroomMutation) ResetPhysicalTherapyRoomName() {
-	m.physical_therapy_room_name = nil
+// ResetPhysicaltherapyroomname resets all changes to the "physicaltherapyroomname" field.
+func (m *PhysicaltherapyroomMutation) ResetPhysicaltherapyroomname() {
+	m.physicaltherapyroomname = nil
 }
 
 // SetPhysicaltherapyrecordID sets the "physicaltherapyrecord" edge to the Physicaltherapyrecord entity by id.
@@ -6026,8 +6026,8 @@ func (m *PhysicaltherapyroomMutation) Type() string {
 // AddedFields().
 func (m *PhysicaltherapyroomMutation) Fields() []string {
 	fields := make([]string, 0, 1)
-	if m.physical_therapy_room_name != nil {
-		fields = append(fields, physicaltherapyroom.FieldPhysicalTherapyRoomName)
+	if m.physicaltherapyroomname != nil {
+		fields = append(fields, physicaltherapyroom.FieldPhysicaltherapyroomname)
 	}
 	return fields
 }
@@ -6037,8 +6037,8 @@ func (m *PhysicaltherapyroomMutation) Fields() []string {
 // schema.
 func (m *PhysicaltherapyroomMutation) Field(name string) (ent.Value, bool) {
 	switch name {
-	case physicaltherapyroom.FieldPhysicalTherapyRoomName:
-		return m.PhysicalTherapyRoomName()
+	case physicaltherapyroom.FieldPhysicaltherapyroomname:
+		return m.Physicaltherapyroomname()
 	}
 	return nil, false
 }
@@ -6048,8 +6048,8 @@ func (m *PhysicaltherapyroomMutation) Field(name string) (ent.Value, bool) {
 // database failed.
 func (m *PhysicaltherapyroomMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
 	switch name {
-	case physicaltherapyroom.FieldPhysicalTherapyRoomName:
-		return m.OldPhysicalTherapyRoomName(ctx)
+	case physicaltherapyroom.FieldPhysicaltherapyroomname:
+		return m.OldPhysicaltherapyroomname(ctx)
 	}
 	return nil, fmt.Errorf("unknown Physicaltherapyroom field %s", name)
 }
@@ -6059,12 +6059,12 @@ func (m *PhysicaltherapyroomMutation) OldField(ctx context.Context, name string)
 // type.
 func (m *PhysicaltherapyroomMutation) SetField(name string, value ent.Value) error {
 	switch name {
-	case physicaltherapyroom.FieldPhysicalTherapyRoomName:
+	case physicaltherapyroom.FieldPhysicaltherapyroomname:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetPhysicalTherapyRoomName(v)
+		m.SetPhysicaltherapyroomname(v)
 		return nil
 	}
 	return fmt.Errorf("unknown Physicaltherapyroom field %s", name)
@@ -6115,8 +6115,8 @@ func (m *PhysicaltherapyroomMutation) ClearField(name string) error {
 // It returns an error if the field is not defined in the schema.
 func (m *PhysicaltherapyroomMutation) ResetField(name string) error {
 	switch name {
-	case physicaltherapyroom.FieldPhysicalTherapyRoomName:
-		m.ResetPhysicalTherapyRoomName()
+	case physicaltherapyroom.FieldPhysicaltherapyroomname:
+		m.ResetPhysicaltherapyroomname()
 		return nil
 	}
 	return fmt.Errorf("unknown Physicaltherapyroom field %s", name)
@@ -7295,7 +7295,7 @@ type StatusMutation struct {
 	op                           Op
 	typ                          string
 	id                           *int
-	status_name                  *string
+	statusname                   *string
 	clearedFields                map[string]struct{}
 	physicaltherapyrecord        *int
 	clearedphysicaltherapyrecord bool
@@ -7383,40 +7383,40 @@ func (m *StatusMutation) ID() (id int, exists bool) {
 	return *m.id, true
 }
 
-// SetStatusName sets the "status_name" field.
-func (m *StatusMutation) SetStatusName(s string) {
-	m.status_name = &s
+// SetStatusname sets the "statusname" field.
+func (m *StatusMutation) SetStatusname(s string) {
+	m.statusname = &s
 }
 
-// StatusName returns the value of the "status_name" field in the mutation.
-func (m *StatusMutation) StatusName() (r string, exists bool) {
-	v := m.status_name
+// Statusname returns the value of the "statusname" field in the mutation.
+func (m *StatusMutation) Statusname() (r string, exists bool) {
+	v := m.statusname
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldStatusName returns the old "status_name" field's value of the Status entity.
+// OldStatusname returns the old "statusname" field's value of the Status entity.
 // If the Status object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *StatusMutation) OldStatusName(ctx context.Context) (v string, err error) {
+func (m *StatusMutation) OldStatusname(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, fmt.Errorf("OldStatusName is only allowed on UpdateOne operations")
+		return v, fmt.Errorf("OldStatusname is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, fmt.Errorf("OldStatusName requires an ID field in the mutation")
+		return v, fmt.Errorf("OldStatusname requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldStatusName: %w", err)
+		return v, fmt.Errorf("querying old value for OldStatusname: %w", err)
 	}
-	return oldValue.StatusName, nil
+	return oldValue.Statusname, nil
 }
 
-// ResetStatusName resets all changes to the "status_name" field.
-func (m *StatusMutation) ResetStatusName() {
-	m.status_name = nil
+// ResetStatusname resets all changes to the "statusname" field.
+func (m *StatusMutation) ResetStatusname() {
+	m.statusname = nil
 }
 
 // SetPhysicaltherapyrecordID sets the "physicaltherapyrecord" edge to the Physicaltherapyrecord entity by id.
@@ -7473,8 +7473,8 @@ func (m *StatusMutation) Type() string {
 // AddedFields().
 func (m *StatusMutation) Fields() []string {
 	fields := make([]string, 0, 1)
-	if m.status_name != nil {
-		fields = append(fields, status.FieldStatusName)
+	if m.statusname != nil {
+		fields = append(fields, status.FieldStatusname)
 	}
 	return fields
 }
@@ -7484,8 +7484,8 @@ func (m *StatusMutation) Fields() []string {
 // schema.
 func (m *StatusMutation) Field(name string) (ent.Value, bool) {
 	switch name {
-	case status.FieldStatusName:
-		return m.StatusName()
+	case status.FieldStatusname:
+		return m.Statusname()
 	}
 	return nil, false
 }
@@ -7495,8 +7495,8 @@ func (m *StatusMutation) Field(name string) (ent.Value, bool) {
 // database failed.
 func (m *StatusMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
 	switch name {
-	case status.FieldStatusName:
-		return m.OldStatusName(ctx)
+	case status.FieldStatusname:
+		return m.OldStatusname(ctx)
 	}
 	return nil, fmt.Errorf("unknown Status field %s", name)
 }
@@ -7506,12 +7506,12 @@ func (m *StatusMutation) OldField(ctx context.Context, name string) (ent.Value, 
 // type.
 func (m *StatusMutation) SetField(name string, value ent.Value) error {
 	switch name {
-	case status.FieldStatusName:
+	case status.FieldStatusname:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetStatusName(v)
+		m.SetStatusname(v)
 		return nil
 	}
 	return fmt.Errorf("unknown Status field %s", name)
@@ -7562,8 +7562,8 @@ func (m *StatusMutation) ClearField(name string) error {
 // It returns an error if the field is not defined in the schema.
 func (m *StatusMutation) ResetField(name string) error {
 	switch name {
-	case status.FieldStatusName:
-		m.ResetStatusName()
+	case status.FieldStatusname:
+		m.ResetStatusname()
 		return nil
 	}
 	return fmt.Errorf("unknown Status field %s", name)

@@ -7,8 +7,8 @@ const (
 	Label = "status"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
-	// FieldStatusName holds the string denoting the status_name field in the database.
-	FieldStatusName = "status_name"
+	// FieldStatusname holds the string denoting the statusname field in the database.
+	FieldStatusname = "statusname"
 
 	// EdgePhysicaltherapyrecord holds the string denoting the physicaltherapyrecord edge name in mutations.
 	EdgePhysicaltherapyrecord = "physicaltherapyrecord"
@@ -27,7 +27,7 @@ const (
 // Columns holds all SQL columns for status fields.
 var Columns = []string{
 	FieldID,
-	FieldStatusName,
+	FieldStatusname,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -41,6 +41,6 @@ func ValidColumn(column string) bool {
 }
 
 var (
-	// StatusNameValidator is a validator for the "status_name" field. It is called by the builders before save.
-	StatusNameValidator func(string) error
+	// StatusnameValidator is a validator for the "statusname" field. It is called by the builders before save.
+	StatusnameValidator func(string) error
 )

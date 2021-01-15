@@ -20,9 +20,9 @@ type StatusCreate struct {
 	hooks    []Hook
 }
 
-// SetStatusName sets the "status_name" field.
-func (sc *StatusCreate) SetStatusName(s string) *StatusCreate {
-	sc.mutation.SetStatusName(s)
+// SetStatusname sets the "statusname" field.
+func (sc *StatusCreate) SetStatusname(s string) *StatusCreate {
+	sc.mutation.SetStatusname(s)
 	return sc
 }
 
@@ -96,12 +96,12 @@ func (sc *StatusCreate) SaveX(ctx context.Context) *Status {
 
 // check runs all checks and user-defined validators on the builder.
 func (sc *StatusCreate) check() error {
-	if _, ok := sc.mutation.StatusName(); !ok {
-		return &ValidationError{Name: "status_name", err: errors.New("ent: missing required field \"status_name\"")}
+	if _, ok := sc.mutation.Statusname(); !ok {
+		return &ValidationError{Name: "statusname", err: errors.New("ent: missing required field \"statusname\"")}
 	}
-	if v, ok := sc.mutation.StatusName(); ok {
-		if err := status.StatusNameValidator(v); err != nil {
-			return &ValidationError{Name: "status_name", err: fmt.Errorf("ent: validator failed for field \"status_name\": %w", err)}
+	if v, ok := sc.mutation.Statusname(); ok {
+		if err := status.StatusnameValidator(v); err != nil {
+			return &ValidationError{Name: "statusname", err: fmt.Errorf("ent: validator failed for field \"statusname\": %w", err)}
 		}
 	}
 	return nil
@@ -131,13 +131,13 @@ func (sc *StatusCreate) createSpec() (*Status, *sqlgraph.CreateSpec) {
 			},
 		}
 	)
-	if value, ok := sc.mutation.StatusName(); ok {
+	if value, ok := sc.mutation.Statusname(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: status.FieldStatusName,
+			Column: status.FieldStatusname,
 		})
-		_node.StatusName = value
+		_node.Statusname = value
 	}
 	if nodes := sc.mutation.PhysicaltherapyrecordIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{

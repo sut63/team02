@@ -27,9 +27,9 @@ func (pu *PhysicaltherapyroomUpdate) Where(ps ...predicate.Physicaltherapyroom) 
 	return pu
 }
 
-// SetPhysicalTherapyRoomName sets the "physical_therapy_room_name" field.
-func (pu *PhysicaltherapyroomUpdate) SetPhysicalTherapyRoomName(s string) *PhysicaltherapyroomUpdate {
-	pu.mutation.SetPhysicalTherapyRoomName(s)
+// SetPhysicaltherapyroomname sets the "physicaltherapyroomname" field.
+func (pu *PhysicaltherapyroomUpdate) SetPhysicaltherapyroomname(s string) *PhysicaltherapyroomUpdate {
+	pu.mutation.SetPhysicaltherapyroomname(s)
 	return pu
 }
 
@@ -122,9 +122,9 @@ func (pu *PhysicaltherapyroomUpdate) ExecX(ctx context.Context) {
 
 // check runs all checks and user-defined validators on the builder.
 func (pu *PhysicaltherapyroomUpdate) check() error {
-	if v, ok := pu.mutation.PhysicalTherapyRoomName(); ok {
-		if err := physicaltherapyroom.PhysicalTherapyRoomNameValidator(v); err != nil {
-			return &ValidationError{Name: "physical_therapy_room_name", err: fmt.Errorf("ent: validator failed for field \"physical_therapy_room_name\": %w", err)}
+	if v, ok := pu.mutation.Physicaltherapyroomname(); ok {
+		if err := physicaltherapyroom.PhysicaltherapyroomnameValidator(v); err != nil {
+			return &ValidationError{Name: "physicaltherapyroomname", err: fmt.Errorf("ent: validator failed for field \"physicaltherapyroomname\": %w", err)}
 		}
 	}
 	return nil
@@ -148,11 +148,11 @@ func (pu *PhysicaltherapyroomUpdate) sqlSave(ctx context.Context) (n int, err er
 			}
 		}
 	}
-	if value, ok := pu.mutation.PhysicalTherapyRoomName(); ok {
+	if value, ok := pu.mutation.Physicaltherapyroomname(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: physicaltherapyroom.FieldPhysicalTherapyRoomName,
+			Column: physicaltherapyroom.FieldPhysicaltherapyroomname,
 		})
 	}
 	if pu.mutation.PhysicaltherapyrecordCleared() {
@@ -208,9 +208,9 @@ type PhysicaltherapyroomUpdateOne struct {
 	mutation *PhysicaltherapyroomMutation
 }
 
-// SetPhysicalTherapyRoomName sets the "physical_therapy_room_name" field.
-func (puo *PhysicaltherapyroomUpdateOne) SetPhysicalTherapyRoomName(s string) *PhysicaltherapyroomUpdateOne {
-	puo.mutation.SetPhysicalTherapyRoomName(s)
+// SetPhysicaltherapyroomname sets the "physicaltherapyroomname" field.
+func (puo *PhysicaltherapyroomUpdateOne) SetPhysicaltherapyroomname(s string) *PhysicaltherapyroomUpdateOne {
+	puo.mutation.SetPhysicaltherapyroomname(s)
 	return puo
 }
 
@@ -303,9 +303,9 @@ func (puo *PhysicaltherapyroomUpdateOne) ExecX(ctx context.Context) {
 
 // check runs all checks and user-defined validators on the builder.
 func (puo *PhysicaltherapyroomUpdateOne) check() error {
-	if v, ok := puo.mutation.PhysicalTherapyRoomName(); ok {
-		if err := physicaltherapyroom.PhysicalTherapyRoomNameValidator(v); err != nil {
-			return &ValidationError{Name: "physical_therapy_room_name", err: fmt.Errorf("ent: validator failed for field \"physical_therapy_room_name\": %w", err)}
+	if v, ok := puo.mutation.Physicaltherapyroomname(); ok {
+		if err := physicaltherapyroom.PhysicaltherapyroomnameValidator(v); err != nil {
+			return &ValidationError{Name: "physicaltherapyroomname", err: fmt.Errorf("ent: validator failed for field \"physicaltherapyroomname\": %w", err)}
 		}
 	}
 	return nil
@@ -327,11 +327,11 @@ func (puo *PhysicaltherapyroomUpdateOne) sqlSave(ctx context.Context) (_node *Ph
 		return nil, &ValidationError{Name: "ID", err: fmt.Errorf("missing Physicaltherapyroom.ID for update")}
 	}
 	_spec.Node.ID.Value = id
-	if value, ok := puo.mutation.PhysicalTherapyRoomName(); ok {
+	if value, ok := puo.mutation.Physicaltherapyroomname(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: physicaltherapyroom.FieldPhysicalTherapyRoomName,
+			Column: physicaltherapyroom.FieldPhysicaltherapyroomname,
 		})
 	}
 	if puo.mutation.PhysicaltherapyrecordCleared() {

@@ -289,7 +289,7 @@ var (
 	// PhysicaltherapyroomsColumns holds the columns for the "physicaltherapyrooms" table.
 	PhysicaltherapyroomsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
-		{Name: "physical_therapy_room_name", Type: field.TypeString},
+		{Name: "physicaltherapyroomname", Type: field.TypeString},
 	}
 	// PhysicaltherapyroomsTable holds the schema information for the "physicaltherapyrooms" table.
 	PhysicaltherapyroomsTable = &schema.Table{
@@ -337,7 +337,7 @@ var (
 	// StatusColumns holds the columns for the "status" table.
 	StatusColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
-		{Name: "status_name", Type: field.TypeString},
+		{Name: "statusname", Type: field.TypeString},
 	}
 	// StatusTable holds the schema information for the "status" table.
 	StatusTable = &schema.Table{

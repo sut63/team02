@@ -1,6 +1,8 @@
 package schema
 
 import (
+	"time"
+
 	"github.com/facebook/ent"
 	"github.com/facebook/ent/schema/edge"
 	"github.com/facebook/ent/schema/field"
@@ -14,7 +16,7 @@ type Physicaltherapyrecord struct {
 // Fields of the Physicaltherapyrecord.
 func (Physicaltherapyrecord) Fields() []ent.Field {
 	return []ent.Field{
-		field.Time("added_time"),
+		field.Time("addedTime").Default(time.Now),
 	}
 }
 

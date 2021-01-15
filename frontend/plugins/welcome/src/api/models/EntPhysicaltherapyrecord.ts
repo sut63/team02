@@ -27,7 +27,7 @@ import {
  */
 export interface EntPhysicaltherapyrecord {
     /**
-     * AddedTime holds the value of the "added_time" field.
+     * AddedTime holds the value of the "addedTime" field.
      * @type {string}
      * @memberof EntPhysicaltherapyrecord
      */
@@ -56,7 +56,7 @@ export function EntPhysicaltherapyrecordFromJSONTyped(json: any, ignoreDiscrimin
     }
     return {
         
-        'addedTime': !exists(json, 'added_time') ? undefined : json['added_time'],
+        'addedTime': !exists(json, 'addedTime') ? undefined : json['addedTime'],
         'edges': !exists(json, 'edges') ? undefined : EntPhysicaltherapyrecordEdgesFromJSON(json['edges']),
         'id': !exists(json, 'id') ? undefined : json['id'],
     };
@@ -71,7 +71,7 @@ export function EntPhysicaltherapyrecordToJSON(value?: EntPhysicaltherapyrecord 
     }
     return {
         
-        'added_time': value.addedTime,
+        'addedTime': value.addedTime,
         'edges': EntPhysicaltherapyrecordEdgesToJSON(value.edges),
         'id': value.id,
     };

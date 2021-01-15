@@ -16,8 +16,8 @@ type Physicaltherapyroom struct {
 	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
-	// PhysicalTherapyRoomName holds the value of the "physical_therapy_room_name" field.
-	PhysicalTherapyRoomName string `json:"physical_therapy_room_name,omitempty"`
+	// Physicaltherapyroomname holds the value of the "physicaltherapyroomname" field.
+	Physicaltherapyroomname string `json:"physicaltherapyroomname,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the PhysicaltherapyroomQuery when eager-loading is set.
 	Edges PhysicaltherapyroomEdges `json:"edges"`
@@ -53,7 +53,7 @@ func (*Physicaltherapyroom) scanValues(columns []string) ([]interface{}, error) 
 		switch columns[i] {
 		case physicaltherapyroom.FieldID:
 			values[i] = &sql.NullInt64{}
-		case physicaltherapyroom.FieldPhysicalTherapyRoomName:
+		case physicaltherapyroom.FieldPhysicaltherapyroomname:
 			values[i] = &sql.NullString{}
 		default:
 			return nil, fmt.Errorf("unexpected column %q for type Physicaltherapyroom", columns[i])
@@ -76,11 +76,11 @@ func (ph *Physicaltherapyroom) assignValues(columns []string, values []interface
 				return fmt.Errorf("unexpected type %T for field id", value)
 			}
 			ph.ID = int(value.Int64)
-		case physicaltherapyroom.FieldPhysicalTherapyRoomName:
+		case physicaltherapyroom.FieldPhysicaltherapyroomname:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field physical_therapy_room_name", values[i])
+				return fmt.Errorf("unexpected type %T for field physicaltherapyroomname", values[i])
 			} else if value.Valid {
-				ph.PhysicalTherapyRoomName = value.String
+				ph.Physicaltherapyroomname = value.String
 			}
 		}
 	}
@@ -115,8 +115,8 @@ func (ph *Physicaltherapyroom) String() string {
 	var builder strings.Builder
 	builder.WriteString("Physicaltherapyroom(")
 	builder.WriteString(fmt.Sprintf("id=%v", ph.ID))
-	builder.WriteString(", physical_therapy_room_name=")
-	builder.WriteString(ph.PhysicalTherapyRoomName)
+	builder.WriteString(", physicaltherapyroomname=")
+	builder.WriteString(ph.Physicaltherapyroomname)
 	builder.WriteByte(')')
 	return builder.String()
 }

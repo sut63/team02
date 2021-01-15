@@ -20,9 +20,9 @@ type PhysicaltherapyroomCreate struct {
 	hooks    []Hook
 }
 
-// SetPhysicalTherapyRoomName sets the "physical_therapy_room_name" field.
-func (pc *PhysicaltherapyroomCreate) SetPhysicalTherapyRoomName(s string) *PhysicaltherapyroomCreate {
-	pc.mutation.SetPhysicalTherapyRoomName(s)
+// SetPhysicaltherapyroomname sets the "physicaltherapyroomname" field.
+func (pc *PhysicaltherapyroomCreate) SetPhysicaltherapyroomname(s string) *PhysicaltherapyroomCreate {
+	pc.mutation.SetPhysicaltherapyroomname(s)
 	return pc
 }
 
@@ -96,12 +96,12 @@ func (pc *PhysicaltherapyroomCreate) SaveX(ctx context.Context) *Physicaltherapy
 
 // check runs all checks and user-defined validators on the builder.
 func (pc *PhysicaltherapyroomCreate) check() error {
-	if _, ok := pc.mutation.PhysicalTherapyRoomName(); !ok {
-		return &ValidationError{Name: "physical_therapy_room_name", err: errors.New("ent: missing required field \"physical_therapy_room_name\"")}
+	if _, ok := pc.mutation.Physicaltherapyroomname(); !ok {
+		return &ValidationError{Name: "physicaltherapyroomname", err: errors.New("ent: missing required field \"physicaltherapyroomname\"")}
 	}
-	if v, ok := pc.mutation.PhysicalTherapyRoomName(); ok {
-		if err := physicaltherapyroom.PhysicalTherapyRoomNameValidator(v); err != nil {
-			return &ValidationError{Name: "physical_therapy_room_name", err: fmt.Errorf("ent: validator failed for field \"physical_therapy_room_name\": %w", err)}
+	if v, ok := pc.mutation.Physicaltherapyroomname(); ok {
+		if err := physicaltherapyroom.PhysicaltherapyroomnameValidator(v); err != nil {
+			return &ValidationError{Name: "physicaltherapyroomname", err: fmt.Errorf("ent: validator failed for field \"physicaltherapyroomname\": %w", err)}
 		}
 	}
 	return nil
@@ -131,13 +131,13 @@ func (pc *PhysicaltherapyroomCreate) createSpec() (*Physicaltherapyroom, *sqlgra
 			},
 		}
 	)
-	if value, ok := pc.mutation.PhysicalTherapyRoomName(); ok {
+	if value, ok := pc.mutation.Physicaltherapyroomname(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: physicaltherapyroom.FieldPhysicalTherapyRoomName,
+			Column: physicaltherapyroom.FieldPhysicaltherapyroomname,
 		})
-		_node.PhysicalTherapyRoomName = value
+		_node.Physicaltherapyroomname = value
 	}
 	if nodes := pc.mutation.PhysicaltherapyrecordIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{

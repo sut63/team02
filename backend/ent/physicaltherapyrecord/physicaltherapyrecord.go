@@ -2,12 +2,16 @@
 
 package physicaltherapyrecord
 
+import (
+	"time"
+)
+
 const (
 	// Label holds the string label denoting the physicaltherapyrecord type in the database.
 	Label = "physicaltherapyrecord"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
-	// FieldAddedTime holds the string denoting the added_time field in the database.
+	// FieldAddedTime holds the string denoting the addedtime field in the database.
 	FieldAddedTime = "added_time"
 
 	// EdgePersonnel holds the string denoting the personnel edge name in mutations.
@@ -79,3 +83,8 @@ func ValidColumn(column string) bool {
 	}
 	return false
 }
+
+var (
+	// DefaultAddedTime holds the default value on creation for the "addedTime" field.
+	DefaultAddedTime func() time.Time
+)

@@ -7,8 +7,8 @@ const (
 	Label = "physicaltherapyroom"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
-	// FieldPhysicalTherapyRoomName holds the string denoting the physical_therapy_room_name field in the database.
-	FieldPhysicalTherapyRoomName = "physical_therapy_room_name"
+	// FieldPhysicaltherapyroomname holds the string denoting the physicaltherapyroomname field in the database.
+	FieldPhysicaltherapyroomname = "physicaltherapyroomname"
 
 	// EdgePhysicaltherapyrecord holds the string denoting the physicaltherapyrecord edge name in mutations.
 	EdgePhysicaltherapyrecord = "physicaltherapyrecord"
@@ -27,7 +27,7 @@ const (
 // Columns holds all SQL columns for physicaltherapyroom fields.
 var Columns = []string{
 	FieldID,
-	FieldPhysicalTherapyRoomName,
+	FieldPhysicaltherapyroomname,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -41,6 +41,6 @@ func ValidColumn(column string) bool {
 }
 
 var (
-	// PhysicalTherapyRoomNameValidator is a validator for the "physical_therapy_room_name" field. It is called by the builders before save.
-	PhysicalTherapyRoomNameValidator func(string) error
+	// PhysicaltherapyroomnameValidator is a validator for the "physicaltherapyroomname" field. It is called by the builders before save.
+	PhysicaltherapyroomnameValidator func(string) error
 )

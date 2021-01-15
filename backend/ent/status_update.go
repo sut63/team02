@@ -27,9 +27,9 @@ func (su *StatusUpdate) Where(ps ...predicate.Status) *StatusUpdate {
 	return su
 }
 
-// SetStatusName sets the "status_name" field.
-func (su *StatusUpdate) SetStatusName(s string) *StatusUpdate {
-	su.mutation.SetStatusName(s)
+// SetStatusname sets the "statusname" field.
+func (su *StatusUpdate) SetStatusname(s string) *StatusUpdate {
+	su.mutation.SetStatusname(s)
 	return su
 }
 
@@ -122,9 +122,9 @@ func (su *StatusUpdate) ExecX(ctx context.Context) {
 
 // check runs all checks and user-defined validators on the builder.
 func (su *StatusUpdate) check() error {
-	if v, ok := su.mutation.StatusName(); ok {
-		if err := status.StatusNameValidator(v); err != nil {
-			return &ValidationError{Name: "status_name", err: fmt.Errorf("ent: validator failed for field \"status_name\": %w", err)}
+	if v, ok := su.mutation.Statusname(); ok {
+		if err := status.StatusnameValidator(v); err != nil {
+			return &ValidationError{Name: "statusname", err: fmt.Errorf("ent: validator failed for field \"statusname\": %w", err)}
 		}
 	}
 	return nil
@@ -148,11 +148,11 @@ func (su *StatusUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			}
 		}
 	}
-	if value, ok := su.mutation.StatusName(); ok {
+	if value, ok := su.mutation.Statusname(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: status.FieldStatusName,
+			Column: status.FieldStatusname,
 		})
 	}
 	if su.mutation.PhysicaltherapyrecordCleared() {
@@ -208,9 +208,9 @@ type StatusUpdateOne struct {
 	mutation *StatusMutation
 }
 
-// SetStatusName sets the "status_name" field.
-func (suo *StatusUpdateOne) SetStatusName(s string) *StatusUpdateOne {
-	suo.mutation.SetStatusName(s)
+// SetStatusname sets the "statusname" field.
+func (suo *StatusUpdateOne) SetStatusname(s string) *StatusUpdateOne {
+	suo.mutation.SetStatusname(s)
 	return suo
 }
 
@@ -303,9 +303,9 @@ func (suo *StatusUpdateOne) ExecX(ctx context.Context) {
 
 // check runs all checks and user-defined validators on the builder.
 func (suo *StatusUpdateOne) check() error {
-	if v, ok := suo.mutation.StatusName(); ok {
-		if err := status.StatusNameValidator(v); err != nil {
-			return &ValidationError{Name: "status_name", err: fmt.Errorf("ent: validator failed for field \"status_name\": %w", err)}
+	if v, ok := suo.mutation.Statusname(); ok {
+		if err := status.StatusnameValidator(v); err != nil {
+			return &ValidationError{Name: "statusname", err: fmt.Errorf("ent: validator failed for field \"statusname\": %w", err)}
 		}
 	}
 	return nil
@@ -327,11 +327,11 @@ func (suo *StatusUpdateOne) sqlSave(ctx context.Context) (_node *Status, err err
 		return nil, &ValidationError{Name: "ID", err: fmt.Errorf("missing Status.ID for update")}
 	}
 	_spec.Node.ID.Value = id
-	if value, ok := suo.mutation.StatusName(); ok {
+	if value, ok := suo.mutation.Statusname(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: status.FieldStatusName,
+			Column: status.FieldStatusname,
 		})
 	}
 	if suo.mutation.PhysicaltherapyrecordCleared() {

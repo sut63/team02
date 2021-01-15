@@ -31,9 +31,17 @@ func (pu *PhysicaltherapyrecordUpdate) Where(ps ...predicate.Physicaltherapyreco
 	return pu
 }
 
-// SetAddedTime sets the "added_time" field.
+// SetAddedTime sets the "addedTime" field.
 func (pu *PhysicaltherapyrecordUpdate) SetAddedTime(t time.Time) *PhysicaltherapyrecordUpdate {
 	pu.mutation.SetAddedTime(t)
+	return pu
+}
+
+// SetNillableAddedTime sets the "addedTime" field if the given value is not nil.
+func (pu *PhysicaltherapyrecordUpdate) SetNillableAddedTime(t *time.Time) *PhysicaltherapyrecordUpdate {
+	if t != nil {
+		pu.SetAddedTime(*t)
+	}
 	return pu
 }
 
@@ -376,9 +384,17 @@ type PhysicaltherapyrecordUpdateOne struct {
 	mutation *PhysicaltherapyrecordMutation
 }
 
-// SetAddedTime sets the "added_time" field.
+// SetAddedTime sets the "addedTime" field.
 func (puo *PhysicaltherapyrecordUpdateOne) SetAddedTime(t time.Time) *PhysicaltherapyrecordUpdateOne {
 	puo.mutation.SetAddedTime(t)
+	return puo
+}
+
+// SetNillableAddedTime sets the "addedTime" field if the given value is not nil.
+func (puo *PhysicaltherapyrecordUpdateOne) SetNillableAddedTime(t *time.Time) *PhysicaltherapyrecordUpdateOne {
+	if t != nil {
+		puo.SetAddedTime(*t)
+	}
 	return puo
 }
 

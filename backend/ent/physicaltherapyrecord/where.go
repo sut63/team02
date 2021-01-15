@@ -93,28 +93,28 @@ func IDLTE(id int) predicate.Physicaltherapyrecord {
 	})
 }
 
-// AddedTime applies equality check predicate on the "added_time" field. It's identical to AddedTimeEQ.
+// AddedTime applies equality check predicate on the "addedTime" field. It's identical to AddedTimeEQ.
 func AddedTime(v time.Time) predicate.Physicaltherapyrecord {
 	return predicate.Physicaltherapyrecord(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldAddedTime), v))
 	})
 }
 
-// AddedTimeEQ applies the EQ predicate on the "added_time" field.
+// AddedTimeEQ applies the EQ predicate on the "addedTime" field.
 func AddedTimeEQ(v time.Time) predicate.Physicaltherapyrecord {
 	return predicate.Physicaltherapyrecord(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldAddedTime), v))
 	})
 }
 
-// AddedTimeNEQ applies the NEQ predicate on the "added_time" field.
+// AddedTimeNEQ applies the NEQ predicate on the "addedTime" field.
 func AddedTimeNEQ(v time.Time) predicate.Physicaltherapyrecord {
 	return predicate.Physicaltherapyrecord(func(s *sql.Selector) {
 		s.Where(sql.NEQ(s.C(FieldAddedTime), v))
 	})
 }
 
-// AddedTimeIn applies the In predicate on the "added_time" field.
+// AddedTimeIn applies the In predicate on the "addedTime" field.
 func AddedTimeIn(vs ...time.Time) predicate.Physicaltherapyrecord {
 	v := make([]interface{}, len(vs))
 	for i := range v {
@@ -131,7 +131,7 @@ func AddedTimeIn(vs ...time.Time) predicate.Physicaltherapyrecord {
 	})
 }
 
-// AddedTimeNotIn applies the NotIn predicate on the "added_time" field.
+// AddedTimeNotIn applies the NotIn predicate on the "addedTime" field.
 func AddedTimeNotIn(vs ...time.Time) predicate.Physicaltherapyrecord {
 	v := make([]interface{}, len(vs))
 	for i := range v {
@@ -148,28 +148,28 @@ func AddedTimeNotIn(vs ...time.Time) predicate.Physicaltherapyrecord {
 	})
 }
 
-// AddedTimeGT applies the GT predicate on the "added_time" field.
+// AddedTimeGT applies the GT predicate on the "addedTime" field.
 func AddedTimeGT(v time.Time) predicate.Physicaltherapyrecord {
 	return predicate.Physicaltherapyrecord(func(s *sql.Selector) {
 		s.Where(sql.GT(s.C(FieldAddedTime), v))
 	})
 }
 
-// AddedTimeGTE applies the GTE predicate on the "added_time" field.
+// AddedTimeGTE applies the GTE predicate on the "addedTime" field.
 func AddedTimeGTE(v time.Time) predicate.Physicaltherapyrecord {
 	return predicate.Physicaltherapyrecord(func(s *sql.Selector) {
 		s.Where(sql.GTE(s.C(FieldAddedTime), v))
 	})
 }
 
-// AddedTimeLT applies the LT predicate on the "added_time" field.
+// AddedTimeLT applies the LT predicate on the "addedTime" field.
 func AddedTimeLT(v time.Time) predicate.Physicaltherapyrecord {
 	return predicate.Physicaltherapyrecord(func(s *sql.Selector) {
 		s.Where(sql.LT(s.C(FieldAddedTime), v))
 	})
 }
 
-// AddedTimeLTE applies the LTE predicate on the "added_time" field.
+// AddedTimeLTE applies the LTE predicate on the "addedTime" field.
 func AddedTimeLTE(v time.Time) predicate.Physicaltherapyrecord {
 	return predicate.Physicaltherapyrecord(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldAddedTime), v))
