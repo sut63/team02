@@ -215,7 +215,7 @@ func HasPhysicaltherapyrecord() predicate.Physicaltherapyroom {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
 			sqlgraph.To(PhysicaltherapyrecordTable, FieldID),
-			sqlgraph.Edge(sqlgraph.O2O, false, PhysicaltherapyrecordTable, PhysicaltherapyrecordColumn),
+			sqlgraph.Edge(sqlgraph.O2M, false, PhysicaltherapyrecordTable, PhysicaltherapyrecordColumn),
 		)
 		sqlgraph.HasNeighbors(s, step)
 	})
@@ -227,7 +227,7 @@ func HasPhysicaltherapyrecordWith(preds ...predicate.Physicaltherapyrecord) pred
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
 			sqlgraph.To(PhysicaltherapyrecordInverseTable, FieldID),
-			sqlgraph.Edge(sqlgraph.O2O, false, PhysicaltherapyrecordTable, PhysicaltherapyrecordColumn),
+			sqlgraph.Edge(sqlgraph.O2M, false, PhysicaltherapyrecordTable, PhysicaltherapyrecordColumn),
 		)
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {

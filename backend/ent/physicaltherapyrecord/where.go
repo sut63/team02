@@ -93,29 +93,29 @@ func IDLTE(id int) predicate.Physicaltherapyrecord {
 	})
 }
 
-// AddedTime applies equality check predicate on the "addedTime" field. It's identical to AddedTimeEQ.
-func AddedTime(v time.Time) predicate.Physicaltherapyrecord {
+// Appointtime applies equality check predicate on the "appointtime" field. It's identical to AppointtimeEQ.
+func Appointtime(v time.Time) predicate.Physicaltherapyrecord {
 	return predicate.Physicaltherapyrecord(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldAddedTime), v))
+		s.Where(sql.EQ(s.C(FieldAppointtime), v))
 	})
 }
 
-// AddedTimeEQ applies the EQ predicate on the "addedTime" field.
-func AddedTimeEQ(v time.Time) predicate.Physicaltherapyrecord {
+// AppointtimeEQ applies the EQ predicate on the "appointtime" field.
+func AppointtimeEQ(v time.Time) predicate.Physicaltherapyrecord {
 	return predicate.Physicaltherapyrecord(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldAddedTime), v))
+		s.Where(sql.EQ(s.C(FieldAppointtime), v))
 	})
 }
 
-// AddedTimeNEQ applies the NEQ predicate on the "addedTime" field.
-func AddedTimeNEQ(v time.Time) predicate.Physicaltherapyrecord {
+// AppointtimeNEQ applies the NEQ predicate on the "appointtime" field.
+func AppointtimeNEQ(v time.Time) predicate.Physicaltherapyrecord {
 	return predicate.Physicaltherapyrecord(func(s *sql.Selector) {
-		s.Where(sql.NEQ(s.C(FieldAddedTime), v))
+		s.Where(sql.NEQ(s.C(FieldAppointtime), v))
 	})
 }
 
-// AddedTimeIn applies the In predicate on the "addedTime" field.
-func AddedTimeIn(vs ...time.Time) predicate.Physicaltherapyrecord {
+// AppointtimeIn applies the In predicate on the "appointtime" field.
+func AppointtimeIn(vs ...time.Time) predicate.Physicaltherapyrecord {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -127,12 +127,12 @@ func AddedTimeIn(vs ...time.Time) predicate.Physicaltherapyrecord {
 			s.Where(sql.False())
 			return
 		}
-		s.Where(sql.In(s.C(FieldAddedTime), v...))
+		s.Where(sql.In(s.C(FieldAppointtime), v...))
 	})
 }
 
-// AddedTimeNotIn applies the NotIn predicate on the "addedTime" field.
-func AddedTimeNotIn(vs ...time.Time) predicate.Physicaltherapyrecord {
+// AppointtimeNotIn applies the NotIn predicate on the "appointtime" field.
+func AppointtimeNotIn(vs ...time.Time) predicate.Physicaltherapyrecord {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -144,35 +144,35 @@ func AddedTimeNotIn(vs ...time.Time) predicate.Physicaltherapyrecord {
 			s.Where(sql.False())
 			return
 		}
-		s.Where(sql.NotIn(s.C(FieldAddedTime), v...))
+		s.Where(sql.NotIn(s.C(FieldAppointtime), v...))
 	})
 }
 
-// AddedTimeGT applies the GT predicate on the "addedTime" field.
-func AddedTimeGT(v time.Time) predicate.Physicaltherapyrecord {
+// AppointtimeGT applies the GT predicate on the "appointtime" field.
+func AppointtimeGT(v time.Time) predicate.Physicaltherapyrecord {
 	return predicate.Physicaltherapyrecord(func(s *sql.Selector) {
-		s.Where(sql.GT(s.C(FieldAddedTime), v))
+		s.Where(sql.GT(s.C(FieldAppointtime), v))
 	})
 }
 
-// AddedTimeGTE applies the GTE predicate on the "addedTime" field.
-func AddedTimeGTE(v time.Time) predicate.Physicaltherapyrecord {
+// AppointtimeGTE applies the GTE predicate on the "appointtime" field.
+func AppointtimeGTE(v time.Time) predicate.Physicaltherapyrecord {
 	return predicate.Physicaltherapyrecord(func(s *sql.Selector) {
-		s.Where(sql.GTE(s.C(FieldAddedTime), v))
+		s.Where(sql.GTE(s.C(FieldAppointtime), v))
 	})
 }
 
-// AddedTimeLT applies the LT predicate on the "addedTime" field.
-func AddedTimeLT(v time.Time) predicate.Physicaltherapyrecord {
+// AppointtimeLT applies the LT predicate on the "appointtime" field.
+func AppointtimeLT(v time.Time) predicate.Physicaltherapyrecord {
 	return predicate.Physicaltherapyrecord(func(s *sql.Selector) {
-		s.Where(sql.LT(s.C(FieldAddedTime), v))
+		s.Where(sql.LT(s.C(FieldAppointtime), v))
 	})
 }
 
-// AddedTimeLTE applies the LTE predicate on the "addedTime" field.
-func AddedTimeLTE(v time.Time) predicate.Physicaltherapyrecord {
+// AppointtimeLTE applies the LTE predicate on the "appointtime" field.
+func AppointtimeLTE(v time.Time) predicate.Physicaltherapyrecord {
 	return predicate.Physicaltherapyrecord(func(s *sql.Selector) {
-		s.Where(sql.LTE(s.C(FieldAddedTime), v))
+		s.Where(sql.LTE(s.C(FieldAppointtime), v))
 	})
 }
 
@@ -238,7 +238,7 @@ func HasPhysicaltherapyroom() predicate.Physicaltherapyrecord {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
 			sqlgraph.To(PhysicaltherapyroomTable, FieldID),
-			sqlgraph.Edge(sqlgraph.O2O, true, PhysicaltherapyroomTable, PhysicaltherapyroomColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, PhysicaltherapyroomTable, PhysicaltherapyroomColumn),
 		)
 		sqlgraph.HasNeighbors(s, step)
 	})
@@ -250,7 +250,7 @@ func HasPhysicaltherapyroomWith(preds ...predicate.Physicaltherapyroom) predicat
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
 			sqlgraph.To(PhysicaltherapyroomInverseTable, FieldID),
-			sqlgraph.Edge(sqlgraph.O2O, true, PhysicaltherapyroomTable, PhysicaltherapyroomColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, PhysicaltherapyroomTable, PhysicaltherapyroomColumn),
 		)
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
@@ -266,7 +266,7 @@ func HasStatus() predicate.Physicaltherapyrecord {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
 			sqlgraph.To(StatusTable, FieldID),
-			sqlgraph.Edge(sqlgraph.O2O, true, StatusTable, StatusColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, StatusTable, StatusColumn),
 		)
 		sqlgraph.HasNeighbors(s, step)
 	})
@@ -278,7 +278,7 @@ func HasStatusWith(preds ...predicate.Status) predicate.Physicaltherapyrecord {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
 			sqlgraph.To(StatusInverseTable, FieldID),
-			sqlgraph.Edge(sqlgraph.O2O, true, StatusTable, StatusColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, StatusTable, StatusColumn),
 		)
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {

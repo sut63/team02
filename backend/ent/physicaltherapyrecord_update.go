@@ -31,17 +31,9 @@ func (pu *PhysicaltherapyrecordUpdate) Where(ps ...predicate.Physicaltherapyreco
 	return pu
 }
 
-// SetAddedTime sets the "addedTime" field.
-func (pu *PhysicaltherapyrecordUpdate) SetAddedTime(t time.Time) *PhysicaltherapyrecordUpdate {
-	pu.mutation.SetAddedTime(t)
-	return pu
-}
-
-// SetNillableAddedTime sets the "addedTime" field if the given value is not nil.
-func (pu *PhysicaltherapyrecordUpdate) SetNillableAddedTime(t *time.Time) *PhysicaltherapyrecordUpdate {
-	if t != nil {
-		pu.SetAddedTime(*t)
-	}
+// SetAppointtime sets the "appointtime" field.
+func (pu *PhysicaltherapyrecordUpdate) SetAppointtime(t time.Time) *PhysicaltherapyrecordUpdate {
+	pu.mutation.SetAppointtime(t)
 	return pu
 }
 
@@ -219,11 +211,11 @@ func (pu *PhysicaltherapyrecordUpdate) sqlSave(ctx context.Context) (n int, err 
 			}
 		}
 	}
-	if value, ok := pu.mutation.AddedTime(); ok {
+	if value, ok := pu.mutation.Appointtime(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeTime,
 			Value:  value,
-			Column: physicaltherapyrecord.FieldAddedTime,
+			Column: physicaltherapyrecord.FieldAppointtime,
 		})
 	}
 	if pu.mutation.PersonnelCleared() {
@@ -298,7 +290,7 @@ func (pu *PhysicaltherapyrecordUpdate) sqlSave(ctx context.Context) (n int, err 
 	}
 	if pu.mutation.PhysicaltherapyroomCleared() {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2O,
+			Rel:     sqlgraph.M2O,
 			Inverse: true,
 			Table:   physicaltherapyrecord.PhysicaltherapyroomTable,
 			Columns: []string{physicaltherapyrecord.PhysicaltherapyroomColumn},
@@ -314,7 +306,7 @@ func (pu *PhysicaltherapyrecordUpdate) sqlSave(ctx context.Context) (n int, err 
 	}
 	if nodes := pu.mutation.PhysicaltherapyroomIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2O,
+			Rel:     sqlgraph.M2O,
 			Inverse: true,
 			Table:   physicaltherapyrecord.PhysicaltherapyroomTable,
 			Columns: []string{physicaltherapyrecord.PhysicaltherapyroomColumn},
@@ -333,7 +325,7 @@ func (pu *PhysicaltherapyrecordUpdate) sqlSave(ctx context.Context) (n int, err 
 	}
 	if pu.mutation.StatusCleared() {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2O,
+			Rel:     sqlgraph.M2O,
 			Inverse: true,
 			Table:   physicaltherapyrecord.StatusTable,
 			Columns: []string{physicaltherapyrecord.StatusColumn},
@@ -349,7 +341,7 @@ func (pu *PhysicaltherapyrecordUpdate) sqlSave(ctx context.Context) (n int, err 
 	}
 	if nodes := pu.mutation.StatusIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2O,
+			Rel:     sqlgraph.M2O,
 			Inverse: true,
 			Table:   physicaltherapyrecord.StatusTable,
 			Columns: []string{physicaltherapyrecord.StatusColumn},
@@ -384,17 +376,9 @@ type PhysicaltherapyrecordUpdateOne struct {
 	mutation *PhysicaltherapyrecordMutation
 }
 
-// SetAddedTime sets the "addedTime" field.
-func (puo *PhysicaltherapyrecordUpdateOne) SetAddedTime(t time.Time) *PhysicaltherapyrecordUpdateOne {
-	puo.mutation.SetAddedTime(t)
-	return puo
-}
-
-// SetNillableAddedTime sets the "addedTime" field if the given value is not nil.
-func (puo *PhysicaltherapyrecordUpdateOne) SetNillableAddedTime(t *time.Time) *PhysicaltherapyrecordUpdateOne {
-	if t != nil {
-		puo.SetAddedTime(*t)
-	}
+// SetAppointtime sets the "appointtime" field.
+func (puo *PhysicaltherapyrecordUpdateOne) SetAppointtime(t time.Time) *PhysicaltherapyrecordUpdateOne {
+	puo.mutation.SetAppointtime(t)
 	return puo
 }
 
@@ -570,11 +554,11 @@ func (puo *PhysicaltherapyrecordUpdateOne) sqlSave(ctx context.Context) (_node *
 		return nil, &ValidationError{Name: "ID", err: fmt.Errorf("missing Physicaltherapyrecord.ID for update")}
 	}
 	_spec.Node.ID.Value = id
-	if value, ok := puo.mutation.AddedTime(); ok {
+	if value, ok := puo.mutation.Appointtime(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeTime,
 			Value:  value,
-			Column: physicaltherapyrecord.FieldAddedTime,
+			Column: physicaltherapyrecord.FieldAppointtime,
 		})
 	}
 	if puo.mutation.PersonnelCleared() {
@@ -649,7 +633,7 @@ func (puo *PhysicaltherapyrecordUpdateOne) sqlSave(ctx context.Context) (_node *
 	}
 	if puo.mutation.PhysicaltherapyroomCleared() {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2O,
+			Rel:     sqlgraph.M2O,
 			Inverse: true,
 			Table:   physicaltherapyrecord.PhysicaltherapyroomTable,
 			Columns: []string{physicaltherapyrecord.PhysicaltherapyroomColumn},
@@ -665,7 +649,7 @@ func (puo *PhysicaltherapyrecordUpdateOne) sqlSave(ctx context.Context) (_node *
 	}
 	if nodes := puo.mutation.PhysicaltherapyroomIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2O,
+			Rel:     sqlgraph.M2O,
 			Inverse: true,
 			Table:   physicaltherapyrecord.PhysicaltherapyroomTable,
 			Columns: []string{physicaltherapyrecord.PhysicaltherapyroomColumn},
@@ -684,7 +668,7 @@ func (puo *PhysicaltherapyrecordUpdateOne) sqlSave(ctx context.Context) (_node *
 	}
 	if puo.mutation.StatusCleared() {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2O,
+			Rel:     sqlgraph.M2O,
 			Inverse: true,
 			Table:   physicaltherapyrecord.StatusTable,
 			Columns: []string{physicaltherapyrecord.StatusColumn},
@@ -700,7 +684,7 @@ func (puo *PhysicaltherapyrecordUpdateOne) sqlSave(ctx context.Context) (_node *
 	}
 	if nodes := puo.mutation.StatusIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2O,
+			Rel:     sqlgraph.M2O,
 			Inverse: true,
 			Table:   physicaltherapyrecord.StatusTable,
 			Columns: []string{physicaltherapyrecord.StatusColumn},

@@ -33,23 +33,19 @@ func (su *StatusUpdate) SetStatusname(s string) *StatusUpdate {
 	return su
 }
 
-// SetPhysicaltherapyrecordID sets the "physicaltherapyrecord" edge to the Physicaltherapyrecord entity by ID.
-func (su *StatusUpdate) SetPhysicaltherapyrecordID(id int) *StatusUpdate {
-	su.mutation.SetPhysicaltherapyrecordID(id)
+// AddPhysicaltherapyrecordIDs adds the "physicaltherapyrecord" edge to the Physicaltherapyrecord entity by IDs.
+func (su *StatusUpdate) AddPhysicaltherapyrecordIDs(ids ...int) *StatusUpdate {
+	su.mutation.AddPhysicaltherapyrecordIDs(ids...)
 	return su
 }
 
-// SetNillablePhysicaltherapyrecordID sets the "physicaltherapyrecord" edge to the Physicaltherapyrecord entity by ID if the given value is not nil.
-func (su *StatusUpdate) SetNillablePhysicaltherapyrecordID(id *int) *StatusUpdate {
-	if id != nil {
-		su = su.SetPhysicaltherapyrecordID(*id)
+// AddPhysicaltherapyrecord adds the "physicaltherapyrecord" edges to the Physicaltherapyrecord entity.
+func (su *StatusUpdate) AddPhysicaltherapyrecord(p ...*Physicaltherapyrecord) *StatusUpdate {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
 	}
-	return su
-}
-
-// SetPhysicaltherapyrecord sets the "physicaltherapyrecord" edge to the Physicaltherapyrecord entity.
-func (su *StatusUpdate) SetPhysicaltherapyrecord(p *Physicaltherapyrecord) *StatusUpdate {
-	return su.SetPhysicaltherapyrecordID(p.ID)
+	return su.AddPhysicaltherapyrecordIDs(ids...)
 }
 
 // Mutation returns the StatusMutation object of the builder.
@@ -57,10 +53,25 @@ func (su *StatusUpdate) Mutation() *StatusMutation {
 	return su.mutation
 }
 
-// ClearPhysicaltherapyrecord clears the "physicaltherapyrecord" edge to the Physicaltherapyrecord entity.
+// ClearPhysicaltherapyrecord clears all "physicaltherapyrecord" edges to the Physicaltherapyrecord entity.
 func (su *StatusUpdate) ClearPhysicaltherapyrecord() *StatusUpdate {
 	su.mutation.ClearPhysicaltherapyrecord()
 	return su
+}
+
+// RemovePhysicaltherapyrecordIDs removes the "physicaltherapyrecord" edge to Physicaltherapyrecord entities by IDs.
+func (su *StatusUpdate) RemovePhysicaltherapyrecordIDs(ids ...int) *StatusUpdate {
+	su.mutation.RemovePhysicaltherapyrecordIDs(ids...)
+	return su
+}
+
+// RemovePhysicaltherapyrecord removes "physicaltherapyrecord" edges to Physicaltherapyrecord entities.
+func (su *StatusUpdate) RemovePhysicaltherapyrecord(p ...*Physicaltherapyrecord) *StatusUpdate {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return su.RemovePhysicaltherapyrecordIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -157,7 +168,7 @@ func (su *StatusUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if su.mutation.PhysicaltherapyrecordCleared() {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2O,
+			Rel:     sqlgraph.O2M,
 			Inverse: false,
 			Table:   status.PhysicaltherapyrecordTable,
 			Columns: []string{status.PhysicaltherapyrecordColumn},
@@ -171,9 +182,28 @@ func (su *StatusUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
+	if nodes := su.mutation.RemovedPhysicaltherapyrecordIDs(); len(nodes) > 0 && !su.mutation.PhysicaltherapyrecordCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   status.PhysicaltherapyrecordTable,
+			Columns: []string{status.PhysicaltherapyrecordColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: physicaltherapyrecord.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
 	if nodes := su.mutation.PhysicaltherapyrecordIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2O,
+			Rel:     sqlgraph.O2M,
 			Inverse: false,
 			Table:   status.PhysicaltherapyrecordTable,
 			Columns: []string{status.PhysicaltherapyrecordColumn},
@@ -214,23 +244,19 @@ func (suo *StatusUpdateOne) SetStatusname(s string) *StatusUpdateOne {
 	return suo
 }
 
-// SetPhysicaltherapyrecordID sets the "physicaltherapyrecord" edge to the Physicaltherapyrecord entity by ID.
-func (suo *StatusUpdateOne) SetPhysicaltherapyrecordID(id int) *StatusUpdateOne {
-	suo.mutation.SetPhysicaltherapyrecordID(id)
+// AddPhysicaltherapyrecordIDs adds the "physicaltherapyrecord" edge to the Physicaltherapyrecord entity by IDs.
+func (suo *StatusUpdateOne) AddPhysicaltherapyrecordIDs(ids ...int) *StatusUpdateOne {
+	suo.mutation.AddPhysicaltherapyrecordIDs(ids...)
 	return suo
 }
 
-// SetNillablePhysicaltherapyrecordID sets the "physicaltherapyrecord" edge to the Physicaltherapyrecord entity by ID if the given value is not nil.
-func (suo *StatusUpdateOne) SetNillablePhysicaltherapyrecordID(id *int) *StatusUpdateOne {
-	if id != nil {
-		suo = suo.SetPhysicaltherapyrecordID(*id)
+// AddPhysicaltherapyrecord adds the "physicaltherapyrecord" edges to the Physicaltherapyrecord entity.
+func (suo *StatusUpdateOne) AddPhysicaltherapyrecord(p ...*Physicaltherapyrecord) *StatusUpdateOne {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
 	}
-	return suo
-}
-
-// SetPhysicaltherapyrecord sets the "physicaltherapyrecord" edge to the Physicaltherapyrecord entity.
-func (suo *StatusUpdateOne) SetPhysicaltherapyrecord(p *Physicaltherapyrecord) *StatusUpdateOne {
-	return suo.SetPhysicaltherapyrecordID(p.ID)
+	return suo.AddPhysicaltherapyrecordIDs(ids...)
 }
 
 // Mutation returns the StatusMutation object of the builder.
@@ -238,10 +264,25 @@ func (suo *StatusUpdateOne) Mutation() *StatusMutation {
 	return suo.mutation
 }
 
-// ClearPhysicaltherapyrecord clears the "physicaltherapyrecord" edge to the Physicaltherapyrecord entity.
+// ClearPhysicaltherapyrecord clears all "physicaltherapyrecord" edges to the Physicaltherapyrecord entity.
 func (suo *StatusUpdateOne) ClearPhysicaltherapyrecord() *StatusUpdateOne {
 	suo.mutation.ClearPhysicaltherapyrecord()
 	return suo
+}
+
+// RemovePhysicaltherapyrecordIDs removes the "physicaltherapyrecord" edge to Physicaltherapyrecord entities by IDs.
+func (suo *StatusUpdateOne) RemovePhysicaltherapyrecordIDs(ids ...int) *StatusUpdateOne {
+	suo.mutation.RemovePhysicaltherapyrecordIDs(ids...)
+	return suo
+}
+
+// RemovePhysicaltherapyrecord removes "physicaltherapyrecord" edges to Physicaltherapyrecord entities.
+func (suo *StatusUpdateOne) RemovePhysicaltherapyrecord(p ...*Physicaltherapyrecord) *StatusUpdateOne {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return suo.RemovePhysicaltherapyrecordIDs(ids...)
 }
 
 // Save executes the query and returns the updated Status entity.
@@ -336,7 +377,7 @@ func (suo *StatusUpdateOne) sqlSave(ctx context.Context) (_node *Status, err err
 	}
 	if suo.mutation.PhysicaltherapyrecordCleared() {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2O,
+			Rel:     sqlgraph.O2M,
 			Inverse: false,
 			Table:   status.PhysicaltherapyrecordTable,
 			Columns: []string{status.PhysicaltherapyrecordColumn},
@@ -350,9 +391,28 @@ func (suo *StatusUpdateOne) sqlSave(ctx context.Context) (_node *Status, err err
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
+	if nodes := suo.mutation.RemovedPhysicaltherapyrecordIDs(); len(nodes) > 0 && !suo.mutation.PhysicaltherapyrecordCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   status.PhysicaltherapyrecordTable,
+			Columns: []string{status.PhysicaltherapyrecordColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: physicaltherapyrecord.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
 	if nodes := suo.mutation.PhysicaltherapyrecordIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2O,
+			Rel:     sqlgraph.O2M,
 			Inverse: false,
 			Table:   status.PhysicaltherapyrecordTable,
 			Columns: []string{status.PhysicaltherapyrecordColumn},

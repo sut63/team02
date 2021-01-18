@@ -7,7 +7,6 @@ import (
 	"strings"
 
 	"github.com/facebook/ent/dialect/sql"
-	"github.com/to63/app/ent/physicaltherapyrecord"
 	"github.com/to63/app/ent/status"
 )
 
@@ -26,21 +25,16 @@ type Status struct {
 // StatusEdges holds the relations/edges for other nodes in the graph.
 type StatusEdges struct {
 	// Physicaltherapyrecord holds the value of the physicaltherapyrecord edge.
-	Physicaltherapyrecord *Physicaltherapyrecord
+	Physicaltherapyrecord []*Physicaltherapyrecord
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
 	loadedTypes [1]bool
 }
 
 // PhysicaltherapyrecordOrErr returns the Physicaltherapyrecord value or an error if the edge
-// was not loaded in eager-loading, or loaded but was not found.
-func (e StatusEdges) PhysicaltherapyrecordOrErr() (*Physicaltherapyrecord, error) {
+// was not loaded in eager-loading.
+func (e StatusEdges) PhysicaltherapyrecordOrErr() ([]*Physicaltherapyrecord, error) {
 	if e.loadedTypes[0] {
-		if e.Physicaltherapyrecord == nil {
-			// The edge physicaltherapyrecord was loaded in eager-loading,
-			// but was not found.
-			return nil, &NotFoundError{label: physicaltherapyrecord.Label}
-		}
 		return e.Physicaltherapyrecord, nil
 	}
 	return nil, &NotLoadedError{edge: "physicaltherapyrecord"}

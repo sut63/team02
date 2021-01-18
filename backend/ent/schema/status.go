@@ -21,6 +21,6 @@ func (Status) Fields() []ent.Field {
 // Edges of the Status.
 func (Status) Edges() []ent.Edge {
 	return []ent.Edge{
-		edge.To("physicaltherapyrecord",Physicaltherapyrecord.Type).Unique(),
+		edge.To("physicaltherapyrecord",Physicaltherapyrecord.Type).StorageKey(edge.Column("statusname_id")),
 	}
 }

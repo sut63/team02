@@ -12,7 +12,6 @@ import (
 	"github.com/to63/app/ent/doctorordersheet"
 	"github.com/to63/app/ent/patient"
 	"github.com/to63/app/ent/personnel"
-	"github.com/to63/app/ent/physicaltherapyrecord"
 	"github.com/to63/app/ent/physicaltherapyroom"
 	"github.com/to63/app/ent/pregnancystatus"
 	"github.com/to63/app/ent/remedy"
@@ -96,12 +95,6 @@ func init() {
 	personnelDescPassword := personnelFields[3].Descriptor()
 	// personnel.PasswordValidator is a validator for the "password" field. It is called by the builders before save.
 	personnel.PasswordValidator = personnelDescPassword.Validators[0].(func(string) error)
-	physicaltherapyrecordFields := schema.Physicaltherapyrecord{}.Fields()
-	_ = physicaltherapyrecordFields
-	// physicaltherapyrecordDescAddedTime is the schema descriptor for addedTime field.
-	physicaltherapyrecordDescAddedTime := physicaltherapyrecordFields[0].Descriptor()
-	// physicaltherapyrecord.DefaultAddedTime holds the default value on creation for the addedTime field.
-	physicaltherapyrecord.DefaultAddedTime = physicaltherapyrecordDescAddedTime.Default.(func() time.Time)
 	physicaltherapyroomFields := schema.Physicaltherapyroom{}.Fields()
 	_ = physicaltherapyroomFields
 	// physicaltherapyroomDescPhysicaltherapyroomname is the schema descriptor for physicaltherapyroomname field.

@@ -26,23 +26,19 @@ func (sc *StatusCreate) SetStatusname(s string) *StatusCreate {
 	return sc
 }
 
-// SetPhysicaltherapyrecordID sets the "physicaltherapyrecord" edge to the Physicaltherapyrecord entity by ID.
-func (sc *StatusCreate) SetPhysicaltherapyrecordID(id int) *StatusCreate {
-	sc.mutation.SetPhysicaltherapyrecordID(id)
+// AddPhysicaltherapyrecordIDs adds the "physicaltherapyrecord" edge to the Physicaltherapyrecord entity by IDs.
+func (sc *StatusCreate) AddPhysicaltherapyrecordIDs(ids ...int) *StatusCreate {
+	sc.mutation.AddPhysicaltherapyrecordIDs(ids...)
 	return sc
 }
 
-// SetNillablePhysicaltherapyrecordID sets the "physicaltherapyrecord" edge to the Physicaltherapyrecord entity by ID if the given value is not nil.
-func (sc *StatusCreate) SetNillablePhysicaltherapyrecordID(id *int) *StatusCreate {
-	if id != nil {
-		sc = sc.SetPhysicaltherapyrecordID(*id)
+// AddPhysicaltherapyrecord adds the "physicaltherapyrecord" edges to the Physicaltherapyrecord entity.
+func (sc *StatusCreate) AddPhysicaltherapyrecord(p ...*Physicaltherapyrecord) *StatusCreate {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
 	}
-	return sc
-}
-
-// SetPhysicaltherapyrecord sets the "physicaltherapyrecord" edge to the Physicaltherapyrecord entity.
-func (sc *StatusCreate) SetPhysicaltherapyrecord(p *Physicaltherapyrecord) *StatusCreate {
-	return sc.SetPhysicaltherapyrecordID(p.ID)
+	return sc.AddPhysicaltherapyrecordIDs(ids...)
 }
 
 // Mutation returns the StatusMutation object of the builder.
@@ -141,7 +137,7 @@ func (sc *StatusCreate) createSpec() (*Status, *sqlgraph.CreateSpec) {
 	}
 	if nodes := sc.mutation.PhysicaltherapyrecordIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2O,
+			Rel:     sqlgraph.O2M,
 			Inverse: false,
 			Table:   status.PhysicaltherapyrecordTable,
 			Columns: []string{status.PhysicaltherapyrecordColumn},

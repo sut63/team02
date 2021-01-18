@@ -21,7 +21,7 @@ const (
 	// It exists in this package in order to avoid circular dependency with the "physicaltherapyrecord" package.
 	PhysicaltherapyrecordInverseTable = "physicaltherapyrecords"
 	// PhysicaltherapyrecordColumn is the table column denoting the physicaltherapyrecord relation/edge.
-	PhysicaltherapyrecordColumn = "status_physicaltherapyrecord"
+	PhysicaltherapyrecordColumn = "statusname_id"
 )
 
 // Columns holds all SQL columns for status fields.

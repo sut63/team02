@@ -3646,8 +3646,8 @@ var doc = `{
         "ent.Physicaltherapyrecord": {
             "type": "object",
             "properties": {
-                "addedTime": {
-                    "description": "AddedTime holds the value of the \"addedTime\" field.",
+                "appointtime": {
+                    "description": "Appointtime holds the value of the \"appointtime\" field.",
                     "type": "string"
                 },
                 "edges": {
@@ -3715,8 +3715,10 @@ var doc = `{
             "properties": {
                 "physicaltherapyrecord": {
                     "description": "Physicaltherapyrecord holds the value of the physicaltherapyrecord edge.",
-                    "type": "object",
-                    "$ref": "#/definitions/ent.Physicaltherapyrecord"
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ent.Physicaltherapyrecord"
+                    }
                 }
             }
         },
@@ -3833,8 +3835,10 @@ var doc = `{
             "properties": {
                 "physicaltherapyrecord": {
                     "description": "Physicaltherapyrecord holds the value of the physicaltherapyrecord edge.",
-                    "type": "object",
-                    "$ref": "#/definitions/ent.Physicaltherapyrecord"
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ent.Physicaltherapyrecord"
+                    }
                 }
             }
         },

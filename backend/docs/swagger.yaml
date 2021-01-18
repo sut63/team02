@@ -408,8 +408,8 @@ definitions:
     type: object
   ent.Physicaltherapyrecord:
     properties:
-      addedTime:
-        description: AddedTime holds the value of the "addedTime" field.
+      appointtime:
+        description: Appointtime holds the value of the "appointtime" field.
         type: string
       edges:
         $ref: '#/definitions/ent.PhysicaltherapyrecordEdges'
@@ -464,10 +464,11 @@ definitions:
   ent.PhysicaltherapyroomEdges:
     properties:
       physicaltherapyrecord:
-        $ref: '#/definitions/ent.Physicaltherapyrecord'
         description: Physicaltherapyrecord holds the value of the physicaltherapyrecord
           edge.
-        type: object
+        items:
+          $ref: '#/definitions/ent.Physicaltherapyrecord'
+        type: array
     type: object
   ent.Pregnancystatus:
     properties:
@@ -558,10 +559,11 @@ definitions:
   ent.StatusEdges:
     properties:
       physicaltherapyrecord:
-        $ref: '#/definitions/ent.Physicaltherapyrecord'
         description: Physicaltherapyrecord holds the value of the physicaltherapyrecord
           edge.
-        type: object
+        items:
+          $ref: '#/definitions/ent.Physicaltherapyrecord'
+        type: array
     type: object
   ent.Surgeryappointment:
     properties:

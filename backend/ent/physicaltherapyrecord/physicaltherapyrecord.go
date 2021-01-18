@@ -2,17 +2,13 @@
 
 package physicaltherapyrecord
 
-import (
-	"time"
-)
-
 const (
 	// Label holds the string label denoting the physicaltherapyrecord type in the database.
 	Label = "physicaltherapyrecord"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
-	// FieldAddedTime holds the string denoting the addedtime field in the database.
-	FieldAddedTime = "added_time"
+	// FieldAppointtime holds the string denoting the appointtime field in the database.
+	FieldAppointtime = "appointtime"
 
 	// EdgePersonnel holds the string denoting the personnel edge name in mutations.
 	EdgePersonnel = "personnel"
@@ -45,28 +41,28 @@ const (
 	// It exists in this package in order to avoid circular dependency with the "physicaltherapyroom" package.
 	PhysicaltherapyroomInverseTable = "physicaltherapyrooms"
 	// PhysicaltherapyroomColumn is the table column denoting the physicaltherapyroom relation/edge.
-	PhysicaltherapyroomColumn = "physicaltherapyroom_physicaltherapyrecord"
+	PhysicaltherapyroomColumn = "physicaltherapyroomname_id"
 	// StatusTable is the table the holds the status relation/edge.
 	StatusTable = "physicaltherapyrecords"
 	// StatusInverseTable is the table name for the Status entity.
 	// It exists in this package in order to avoid circular dependency with the "status" package.
 	StatusInverseTable = "status"
 	// StatusColumn is the table column denoting the status relation/edge.
-	StatusColumn = "status_physicaltherapyrecord"
+	StatusColumn = "statusname_id"
 )
 
 // Columns holds all SQL columns for physicaltherapyrecord fields.
 var Columns = []string{
 	FieldID,
-	FieldAddedTime,
+	FieldAppointtime,
 }
 
 // ForeignKeys holds the SQL foreign-keys that are owned by the Physicaltherapyrecord type.
 var ForeignKeys = []string{
 	"Patient_id",
 	"Personnel_id",
-	"physicaltherapyroom_physicaltherapyrecord",
-	"status_physicaltherapyrecord",
+	"physicaltherapyroomname_id",
+	"statusname_id",
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -83,8 +79,3 @@ func ValidColumn(column string) bool {
 	}
 	return false
 }
-
-var (
-	// DefaultAddedTime holds the default value on creation for the "addedTime" field.
-	DefaultAddedTime func() time.Time
-)

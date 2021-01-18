@@ -27,11 +27,11 @@ import {
  */
 export interface EntPhysicaltherapyroomEdges {
     /**
-     * 
-     * @type {EntPhysicaltherapyrecord}
+     * Physicaltherapyrecord holds the value of the physicaltherapyrecord edge.
+     * @type {Array<EntPhysicaltherapyrecord>}
      * @memberof EntPhysicaltherapyroomEdges
      */
-    physicaltherapyrecord?: EntPhysicaltherapyrecord;
+    physicaltherapyrecord?: Array<EntPhysicaltherapyrecord>;
 }
 
 export function EntPhysicaltherapyroomEdgesFromJSON(json: any): EntPhysicaltherapyroomEdges {
@@ -44,7 +44,7 @@ export function EntPhysicaltherapyroomEdgesFromJSONTyped(json: any, ignoreDiscri
     }
     return {
         
-        'physicaltherapyrecord': !exists(json, 'physicaltherapyrecord') ? undefined : EntPhysicaltherapyrecordFromJSON(json['physicaltherapyrecord']),
+        'physicaltherapyrecord': !exists(json, 'physicaltherapyrecord') ? undefined : ((json['physicaltherapyrecord'] as Array<any>).map(EntPhysicaltherapyrecordFromJSON)),
     };
 }
 
@@ -57,7 +57,7 @@ export function EntPhysicaltherapyroomEdgesToJSON(value?: EntPhysicaltherapyroom
     }
     return {
         
-        'physicaltherapyrecord': EntPhysicaltherapyrecordToJSON(value.physicaltherapyrecord),
+        'physicaltherapyrecord': value.physicaltherapyrecord === undefined ? undefined : ((value.physicaltherapyrecord as Array<any>).map(EntPhysicaltherapyrecordToJSON)),
     };
 }
 

@@ -1608,7 +1608,7 @@ func (c *PhysicaltherapyrecordClient) QueryPhysicaltherapyroom(ph *Physicalthera
 		step := sqlgraph.NewStep(
 			sqlgraph.From(physicaltherapyrecord.Table, physicaltherapyrecord.FieldID, id),
 			sqlgraph.To(physicaltherapyroom.Table, physicaltherapyroom.FieldID),
-			sqlgraph.Edge(sqlgraph.O2O, true, physicaltherapyrecord.PhysicaltherapyroomTable, physicaltherapyrecord.PhysicaltherapyroomColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, physicaltherapyrecord.PhysicaltherapyroomTable, physicaltherapyrecord.PhysicaltherapyroomColumn),
 		)
 		fromV = sqlgraph.Neighbors(ph.driver.Dialect(), step)
 		return fromV, nil
@@ -1624,7 +1624,7 @@ func (c *PhysicaltherapyrecordClient) QueryStatus(ph *Physicaltherapyrecord) *St
 		step := sqlgraph.NewStep(
 			sqlgraph.From(physicaltherapyrecord.Table, physicaltherapyrecord.FieldID, id),
 			sqlgraph.To(status.Table, status.FieldID),
-			sqlgraph.Edge(sqlgraph.O2O, true, physicaltherapyrecord.StatusTable, physicaltherapyrecord.StatusColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, physicaltherapyrecord.StatusTable, physicaltherapyrecord.StatusColumn),
 		)
 		fromV = sqlgraph.Neighbors(ph.driver.Dialect(), step)
 		return fromV, nil
@@ -1728,7 +1728,7 @@ func (c *PhysicaltherapyroomClient) QueryPhysicaltherapyrecord(ph *Physicalthera
 		step := sqlgraph.NewStep(
 			sqlgraph.From(physicaltherapyroom.Table, physicaltherapyroom.FieldID, id),
 			sqlgraph.To(physicaltherapyrecord.Table, physicaltherapyrecord.FieldID),
-			sqlgraph.Edge(sqlgraph.O2O, false, physicaltherapyroom.PhysicaltherapyrecordTable, physicaltherapyroom.PhysicaltherapyrecordColumn),
+			sqlgraph.Edge(sqlgraph.O2M, false, physicaltherapyroom.PhysicaltherapyrecordTable, physicaltherapyroom.PhysicaltherapyrecordColumn),
 		)
 		fromV = sqlgraph.Neighbors(ph.driver.Dialect(), step)
 		return fromV, nil
@@ -2144,7 +2144,7 @@ func (c *StatusClient) QueryPhysicaltherapyrecord(s *Status) *Physicaltherapyrec
 		step := sqlgraph.NewStep(
 			sqlgraph.From(status.Table, status.FieldID, id),
 			sqlgraph.To(physicaltherapyrecord.Table, physicaltherapyrecord.FieldID),
-			sqlgraph.Edge(sqlgraph.O2O, false, status.PhysicaltherapyrecordTable, status.PhysicaltherapyrecordColumn),
+			sqlgraph.Edge(sqlgraph.O2M, false, status.PhysicaltherapyrecordTable, status.PhysicaltherapyrecordColumn),
 		)
 		fromV = sqlgraph.Neighbors(s.driver.Dialect(), step)
 		return fromV, nil

@@ -20,15 +20,15 @@ type Physicaltherapyrecord struct {
 	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
-	// AddedTime holds the value of the "addedTime" field.
-	AddedTime time.Time `json:"addedTime,omitempty"`
+	// Appointtime holds the value of the "appointtime" field.
+	Appointtime time.Time `json:"appointtime,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the PhysicaltherapyrecordQuery when eager-loading is set.
-	Edges                                     PhysicaltherapyrecordEdges `json:"edges"`
-	_Patient_id                               *int
-	_Personnel_id                             *int
-	physicaltherapyroom_physicaltherapyrecord *int
-	status_physicaltherapyrecord              *int
+	Edges                      PhysicaltherapyrecordEdges `json:"edges"`
+	_Patient_id                *int
+	_Personnel_id              *int
+	physicaltherapyroomname_id *int
+	statusname_id              *int
 }
 
 // PhysicaltherapyrecordEdges holds the relations/edges for other nodes in the graph.
@@ -109,15 +109,15 @@ func (*Physicaltherapyrecord) scanValues(columns []string) ([]interface{}, error
 		switch columns[i] {
 		case physicaltherapyrecord.FieldID:
 			values[i] = &sql.NullInt64{}
-		case physicaltherapyrecord.FieldAddedTime:
+		case physicaltherapyrecord.FieldAppointtime:
 			values[i] = &sql.NullTime{}
 		case physicaltherapyrecord.ForeignKeys[0]: // _Patient_id
 			values[i] = &sql.NullInt64{}
 		case physicaltherapyrecord.ForeignKeys[1]: // _Personnel_id
 			values[i] = &sql.NullInt64{}
-		case physicaltherapyrecord.ForeignKeys[2]: // physicaltherapyroom_physicaltherapyrecord
+		case physicaltherapyrecord.ForeignKeys[2]: // physicaltherapyroomname_id
 			values[i] = &sql.NullInt64{}
-		case physicaltherapyrecord.ForeignKeys[3]: // status_physicaltherapyrecord
+		case physicaltherapyrecord.ForeignKeys[3]: // statusname_id
 			values[i] = &sql.NullInt64{}
 		default:
 			return nil, fmt.Errorf("unexpected column %q for type Physicaltherapyrecord", columns[i])
@@ -140,11 +140,11 @@ func (ph *Physicaltherapyrecord) assignValues(columns []string, values []interfa
 				return fmt.Errorf("unexpected type %T for field id", value)
 			}
 			ph.ID = int(value.Int64)
-		case physicaltherapyrecord.FieldAddedTime:
+		case physicaltherapyrecord.FieldAppointtime:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field addedTime", values[i])
+				return fmt.Errorf("unexpected type %T for field appointtime", values[i])
 			} else if value.Valid {
-				ph.AddedTime = value.Time
+				ph.Appointtime = value.Time
 			}
 		case physicaltherapyrecord.ForeignKeys[0]:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -162,17 +162,17 @@ func (ph *Physicaltherapyrecord) assignValues(columns []string, values []interfa
 			}
 		case physicaltherapyrecord.ForeignKeys[2]:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for edge-field physicaltherapyroom_physicaltherapyrecord", value)
+				return fmt.Errorf("unexpected type %T for edge-field physicaltherapyroomname_id", value)
 			} else if value.Valid {
-				ph.physicaltherapyroom_physicaltherapyrecord = new(int)
-				*ph.physicaltherapyroom_physicaltherapyrecord = int(value.Int64)
+				ph.physicaltherapyroomname_id = new(int)
+				*ph.physicaltherapyroomname_id = int(value.Int64)
 			}
 		case physicaltherapyrecord.ForeignKeys[3]:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for edge-field status_physicaltherapyrecord", value)
+				return fmt.Errorf("unexpected type %T for edge-field statusname_id", value)
 			} else if value.Valid {
-				ph.status_physicaltherapyrecord = new(int)
-				*ph.status_physicaltherapyrecord = int(value.Int64)
+				ph.statusname_id = new(int)
+				*ph.statusname_id = int(value.Int64)
 			}
 		}
 	}
@@ -222,8 +222,8 @@ func (ph *Physicaltherapyrecord) String() string {
 	var builder strings.Builder
 	builder.WriteString("Physicaltherapyrecord(")
 	builder.WriteString(fmt.Sprintf("id=%v", ph.ID))
-	builder.WriteString(", addedTime=")
-	builder.WriteString(ph.AddedTime.Format(time.ANSIC))
+	builder.WriteString(", appointtime=")
+	builder.WriteString(ph.Appointtime.Format(time.ANSIC))
 	builder.WriteByte(')')
 	return builder.String()
 }

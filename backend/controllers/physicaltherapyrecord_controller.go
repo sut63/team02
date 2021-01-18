@@ -97,13 +97,11 @@ func (ctl *PhysicaltherapyrecordController) CreatePhysicaltherapyrecord(c *gin.C
 		return
 	}
 
-	t1 := time.Now()
-	t2 := t1.Format("2020-01-02T15:04:14Z07:00")
-	times, err := time.Parse(time.RFC3339, t2)
+	times, err := time.Parse(time.RFC3339, obj.Time)
 
 	physicaltherapyrecord, err := ctl.client.Physicaltherapyrecord.
 		Create().
-		SetAddedTime(times).
+		SetAppointtime(times).
 		SetPersonnel(personnel).
 		SetPatient(patient).
 		SetPhysicaltherapyroom(physicaltherapyroom).

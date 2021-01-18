@@ -21,6 +21,6 @@ func (Physicaltherapyroom) Fields() []ent.Field {
 // Edges of the Physicaltherapyroom.
 func (Physicaltherapyroom) Edges() []ent.Edge {
 	return []ent.Edge{
-		edge.To("physicaltherapyrecord", Physicaltherapyrecord.Type).Unique(),
+		edge.To("physicaltherapyrecord", Physicaltherapyrecord.Type).StorageKey(edge.Column("physicaltherapyroomname_id")),
 	}
 }

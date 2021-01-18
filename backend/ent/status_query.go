@@ -70,7 +70,7 @@ func (sq *StatusQuery) QueryPhysicaltherapyrecord() *PhysicaltherapyrecordQuery 
 		step := sqlgraph.NewStep(
 			sqlgraph.From(status.Table, status.FieldID, selector),
 			sqlgraph.To(physicaltherapyrecord.Table, physicaltherapyrecord.FieldID),
-			sqlgraph.Edge(sqlgraph.O2O, false, status.PhysicaltherapyrecordTable, status.PhysicaltherapyrecordColumn),
+			sqlgraph.Edge(sqlgraph.O2M, false, status.PhysicaltherapyrecordTable, status.PhysicaltherapyrecordColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(sq.driver.Dialect(), step)
 		return fromU, nil
@@ -372,6 +372,7 @@ func (sq *StatusQuery) sqlAll(ctx context.Context) ([]*Status, error) {
 		for i := range nodes {
 			fks = append(fks, nodes[i].ID)
 			nodeids[nodes[i].ID] = nodes[i]
+			nodes[i].Edges.Physicaltherapyrecord = []*Physicaltherapyrecord{}
 		}
 		query.withFKs = true
 		query.Where(predicate.Physicaltherapyrecord(func(s *sql.Selector) {
@@ -382,15 +383,15 @@ func (sq *StatusQuery) sqlAll(ctx context.Context) ([]*Status, error) {
 			return nil, err
 		}
 		for _, n := range neighbors {
-			fk := n.status_physicaltherapyrecord
+			fk := n.statusname_id
 			if fk == nil {
-				return nil, fmt.Errorf(`foreign-key "status_physicaltherapyrecord" is nil for node %v`, n.ID)
+				return nil, fmt.Errorf(`foreign-key "statusname_id" is nil for node %v`, n.ID)
 			}
 			node, ok := nodeids[*fk]
 			if !ok {
-				return nil, fmt.Errorf(`unexpected foreign-key "status_physicaltherapyrecord" returned %v for node %v`, *fk, n.ID)
+				return nil, fmt.Errorf(`unexpected foreign-key "statusname_id" returned %v for node %v`, *fk, n.ID)
 			}
-			node.Edges.Physicaltherapyrecord = n
+			node.Edges.Physicaltherapyrecord = append(node.Edges.Physicaltherapyrecord, n)
 		}
 	}
 

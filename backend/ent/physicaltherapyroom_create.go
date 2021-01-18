@@ -26,23 +26,19 @@ func (pc *PhysicaltherapyroomCreate) SetPhysicaltherapyroomname(s string) *Physi
 	return pc
 }
 
-// SetPhysicaltherapyrecordID sets the "physicaltherapyrecord" edge to the Physicaltherapyrecord entity by ID.
-func (pc *PhysicaltherapyroomCreate) SetPhysicaltherapyrecordID(id int) *PhysicaltherapyroomCreate {
-	pc.mutation.SetPhysicaltherapyrecordID(id)
+// AddPhysicaltherapyrecordIDs adds the "physicaltherapyrecord" edge to the Physicaltherapyrecord entity by IDs.
+func (pc *PhysicaltherapyroomCreate) AddPhysicaltherapyrecordIDs(ids ...int) *PhysicaltherapyroomCreate {
+	pc.mutation.AddPhysicaltherapyrecordIDs(ids...)
 	return pc
 }
 
-// SetNillablePhysicaltherapyrecordID sets the "physicaltherapyrecord" edge to the Physicaltherapyrecord entity by ID if the given value is not nil.
-func (pc *PhysicaltherapyroomCreate) SetNillablePhysicaltherapyrecordID(id *int) *PhysicaltherapyroomCreate {
-	if id != nil {
-		pc = pc.SetPhysicaltherapyrecordID(*id)
+// AddPhysicaltherapyrecord adds the "physicaltherapyrecord" edges to the Physicaltherapyrecord entity.
+func (pc *PhysicaltherapyroomCreate) AddPhysicaltherapyrecord(p ...*Physicaltherapyrecord) *PhysicaltherapyroomCreate {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
 	}
-	return pc
-}
-
-// SetPhysicaltherapyrecord sets the "physicaltherapyrecord" edge to the Physicaltherapyrecord entity.
-func (pc *PhysicaltherapyroomCreate) SetPhysicaltherapyrecord(p *Physicaltherapyrecord) *PhysicaltherapyroomCreate {
-	return pc.SetPhysicaltherapyrecordID(p.ID)
+	return pc.AddPhysicaltherapyrecordIDs(ids...)
 }
 
 // Mutation returns the PhysicaltherapyroomMutation object of the builder.
@@ -141,7 +137,7 @@ func (pc *PhysicaltherapyroomCreate) createSpec() (*Physicaltherapyroom, *sqlgra
 	}
 	if nodes := pc.mutation.PhysicaltherapyrecordIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2O,
+			Rel:     sqlgraph.O2M,
 			Inverse: false,
 			Table:   physicaltherapyroom.PhysicaltherapyrecordTable,
 			Columns: []string{physicaltherapyroom.PhysicaltherapyrecordColumn},

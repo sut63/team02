@@ -244,11 +244,11 @@ var (
 	// PhysicaltherapyrecordsColumns holds the columns for the "physicaltherapyrecords" table.
 	PhysicaltherapyrecordsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
-		{Name: "added_time", Type: field.TypeTime},
+		{Name: "appointtime", Type: field.TypeTime},
 		{Name: "Patient_id", Type: field.TypeInt, Nullable: true},
 		{Name: "Personnel_id", Type: field.TypeInt, Nullable: true},
-		{Name: "physicaltherapyroom_physicaltherapyrecord", Type: field.TypeInt, Unique: true, Nullable: true},
-		{Name: "status_physicaltherapyrecord", Type: field.TypeInt, Unique: true, Nullable: true},
+		{Name: "physicaltherapyroomname_id", Type: field.TypeInt, Nullable: true},
+		{Name: "statusname_id", Type: field.TypeInt, Nullable: true},
 	}
 	// PhysicaltherapyrecordsTable holds the schema information for the "physicaltherapyrecords" table.
 	PhysicaltherapyrecordsTable = &schema.Table{

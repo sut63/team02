@@ -120,7 +120,7 @@ func (pq *PhysicaltherapyrecordQuery) QueryPhysicaltherapyroom() *Physicaltherap
 		step := sqlgraph.NewStep(
 			sqlgraph.From(physicaltherapyrecord.Table, physicaltherapyrecord.FieldID, selector),
 			sqlgraph.To(physicaltherapyroom.Table, physicaltherapyroom.FieldID),
-			sqlgraph.Edge(sqlgraph.O2O, true, physicaltherapyrecord.PhysicaltherapyroomTable, physicaltherapyrecord.PhysicaltherapyroomColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, physicaltherapyrecord.PhysicaltherapyroomTable, physicaltherapyrecord.PhysicaltherapyroomColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(pq.driver.Dialect(), step)
 		return fromU, nil
@@ -142,7 +142,7 @@ func (pq *PhysicaltherapyrecordQuery) QueryStatus() *StatusQuery {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(physicaltherapyrecord.Table, physicaltherapyrecord.FieldID, selector),
 			sqlgraph.To(status.Table, status.FieldID),
-			sqlgraph.Edge(sqlgraph.O2O, true, physicaltherapyrecord.StatusTable, physicaltherapyrecord.StatusColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, physicaltherapyrecord.StatusTable, physicaltherapyrecord.StatusColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(pq.driver.Dialect(), step)
 		return fromU, nil
@@ -391,12 +391,12 @@ func (pq *PhysicaltherapyrecordQuery) WithStatus(opts ...func(*StatusQuery)) *Ph
 // Example:
 //
 //	var v []struct {
-//		AddedTime time.Time `json:"addedTime,omitempty"`
+//		Appointtime time.Time `json:"appointtime,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
 //	client.Physicaltherapyrecord.Query().
-//		GroupBy(physicaltherapyrecord.FieldAddedTime).
+//		GroupBy(physicaltherapyrecord.FieldAppointtime).
 //		Aggregate(ent.Count()).
 //		Scan(ctx, &v)
 //
@@ -418,11 +418,11 @@ func (pq *PhysicaltherapyrecordQuery) GroupBy(field string, fields ...string) *P
 // Example:
 //
 //	var v []struct {
-//		AddedTime time.Time `json:"addedTime,omitempty"`
+//		Appointtime time.Time `json:"appointtime,omitempty"`
 //	}
 //
 //	client.Physicaltherapyrecord.Query().
-//		Select(physicaltherapyrecord.FieldAddedTime).
+//		Select(physicaltherapyrecord.FieldAppointtime).
 //		Scan(ctx, &v)
 //
 func (pq *PhysicaltherapyrecordQuery) Select(field string, fields ...string) *PhysicaltherapyrecordSelect {
@@ -538,7 +538,7 @@ func (pq *PhysicaltherapyrecordQuery) sqlAll(ctx context.Context) ([]*Physicalth
 		ids := make([]int, 0, len(nodes))
 		nodeids := make(map[int][]*Physicaltherapyrecord)
 		for i := range nodes {
-			if fk := nodes[i].physicaltherapyroom_physicaltherapyrecord; fk != nil {
+			if fk := nodes[i].physicaltherapyroomname_id; fk != nil {
 				ids = append(ids, *fk)
 				nodeids[*fk] = append(nodeids[*fk], nodes[i])
 			}
@@ -551,7 +551,7 @@ func (pq *PhysicaltherapyrecordQuery) sqlAll(ctx context.Context) ([]*Physicalth
 		for _, n := range neighbors {
 			nodes, ok := nodeids[n.ID]
 			if !ok {
-				return nil, fmt.Errorf(`unexpected foreign-key "physicaltherapyroom_physicaltherapyrecord" returned %v`, n.ID)
+				return nil, fmt.Errorf(`unexpected foreign-key "physicaltherapyroomname_id" returned %v`, n.ID)
 			}
 			for i := range nodes {
 				nodes[i].Edges.Physicaltherapyroom = n
@@ -563,7 +563,7 @@ func (pq *PhysicaltherapyrecordQuery) sqlAll(ctx context.Context) ([]*Physicalth
 		ids := make([]int, 0, len(nodes))
 		nodeids := make(map[int][]*Physicaltherapyrecord)
 		for i := range nodes {
-			if fk := nodes[i].status_physicaltherapyrecord; fk != nil {
+			if fk := nodes[i].statusname_id; fk != nil {
 				ids = append(ids, *fk)
 				nodeids[*fk] = append(nodeids[*fk], nodes[i])
 			}
@@ -576,7 +576,7 @@ func (pq *PhysicaltherapyrecordQuery) sqlAll(ctx context.Context) ([]*Physicalth
 		for _, n := range neighbors {
 			nodes, ok := nodeids[n.ID]
 			if !ok {
-				return nil, fmt.Errorf(`unexpected foreign-key "status_physicaltherapyrecord" returned %v`, n.ID)
+				return nil, fmt.Errorf(`unexpected foreign-key "statusname_id" returned %v`, n.ID)
 			}
 			for i := range nodes {
 				nodes[i].Edges.Status = n

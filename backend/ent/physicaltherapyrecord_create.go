@@ -24,17 +24,9 @@ type PhysicaltherapyrecordCreate struct {
 	hooks    []Hook
 }
 
-// SetAddedTime sets the "addedTime" field.
-func (pc *PhysicaltherapyrecordCreate) SetAddedTime(t time.Time) *PhysicaltherapyrecordCreate {
-	pc.mutation.SetAddedTime(t)
-	return pc
-}
-
-// SetNillableAddedTime sets the "addedTime" field if the given value is not nil.
-func (pc *PhysicaltherapyrecordCreate) SetNillableAddedTime(t *time.Time) *PhysicaltherapyrecordCreate {
-	if t != nil {
-		pc.SetAddedTime(*t)
-	}
+// SetAppointtime sets the "appointtime" field.
+func (pc *PhysicaltherapyrecordCreate) SetAppointtime(t time.Time) *PhysicaltherapyrecordCreate {
+	pc.mutation.SetAppointtime(t)
 	return pc
 }
 
@@ -125,7 +117,6 @@ func (pc *PhysicaltherapyrecordCreate) Save(ctx context.Context) (*Physicalthera
 		err  error
 		node *Physicaltherapyrecord
 	)
-	pc.defaults()
 	if len(pc.hooks) == 0 {
 		if err = pc.check(); err != nil {
 			return nil, err
@@ -164,18 +155,10 @@ func (pc *PhysicaltherapyrecordCreate) SaveX(ctx context.Context) *Physicalthera
 	return v
 }
 
-// defaults sets the default values of the builder before save.
-func (pc *PhysicaltherapyrecordCreate) defaults() {
-	if _, ok := pc.mutation.AddedTime(); !ok {
-		v := physicaltherapyrecord.DefaultAddedTime()
-		pc.mutation.SetAddedTime(v)
-	}
-}
-
 // check runs all checks and user-defined validators on the builder.
 func (pc *PhysicaltherapyrecordCreate) check() error {
-	if _, ok := pc.mutation.AddedTime(); !ok {
-		return &ValidationError{Name: "addedTime", err: errors.New("ent: missing required field \"addedTime\"")}
+	if _, ok := pc.mutation.Appointtime(); !ok {
+		return &ValidationError{Name: "appointtime", err: errors.New("ent: missing required field \"appointtime\"")}
 	}
 	return nil
 }
@@ -204,13 +187,13 @@ func (pc *PhysicaltherapyrecordCreate) createSpec() (*Physicaltherapyrecord, *sq
 			},
 		}
 	)
-	if value, ok := pc.mutation.AddedTime(); ok {
+	if value, ok := pc.mutation.Appointtime(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeTime,
 			Value:  value,
-			Column: physicaltherapyrecord.FieldAddedTime,
+			Column: physicaltherapyrecord.FieldAppointtime,
 		})
-		_node.AddedTime = value
+		_node.Appointtime = value
 	}
 	if nodes := pc.mutation.PersonnelIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
@@ -252,7 +235,7 @@ func (pc *PhysicaltherapyrecordCreate) createSpec() (*Physicaltherapyrecord, *sq
 	}
 	if nodes := pc.mutation.PhysicaltherapyroomIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2O,
+			Rel:     sqlgraph.M2O,
 			Inverse: true,
 			Table:   physicaltherapyrecord.PhysicaltherapyroomTable,
 			Columns: []string{physicaltherapyrecord.PhysicaltherapyroomColumn},
@@ -271,7 +254,7 @@ func (pc *PhysicaltherapyrecordCreate) createSpec() (*Physicaltherapyrecord, *sq
 	}
 	if nodes := pc.mutation.StatusIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2O,
+			Rel:     sqlgraph.M2O,
 			Inverse: true,
 			Table:   physicaltherapyrecord.StatusTable,
 			Columns: []string{physicaltherapyrecord.StatusColumn},
@@ -305,7 +288,6 @@ func (pcb *PhysicaltherapyrecordCreateBulk) Save(ctx context.Context) ([]*Physic
 	for i := range pcb.builders {
 		func(i int, root context.Context) {
 			builder := pcb.builders[i]
-			builder.defaults()
 			var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 				mutation, ok := m.(*PhysicaltherapyrecordMutation)
 				if !ok {
