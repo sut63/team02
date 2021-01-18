@@ -1880,12 +1880,12 @@ var doc = `{
         },
         "/physicaltherapyrecords": {
             "get": {
-                "description": "list Physicaltherapyrecord entities",
+                "description": "list physicaltherapyrecord entities",
                 "produces": [
                     "application/json"
                 ],
-                "summary": "List Physicaltherapyrecord entities",
-                "operationId": "list-Physicaltherapyrecord",
+                "summary": "List physicaltherapyrecord entities",
+                "operationId": "list-physicaltherapyrecord",
                 "parameters": [
                     {
                         "type": "integer",
@@ -1906,7 +1906,7 @@ var doc = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/ent.Physicaltherapyrecords"
+                                "$ref": "#/definitions/ent.Physicaltherapyrecord"
                             }
                         }
                     },
@@ -1949,56 +1949,11 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/ent.Physicaltherapyrecords"
+                            "$ref": "#/definitions/ent.Physicaltherapyrecord"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/gin.H"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/gin.H"
-                        }
-                    }
-                }
-            }
-        },
-        "/physicaltherapyrecords/{id}": {
-            "delete": {
-                "description": "get approvedresult by ID",
-                "produces": [
-                    "application/json"
-                ],
-                "summary": "Delete a approvedresult entity by ID",
-                "operationId": "delete-approvedresult",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Physicaltherapyrecord ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/gin.H"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/gin.H"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
                         "schema": {
                             "$ref": "#/definitions/gin.H"
                         }
@@ -3684,12 +3639,6 @@ var doc = `{
                     "type": "object",
                     "$ref": "#/definitions/ent.Status"
                 }
-            }
-        },
-        "ent.Physicaltherapyrecords": {
-            "type": "array",
-            "items": {
-                "$ref": "#/definitions/ent.Physicaltherapyrecord"
             }
         },
         "ent.Physicaltherapyroom": {

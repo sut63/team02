@@ -154,10 +154,6 @@ export interface DeleteAntenatalinformationRequest {
     id: number;
 }
 
-export interface DeleteApprovedresultRequest {
-    id: number;
-}
-
 export interface DeleteBonediseaseRequest {
     id: number;
 }
@@ -708,7 +704,7 @@ export class DefaultApi extends runtime.BaseAPI {
      * Create physicaltherapyrecord
      * Create physicaltherapyrecord
      */
-    async createPhysicaltherapyrecordRaw(requestParameters: CreatePhysicaltherapyrecordRequest): Promise<runtime.ApiResponse<Array<EntPhysicaltherapyrecord>>> {
+    async createPhysicaltherapyrecordRaw(requestParameters: CreatePhysicaltherapyrecordRequest): Promise<runtime.ApiResponse<EntPhysicaltherapyrecord>> {
         if (requestParameters.physicaltherapyrecord === null || requestParameters.physicaltherapyrecord === undefined) {
             throw new runtime.RequiredError('physicaltherapyrecord','Required parameter requestParameters.physicaltherapyrecord was null or undefined when calling createPhysicaltherapyrecord.');
         }
@@ -727,14 +723,14 @@ export class DefaultApi extends runtime.BaseAPI {
             body: ControllersPhysicaltherapyrecordToJSON(requestParameters.physicaltherapyrecord),
         });
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(EntPhysicaltherapyrecordFromJSON));
+        return new runtime.JSONApiResponse(response, (jsonValue) => EntPhysicaltherapyrecordFromJSON(jsonValue));
     }
 
     /**
      * Create physicaltherapyrecord
      * Create physicaltherapyrecord
      */
-    async createPhysicaltherapyrecord(requestParameters: CreatePhysicaltherapyrecordRequest): Promise<Array<EntPhysicaltherapyrecord>> {
+    async createPhysicaltherapyrecord(requestParameters: CreatePhysicaltherapyrecordRequest): Promise<EntPhysicaltherapyrecord> {
         const response = await this.createPhysicaltherapyrecordRaw(requestParameters);
         return await response.value();
     }
@@ -978,38 +974,6 @@ export class DefaultApi extends runtime.BaseAPI {
      */
     async deleteAntenatalinformation(requestParameters: DeleteAntenatalinformationRequest): Promise<object> {
         const response = await this.deleteAntenatalinformationRaw(requestParameters);
-        return await response.value();
-    }
-
-    /**
-     * get approvedresult by ID
-     * Delete a approvedresult entity by ID
-     */
-    async deleteApprovedresultRaw(requestParameters: DeleteApprovedresultRequest): Promise<runtime.ApiResponse<object>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deleteApprovedresult.');
-        }
-
-        const queryParameters: runtime.HTTPQuery = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const response = await this.request({
-            path: `/physicaltherapyrecords/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
-            method: 'DELETE',
-            headers: headerParameters,
-            query: queryParameters,
-        });
-
-        return new runtime.JSONApiResponse<any>(response);
-    }
-
-    /**
-     * get approvedresult by ID
-     * Delete a approvedresult entity by ID
-     */
-    async deleteApprovedresult(requestParameters: DeleteApprovedresultRequest): Promise<object> {
-        const response = await this.deleteApprovedresultRaw(requestParameters);
         return await response.value();
     }
 
@@ -2106,10 +2070,10 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * list Physicaltherapyrecord entities
-     * List Physicaltherapyrecord entities
+     * list physicaltherapyrecord entities
+     * List physicaltherapyrecord entities
      */
-    async listPhysicaltherapyrecordRaw(requestParameters: ListPhysicaltherapyrecordRequest): Promise<runtime.ApiResponse<Array<Array<EntPhysicaltherapyrecord>>>> {
+    async listPhysicaltherapyrecordRaw(requestParameters: ListPhysicaltherapyrecordRequest): Promise<runtime.ApiResponse<Array<EntPhysicaltherapyrecord>>> {
         const queryParameters: runtime.HTTPQuery = {};
 
         if (requestParameters.limit !== undefined) {
@@ -2129,14 +2093,14 @@ export class DefaultApi extends runtime.BaseAPI {
             query: queryParameters,
         });
 
-        return new runtime.JSONApiResponse<any>(response);
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(EntPhysicaltherapyrecordFromJSON));
     }
 
     /**
-     * list Physicaltherapyrecord entities
-     * List Physicaltherapyrecord entities
+     * list physicaltherapyrecord entities
+     * List physicaltherapyrecord entities
      */
-    async listPhysicaltherapyrecord(requestParameters: ListPhysicaltherapyrecordRequest): Promise<Array<Array<EntPhysicaltherapyrecord>>> {
+    async listPhysicaltherapyrecord(requestParameters: ListPhysicaltherapyrecordRequest): Promise<Array<EntPhysicaltherapyrecord>> {
         const response = await this.listPhysicaltherapyrecordRaw(requestParameters);
         return await response.value();
     }

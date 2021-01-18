@@ -14,13 +14,13 @@ import (
 	"github.com/to63/app/ent/status"
 )
 
-// PhysicaltherapyrecordController handles POST requests for adding Physicaltherapyrecord entities
+//PhysicaltherapyrecordController struct
 type PhysicaltherapyrecordController struct {
 	client *ent.Client
 	router gin.IRouter
 }
 
-// Physicaltherapyrecord handles POST requests for adding Physicaltherapyrecord entities
+//Physicaltherapyrecord struct
 type Physicaltherapyrecord struct {
 	Personnel           int
 	Patient             int
@@ -36,7 +36,7 @@ type Physicaltherapyrecord struct {
 // @Accept   json
 // @Produce  json
 // @Param physicaltherapyrecord body Physicaltherapyrecord true "Physicaltherapyrecord entity"
-// @Success 200 {object} ent.Physicaltherapyrecords
+// @Success 200 {object} ent.Physicaltherapyrecord
 // @Failure 400 {object} gin.H
 // @Failure 500 {object} gin.H
 // @Router /physicaltherapyrecords [post]
@@ -44,7 +44,7 @@ func (ctl *PhysicaltherapyrecordController) CreatePhysicaltherapyrecord(c *gin.C
 	obj := Physicaltherapyrecord{}
 	if err := c.ShouldBind(&obj); err != nil {
 		c.JSON(400, gin.H{
-			"error": "Physicaltherapyrecord binding failed",
+			"error": "physicaltherapyrecord binding failed",
 		})
 		return
 	}
@@ -101,11 +101,11 @@ func (ctl *PhysicaltherapyrecordController) CreatePhysicaltherapyrecord(c *gin.C
 
 	physicaltherapyrecord, err := ctl.client.Physicaltherapyrecord.
 		Create().
-		SetAppointtime(times).
-		SetPersonnel(personnel).
 		SetPatient(patient).
-		SetPhysicaltherapyroom(physicaltherapyroom).
+		SetPersonnel(personnel).
 		SetStatus(status).
+		SetPhysicaltherapyroom(physicaltherapyroom).
+		SetAppointtime(times).
 		Save(context.Background())
 
 	if err != nil {
@@ -115,17 +115,20 @@ func (ctl *PhysicaltherapyrecordController) CreatePhysicaltherapyrecord(c *gin.C
 		return
 	}
 
-	c.JSON(200, physicaltherapyrecord)
+	c.JSON(200, gin.H{
+		"status": true,
+		"data":   physicaltherapyrecord,
+	})
 }
 
-// ListPhysicaltherapyrecord handles request to get a list of Physicaltherapyrecord entities
-// @Summary List Physicaltherapyrecord entities
-// @Description list Physicaltherapyrecord entities
-// @ID list-Physicaltherapyrecord
+// ListPhysicaltherapyrecord handles request to get a list of physicaltherapyrecord entities
+// @Summary List physicaltherapyrecord entities
+// @Description list physicaltherapyrecord entities
+// @ID list-physicaltherapyrecord
 // @Produce json
 // @Param limit  query int false "Limit"
 // @Param offset query int false "Offset"
-// @Success 200 {array} ent.Physicaltherapyrecords
+// @Success 200 {array} ent.Physicaltherapyrecord
 // @Failure 400 {object} gin.H
 // @Failure 500 {object} gin.H
 // @Router /physicaltherapyrecords [get]
@@ -148,12 +151,12 @@ func (ctl *PhysicaltherapyrecordController) ListPhysicaltherapyrecord(c *gin.Con
 		}
 	}
 
-	Physicaltherapyrecords, err := ctl.client.Physicaltherapyrecord.
+	physicaltherapyrecord, err := ctl.client.Physicaltherapyrecord.
 		Query().
 		WithPersonnel().
 		WithPatient().
-		WithPhysicaltherapyroom().
 		WithStatus().
+		WithPhysicaltherapyroom().
 		Limit(limit).
 		Offset(offset).
 		All(context.Background())
@@ -165,20 +168,20 @@ func (ctl *PhysicaltherapyrecordController) ListPhysicaltherapyrecord(c *gin.Con
 		return
 	}
 
-	c.JSON(200, Physicaltherapyrecords)
+	c.JSON(200, physicaltherapyrecord)
 }
 
-// DeletePhysicaltherapyrecord handles DELETE requests to delete a approvedresult entity
-// @Summary Delete a approvedresult entity by ID
-// @Description get approvedresult by ID
-// @ID delete-approvedresult
+// DeletePhysicaltherapyrecord handles DELETE requests to delete a physicaltherapyrecord entity
+// @Summary Delete a physicaltherapyrecord entity by ID
+// @Description get physicaltherapyrecord by ID
+// @ID delete-physicaltherapyrecord
 // @Produce  json
 // @Param id path int true "Physicaltherapyrecord ID"
 // @Success 200 {object} gin.H
 // @Failure 400 {object} gin.H
 // @Failure 404 {object} gin.H
 // @Failure 500 {object} gin.H
-// @Router /physicaltherapyrecords/{id} [delete]
+// @Router/physicaltherapyrecords/{id} [delete]
 func (ctl *PhysicaltherapyrecordController) DeletePhysicaltherapyrecord(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
@@ -201,23 +204,24 @@ func (ctl *PhysicaltherapyrecordController) DeletePhysicaltherapyrecord(c *gin.C
 	c.JSON(200, gin.H{"result": fmt.Sprintf("ok deleted %v", id)})
 }
 
-// NewPhysicaltherapyrecordController creates and registers handles for the Physicaltherapyrecord controller
+// NewPhysicaltherapyrecordController creates and registers handles for the physicaltherapyrecord controller
 func NewPhysicaltherapyrecordController(router gin.IRouter, client *ent.Client) *PhysicaltherapyrecordController {
-	physicaltherapyrecordcontroller := &PhysicaltherapyrecordController{
+	physicaltherapyrecordController := &PhysicaltherapyrecordController{
 		client: client,
 		router: router,
 	}
 
-	physicaltherapyrecordcontroller.register()
+	physicaltherapyrecordController.register()
 
-	return physicaltherapyrecordcontroller
+	return physicaltherapyrecordController
 
 }
 
 func (ctl *PhysicaltherapyrecordController) register() {
 	physicaltherapyrecords := ctl.router.Group("/physicaltherapyrecords")
-	physicaltherapyrecords.GET("", ctl.ListPhysicaltherapyrecord)
 
 	physicaltherapyrecords.POST("", ctl.CreatePhysicaltherapyrecord)
+	physicaltherapyrecords.GET("", ctl.ListPhysicaltherapyrecord)
 	physicaltherapyrecords.DELETE(":id", ctl.DeletePhysicaltherapyrecord)
+
 }

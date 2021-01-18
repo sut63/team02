@@ -441,10 +441,6 @@ definitions:
         description: Status holds the value of the status edge.
         type: object
     type: object
-  ent.Physicaltherapyrecords:
-    items:
-      $ref: '#/definitions/ent.Physicaltherapyrecord'
-    type: array
   ent.Physicaltherapyroom:
     properties:
       edges:
@@ -1867,8 +1863,8 @@ paths:
       summary: Update a personnel entity by ID
   /physicaltherapyrecords:
     get:
-      description: list Physicaltherapyrecord entities
-      operationId: list-Physicaltherapyrecord
+      description: list physicaltherapyrecord entities
+      operationId: list-physicaltherapyrecord
       parameters:
       - description: Limit
         in: query
@@ -1885,7 +1881,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/ent.Physicaltherapyrecords'
+              $ref: '#/definitions/ent.Physicaltherapyrecord'
             type: array
         "400":
           description: Bad Request
@@ -1895,7 +1891,7 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/gin.H'
-      summary: List Physicaltherapyrecord entities
+      summary: List physicaltherapyrecord entities
     post:
       consumes:
       - application/json
@@ -1914,7 +1910,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/ent.Physicaltherapyrecords'
+            $ref: '#/definitions/ent.Physicaltherapyrecord'
         "400":
           description: Bad Request
           schema:
@@ -1924,36 +1920,6 @@ paths:
           schema:
             $ref: '#/definitions/gin.H'
       summary: Create physicaltherapyrecord
-  /physicaltherapyrecords/{id}:
-    delete:
-      description: get approvedresult by ID
-      operationId: delete-approvedresult
-      parameters:
-      - description: Physicaltherapyrecord ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/gin.H'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/gin.H'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/gin.H'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/gin.H'
-      summary: Delete a approvedresult entity by ID
   /physicaltherapyrooms:
     get:
       description: list physicaltherapyroom entities
