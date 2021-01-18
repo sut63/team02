@@ -74,10 +74,10 @@ export function EntAntenatalinformationEdgesFromJSONTyped(json: any, ignoreDiscr
     }
     return {
         
-        'patient': !exists(json, 'patient') ? undefined : EntPatientFromJSON(json['patient']),
-        'personnel': !exists(json, 'personnel') ? undefined : EntPersonnelFromJSON(json['personnel']),
-        'pregnancystatus': !exists(json, 'pregnancystatus') ? undefined : EntPregnancystatusFromJSON(json['pregnancystatus']),
-        'risks': !exists(json, 'risks') ? undefined : EntRisksFromJSON(json['risks']),
+        'patient': !exists(json, 'Patient') ? undefined : EntPatientFromJSON(json['Patient']),
+        'personnel': !exists(json, 'Personnel') ? undefined : EntPersonnelFromJSON(json['Personnel']),
+        'pregnancystatus': !exists(json, 'Pregnancystatus') ? undefined : EntPregnancystatusFromJSON(json['Pregnancystatus']),
+        'risks': !exists(json, 'Risks') ? undefined : EntRisksFromJSON(json['Risks']),
     };
 }
 

@@ -113,26 +113,29 @@ export default function Antenatal() {
     }, [loading]);
 
     const createAntenatalinformation = async () => {
-        
-    const antenatalinformation = {
-            personnel: personnelid,
-            patient: patientid,
-            pregnancystatus: pregnancystatusid,
-            risks: risksid,
-            gestationalage: gestationalage,
-            time: time + ":00+07:00", //+ "T00:00:00+07:00", //2020-10-20T11:53  yyyy-MM-ddT07:mm
-    }
-    const res: any = await api.createAntenatalinformation({ antenatalinformation: antenatalinformation });
-    setStatus(true);
-    if (res.id != '') {
-      setAlert(true);
-    } else {
-      setAlert(false);
-    }
-    const timer = setTimeout(() => {
-        setStatus
-        (false);
-      }, 1000);
+        if( ( personnelid != 0 ) && ( patientid != 0) && ( pregnancystatusid != 0) && ( risksid != 0) && ( gestationalage != 0) && ( time != "" )){
+            const antenatalinformation = {
+                    personnel: personnelid,
+                    patient: patientid,
+                    pregnancystatus: pregnancystatusid,
+                    risks: risksid,
+                    gestationalage: +gestationalage,
+                    time: time + ":00+07:00", //+ "T00:00:00+07:00", //2020-10-20T11:53  yyyy-MM-ddT07:mm
+            };
+            
+            console.log(antenatalinformation);
+            const res: any = await api.createAntenatalinformation({ antenatalinformation: antenatalinformation });
+            setStatus(true);
+            if (res.id != '') {
+                setAlert(true);
+            } 
+        }
+        else {
+            setAlert(false);setStatus(true);
+        };
+        const timer = setTimeout(() => {
+            setStatus(false);
+        }, 1000);
     }
 
     const PersonnelhandleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
@@ -163,7 +166,6 @@ export default function Antenatal() {
                 <ContentHeader title="กรุณากรอกข้อมูล"></ContentHeader>
                     <Container maxWidth="sm">
                         <Grid container spacing={3}>
-                            <Grid item xs={12}></Grid>
                             <Grid item xs={4}>
                                 <div className={classes.root}>
                                     <form noValidate autoComplete="off">
@@ -173,22 +175,20 @@ export default function Antenatal() {
                                                 <FormControl variant="filled" className={classes.formControl}>
                                                     <InputLabel>แพทย์ผู้ตรวจ</InputLabel>
                                                     <Select
-                                                        labelId="แพทย์"
+                                                        labelId="แพทย์ผู้ตรวจ"
                                                         id="personnel"
                                                         value={personnelid}
                                                         onChange={PersonnelhandleChange}
-                                                        >
-                                                        {personnels.map(item => {
-                                                        return (
-                                                        <MenuItem key={item.id} value={item.id}>
-                                                            {item.name}
-                                                        </MenuItem>
-                                                        );
-                                                        })}
+                                                    >
+                                                        {personnels.map((item: EntPersonnel) =>
+                                                        <MenuItem value={item.id}>{item.name}</MenuItem>)
+                                                        }
                                                     </Select>
                                                 </FormControl>
                                             </Grid>
+                                        </div>
 
+                                        <div>
                                             <Grid item xs={8}>
                                                 <FormControl variant="filled" className={classes.formControl}>
                                                     <InputLabel>ผู้รับการตรวจ</InputLabel>
@@ -204,7 +204,9 @@ export default function Antenatal() {
                                                     </Select>
                                                 </FormControl>
                                             </Grid>
+                                        </div>
 
+                                        <div>
                                             <Grid item xs={8}>
                                                 <FormControl variant="filled" className={classes.formControl}>
                                                     <InputLabel>สถานะครรภ์</InputLabel>
@@ -220,10 +222,12 @@ export default function Antenatal() {
                                                     </Select>
                                                 </FormControl>
                                             </Grid>
+                                        </div>
 
+                                        <div>
                                             <Grid item xs={8}>
                                                 <FormControl className={classes.root} variant="outlined">
-                                                    <InputLabel>อายุครรภ์</InputLabel>
+                                                    <InputLabel>สัปดาห์</InputLabel>
                                                     <TextField
                                                         id="gestationalage"
                                                         label="อายุครรภ์"
@@ -233,7 +237,9 @@ export default function Antenatal() {
                                                     />
                                                 </FormControl>
                                             </Grid>
+                                        </div>
 
+                                        <div>
                                             <Grid item xs={8}>
                                                 <FormControl variant="filled" className={classes.formControl}>
                                                     <InputLabel>ความเสี่ยงที่พบ</InputLabel>
@@ -249,7 +255,9 @@ export default function Antenatal() {
                                                     </Select>
                                                 </FormControl>
                                             </Grid>
+                                        </div>
 
+                                        <div>
                                             <Grid item xs={12}>
                                                 <form className={classes.container} noValidate>
                                                     <TextField
@@ -265,30 +273,29 @@ export default function Antenatal() {
                                                     />
                                                 </form>
                                             </Grid>
+                                        </div>
 
-                                            
-                                                <div className={classes.margin}>
-                                                    <Button
-                                                        onClick={() => {createAntenatalinformation();}}
-                                                        variant="contained"
-                                                        color="primary"
-                                                    >
-                                                    ยืนยัน
-                                                    </Button>
-                                                    {status ? (
-                                                        <div>
-                                                            {alert ? (<Alert severity="success">บันทึกสำเร็จ</Alert>) 
-                                                            : (<Alert severity="warning">ข้อมูลไม่ถูกต้อง</Alert>)}
-                                                        </div>
-                                                    ) : null}
-                                                    <Button style={{marginLeft: 20,backgroundColor: 'red'}}
-                                                        component={RouterLink}
-                                                        to="/"
-                                                        variant="contained"
-                                                    >
-                                                    ยกเลิก
-                                                    </Button>
+                                        <div className={classes.margin}>
+                                            <Button
+                                                onClick={() => {createAntenatalinformation();}}
+                                                variant="contained"
+                                                color="primary"
+                                            >
+                                            ยืนยัน
+                                            </Button>
+                                            {status ? (
+                                                <div>
+                                                    {alert ? (<Alert severity="success">บันทึกสำเร็จ</Alert>) 
+                                                    : (<Alert severity="warning">ข้อมูลไม่ถูกต้อง</Alert>)}
                                                 </div>
+                                            ) : null}
+                                            <Button style={{marginLeft: 20,backgroundColor: 'red'}}
+                                                component={RouterLink}
+                                                to="/WelcomePage"
+                                                variant="contained"
+                                            >
+                                            ยกเลิก
+                                            </Button>
                                         </div>
                                     </form>
                                 </div>
