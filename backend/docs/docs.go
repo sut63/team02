@@ -3852,8 +3852,10 @@ var doc = `{
             "properties": {
                 "surgeryappointment": {
                     "description": "Surgeryappointment holds the value of the Surgeryappointment edge.",
-                    "type": "object",
-                    "$ref": "#/definitions/ent.Surgeryappointment"
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ent.Surgeryappointment"
+                    }
                 }
             }
         },

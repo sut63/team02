@@ -609,10 +609,11 @@ definitions:
   ent.SurgerytypeEdges:
     properties:
       surgeryappointment:
-        $ref: '#/definitions/ent.Surgeryappointment'
         description: Surgeryappointment holds the value of the Surgeryappointment
           edge.
-        type: object
+        items:
+          $ref: '#/definitions/ent.Surgeryappointment'
+        type: array
     type: object
   gin.H:
     additionalProperties: true

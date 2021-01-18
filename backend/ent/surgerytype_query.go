@@ -70,7 +70,7 @@ func (sq *SurgerytypeQuery) QuerySurgeryappointment() *SurgeryappointmentQuery {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(surgerytype.Table, surgerytype.FieldID, selector),
 			sqlgraph.To(surgeryappointment.Table, surgeryappointment.FieldID),
-			sqlgraph.Edge(sqlgraph.O2O, false, surgerytype.SurgeryappointmentTable, surgerytype.SurgeryappointmentColumn),
+			sqlgraph.Edge(sqlgraph.O2M, false, surgerytype.SurgeryappointmentTable, surgerytype.SurgeryappointmentColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(sq.driver.Dialect(), step)
 		return fromU, nil
@@ -372,6 +372,7 @@ func (sq *SurgerytypeQuery) sqlAll(ctx context.Context) ([]*Surgerytype, error) 
 		for i := range nodes {
 			fks = append(fks, nodes[i].ID)
 			nodeids[nodes[i].ID] = nodes[i]
+			nodes[i].Edges.Surgeryappointment = []*Surgeryappointment{}
 		}
 		query.withFKs = true
 		query.Where(predicate.Surgeryappointment(func(s *sql.Selector) {
@@ -382,15 +383,15 @@ func (sq *SurgerytypeQuery) sqlAll(ctx context.Context) ([]*Surgerytype, error) 
 			return nil, err
 		}
 		for _, n := range neighbors {
-			fk := n.surgerytype_surgeryappointment
+			fk := n._Surgerytype
 			if fk == nil {
-				return nil, fmt.Errorf(`foreign-key "surgerytype_surgeryappointment" is nil for node %v`, n.ID)
+				return nil, fmt.Errorf(`foreign-key "_Surgerytype" is nil for node %v`, n.ID)
 			}
 			node, ok := nodeids[*fk]
 			if !ok {
-				return nil, fmt.Errorf(`unexpected foreign-key "surgerytype_surgeryappointment" returned %v for node %v`, *fk, n.ID)
+				return nil, fmt.Errorf(`unexpected foreign-key "_Surgerytype" returned %v for node %v`, *fk, n.ID)
 			}
-			node.Edges.Surgeryappointment = n
+			node.Edges.Surgeryappointment = append(node.Edges.Surgeryappointment, n)
 		}
 	}
 

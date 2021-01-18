@@ -215,7 +215,7 @@ func HasSurgeryappointment() predicate.Surgerytype {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
 			sqlgraph.To(SurgeryappointmentTable, FieldID),
-			sqlgraph.Edge(sqlgraph.O2O, false, SurgeryappointmentTable, SurgeryappointmentColumn),
+			sqlgraph.Edge(sqlgraph.O2M, false, SurgeryappointmentTable, SurgeryappointmentColumn),
 		)
 		sqlgraph.HasNeighbors(s, step)
 	})
@@ -227,7 +227,7 @@ func HasSurgeryappointmentWith(preds ...predicate.Surgeryappointment) predicate.
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
 			sqlgraph.To(SurgeryappointmentInverseTable, FieldID),
-			sqlgraph.Edge(sqlgraph.O2O, false, SurgeryappointmentTable, SurgeryappointmentColumn),
+			sqlgraph.Edge(sqlgraph.O2M, false, SurgeryappointmentTable, SurgeryappointmentColumn),
 		)
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {

@@ -36,10 +36,10 @@ type PatientEdges struct {
 	Checksymptom []*Checksymptom
 	// Dentalappointment holds the value of the Dentalappointment edge.
 	Dentalappointment []*Dentalappointment
-	// Surgeryappointment holds the value of the Surgeryappointment edge.
-	Surgeryappointment []*Surgeryappointment
 	// Antenatalinformation holds the value of the Antenatalinformation edge.
 	Antenatalinformation []*Antenatalinformation
+	// Surgeryappointment holds the value of the Surgeryappointment edge.
+	Surgeryappointment []*Surgeryappointment
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
 	loadedTypes [6]bool
@@ -81,22 +81,22 @@ func (e PatientEdges) DentalappointmentOrErr() ([]*Dentalappointment, error) {
 	return nil, &NotLoadedError{edge: "Dentalappointment"}
 }
 
-// SurgeryappointmentOrErr returns the Surgeryappointment value or an error if the edge
-// was not loaded in eager-loading.
-func (e PatientEdges) SurgeryappointmentOrErr() ([]*Surgeryappointment, error) {
-	if e.loadedTypes[4] {
-		return e.Surgeryappointment, nil
-	}
-	return nil, &NotLoadedError{edge: "Surgeryappointment"}
-}
-
 // AntenatalinformationOrErr returns the Antenatalinformation value or an error if the edge
 // was not loaded in eager-loading.
 func (e PatientEdges) AntenatalinformationOrErr() ([]*Antenatalinformation, error) {
-	if e.loadedTypes[5] {
+	if e.loadedTypes[4] {
 		return e.Antenatalinformation, nil
 	}
 	return nil, &NotLoadedError{edge: "Antenatalinformation"}
+}
+
+// SurgeryappointmentOrErr returns the Surgeryappointment value or an error if the edge
+// was not loaded in eager-loading.
+func (e PatientEdges) SurgeryappointmentOrErr() ([]*Surgeryappointment, error) {
+	if e.loadedTypes[5] {
+		return e.Surgeryappointment, nil
+	}
+	return nil, &NotLoadedError{edge: "Surgeryappointment"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -172,14 +172,14 @@ func (pa *Patient) QueryDentalappointment() *DentalappointmentQuery {
 	return (&PatientClient{config: pa.config}).QueryDentalappointment(pa)
 }
 
-// QuerySurgeryappointment queries the "Surgeryappointment" edge of the Patient entity.
-func (pa *Patient) QuerySurgeryappointment() *SurgeryappointmentQuery {
-	return (&PatientClient{config: pa.config}).QuerySurgeryappointment(pa)
-}
-
 // QueryAntenatalinformation queries the "Antenatalinformation" edge of the Patient entity.
 func (pa *Patient) QueryAntenatalinformation() *AntenatalinformationQuery {
 	return (&PatientClient{config: pa.config}).QueryAntenatalinformation(pa)
+}
+
+// QuerySurgeryappointment queries the "Surgeryappointment" edge of the Patient entity.
+func (pa *Patient) QuerySurgeryappointment() *SurgeryappointmentQuery {
+	return (&PatientClient{config: pa.config}).QuerySurgeryappointment(pa)
 }
 
 // Update returns a builder for updating this Patient.

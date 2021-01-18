@@ -26,23 +26,19 @@ func (sc *SurgerytypeCreate) SetTypename(s string) *SurgerytypeCreate {
 	return sc
 }
 
-// SetSurgeryappointmentID sets the "Surgeryappointment" edge to the Surgeryappointment entity by ID.
-func (sc *SurgerytypeCreate) SetSurgeryappointmentID(id int) *SurgerytypeCreate {
-	sc.mutation.SetSurgeryappointmentID(id)
+// AddSurgeryappointmentIDs adds the "Surgeryappointment" edge to the Surgeryappointment entity by IDs.
+func (sc *SurgerytypeCreate) AddSurgeryappointmentIDs(ids ...int) *SurgerytypeCreate {
+	sc.mutation.AddSurgeryappointmentIDs(ids...)
 	return sc
 }
 
-// SetNillableSurgeryappointmentID sets the "Surgeryappointment" edge to the Surgeryappointment entity by ID if the given value is not nil.
-func (sc *SurgerytypeCreate) SetNillableSurgeryappointmentID(id *int) *SurgerytypeCreate {
-	if id != nil {
-		sc = sc.SetSurgeryappointmentID(*id)
+// AddSurgeryappointment adds the "Surgeryappointment" edges to the Surgeryappointment entity.
+func (sc *SurgerytypeCreate) AddSurgeryappointment(s ...*Surgeryappointment) *SurgerytypeCreate {
+	ids := make([]int, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
 	}
-	return sc
-}
-
-// SetSurgeryappointment sets the "Surgeryappointment" edge to the Surgeryappointment entity.
-func (sc *SurgerytypeCreate) SetSurgeryappointment(s *Surgeryappointment) *SurgerytypeCreate {
-	return sc.SetSurgeryappointmentID(s.ID)
+	return sc.AddSurgeryappointmentIDs(ids...)
 }
 
 // Mutation returns the SurgerytypeMutation object of the builder.
@@ -141,7 +137,7 @@ func (sc *SurgerytypeCreate) createSpec() (*Surgerytype, *sqlgraph.CreateSpec) {
 	}
 	if nodes := sc.mutation.SurgeryappointmentIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2O,
+			Rel:     sqlgraph.O2M,
 			Inverse: false,
 			Table:   surgerytype.SurgeryappointmentTable,
 			Columns: []string{surgerytype.SurgeryappointmentColumn},

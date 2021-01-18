@@ -19,7 +19,7 @@ import FormControl from '@material-ui/core/FormControl';
 
 import { EntPersonnel } from '../../api/models/EntPersonnel';
 import { EntPatient } from '../../api/models/EntPatient';
-import { EntSurgerytype, EntSurgerytype } from '../../api/models/EntSurgerytype';
+import { EntSurgerytype } from '../../api/models/EntSurgerytype';
 import { EntSurgeryappointment } from '../../api/models/EntSurgeryappointment';
 import TextField from '@material-ui/core/TextField';
 
@@ -110,7 +110,7 @@ export default function Create() {
       surgerytypeid: surgerytypeid,
       appointtime: addtime + ":00+07:00" 
     };
-
+    setAlert(false);setStatus(true);
     console.log(surgeryappointment);
     const res: any = await api.createSurgeryappointment({ surgeryappointment : surgeryappointment });
     setStatus(true);

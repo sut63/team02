@@ -352,7 +352,7 @@ var (
 		{Name: "appoint_time", Type: field.TypeTime},
 		{Name: "Patient_id", Type: field.TypeInt, Nullable: true},
 		{Name: "Personnel_id", Type: field.TypeInt, Nullable: true},
-		{Name: "surgerytype_surgeryappointment", Type: field.TypeInt, Unique: true, Nullable: true},
+		{Name: "Surgerytype", Type: field.TypeInt, Nullable: true},
 	}
 	// SurgeryappointmentsTable holds the schema information for the "surgeryappointments" table.
 	SurgeryappointmentsTable = &schema.Table{

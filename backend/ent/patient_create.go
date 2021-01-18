@@ -103,21 +103,6 @@ func (pc *PatientCreate) AddDentalappointment(d ...*Dentalappointment) *PatientC
 	return pc.AddDentalappointmentIDs(ids...)
 }
 
-// AddSurgeryappointmentIDs adds the "Surgeryappointment" edge to the Surgeryappointment entity by IDs.
-func (pc *PatientCreate) AddSurgeryappointmentIDs(ids ...int) *PatientCreate {
-	pc.mutation.AddSurgeryappointmentIDs(ids...)
-	return pc
-}
-
-// AddSurgeryappointment adds the "Surgeryappointment" edges to the Surgeryappointment entity.
-func (pc *PatientCreate) AddSurgeryappointment(s ...*Surgeryappointment) *PatientCreate {
-	ids := make([]int, len(s))
-	for i := range s {
-		ids[i] = s[i].ID
-	}
-	return pc.AddSurgeryappointmentIDs(ids...)
-}
-
 // AddAntenatalinformationIDs adds the "Antenatalinformation" edge to the Antenatalinformation entity by IDs.
 func (pc *PatientCreate) AddAntenatalinformationIDs(ids ...int) *PatientCreate {
 	pc.mutation.AddAntenatalinformationIDs(ids...)
@@ -131,6 +116,21 @@ func (pc *PatientCreate) AddAntenatalinformation(a ...*Antenatalinformation) *Pa
 		ids[i] = a[i].ID
 	}
 	return pc.AddAntenatalinformationIDs(ids...)
+}
+
+// AddSurgeryappointmentIDs adds the "Surgeryappointment" edge to the Surgeryappointment entity by IDs.
+func (pc *PatientCreate) AddSurgeryappointmentIDs(ids ...int) *PatientCreate {
+	pc.mutation.AddSurgeryappointmentIDs(ids...)
+	return pc
+}
+
+// AddSurgeryappointment adds the "Surgeryappointment" edges to the Surgeryappointment entity.
+func (pc *PatientCreate) AddSurgeryappointment(s ...*Surgeryappointment) *PatientCreate {
+	ids := make([]int, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
+	}
+	return pc.AddSurgeryappointmentIDs(ids...)
 }
 
 // Mutation returns the PatientMutation object of the builder.
@@ -335,25 +335,6 @@ func (pc *PatientCreate) createSpec() (*Patient, *sqlgraph.CreateSpec) {
 		}
 		_spec.Edges = append(_spec.Edges, edge)
 	}
-	if nodes := pc.mutation.SurgeryappointmentIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   patient.SurgeryappointmentTable,
-			Columns: []string{patient.SurgeryappointmentColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeInt,
-					Column: surgeryappointment.FieldID,
-				},
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges = append(_spec.Edges, edge)
-	}
 	if nodes := pc.mutation.AntenatalinformationIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
@@ -365,6 +346,25 @@ func (pc *PatientCreate) createSpec() (*Patient, *sqlgraph.CreateSpec) {
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
 					Column: antenatalinformation.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := pc.mutation.SurgeryappointmentIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   patient.SurgeryappointmentTable,
+			Columns: []string{patient.SurgeryappointmentColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: surgeryappointment.FieldID,
 				},
 			},
 		}

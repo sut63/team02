@@ -39,7 +39,7 @@ const (
 	// It exists in this package in order to avoid circular dependency with the "surgerytype" package.
 	SurgerytypeInverseTable = "surgerytypes"
 	// SurgerytypeColumn is the table column denoting the Surgerytype relation/edge.
-	SurgerytypeColumn = "surgerytype_surgeryappointment"
+	SurgerytypeColumn = "Surgerytype"
 )
 
 // Columns holds all SQL columns for surgeryappointment fields.
@@ -52,7 +52,7 @@ var Columns = []string{
 var ForeignKeys = []string{
 	"Patient_id",
 	"Personnel_id",
-	"surgerytype_surgeryappointment",
+	"Surgerytype",
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).

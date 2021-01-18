@@ -23,10 +23,10 @@ type Surgeryappointment struct {
 	AppointTime time.Time `json:"appoint_time,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the SurgeryappointmentQuery when eager-loading is set.
-	Edges                          SurgeryappointmentEdges `json:"edges"`
-	_Patient_id                    *int
-	_Personnel_id                  *int
-	surgerytype_surgeryappointment *int
+	Edges         SurgeryappointmentEdges `json:"edges"`
+	_Patient_id   *int
+	_Personnel_id *int
+	_Surgerytype  *int
 }
 
 // SurgeryappointmentEdges holds the relations/edges for other nodes in the graph.
@@ -97,7 +97,7 @@ func (*Surgeryappointment) scanValues(columns []string) ([]interface{}, error) {
 			values[i] = &sql.NullInt64{}
 		case surgeryappointment.ForeignKeys[1]: // _Personnel_id
 			values[i] = &sql.NullInt64{}
-		case surgeryappointment.ForeignKeys[2]: // surgerytype_surgeryappointment
+		case surgeryappointment.ForeignKeys[2]: // _Surgerytype
 			values[i] = &sql.NullInt64{}
 		default:
 			return nil, fmt.Errorf("unexpected column %q for type Surgeryappointment", columns[i])
@@ -142,10 +142,10 @@ func (s *Surgeryappointment) assignValues(columns []string, values []interface{}
 			}
 		case surgeryappointment.ForeignKeys[2]:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for edge-field surgerytype_surgeryappointment", value)
+				return fmt.Errorf("unexpected type %T for edge-field _Surgerytype", value)
 			} else if value.Valid {
-				s.surgerytype_surgeryappointment = new(int)
-				*s.surgerytype_surgeryappointment = int(value.Int64)
+				s._Surgerytype = new(int)
+				*s._Surgerytype = int(value.Int64)
 			}
 		}
 	}

@@ -3483,12 +3483,12 @@ type PatientMutation struct {
 	_Dentalappointment           map[int]struct{}
 	removed_Dentalappointment    map[int]struct{}
 	cleared_Dentalappointment    bool
-	_Surgeryappointment          map[int]struct{}
-	removed_Surgeryappointment   map[int]struct{}
-	cleared_Surgeryappointment   bool
 	_Antenatalinformation        map[int]struct{}
 	removed_Antenatalinformation map[int]struct{}
 	cleared_Antenatalinformation bool
+	_Surgeryappointment          map[int]struct{}
+	removed_Surgeryappointment   map[int]struct{}
+	cleared_Surgeryappointment   bool
 	done                         bool
 	oldValue                     func(context.Context) (*Patient, error)
 	predicates                   []predicate.Patient
@@ -3893,59 +3893,6 @@ func (m *PatientMutation) ResetDentalappointment() {
 	m.removed_Dentalappointment = nil
 }
 
-// AddSurgeryappointmentIDs adds the "Surgeryappointment" edge to the Surgeryappointment entity by ids.
-func (m *PatientMutation) AddSurgeryappointmentIDs(ids ...int) {
-	if m._Surgeryappointment == nil {
-		m._Surgeryappointment = make(map[int]struct{})
-	}
-	for i := range ids {
-		m._Surgeryappointment[ids[i]] = struct{}{}
-	}
-}
-
-// ClearSurgeryappointment clears the "Surgeryappointment" edge to the Surgeryappointment entity.
-func (m *PatientMutation) ClearSurgeryappointment() {
-	m.cleared_Surgeryappointment = true
-}
-
-// SurgeryappointmentCleared returns if the "Surgeryappointment" edge to the Surgeryappointment entity was cleared.
-func (m *PatientMutation) SurgeryappointmentCleared() bool {
-	return m.cleared_Surgeryappointment
-}
-
-// RemoveSurgeryappointmentIDs removes the "Surgeryappointment" edge to the Surgeryappointment entity by IDs.
-func (m *PatientMutation) RemoveSurgeryappointmentIDs(ids ...int) {
-	if m.removed_Surgeryappointment == nil {
-		m.removed_Surgeryappointment = make(map[int]struct{})
-	}
-	for i := range ids {
-		m.removed_Surgeryappointment[ids[i]] = struct{}{}
-	}
-}
-
-// RemovedSurgeryappointment returns the removed IDs of the "Surgeryappointment" edge to the Surgeryappointment entity.
-func (m *PatientMutation) RemovedSurgeryappointmentIDs() (ids []int) {
-	for id := range m.removed_Surgeryappointment {
-		ids = append(ids, id)
-	}
-	return
-}
-
-// SurgeryappointmentIDs returns the "Surgeryappointment" edge IDs in the mutation.
-func (m *PatientMutation) SurgeryappointmentIDs() (ids []int) {
-	for id := range m._Surgeryappointment {
-		ids = append(ids, id)
-	}
-	return
-}
-
-// ResetSurgeryappointment resets all changes to the "Surgeryappointment" edge.
-func (m *PatientMutation) ResetSurgeryappointment() {
-	m._Surgeryappointment = nil
-	m.cleared_Surgeryappointment = false
-	m.removed_Surgeryappointment = nil
-}
-
 // AddAntenatalinformationIDs adds the "Antenatalinformation" edge to the Antenatalinformation entity by ids.
 func (m *PatientMutation) AddAntenatalinformationIDs(ids ...int) {
 	if m._Antenatalinformation == nil {
@@ -3997,6 +3944,59 @@ func (m *PatientMutation) ResetAntenatalinformation() {
 	m._Antenatalinformation = nil
 	m.cleared_Antenatalinformation = false
 	m.removed_Antenatalinformation = nil
+}
+
+// AddSurgeryappointmentIDs adds the "Surgeryappointment" edge to the Surgeryappointment entity by ids.
+func (m *PatientMutation) AddSurgeryappointmentIDs(ids ...int) {
+	if m._Surgeryappointment == nil {
+		m._Surgeryappointment = make(map[int]struct{})
+	}
+	for i := range ids {
+		m._Surgeryappointment[ids[i]] = struct{}{}
+	}
+}
+
+// ClearSurgeryappointment clears the "Surgeryappointment" edge to the Surgeryappointment entity.
+func (m *PatientMutation) ClearSurgeryappointment() {
+	m.cleared_Surgeryappointment = true
+}
+
+// SurgeryappointmentCleared returns if the "Surgeryappointment" edge to the Surgeryappointment entity was cleared.
+func (m *PatientMutation) SurgeryappointmentCleared() bool {
+	return m.cleared_Surgeryappointment
+}
+
+// RemoveSurgeryappointmentIDs removes the "Surgeryappointment" edge to the Surgeryappointment entity by IDs.
+func (m *PatientMutation) RemoveSurgeryappointmentIDs(ids ...int) {
+	if m.removed_Surgeryappointment == nil {
+		m.removed_Surgeryappointment = make(map[int]struct{})
+	}
+	for i := range ids {
+		m.removed_Surgeryappointment[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedSurgeryappointment returns the removed IDs of the "Surgeryappointment" edge to the Surgeryappointment entity.
+func (m *PatientMutation) RemovedSurgeryappointmentIDs() (ids []int) {
+	for id := range m.removed_Surgeryappointment {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// SurgeryappointmentIDs returns the "Surgeryappointment" edge IDs in the mutation.
+func (m *PatientMutation) SurgeryappointmentIDs() (ids []int) {
+	for id := range m._Surgeryappointment {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetSurgeryappointment resets all changes to the "Surgeryappointment" edge.
+func (m *PatientMutation) ResetSurgeryappointment() {
+	m._Surgeryappointment = nil
+	m.cleared_Surgeryappointment = false
+	m.removed_Surgeryappointment = nil
 }
 
 // Op returns the operation name.
@@ -4159,11 +4159,11 @@ func (m *PatientMutation) AddedEdges() []string {
 	if m._Dentalappointment != nil {
 		edges = append(edges, patient.EdgeDentalappointment)
 	}
-	if m._Surgeryappointment != nil {
-		edges = append(edges, patient.EdgeSurgeryappointment)
-	}
 	if m._Antenatalinformation != nil {
 		edges = append(edges, patient.EdgeAntenatalinformation)
+	}
+	if m._Surgeryappointment != nil {
+		edges = append(edges, patient.EdgeSurgeryappointment)
 	}
 	return edges
 }
@@ -4196,15 +4196,15 @@ func (m *PatientMutation) AddedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
-	case patient.EdgeSurgeryappointment:
-		ids := make([]ent.Value, 0, len(m._Surgeryappointment))
-		for id := range m._Surgeryappointment {
-			ids = append(ids, id)
-		}
-		return ids
 	case patient.EdgeAntenatalinformation:
 		ids := make([]ent.Value, 0, len(m._Antenatalinformation))
 		for id := range m._Antenatalinformation {
+			ids = append(ids, id)
+		}
+		return ids
+	case patient.EdgeSurgeryappointment:
+		ids := make([]ent.Value, 0, len(m._Surgeryappointment))
+		for id := range m._Surgeryappointment {
 			ids = append(ids, id)
 		}
 		return ids
@@ -4227,11 +4227,11 @@ func (m *PatientMutation) RemovedEdges() []string {
 	if m.removed_Dentalappointment != nil {
 		edges = append(edges, patient.EdgeDentalappointment)
 	}
-	if m.removed_Surgeryappointment != nil {
-		edges = append(edges, patient.EdgeSurgeryappointment)
-	}
 	if m.removed_Antenatalinformation != nil {
 		edges = append(edges, patient.EdgeAntenatalinformation)
+	}
+	if m.removed_Surgeryappointment != nil {
+		edges = append(edges, patient.EdgeSurgeryappointment)
 	}
 	return edges
 }
@@ -4264,15 +4264,15 @@ func (m *PatientMutation) RemovedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
-	case patient.EdgeSurgeryappointment:
-		ids := make([]ent.Value, 0, len(m.removed_Surgeryappointment))
-		for id := range m.removed_Surgeryappointment {
-			ids = append(ids, id)
-		}
-		return ids
 	case patient.EdgeAntenatalinformation:
 		ids := make([]ent.Value, 0, len(m.removed_Antenatalinformation))
 		for id := range m.removed_Antenatalinformation {
+			ids = append(ids, id)
+		}
+		return ids
+	case patient.EdgeSurgeryappointment:
+		ids := make([]ent.Value, 0, len(m.removed_Surgeryappointment))
+		for id := range m.removed_Surgeryappointment {
 			ids = append(ids, id)
 		}
 		return ids
@@ -4295,11 +4295,11 @@ func (m *PatientMutation) ClearedEdges() []string {
 	if m.cleared_Dentalappointment {
 		edges = append(edges, patient.EdgeDentalappointment)
 	}
-	if m.cleared_Surgeryappointment {
-		edges = append(edges, patient.EdgeSurgeryappointment)
-	}
 	if m.cleared_Antenatalinformation {
 		edges = append(edges, patient.EdgeAntenatalinformation)
+	}
+	if m.cleared_Surgeryappointment {
+		edges = append(edges, patient.EdgeSurgeryappointment)
 	}
 	return edges
 }
@@ -4316,10 +4316,10 @@ func (m *PatientMutation) EdgeCleared(name string) bool {
 		return m.cleared_Checksymptom
 	case patient.EdgeDentalappointment:
 		return m.cleared_Dentalappointment
-	case patient.EdgeSurgeryappointment:
-		return m.cleared_Surgeryappointment
 	case patient.EdgeAntenatalinformation:
 		return m.cleared_Antenatalinformation
+	case patient.EdgeSurgeryappointment:
+		return m.cleared_Surgeryappointment
 	}
 	return false
 }
@@ -4348,11 +4348,11 @@ func (m *PatientMutation) ResetEdge(name string) error {
 	case patient.EdgeDentalappointment:
 		m.ResetDentalappointment()
 		return nil
-	case patient.EdgeSurgeryappointment:
-		m.ResetSurgeryappointment()
-		return nil
 	case patient.EdgeAntenatalinformation:
 		m.ResetAntenatalinformation()
+		return nil
+	case patient.EdgeSurgeryappointment:
+		m.ResetSurgeryappointment()
 		return nil
 	}
 	return fmt.Errorf("unknown Patient edge %s", name)
@@ -8219,7 +8219,8 @@ type SurgerytypeMutation struct {
 	id                         *int
 	typename                   *string
 	clearedFields              map[string]struct{}
-	_Surgeryappointment        *int
+	_Surgeryappointment        map[int]struct{}
+	removed_Surgeryappointment map[int]struct{}
 	cleared_Surgeryappointment bool
 	done                       bool
 	oldValue                   func(context.Context) (*Surgerytype, error)
@@ -8341,9 +8342,14 @@ func (m *SurgerytypeMutation) ResetTypename() {
 	m.typename = nil
 }
 
-// SetSurgeryappointmentID sets the "Surgeryappointment" edge to the Surgeryappointment entity by id.
-func (m *SurgerytypeMutation) SetSurgeryappointmentID(id int) {
-	m._Surgeryappointment = &id
+// AddSurgeryappointmentIDs adds the "Surgeryappointment" edge to the Surgeryappointment entity by ids.
+func (m *SurgerytypeMutation) AddSurgeryappointmentIDs(ids ...int) {
+	if m._Surgeryappointment == nil {
+		m._Surgeryappointment = make(map[int]struct{})
+	}
+	for i := range ids {
+		m._Surgeryappointment[ids[i]] = struct{}{}
+	}
 }
 
 // ClearSurgeryappointment clears the "Surgeryappointment" edge to the Surgeryappointment entity.
@@ -8356,20 +8362,28 @@ func (m *SurgerytypeMutation) SurgeryappointmentCleared() bool {
 	return m.cleared_Surgeryappointment
 }
 
-// SurgeryappointmentID returns the "Surgeryappointment" edge ID in the mutation.
-func (m *SurgerytypeMutation) SurgeryappointmentID() (id int, exists bool) {
-	if m._Surgeryappointment != nil {
-		return *m._Surgeryappointment, true
+// RemoveSurgeryappointmentIDs removes the "Surgeryappointment" edge to the Surgeryappointment entity by IDs.
+func (m *SurgerytypeMutation) RemoveSurgeryappointmentIDs(ids ...int) {
+	if m.removed_Surgeryappointment == nil {
+		m.removed_Surgeryappointment = make(map[int]struct{})
+	}
+	for i := range ids {
+		m.removed_Surgeryappointment[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedSurgeryappointment returns the removed IDs of the "Surgeryappointment" edge to the Surgeryappointment entity.
+func (m *SurgerytypeMutation) RemovedSurgeryappointmentIDs() (ids []int) {
+	for id := range m.removed_Surgeryappointment {
+		ids = append(ids, id)
 	}
 	return
 }
 
 // SurgeryappointmentIDs returns the "Surgeryappointment" edge IDs in the mutation.
-// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
-// SurgeryappointmentID instead. It exists only for internal usage by the builders.
 func (m *SurgerytypeMutation) SurgeryappointmentIDs() (ids []int) {
-	if id := m._Surgeryappointment; id != nil {
-		ids = append(ids, *id)
+	for id := range m._Surgeryappointment {
+		ids = append(ids, id)
 	}
 	return
 }
@@ -8378,6 +8392,7 @@ func (m *SurgerytypeMutation) SurgeryappointmentIDs() (ids []int) {
 func (m *SurgerytypeMutation) ResetSurgeryappointment() {
 	m._Surgeryappointment = nil
 	m.cleared_Surgeryappointment = false
+	m.removed_Surgeryappointment = nil
 }
 
 // Op returns the operation name.
@@ -8505,9 +8520,11 @@ func (m *SurgerytypeMutation) AddedEdges() []string {
 func (m *SurgerytypeMutation) AddedIDs(name string) []ent.Value {
 	switch name {
 	case surgerytype.EdgeSurgeryappointment:
-		if id := m._Surgeryappointment; id != nil {
-			return []ent.Value{*id}
+		ids := make([]ent.Value, 0, len(m._Surgeryappointment))
+		for id := range m._Surgeryappointment {
+			ids = append(ids, id)
 		}
+		return ids
 	}
 	return nil
 }
@@ -8515,6 +8532,9 @@ func (m *SurgerytypeMutation) AddedIDs(name string) []ent.Value {
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *SurgerytypeMutation) RemovedEdges() []string {
 	edges := make([]string, 0, 1)
+	if m.removed_Surgeryappointment != nil {
+		edges = append(edges, surgerytype.EdgeSurgeryappointment)
+	}
 	return edges
 }
 
@@ -8522,6 +8542,12 @@ func (m *SurgerytypeMutation) RemovedEdges() []string {
 // the given name in this mutation.
 func (m *SurgerytypeMutation) RemovedIDs(name string) []ent.Value {
 	switch name {
+	case surgerytype.EdgeSurgeryappointment:
+		ids := make([]ent.Value, 0, len(m.removed_Surgeryappointment))
+		for id := range m.removed_Surgeryappointment {
+			ids = append(ids, id)
+		}
+		return ids
 	}
 	return nil
 }
@@ -8549,9 +8575,6 @@ func (m *SurgerytypeMutation) EdgeCleared(name string) bool {
 // if that edge is not defined in the schema.
 func (m *SurgerytypeMutation) ClearEdge(name string) error {
 	switch name {
-	case surgerytype.EdgeSurgeryappointment:
-		m.ClearSurgeryappointment()
-		return nil
 	}
 	return fmt.Errorf("unknown Surgerytype unique edge %s", name)
 }

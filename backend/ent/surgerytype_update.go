@@ -33,23 +33,19 @@ func (su *SurgerytypeUpdate) SetTypename(s string) *SurgerytypeUpdate {
 	return su
 }
 
-// SetSurgeryappointmentID sets the "Surgeryappointment" edge to the Surgeryappointment entity by ID.
-func (su *SurgerytypeUpdate) SetSurgeryappointmentID(id int) *SurgerytypeUpdate {
-	su.mutation.SetSurgeryappointmentID(id)
+// AddSurgeryappointmentIDs adds the "Surgeryappointment" edge to the Surgeryappointment entity by IDs.
+func (su *SurgerytypeUpdate) AddSurgeryappointmentIDs(ids ...int) *SurgerytypeUpdate {
+	su.mutation.AddSurgeryappointmentIDs(ids...)
 	return su
 }
 
-// SetNillableSurgeryappointmentID sets the "Surgeryappointment" edge to the Surgeryappointment entity by ID if the given value is not nil.
-func (su *SurgerytypeUpdate) SetNillableSurgeryappointmentID(id *int) *SurgerytypeUpdate {
-	if id != nil {
-		su = su.SetSurgeryappointmentID(*id)
+// AddSurgeryappointment adds the "Surgeryappointment" edges to the Surgeryappointment entity.
+func (su *SurgerytypeUpdate) AddSurgeryappointment(s ...*Surgeryappointment) *SurgerytypeUpdate {
+	ids := make([]int, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
 	}
-	return su
-}
-
-// SetSurgeryappointment sets the "Surgeryappointment" edge to the Surgeryappointment entity.
-func (su *SurgerytypeUpdate) SetSurgeryappointment(s *Surgeryappointment) *SurgerytypeUpdate {
-	return su.SetSurgeryappointmentID(s.ID)
+	return su.AddSurgeryappointmentIDs(ids...)
 }
 
 // Mutation returns the SurgerytypeMutation object of the builder.
@@ -57,10 +53,25 @@ func (su *SurgerytypeUpdate) Mutation() *SurgerytypeMutation {
 	return su.mutation
 }
 
-// ClearSurgeryappointment clears the "Surgeryappointment" edge to the Surgeryappointment entity.
+// ClearSurgeryappointment clears all "Surgeryappointment" edges to the Surgeryappointment entity.
 func (su *SurgerytypeUpdate) ClearSurgeryappointment() *SurgerytypeUpdate {
 	su.mutation.ClearSurgeryappointment()
 	return su
+}
+
+// RemoveSurgeryappointmentIDs removes the "Surgeryappointment" edge to Surgeryappointment entities by IDs.
+func (su *SurgerytypeUpdate) RemoveSurgeryappointmentIDs(ids ...int) *SurgerytypeUpdate {
+	su.mutation.RemoveSurgeryappointmentIDs(ids...)
+	return su
+}
+
+// RemoveSurgeryappointment removes "Surgeryappointment" edges to Surgeryappointment entities.
+func (su *SurgerytypeUpdate) RemoveSurgeryappointment(s ...*Surgeryappointment) *SurgerytypeUpdate {
+	ids := make([]int, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
+	}
+	return su.RemoveSurgeryappointmentIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -157,7 +168,7 @@ func (su *SurgerytypeUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if su.mutation.SurgeryappointmentCleared() {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2O,
+			Rel:     sqlgraph.O2M,
 			Inverse: false,
 			Table:   surgerytype.SurgeryappointmentTable,
 			Columns: []string{surgerytype.SurgeryappointmentColumn},
@@ -171,9 +182,28 @@ func (su *SurgerytypeUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
+	if nodes := su.mutation.RemovedSurgeryappointmentIDs(); len(nodes) > 0 && !su.mutation.SurgeryappointmentCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   surgerytype.SurgeryappointmentTable,
+			Columns: []string{surgerytype.SurgeryappointmentColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: surgeryappointment.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
 	if nodes := su.mutation.SurgeryappointmentIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2O,
+			Rel:     sqlgraph.O2M,
 			Inverse: false,
 			Table:   surgerytype.SurgeryappointmentTable,
 			Columns: []string{surgerytype.SurgeryappointmentColumn},
@@ -214,23 +244,19 @@ func (suo *SurgerytypeUpdateOne) SetTypename(s string) *SurgerytypeUpdateOne {
 	return suo
 }
 
-// SetSurgeryappointmentID sets the "Surgeryappointment" edge to the Surgeryappointment entity by ID.
-func (suo *SurgerytypeUpdateOne) SetSurgeryappointmentID(id int) *SurgerytypeUpdateOne {
-	suo.mutation.SetSurgeryappointmentID(id)
+// AddSurgeryappointmentIDs adds the "Surgeryappointment" edge to the Surgeryappointment entity by IDs.
+func (suo *SurgerytypeUpdateOne) AddSurgeryappointmentIDs(ids ...int) *SurgerytypeUpdateOne {
+	suo.mutation.AddSurgeryappointmentIDs(ids...)
 	return suo
 }
 
-// SetNillableSurgeryappointmentID sets the "Surgeryappointment" edge to the Surgeryappointment entity by ID if the given value is not nil.
-func (suo *SurgerytypeUpdateOne) SetNillableSurgeryappointmentID(id *int) *SurgerytypeUpdateOne {
-	if id != nil {
-		suo = suo.SetSurgeryappointmentID(*id)
+// AddSurgeryappointment adds the "Surgeryappointment" edges to the Surgeryappointment entity.
+func (suo *SurgerytypeUpdateOne) AddSurgeryappointment(s ...*Surgeryappointment) *SurgerytypeUpdateOne {
+	ids := make([]int, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
 	}
-	return suo
-}
-
-// SetSurgeryappointment sets the "Surgeryappointment" edge to the Surgeryappointment entity.
-func (suo *SurgerytypeUpdateOne) SetSurgeryappointment(s *Surgeryappointment) *SurgerytypeUpdateOne {
-	return suo.SetSurgeryappointmentID(s.ID)
+	return suo.AddSurgeryappointmentIDs(ids...)
 }
 
 // Mutation returns the SurgerytypeMutation object of the builder.
@@ -238,10 +264,25 @@ func (suo *SurgerytypeUpdateOne) Mutation() *SurgerytypeMutation {
 	return suo.mutation
 }
 
-// ClearSurgeryappointment clears the "Surgeryappointment" edge to the Surgeryappointment entity.
+// ClearSurgeryappointment clears all "Surgeryappointment" edges to the Surgeryappointment entity.
 func (suo *SurgerytypeUpdateOne) ClearSurgeryappointment() *SurgerytypeUpdateOne {
 	suo.mutation.ClearSurgeryappointment()
 	return suo
+}
+
+// RemoveSurgeryappointmentIDs removes the "Surgeryappointment" edge to Surgeryappointment entities by IDs.
+func (suo *SurgerytypeUpdateOne) RemoveSurgeryappointmentIDs(ids ...int) *SurgerytypeUpdateOne {
+	suo.mutation.RemoveSurgeryappointmentIDs(ids...)
+	return suo
+}
+
+// RemoveSurgeryappointment removes "Surgeryappointment" edges to Surgeryappointment entities.
+func (suo *SurgerytypeUpdateOne) RemoveSurgeryappointment(s ...*Surgeryappointment) *SurgerytypeUpdateOne {
+	ids := make([]int, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
+	}
+	return suo.RemoveSurgeryappointmentIDs(ids...)
 }
 
 // Save executes the query and returns the updated Surgerytype entity.
@@ -336,7 +377,7 @@ func (suo *SurgerytypeUpdateOne) sqlSave(ctx context.Context) (_node *Surgerytyp
 	}
 	if suo.mutation.SurgeryappointmentCleared() {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2O,
+			Rel:     sqlgraph.O2M,
 			Inverse: false,
 			Table:   surgerytype.SurgeryappointmentTable,
 			Columns: []string{surgerytype.SurgeryappointmentColumn},
@@ -350,9 +391,28 @@ func (suo *SurgerytypeUpdateOne) sqlSave(ctx context.Context) (_node *Surgerytyp
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
+	if nodes := suo.mutation.RemovedSurgeryappointmentIDs(); len(nodes) > 0 && !suo.mutation.SurgeryappointmentCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   surgerytype.SurgeryappointmentTable,
+			Columns: []string{surgerytype.SurgeryappointmentColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: surgeryappointment.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
 	if nodes := suo.mutation.SurgeryappointmentIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2O,
+			Rel:     sqlgraph.O2M,
 			Inverse: false,
 			Table:   surgerytype.SurgeryappointmentTable,
 			Columns: []string{surgerytype.SurgeryappointmentColumn},

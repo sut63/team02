@@ -35,8 +35,8 @@ type PatientQuery struct {
 	withBonedisease           *BonediseaseQuery
 	withChecksymptom          *ChecksymptomQuery
 	withDentalappointment     *DentalappointmentQuery
-	withSurgeryappointment    *SurgeryappointmentQuery
 	withAntenatalinformation  *AntenatalinformationQuery
+	withSurgeryappointment    *SurgeryappointmentQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -154,28 +154,6 @@ func (pq *PatientQuery) QueryDentalappointment() *DentalappointmentQuery {
 	return query
 }
 
-// QuerySurgeryappointment chains the current query on the "Surgeryappointment" edge.
-func (pq *PatientQuery) QuerySurgeryappointment() *SurgeryappointmentQuery {
-	query := &SurgeryappointmentQuery{config: pq.config}
-	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
-		if err := pq.prepareQuery(ctx); err != nil {
-			return nil, err
-		}
-		selector := pq.sqlQuery()
-		if err := selector.Err(); err != nil {
-			return nil, err
-		}
-		step := sqlgraph.NewStep(
-			sqlgraph.From(patient.Table, patient.FieldID, selector),
-			sqlgraph.To(surgeryappointment.Table, surgeryappointment.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, patient.SurgeryappointmentTable, patient.SurgeryappointmentColumn),
-		)
-		fromU = sqlgraph.SetNeighbors(pq.driver.Dialect(), step)
-		return fromU, nil
-	}
-	return query
-}
-
 // QueryAntenatalinformation chains the current query on the "Antenatalinformation" edge.
 func (pq *PatientQuery) QueryAntenatalinformation() *AntenatalinformationQuery {
 	query := &AntenatalinformationQuery{config: pq.config}
@@ -191,6 +169,28 @@ func (pq *PatientQuery) QueryAntenatalinformation() *AntenatalinformationQuery {
 			sqlgraph.From(patient.Table, patient.FieldID, selector),
 			sqlgraph.To(antenatalinformation.Table, antenatalinformation.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, patient.AntenatalinformationTable, patient.AntenatalinformationColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(pq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QuerySurgeryappointment chains the current query on the "Surgeryappointment" edge.
+func (pq *PatientQuery) QuerySurgeryappointment() *SurgeryappointmentQuery {
+	query := &SurgeryappointmentQuery{config: pq.config}
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := pq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := pq.sqlQuery()
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(patient.Table, patient.FieldID, selector),
+			sqlgraph.To(surgeryappointment.Table, surgeryappointment.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, patient.SurgeryappointmentTable, patient.SurgeryappointmentColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(pq.driver.Dialect(), step)
 		return fromU, nil
@@ -383,8 +383,8 @@ func (pq *PatientQuery) Clone() *PatientQuery {
 		withBonedisease:           pq.withBonedisease.Clone(),
 		withChecksymptom:          pq.withChecksymptom.Clone(),
 		withDentalappointment:     pq.withDentalappointment.Clone(),
-		withSurgeryappointment:    pq.withSurgeryappointment.Clone(),
 		withAntenatalinformation:  pq.withAntenatalinformation.Clone(),
+		withSurgeryappointment:    pq.withSurgeryappointment.Clone(),
 		// clone intermediate query.
 		sql:  pq.sql.Clone(),
 		path: pq.path,
@@ -435,17 +435,6 @@ func (pq *PatientQuery) WithDentalappointment(opts ...func(*DentalappointmentQue
 	return pq
 }
 
-// WithSurgeryappointment tells the query-builder to eager-load the nodes that are connected to
-// the "Surgeryappointment" edge. The optional arguments are used to configure the query builder of the edge.
-func (pq *PatientQuery) WithSurgeryappointment(opts ...func(*SurgeryappointmentQuery)) *PatientQuery {
-	query := &SurgeryappointmentQuery{config: pq.config}
-	for _, opt := range opts {
-		opt(query)
-	}
-	pq.withSurgeryappointment = query
-	return pq
-}
-
 // WithAntenatalinformation tells the query-builder to eager-load the nodes that are connected to
 // the "Antenatalinformation" edge. The optional arguments are used to configure the query builder of the edge.
 func (pq *PatientQuery) WithAntenatalinformation(opts ...func(*AntenatalinformationQuery)) *PatientQuery {
@@ -454,6 +443,17 @@ func (pq *PatientQuery) WithAntenatalinformation(opts ...func(*Antenatalinformat
 		opt(query)
 	}
 	pq.withAntenatalinformation = query
+	return pq
+}
+
+// WithSurgeryappointment tells the query-builder to eager-load the nodes that are connected to
+// the "Surgeryappointment" edge. The optional arguments are used to configure the query builder of the edge.
+func (pq *PatientQuery) WithSurgeryappointment(opts ...func(*SurgeryappointmentQuery)) *PatientQuery {
+	query := &SurgeryappointmentQuery{config: pq.config}
+	for _, opt := range opts {
+		opt(query)
+	}
+	pq.withSurgeryappointment = query
 	return pq
 }
 
@@ -527,8 +527,8 @@ func (pq *PatientQuery) sqlAll(ctx context.Context) ([]*Patient, error) {
 			pq.withBonedisease != nil,
 			pq.withChecksymptom != nil,
 			pq.withDentalappointment != nil,
-			pq.withSurgeryappointment != nil,
 			pq.withAntenatalinformation != nil,
+			pq.withSurgeryappointment != nil,
 		}
 	)
 	_spec.ScanValues = func(columns []string) ([]interface{}, error) {
@@ -667,35 +667,6 @@ func (pq *PatientQuery) sqlAll(ctx context.Context) ([]*Patient, error) {
 		}
 	}
 
-	if query := pq.withSurgeryappointment; query != nil {
-		fks := make([]driver.Value, 0, len(nodes))
-		nodeids := make(map[int]*Patient)
-		for i := range nodes {
-			fks = append(fks, nodes[i].ID)
-			nodeids[nodes[i].ID] = nodes[i]
-			nodes[i].Edges.Surgeryappointment = []*Surgeryappointment{}
-		}
-		query.withFKs = true
-		query.Where(predicate.Surgeryappointment(func(s *sql.Selector) {
-			s.Where(sql.InValues(patient.SurgeryappointmentColumn, fks...))
-		}))
-		neighbors, err := query.All(ctx)
-		if err != nil {
-			return nil, err
-		}
-		for _, n := range neighbors {
-			fk := n._Patient_id
-			if fk == nil {
-				return nil, fmt.Errorf(`foreign-key "_Patient_id" is nil for node %v`, n.ID)
-			}
-			node, ok := nodeids[*fk]
-			if !ok {
-				return nil, fmt.Errorf(`unexpected foreign-key "_Patient_id" returned %v for node %v`, *fk, n.ID)
-			}
-			node.Edges.Surgeryappointment = append(node.Edges.Surgeryappointment, n)
-		}
-	}
-
 	if query := pq.withAntenatalinformation; query != nil {
 		fks := make([]driver.Value, 0, len(nodes))
 		nodeids := make(map[int]*Patient)
@@ -722,6 +693,35 @@ func (pq *PatientQuery) sqlAll(ctx context.Context) ([]*Patient, error) {
 				return nil, fmt.Errorf(`unexpected foreign-key "_Patient_id" returned %v for node %v`, *fk, n.ID)
 			}
 			node.Edges.Antenatalinformation = append(node.Edges.Antenatalinformation, n)
+		}
+	}
+
+	if query := pq.withSurgeryappointment; query != nil {
+		fks := make([]driver.Value, 0, len(nodes))
+		nodeids := make(map[int]*Patient)
+		for i := range nodes {
+			fks = append(fks, nodes[i].ID)
+			nodeids[nodes[i].ID] = nodes[i]
+			nodes[i].Edges.Surgeryappointment = []*Surgeryappointment{}
+		}
+		query.withFKs = true
+		query.Where(predicate.Surgeryappointment(func(s *sql.Selector) {
+			s.Where(sql.InValues(patient.SurgeryappointmentColumn, fks...))
+		}))
+		neighbors, err := query.All(ctx)
+		if err != nil {
+			return nil, err
+		}
+		for _, n := range neighbors {
+			fk := n._Patient_id
+			if fk == nil {
+				return nil, fmt.Errorf(`foreign-key "_Patient_id" is nil for node %v`, n.ID)
+			}
+			node, ok := nodeids[*fk]
+			if !ok {
+				return nil, fmt.Errorf(`unexpected foreign-key "_Patient_id" returned %v for node %v`, *fk, n.ID)
+			}
+			node.Edges.Surgeryappointment = append(node.Edges.Surgeryappointment, n)
 		}
 	}
 

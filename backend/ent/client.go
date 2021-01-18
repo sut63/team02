@@ -1264,22 +1264,6 @@ func (c *PatientClient) QueryDentalappointment(pa *Patient) *DentalappointmentQu
 	return query
 }
 
-// QuerySurgeryappointment queries the Surgeryappointment edge of a Patient.
-func (c *PatientClient) QuerySurgeryappointment(pa *Patient) *SurgeryappointmentQuery {
-	query := &SurgeryappointmentQuery{config: c.config}
-	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
-		id := pa.ID
-		step := sqlgraph.NewStep(
-			sqlgraph.From(patient.Table, patient.FieldID, id),
-			sqlgraph.To(surgeryappointment.Table, surgeryappointment.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, patient.SurgeryappointmentTable, patient.SurgeryappointmentColumn),
-		)
-		fromV = sqlgraph.Neighbors(pa.driver.Dialect(), step)
-		return fromV, nil
-	}
-	return query
-}
-
 // QueryAntenatalinformation queries the Antenatalinformation edge of a Patient.
 func (c *PatientClient) QueryAntenatalinformation(pa *Patient) *AntenatalinformationQuery {
 	query := &AntenatalinformationQuery{config: c.config}
@@ -1289,6 +1273,22 @@ func (c *PatientClient) QueryAntenatalinformation(pa *Patient) *Antenatalinforma
 			sqlgraph.From(patient.Table, patient.FieldID, id),
 			sqlgraph.To(antenatalinformation.Table, antenatalinformation.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, patient.AntenatalinformationTable, patient.AntenatalinformationColumn),
+		)
+		fromV = sqlgraph.Neighbors(pa.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QuerySurgeryappointment queries the Surgeryappointment edge of a Patient.
+func (c *PatientClient) QuerySurgeryappointment(pa *Patient) *SurgeryappointmentQuery {
+	query := &SurgeryappointmentQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := pa.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(patient.Table, patient.FieldID, id),
+			sqlgraph.To(surgeryappointment.Table, surgeryappointment.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, patient.SurgeryappointmentTable, patient.SurgeryappointmentColumn),
 		)
 		fromV = sqlgraph.Neighbors(pa.driver.Dialect(), step)
 		return fromV, nil
@@ -2280,7 +2280,7 @@ func (c *SurgeryappointmentClient) QuerySurgerytype(s *Surgeryappointment) *Surg
 		step := sqlgraph.NewStep(
 			sqlgraph.From(surgeryappointment.Table, surgeryappointment.FieldID, id),
 			sqlgraph.To(surgerytype.Table, surgerytype.FieldID),
-			sqlgraph.Edge(sqlgraph.O2O, true, surgeryappointment.SurgerytypeTable, surgeryappointment.SurgerytypeColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, surgeryappointment.SurgerytypeTable, surgeryappointment.SurgerytypeColumn),
 		)
 		fromV = sqlgraph.Neighbors(s.driver.Dialect(), step)
 		return fromV, nil
@@ -2384,7 +2384,7 @@ func (c *SurgerytypeClient) QuerySurgeryappointment(s *Surgerytype) *Surgeryappo
 		step := sqlgraph.NewStep(
 			sqlgraph.From(surgerytype.Table, surgerytype.FieldID, id),
 			sqlgraph.To(surgeryappointment.Table, surgeryappointment.FieldID),
-			sqlgraph.Edge(sqlgraph.O2O, false, surgerytype.SurgeryappointmentTable, surgerytype.SurgeryappointmentColumn),
+			sqlgraph.Edge(sqlgraph.O2M, false, surgerytype.SurgeryappointmentTable, surgerytype.SurgeryappointmentColumn),
 		)
 		fromV = sqlgraph.Neighbors(s.driver.Dialect(), step)
 		return fromV, nil

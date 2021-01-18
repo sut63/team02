@@ -27,11 +27,11 @@ import {
  */
 export interface EntSurgerytypeEdges {
     /**
-     * 
-     * @type {EntSurgeryappointment}
+     * Surgeryappointment holds the value of the Surgeryappointment edge.
+     * @type {Array<EntSurgeryappointment>}
      * @memberof EntSurgerytypeEdges
      */
-    surgeryappointment?: EntSurgeryappointment;
+    surgeryappointment?: Array<EntSurgeryappointment>;
 }
 
 export function EntSurgerytypeEdgesFromJSON(json: any): EntSurgerytypeEdges {
@@ -44,7 +44,7 @@ export function EntSurgerytypeEdgesFromJSONTyped(json: any, ignoreDiscriminator:
     }
     return {
         
-        'surgeryappointment': !exists(json, 'surgeryappointment') ? undefined : EntSurgeryappointmentFromJSON(json['surgeryappointment']),
+        'surgeryappointment': !exists(json, 'surgeryappointment') ? undefined : ((json['surgeryappointment'] as Array<any>).map(EntSurgeryappointmentFromJSON)),
     };
 }
 
@@ -57,7 +57,7 @@ export function EntSurgerytypeEdgesToJSON(value?: EntSurgerytypeEdges | null): a
     }
     return {
         
-        'surgeryappointment': EntSurgeryappointmentToJSON(value.surgeryappointment),
+        'surgeryappointment': value.surgeryappointment === undefined ? undefined : ((value.surgeryappointment as Array<any>).map(EntSurgeryappointmentToJSON)),
     };
 }
 

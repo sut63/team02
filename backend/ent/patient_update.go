@@ -110,21 +110,6 @@ func (pu *PatientUpdate) AddDentalappointment(d ...*Dentalappointment) *PatientU
 	return pu.AddDentalappointmentIDs(ids...)
 }
 
-// AddSurgeryappointmentIDs adds the "Surgeryappointment" edge to the Surgeryappointment entity by IDs.
-func (pu *PatientUpdate) AddSurgeryappointmentIDs(ids ...int) *PatientUpdate {
-	pu.mutation.AddSurgeryappointmentIDs(ids...)
-	return pu
-}
-
-// AddSurgeryappointment adds the "Surgeryappointment" edges to the Surgeryappointment entity.
-func (pu *PatientUpdate) AddSurgeryappointment(s ...*Surgeryappointment) *PatientUpdate {
-	ids := make([]int, len(s))
-	for i := range s {
-		ids[i] = s[i].ID
-	}
-	return pu.AddSurgeryappointmentIDs(ids...)
-}
-
 // AddAntenatalinformationIDs adds the "Antenatalinformation" edge to the Antenatalinformation entity by IDs.
 func (pu *PatientUpdate) AddAntenatalinformationIDs(ids ...int) *PatientUpdate {
 	pu.mutation.AddAntenatalinformationIDs(ids...)
@@ -138,6 +123,21 @@ func (pu *PatientUpdate) AddAntenatalinformation(a ...*Antenatalinformation) *Pa
 		ids[i] = a[i].ID
 	}
 	return pu.AddAntenatalinformationIDs(ids...)
+}
+
+// AddSurgeryappointmentIDs adds the "Surgeryappointment" edge to the Surgeryappointment entity by IDs.
+func (pu *PatientUpdate) AddSurgeryappointmentIDs(ids ...int) *PatientUpdate {
+	pu.mutation.AddSurgeryappointmentIDs(ids...)
+	return pu
+}
+
+// AddSurgeryappointment adds the "Surgeryappointment" edges to the Surgeryappointment entity.
+func (pu *PatientUpdate) AddSurgeryappointment(s ...*Surgeryappointment) *PatientUpdate {
+	ids := make([]int, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
+	}
+	return pu.AddSurgeryappointmentIDs(ids...)
 }
 
 // Mutation returns the PatientMutation object of the builder.
@@ -229,27 +229,6 @@ func (pu *PatientUpdate) RemoveDentalappointment(d ...*Dentalappointment) *Patie
 	return pu.RemoveDentalappointmentIDs(ids...)
 }
 
-// ClearSurgeryappointment clears all "Surgeryappointment" edges to the Surgeryappointment entity.
-func (pu *PatientUpdate) ClearSurgeryappointment() *PatientUpdate {
-	pu.mutation.ClearSurgeryappointment()
-	return pu
-}
-
-// RemoveSurgeryappointmentIDs removes the "Surgeryappointment" edge to Surgeryappointment entities by IDs.
-func (pu *PatientUpdate) RemoveSurgeryappointmentIDs(ids ...int) *PatientUpdate {
-	pu.mutation.RemoveSurgeryappointmentIDs(ids...)
-	return pu
-}
-
-// RemoveSurgeryappointment removes "Surgeryappointment" edges to Surgeryappointment entities.
-func (pu *PatientUpdate) RemoveSurgeryappointment(s ...*Surgeryappointment) *PatientUpdate {
-	ids := make([]int, len(s))
-	for i := range s {
-		ids[i] = s[i].ID
-	}
-	return pu.RemoveSurgeryappointmentIDs(ids...)
-}
-
 // ClearAntenatalinformation clears all "Antenatalinformation" edges to the Antenatalinformation entity.
 func (pu *PatientUpdate) ClearAntenatalinformation() *PatientUpdate {
 	pu.mutation.ClearAntenatalinformation()
@@ -269,6 +248,27 @@ func (pu *PatientUpdate) RemoveAntenatalinformation(a ...*Antenatalinformation) 
 		ids[i] = a[i].ID
 	}
 	return pu.RemoveAntenatalinformationIDs(ids...)
+}
+
+// ClearSurgeryappointment clears all "Surgeryappointment" edges to the Surgeryappointment entity.
+func (pu *PatientUpdate) ClearSurgeryappointment() *PatientUpdate {
+	pu.mutation.ClearSurgeryappointment()
+	return pu
+}
+
+// RemoveSurgeryappointmentIDs removes the "Surgeryappointment" edge to Surgeryappointment entities by IDs.
+func (pu *PatientUpdate) RemoveSurgeryappointmentIDs(ids ...int) *PatientUpdate {
+	pu.mutation.RemoveSurgeryappointmentIDs(ids...)
+	return pu
+}
+
+// RemoveSurgeryappointment removes "Surgeryappointment" edges to Surgeryappointment entities.
+func (pu *PatientUpdate) RemoveSurgeryappointment(s ...*Surgeryappointment) *PatientUpdate {
+	ids := make([]int, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
+	}
+	return pu.RemoveSurgeryappointmentIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -603,60 +603,6 @@ func (pu *PatientUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if pu.mutation.SurgeryappointmentCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   patient.SurgeryappointmentTable,
-			Columns: []string{patient.SurgeryappointmentColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeInt,
-					Column: surgeryappointment.FieldID,
-				},
-			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := pu.mutation.RemovedSurgeryappointmentIDs(); len(nodes) > 0 && !pu.mutation.SurgeryappointmentCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   patient.SurgeryappointmentTable,
-			Columns: []string{patient.SurgeryappointmentColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeInt,
-					Column: surgeryappointment.FieldID,
-				},
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := pu.mutation.SurgeryappointmentIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   patient.SurgeryappointmentTable,
-			Columns: []string{patient.SurgeryappointmentColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeInt,
-					Column: surgeryappointment.FieldID,
-				},
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Add = append(_spec.Edges.Add, edge)
-	}
 	if pu.mutation.AntenatalinformationCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
@@ -703,6 +649,60 @@ func (pu *PatientUpdate) sqlSave(ctx context.Context) (n int, err error) {
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
 					Column: antenatalinformation.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if pu.mutation.SurgeryappointmentCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   patient.SurgeryappointmentTable,
+			Columns: []string{patient.SurgeryappointmentColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: surgeryappointment.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := pu.mutation.RemovedSurgeryappointmentIDs(); len(nodes) > 0 && !pu.mutation.SurgeryappointmentCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   patient.SurgeryappointmentTable,
+			Columns: []string{patient.SurgeryappointmentColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: surgeryappointment.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := pu.mutation.SurgeryappointmentIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   patient.SurgeryappointmentTable,
+			Columns: []string{patient.SurgeryappointmentColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: surgeryappointment.FieldID,
 				},
 			},
 		}
@@ -807,21 +807,6 @@ func (puo *PatientUpdateOne) AddDentalappointment(d ...*Dentalappointment) *Pati
 	return puo.AddDentalappointmentIDs(ids...)
 }
 
-// AddSurgeryappointmentIDs adds the "Surgeryappointment" edge to the Surgeryappointment entity by IDs.
-func (puo *PatientUpdateOne) AddSurgeryappointmentIDs(ids ...int) *PatientUpdateOne {
-	puo.mutation.AddSurgeryappointmentIDs(ids...)
-	return puo
-}
-
-// AddSurgeryappointment adds the "Surgeryappointment" edges to the Surgeryappointment entity.
-func (puo *PatientUpdateOne) AddSurgeryappointment(s ...*Surgeryappointment) *PatientUpdateOne {
-	ids := make([]int, len(s))
-	for i := range s {
-		ids[i] = s[i].ID
-	}
-	return puo.AddSurgeryappointmentIDs(ids...)
-}
-
 // AddAntenatalinformationIDs adds the "Antenatalinformation" edge to the Antenatalinformation entity by IDs.
 func (puo *PatientUpdateOne) AddAntenatalinformationIDs(ids ...int) *PatientUpdateOne {
 	puo.mutation.AddAntenatalinformationIDs(ids...)
@@ -835,6 +820,21 @@ func (puo *PatientUpdateOne) AddAntenatalinformation(a ...*Antenatalinformation)
 		ids[i] = a[i].ID
 	}
 	return puo.AddAntenatalinformationIDs(ids...)
+}
+
+// AddSurgeryappointmentIDs adds the "Surgeryappointment" edge to the Surgeryappointment entity by IDs.
+func (puo *PatientUpdateOne) AddSurgeryappointmentIDs(ids ...int) *PatientUpdateOne {
+	puo.mutation.AddSurgeryappointmentIDs(ids...)
+	return puo
+}
+
+// AddSurgeryappointment adds the "Surgeryappointment" edges to the Surgeryappointment entity.
+func (puo *PatientUpdateOne) AddSurgeryappointment(s ...*Surgeryappointment) *PatientUpdateOne {
+	ids := make([]int, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
+	}
+	return puo.AddSurgeryappointmentIDs(ids...)
 }
 
 // Mutation returns the PatientMutation object of the builder.
@@ -926,27 +926,6 @@ func (puo *PatientUpdateOne) RemoveDentalappointment(d ...*Dentalappointment) *P
 	return puo.RemoveDentalappointmentIDs(ids...)
 }
 
-// ClearSurgeryappointment clears all "Surgeryappointment" edges to the Surgeryappointment entity.
-func (puo *PatientUpdateOne) ClearSurgeryappointment() *PatientUpdateOne {
-	puo.mutation.ClearSurgeryappointment()
-	return puo
-}
-
-// RemoveSurgeryappointmentIDs removes the "Surgeryappointment" edge to Surgeryappointment entities by IDs.
-func (puo *PatientUpdateOne) RemoveSurgeryappointmentIDs(ids ...int) *PatientUpdateOne {
-	puo.mutation.RemoveSurgeryappointmentIDs(ids...)
-	return puo
-}
-
-// RemoveSurgeryappointment removes "Surgeryappointment" edges to Surgeryappointment entities.
-func (puo *PatientUpdateOne) RemoveSurgeryappointment(s ...*Surgeryappointment) *PatientUpdateOne {
-	ids := make([]int, len(s))
-	for i := range s {
-		ids[i] = s[i].ID
-	}
-	return puo.RemoveSurgeryappointmentIDs(ids...)
-}
-
 // ClearAntenatalinformation clears all "Antenatalinformation" edges to the Antenatalinformation entity.
 func (puo *PatientUpdateOne) ClearAntenatalinformation() *PatientUpdateOne {
 	puo.mutation.ClearAntenatalinformation()
@@ -966,6 +945,27 @@ func (puo *PatientUpdateOne) RemoveAntenatalinformation(a ...*Antenatalinformati
 		ids[i] = a[i].ID
 	}
 	return puo.RemoveAntenatalinformationIDs(ids...)
+}
+
+// ClearSurgeryappointment clears all "Surgeryappointment" edges to the Surgeryappointment entity.
+func (puo *PatientUpdateOne) ClearSurgeryappointment() *PatientUpdateOne {
+	puo.mutation.ClearSurgeryappointment()
+	return puo
+}
+
+// RemoveSurgeryappointmentIDs removes the "Surgeryappointment" edge to Surgeryappointment entities by IDs.
+func (puo *PatientUpdateOne) RemoveSurgeryappointmentIDs(ids ...int) *PatientUpdateOne {
+	puo.mutation.RemoveSurgeryappointmentIDs(ids...)
+	return puo
+}
+
+// RemoveSurgeryappointment removes "Surgeryappointment" edges to Surgeryappointment entities.
+func (puo *PatientUpdateOne) RemoveSurgeryappointment(s ...*Surgeryappointment) *PatientUpdateOne {
+	ids := make([]int, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
+	}
+	return puo.RemoveSurgeryappointmentIDs(ids...)
 }
 
 // Save executes the query and returns the updated Patient entity.
@@ -1298,60 +1298,6 @@ func (puo *PatientUpdateOne) sqlSave(ctx context.Context) (_node *Patient, err e
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if puo.mutation.SurgeryappointmentCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   patient.SurgeryappointmentTable,
-			Columns: []string{patient.SurgeryappointmentColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeInt,
-					Column: surgeryappointment.FieldID,
-				},
-			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := puo.mutation.RemovedSurgeryappointmentIDs(); len(nodes) > 0 && !puo.mutation.SurgeryappointmentCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   patient.SurgeryappointmentTable,
-			Columns: []string{patient.SurgeryappointmentColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeInt,
-					Column: surgeryappointment.FieldID,
-				},
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := puo.mutation.SurgeryappointmentIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   patient.SurgeryappointmentTable,
-			Columns: []string{patient.SurgeryappointmentColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeInt,
-					Column: surgeryappointment.FieldID,
-				},
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Add = append(_spec.Edges.Add, edge)
-	}
 	if puo.mutation.AntenatalinformationCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
@@ -1398,6 +1344,60 @@ func (puo *PatientUpdateOne) sqlSave(ctx context.Context) (_node *Patient, err e
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
 					Column: antenatalinformation.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if puo.mutation.SurgeryappointmentCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   patient.SurgeryappointmentTable,
+			Columns: []string{patient.SurgeryappointmentColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: surgeryappointment.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := puo.mutation.RemovedSurgeryappointmentIDs(); len(nodes) > 0 && !puo.mutation.SurgeryappointmentCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   patient.SurgeryappointmentTable,
+			Columns: []string{patient.SurgeryappointmentColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: surgeryappointment.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := puo.mutation.SurgeryappointmentIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   patient.SurgeryappointmentTable,
+			Columns: []string{patient.SurgeryappointmentColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: surgeryappointment.FieldID,
 				},
 			},
 		}

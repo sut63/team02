@@ -22,10 +22,10 @@ const (
 	EdgeChecksymptom = "Checksymptom"
 	// EdgeDentalappointment holds the string denoting the dentalappointment edge name in mutations.
 	EdgeDentalappointment = "Dentalappointment"
-	// EdgeSurgeryappointment holds the string denoting the surgeryappointment edge name in mutations.
-	EdgeSurgeryappointment = "Surgeryappointment"
 	// EdgeAntenatalinformation holds the string denoting the antenatalinformation edge name in mutations.
 	EdgeAntenatalinformation = "Antenatalinformation"
+	// EdgeSurgeryappointment holds the string denoting the surgeryappointment edge name in mutations.
+	EdgeSurgeryappointment = "Surgeryappointment"
 
 	// Table holds the table name of the patient in the database.
 	Table = "patients"
@@ -57,13 +57,6 @@ const (
 	DentalappointmentInverseTable = "dentalappointments"
 	// DentalappointmentColumn is the table column denoting the Dentalappointment relation/edge.
 	DentalappointmentColumn = "Patient_id"
-	// SurgeryappointmentTable is the table the holds the Surgeryappointment relation/edge.
-	SurgeryappointmentTable = "surgeryappointments"
-	// SurgeryappointmentInverseTable is the table name for the Surgeryappointment entity.
-	// It exists in this package in order to avoid circular dependency with the "surgeryappointment" package.
-	SurgeryappointmentInverseTable = "surgeryappointments"
-	// SurgeryappointmentColumn is the table column denoting the Surgeryappointment relation/edge.
-	SurgeryappointmentColumn = "Patient_id"
 	// AntenatalinformationTable is the table the holds the Antenatalinformation relation/edge.
 	AntenatalinformationTable = "antenatalinformations"
 	// AntenatalinformationInverseTable is the table name for the Antenatalinformation entity.
@@ -71,6 +64,13 @@ const (
 	AntenatalinformationInverseTable = "antenatalinformations"
 	// AntenatalinformationColumn is the table column denoting the Antenatalinformation relation/edge.
 	AntenatalinformationColumn = "Patient_id"
+	// SurgeryappointmentTable is the table the holds the Surgeryappointment relation/edge.
+	SurgeryappointmentTable = "surgeryappointments"
+	// SurgeryappointmentInverseTable is the table name for the Surgeryappointment entity.
+	// It exists in this package in order to avoid circular dependency with the "surgeryappointment" package.
+	SurgeryappointmentInverseTable = "surgeryappointments"
+	// SurgeryappointmentColumn is the table column denoting the Surgeryappointment relation/edge.
+	SurgeryappointmentColumn = "Patient_id"
 )
 
 // Columns holds all SQL columns for patient fields.

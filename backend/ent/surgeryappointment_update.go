@@ -264,7 +264,7 @@ func (su *SurgeryappointmentUpdate) sqlSave(ctx context.Context) (n int, err err
 	}
 	if su.mutation.SurgerytypeCleared() {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2O,
+			Rel:     sqlgraph.M2O,
 			Inverse: true,
 			Table:   surgeryappointment.SurgerytypeTable,
 			Columns: []string{surgeryappointment.SurgerytypeColumn},
@@ -280,7 +280,7 @@ func (su *SurgeryappointmentUpdate) sqlSave(ctx context.Context) (n int, err err
 	}
 	if nodes := su.mutation.SurgerytypeIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2O,
+			Rel:     sqlgraph.M2O,
 			Inverse: true,
 			Table:   surgeryappointment.SurgerytypeTable,
 			Columns: []string{surgeryappointment.SurgerytypeColumn},
@@ -547,7 +547,7 @@ func (suo *SurgeryappointmentUpdateOne) sqlSave(ctx context.Context) (_node *Sur
 	}
 	if suo.mutation.SurgerytypeCleared() {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2O,
+			Rel:     sqlgraph.M2O,
 			Inverse: true,
 			Table:   surgeryappointment.SurgerytypeTable,
 			Columns: []string{surgeryappointment.SurgerytypeColumn},
@@ -563,7 +563,7 @@ func (suo *SurgeryappointmentUpdateOne) sqlSave(ctx context.Context) (_node *Sur
 	}
 	if nodes := suo.mutation.SurgerytypeIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2O,
+			Rel:     sqlgraph.M2O,
 			Inverse: true,
 			Table:   surgeryappointment.SurgerytypeTable,
 			Columns: []string{surgeryappointment.SurgerytypeColumn},

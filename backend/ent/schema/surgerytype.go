@@ -21,6 +21,6 @@ func (Surgerytype) Fields() []ent.Field {
 // Edges of the Surgerytype.
 func (Surgerytype) Edges() []ent.Edge {
 	return []ent.Edge{
-		edge.To("Surgeryappointment", Surgeryappointment.Type).Unique(),
+		edge.To("Surgeryappointment", Surgeryappointment.Type).StorageKey(edge.Column("Surgerytype")),
 	}
 }

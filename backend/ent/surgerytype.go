@@ -7,7 +7,6 @@ import (
 	"strings"
 
 	"github.com/facebook/ent/dialect/sql"
-	"github.com/to63/app/ent/surgeryappointment"
 	"github.com/to63/app/ent/surgerytype"
 )
 
@@ -26,21 +25,16 @@ type Surgerytype struct {
 // SurgerytypeEdges holds the relations/edges for other nodes in the graph.
 type SurgerytypeEdges struct {
 	// Surgeryappointment holds the value of the Surgeryappointment edge.
-	Surgeryappointment *Surgeryappointment
+	Surgeryappointment []*Surgeryappointment
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
 	loadedTypes [1]bool
 }
 
 // SurgeryappointmentOrErr returns the Surgeryappointment value or an error if the edge
-// was not loaded in eager-loading, or loaded but was not found.
-func (e SurgerytypeEdges) SurgeryappointmentOrErr() (*Surgeryappointment, error) {
+// was not loaded in eager-loading.
+func (e SurgerytypeEdges) SurgeryappointmentOrErr() ([]*Surgeryappointment, error) {
 	if e.loadedTypes[0] {
-		if e.Surgeryappointment == nil {
-			// The edge Surgeryappointment was loaded in eager-loading,
-			// but was not found.
-			return nil, &NotFoundError{label: surgeryappointment.Label}
-		}
 		return e.Surgeryappointment, nil
 	}
 	return nil, &NotLoadedError{edge: "Surgeryappointment"}

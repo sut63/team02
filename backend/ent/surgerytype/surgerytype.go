@@ -21,7 +21,7 @@ const (
 	// It exists in this package in order to avoid circular dependency with the "surgeryappointment" package.
 	SurgeryappointmentInverseTable = "surgeryappointments"
 	// SurgeryappointmentColumn is the table column denoting the Surgeryappointment relation/edge.
-	SurgeryappointmentColumn = "surgerytype_surgeryappointment"
+	SurgeryappointmentColumn = "Surgerytype"
 )
 
 // Columns holds all SQL columns for surgerytype fields.
