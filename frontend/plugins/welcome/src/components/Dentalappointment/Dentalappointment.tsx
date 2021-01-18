@@ -103,11 +103,12 @@ export default function createDentalappointment() {
 
 
   const createDentalappointment = async () => {
+    if((patientName!=0)&&(kindName!=0)&&(personnelName!=0)&&(datetime!="")){
     const dentalappointment = {
-      recordPat: patientName,
-      recordKind: kindName,
-      recordPer: personnelName,
-      recordTime: datetime + ":00+07:00",
+      patientID: patientName,
+      kindName: kindName,
+      personnelID: personnelName,
+      appointTime: datetime + ":00+07:00",
 
     };
     console.log(dentalappointment);
@@ -116,8 +117,11 @@ export default function createDentalappointment() {
     if (res.id != '') {
       setAlert(true);
       window.location.reload(false);
-    } else {
+      }
+    } 
+    else {
       setAlert(false);
+      setStatus(true);
     }
   };
 
@@ -144,7 +148,7 @@ export default function createDentalappointment() {
                 </Alert>
               ) : (
                   <Alert severity="warning" style={{ marginTop: 20 }}>
-                    This is a warning alert — check it out!
+                    This is a warning alert — Please enter all information!
                   </Alert>
                 )}
             </div>
@@ -153,6 +157,34 @@ export default function createDentalappointment() {
         <div className={classes.root}>
           <form noValidate autoComplete="off">
           
+            
+          <div>
+              <FormControl
+                className={classes.margin}
+                variant="outlined"
+              >
+                <Typography variant="h6" gutterBottom  align="center">
+                Dentist Name : 
+                <Typography variant="body1" gutterBottom> 
+                <Select
+                  labelId="personnel"
+                  id="personnel"
+                  value={personnelName}
+                  onChange={PersonnelhandleChange}
+                  style={{ width: 400 }}
+                >
+               {personnels.map(item => {
+                    return (
+                      <MenuItem key={item.id} value={item.id}>
+                        {item.name}
+                      </MenuItem>
+                    );
+                  })}
+                </Select>
+                </Typography>
+                </Typography>
+              </FormControl>
+            </div>
 
             
             <div>
@@ -234,6 +266,7 @@ export default function createDentalappointment() {
             </td>
           </tr>
 
+                        
             <div className={classes.margin}>
             <Typography variant="h6" gutterBottom  align="center">
               <Button
