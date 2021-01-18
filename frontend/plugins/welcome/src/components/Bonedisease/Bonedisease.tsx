@@ -65,9 +65,9 @@ export default function Create() {
   const [personnels, setPersonnels] = useState<EntPersonnel[]>([]);
   const [patients, setPatients] = useState<EntPatient[]>([]);
   const [remedys, setRemedys] = useState<EntRemedy[]>([]);
+  const [loading, setLoading] = useState(true);
   const [status, setStatus] = useState(false);
   const [alert, setAlert] = useState(true);
-  const [loading, setLoading] = useState(true);
  
  
   const [personnelid, setPersonnelid] = useState(Number);
@@ -106,6 +106,7 @@ export default function Create() {
   }, [loading]);
  
   const CreateBonedisease = async () => {
+    if((addedTime != null) && (patientid != null) && (personnelid != null) && (remedyid != null) && (adviceid != null) ){
       const bonedisease = {
          addedTime          : addedTime + ":00+07:00", //+ "T00:00:00+07:00", //2020-10-20T11:53  yyyy-MM-ddT07:mm
          patientID          : patientid,
@@ -115,15 +116,16 @@ export default function Create() {
       }
       console.log(bonedisease);
 
-    const res:any = await api.createBonedisease({ bonedisease : bonedisease});
-    setStatus(true);
-    if (res.id != ''){
-      setAlert(true);
-      window.location.reload(false);
-    } else {
-      setAlert(false);
+  const res:any = await api.createBonedisease({ bonedisease : bonedisease});
+      setStatus(true);
+      if (res.id != ''){
+          setAlert(true);
+          //window.location.reload(false);
+            setTimeout(() => {
+              setStatus(false);
+            }, 10000);
+      } 
     }
- 
   };
  
   const Patiant_handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
@@ -153,19 +155,20 @@ export default function Create() {
       </Header>
       <Content>
       <ContentHeader title="ระบบบันทึกการนัดตรวจโรคกระดูก">
-         {status ? (
-           <div>
-             {alert ? (
-               <Alert severity="success">
-                 This is a success alert — check it out!
-               </Alert>
-             ) : (
-               <Alert severity="warning" style={{ marginTop: 20 }}>
-                 This is a warning alert — check it out!
-               </Alert>
-             )}
-           </div>
-         ) : null}
+        
+      {status ? (
+         <div>
+           {alert ? (
+             <Alert variant="filled" severity="success">
+               บันทึกเรียบร้อย!
+             </Alert>
+           ) : null}
+         </div>
+       ) : 
+       <Alert variant="filled" severity="error">
+       ใส่ข้อมูลให้ครบก่อนบันทึก!
+       </Alert>}
+
       </ContentHeader>
         <Container maxWidth="sm">
           <Grid container spacing={3}>

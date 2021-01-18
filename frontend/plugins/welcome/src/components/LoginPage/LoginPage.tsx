@@ -46,7 +46,7 @@ export default function Login(props: any) {
   const [status, setStatus] = useState(false);
   const [alert, setAlert] = useState(Boolean);
 
-  const [name, setName] = useState(String);
+  const [user, setUser] = useState(String);
   const [password, setPassword] = useState(String);
   const [loading, setLoading] = useState(false);
 
@@ -69,8 +69,8 @@ export default function Login(props: any) {
 
   }, [loading]);
 
-  const NamehandleChange = (event: any) => {
-    setName(event.target.value as string);
+  const UserhandleChange = (event: any) => {
+    setUser(event.target.value as string);
   };
 
   const PasswordhandleChange = (event: any) => {
@@ -79,14 +79,12 @@ export default function Login(props: any) {
 
   const LoginChecker = async () => {
     personnels.map((item: any) => {
-      console.log(item.name);
-      if ((item.user == name) && (item.password == password)) {
+      console.log(item.user);
+      if ((item.user == user) && (item.password == password)) {
         setAlert(true);
-        localStorage.setItem("personaldata", JSON.stringify(item.id));
-        
-        
+        if (item.edges.Personnel == item.edges.Personnel) {
           history.pushState("", "", "/WelcomePage");
-        
+        }
         window.location.reload(false);
 
       }
@@ -99,7 +97,7 @@ export default function Login(props: any) {
   return (
     <Page theme={pageTheme.home}>
       <Header
-        title={`ยินดีต้อนรับสู่ ระบบนัดหมาย`}
+        title={`ยินดีต้อนรับสู่ ระบบบันทึกนัดหมาย`}
       ></Header>
       <Content>
         <ContentHeader title="โปรดทำการ Login ก่อนใช้งาน">
@@ -111,7 +109,7 @@ export default function Login(props: any) {
                 </Alert>
               ) : (
                   <Alert severity="error" onClose={() => { setStatus(false) }}>
-                    เข้าสู่ระบบไม่สำเร็จ กรุณาตรวจสอบ Name หรือ Password
+                    เข้าสู่ระบบไม่สำเร็จ กรุณาตรวจสอบ Email หรือ Password
                   </Alert>
                 )}
             </div>
@@ -130,8 +128,8 @@ export default function Login(props: any) {
                   variant="outlined"
                   type="string"
                   size="medium"
-                  value={name}
-                  onChange={NamehandleChange}
+                  value={user}
+                  onChange={UserhandleChange}
                   style={{ width: 400 }}
                 />
               </FormControl>

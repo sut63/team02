@@ -207,10 +207,11 @@ func main() {
 	// Set Personnel Data
 	personnels := Personnels{
 		Personnel: []Personnel{
-			Personnel{"Anusorn", "Orthopedics", "Anusorn@gmail.com", "12321"},
-			Personnel{"Kamkeaw", "Orthopedics", "Kamkeaw@gmail.com", "1234"},
-			Personnel{"Nutchaya", "Dentist", "nutchaya@gmail.com", "1121"},
-			Personnel{"Thanawut", "Dentist", "thanawut@gmail.com", "11210"},
+			Personnel{"Anusorn", "Orthopedics", "Anusorn@email.com", "12321"},
+			Personnel{"Kamkeaw", "Orthopedics", "Kamkeaw@email.com", "12321"},
+			Personnel{"Nutchaya", "Dentist", "nutchaya@email.com", "12321"},
+			Personnel{"Thanawut", "Doctor", "thanawut@email.com", "12321"},
+			Personnel{"Jay", "Physicaltherapy", "Jay@email.com", "12321"},
 		},
 	}
 
