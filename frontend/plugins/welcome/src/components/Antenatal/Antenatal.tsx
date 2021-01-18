@@ -135,7 +135,7 @@ export default function Antenatal() {
         };
         const timer = setTimeout(() => {
             setStatus(false);
-        }, 1000);
+        }, 10000);
     }
 
     const PersonnelhandleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
