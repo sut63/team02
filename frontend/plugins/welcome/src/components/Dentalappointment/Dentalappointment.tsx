@@ -101,6 +101,10 @@ export default function createDentalappointment() {
     setDateTime(event.target.value as string);
   };
 
+  const listDapm = () => {
+    window.location.href ="http://localhost:3000/Dentalappointment";
+  };
+
 
   const createDentalappointment = async () => {
     if((patientName!=0)&&(kindName!=0)&&(personnelName!=0)&&(datetime!="")){
@@ -116,7 +120,6 @@ export default function createDentalappointment() {
     setStatus(true);
     if (res.id != '') {
       setAlert(true);
-      window.location.reload(false);
       }
     } 
     else {
@@ -143,11 +146,11 @@ export default function createDentalappointment() {
           {status ? (
             <div>
               {alert ? (
-                <Alert severity="success">
+                <Alert severity="success" onClose={() => {window.location.reload(false)}} style={{ marginTop: 20 }}>
                   success!
                 </Alert>
               ) : (
-                  <Alert severity="warning" style={{ marginTop: 20 }}>
+                  <Alert severity="warning" onClose={() => {window.location.reload(false)}} style={{ marginTop: 20 }}>
                     This is a warning alert — Please enter all information!
                   </Alert>
                 )}
@@ -170,33 +173,6 @@ export default function createDentalappointment() {
                                     value={personnels.filter((filter:EntPersonnel) => filter.id == personnelName).map((item:EntPersonnel) => `${item.name}`)}
                                     style={{ width: 400 }}
                                 />
-              </FormControl>
-            </div>
-          <div>
-              <FormControl
-                className={classes.margin}
-                variant="outlined"
-              >
-                <Typography variant="h6" gutterBottom  align="center">
-                Dentist Name : 
-                <Typography variant="body1" gutterBottom> 
-                <Select
-                  labelId="personnel"
-                  id="personnel"
-                  value={personnelName}
-                  onChange={PersonnelhandleChange}
-                  style={{ width: 400 }}
-                >
-               {personnels.map(item => {
-                    return (
-                      <MenuItem key={item.id} value={item.id}>
-                        {item.name}
-                      </MenuItem>
-                    );
-                  })}
-                </Select>
-                </Typography>
-                </Typography>
               </FormControl>
             </div>
 
