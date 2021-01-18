@@ -683,35 +683,6 @@ paths:
           schema:
             $ref: '#/definitions/gin.H'
       summary: Create risks
-  /Surgeryappointments:
-    post:
-      consumes:
-      - application/json
-      description: Create Surgeryappointment
-      operationId: create-Surgeryappointment
-      parameters:
-      - description: Surgeryappointment entity
-        in: body
-        name: Surgeryappointment
-        required: true
-        schema:
-          $ref: '#/definitions/controllers.Surgeryappointment'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/ent.Surgeryappointment'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/gin.H'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/gin.H'
-      summary: Create Surgeryappointment
   /antenatalinformations:
     get:
       description: list antenatalinformation entities
@@ -2425,6 +2396,34 @@ paths:
           schema:
             $ref: '#/definitions/gin.H'
       summary: List surgeryappointment entities
+    post:
+      consumes:
+      - application/json
+      description: Create Surgeryappointment
+      operationId: create-Surgeryappointment
+      parameters:
+      - description: Surgeryappointment entity
+        in: body
+        name: Surgeryappointment
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.Surgeryappointment'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ent.Surgeryappointment'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Create Surgeryappointment
   /surgeryappointments/{id}:
     delete:
       description: get surgeryappointment by ID

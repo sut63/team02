@@ -37,7 +37,7 @@ type Surgeryappointment struct {
 // @Success 200 {object} ent.Surgeryappointment
 // @Failure 400 {object} gin.H
 // @Failure 500 {object} gin.H
-// @Router /Surgeryappointments [post]
+// @Router /surgeryappointments [post]
 func (ctl *SurgeryappointmentController) CreateSurgeryappointment(c *gin.Context) {
 	obj := Surgeryappointment{}
 	if err := c.ShouldBind(&obj); err != nil {

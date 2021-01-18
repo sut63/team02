@@ -926,7 +926,7 @@ export class DefaultApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
-            path: `/Surgeryappointments`,
+            path: `/surgeryappointments`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,

@@ -17,11 +17,12 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import FormControl from '@material-ui/core/FormControl';
 
-import { EntPersonnel, EntPersonnel } from '../../api/models/EntPersonnel';
-import { EntPatient, EntPatient } from '../../api/models/EntPatient';
+import { EntPersonnel } from '../../api/models/EntPersonnel';
+import { EntPatient } from '../../api/models/EntPatient';
 import { EntSurgerytype, EntSurgerytype } from '../../api/models/EntSurgerytype';
 import { EntSurgeryappointment } from '../../api/models/EntSurgeryappointment';
 import TextField from '@material-ui/core/TextField';
+
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
@@ -102,10 +103,11 @@ export default function Create() {
 
 
   const CreateSurgeryappointment = async () => {
+    if( ( personnelid != 0 ) && ( patientid != 0) && ( surgerytypeid != 0) && ( addtime != "" )){
     const surgeryappointment = {
-      personnelId: personnelid,
-      patientId: patientid,
-      surgerytypeId: surgerytypeid,
+      personelid: personnelid,
+      patientid: patientid,
+      surgerytypeid: surgerytypeid,
       appointtime: addtime + ":00+07:00" 
     };
 
@@ -114,8 +116,10 @@ export default function Create() {
     setStatus(true);
     if (res.id != '') {
       setAlert(true);
-    } else {
-      setAlert(false);
+    } 
+  }
+  else {
+      setAlert(false);setStatus(true);
     };
     const timer = setTimeout(() => {
       setStatus(false);
@@ -195,8 +199,8 @@ export default function Create() {
                 onChange={SurgerytypehandleChange}
                 style={{ width: 250 }}
               >
-                {surgerytypes.map((item: any) => (
-                  <MenuItem value={item.surgerytype.id}>{item.surgerytype.typename}</MenuItem>
+                {surgerytypes.map((item: EntSurgerytype ) => (
+                  <MenuItem value={item.id}>{item.typename}</MenuItem>
                 ))}
               </Select>
             </FormControl>
@@ -224,7 +228,7 @@ export default function Create() {
                 </Alert>
               ) : (
                   <Alert severity="warning">
-                    ข้อมูลไม่ถูก
+                    ข้อมูลไม่ถูกต้อง
                   </Alert>
                 )}
             </div>

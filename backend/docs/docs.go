@@ -121,50 +121,6 @@ var doc = `{
                 }
             }
         },
-        "/Surgeryappointments": {
-            "post": {
-                "description": "Create Surgeryappointment",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "summary": "Create Surgeryappointment",
-                "operationId": "create-Surgeryappointment",
-                "parameters": [
-                    {
-                        "description": "Surgeryappointment entity",
-                        "name": "Surgeryappointment",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/controllers.Surgeryappointment"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/ent.Surgeryappointment"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/gin.H"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/gin.H"
-                        }
-                    }
-                }
-            }
-        },
         "/antenatalinformations": {
             "get": {
                 "description": "list antenatalinformation entities",
@@ -2719,6 +2675,48 @@ var doc = `{
                             "items": {
                                 "$ref": "#/definitions/ent.Surgeryappointment"
                             }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create Surgeryappointment",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Create Surgeryappointment",
+                "operationId": "create-Surgeryappointment",
+                "parameters": [
+                    {
+                        "description": "Surgeryappointment entity",
+                        "name": "Surgeryappointment",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controllers.Surgeryappointment"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ent.Surgeryappointment"
                         }
                     },
                     "400": {

@@ -186,7 +186,7 @@ func main() {
 	}
 
 	v1 := router.Group("/api/v1")
-	controllers.NewChecksymptomController(v1, client) 
+	controllers.NewChecksymptomController(v1, client)
 	controllers.NewDiseaseController(v1, client)          //ของเจม
 	controllers.NewDoctorordersheetController(v1, client) //ของเจม
 	controllers.NewBonediseaseController(v1, client)
@@ -201,6 +201,8 @@ func main() {
 	controllers.NewPhysicaltherapyrecordController(v1, client)
 	controllers.NewPhysicaltherapyroomController(v1, client)
 	controllers.NewStatusController(v1, client)
+	controllers.NewSurgerytypeController(v1, client)
+	controllers.NewSurgeryappointmentController(v1, client)
 
 	// Set Personnel Data
 	personnels := Personnels{
@@ -256,9 +258,8 @@ func main() {
 			Save(context.Background())
 	}
 
-
 	// Set DoctorOrderSheet Data
-	doctorordersheets := []string{"นายแพทย์อนุสรณ์ ศรีพรหม", "นายแพทย์วัชรพงศ์ ซึ้งศิริทรัพย์","นายแพทย์หญิงวริศรา ตันดิลกตระกูล"}
+	doctorordersheets := []string{"นายแพทย์อนุสรณ์ ศรีพรหม", "นายแพทย์วัชรพงศ์ ซึ้งศิริทรัพย์", "นายแพทย์หญิงวริศรา ตันดิลกตระกูล"}
 	for _, doctorordersheet := range doctorordersheets {
 		client.Doctorordersheet.
 			Create().
