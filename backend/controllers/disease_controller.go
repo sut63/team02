@@ -22,7 +22,7 @@ type DiseaseController struct {
 // @ID create-disease
 // @Accept   json
 // @Produce  json
-// @Param disease body ent.Disease true "disease entity"
+// @Param disease body ent.Disease true "Disease entity"
 // @Success 200 {object} ent.Disease
 // @Failure 400 {object} gin.H
 // @Failure 500 {object} gin.H
@@ -43,7 +43,7 @@ func (ctl *DiseaseController) CreateDisease(c *gin.Context) {
 
 	if err != nil {
 		c.JSON(400, gin.H{
-			"error": "saving failed",
+			"error": "disease saving failed",
 		})
 		return
 	}
@@ -56,7 +56,7 @@ func (ctl *DiseaseController) CreateDisease(c *gin.Context) {
 // @Description get disease by ID
 // @ID get-disease
 // @Produce  json
-// @Param id path int true "disease ID"
+// @Param id path int true "Disease ID"
 // @Success 200 {object} ent.Disease
 // @Failure 400 {object} gin.H
 // @Failure 404 {object} gin.H
@@ -133,7 +133,7 @@ func (ctl *DiseaseController) ListDisease(c *gin.Context) {
 // @Description get disease by ID
 // @ID delete-disease
 // @Produce  json
-// @Param id path int true "disease ID"
+// @Param id path int true "Disease ID"
 // @Success 200 {object} gin.H
 // @Failure 400 {object} gin.H
 // @Failure 404 {object} gin.H
@@ -167,8 +167,8 @@ func (ctl *DiseaseController) DeleteDisease(c *gin.Context) {
 // @ID update-disease
 // @Accept   json
 // @Produce  json
-// @Param id path int true "disease ID"
-// @Param disease body ent.Disease true "disease entity"
+// @Param id path int true "Disease ID"
+// @Param disease body ent.Disease true "Disease entity"
 // @Success 200 {object} ent.Disease
 // @Failure 400 {object} gin.H
 // @Failure 500 {object} gin.H

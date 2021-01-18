@@ -30,14 +30,6 @@ func (cc *ChecksymptomCreate) SetDate(t time.Time) *ChecksymptomCreate {
 	return cc
 }
 
-// SetNillableDate sets the "date" field if the given value is not nil.
-func (cc *ChecksymptomCreate) SetNillableDate(t *time.Time) *ChecksymptomCreate {
-	if t != nil {
-		cc.SetDate(*t)
-	}
-	return cc
-}
-
 // SetTimes sets the "times" field.
 func (cc *ChecksymptomCreate) SetTimes(s string) *ChecksymptomCreate {
 	cc.mutation.SetTimes(s)
@@ -137,7 +129,6 @@ func (cc *ChecksymptomCreate) Save(ctx context.Context) (*Checksymptom, error) {
 		err  error
 		node *Checksymptom
 	)
-	cc.defaults()
 	if len(cc.hooks) == 0 {
 		if err = cc.check(); err != nil {
 			return nil, err
@@ -174,14 +165,6 @@ func (cc *ChecksymptomCreate) SaveX(ctx context.Context) *Checksymptom {
 		panic(err)
 	}
 	return v
-}
-
-// defaults sets the default values of the builder before save.
-func (cc *ChecksymptomCreate) defaults() {
-	if _, ok := cc.mutation.Date(); !ok {
-		v := checksymptom.DefaultDate()
-		cc.mutation.SetDate(v)
-	}
 }
 
 // check runs all checks and user-defined validators on the builder.
@@ -349,7 +332,6 @@ func (ccb *ChecksymptomCreateBulk) Save(ctx context.Context) ([]*Checksymptom, e
 	for i := range ccb.builders {
 		func(i int, root context.Context) {
 			builder := ccb.builders[i]
-			builder.defaults()
 			var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 				mutation, ok := m.(*ChecksymptomMutation)
 				if !ok {

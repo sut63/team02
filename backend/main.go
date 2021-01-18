@@ -58,16 +58,15 @@ type Disease struct {
 	Name string
 }
 
-//DoctorOrderSheets with
-type DoctorOrderSheets struct {
-	DoctorOrderSheet []DoctorOrderSheet
+//Doctorordersheets with
+type Doctorordersheets struct {
+	Doctorordersheet []Doctorordersheet
 }
 
-//DoctorOrderSheet with
-type DoctorOrderSheet struct {
+//Doctorordersheet with 
+type Doctorordersheet struct {
 	Name string
-	time string
-	note string
+	
 }
 
 //Deltalkinds with

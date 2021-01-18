@@ -37,14 +37,6 @@ func (cu *ChecksymptomUpdate) SetDate(t time.Time) *ChecksymptomUpdate {
 	return cu
 }
 
-// SetNillableDate sets the "date" field if the given value is not nil.
-func (cu *ChecksymptomUpdate) SetNillableDate(t *time.Time) *ChecksymptomUpdate {
-	if t != nil {
-		cu.SetDate(*t)
-	}
-	return cu
-}
-
 // SetTimes sets the "times" field.
 func (cu *ChecksymptomUpdate) SetTimes(s string) *ChecksymptomUpdate {
 	cu.mutation.SetTimes(s)
@@ -434,14 +426,6 @@ type ChecksymptomUpdateOne struct {
 // SetDate sets the "date" field.
 func (cuo *ChecksymptomUpdateOne) SetDate(t time.Time) *ChecksymptomUpdateOne {
 	cuo.mutation.SetDate(t)
-	return cuo
-}
-
-// SetNillableDate sets the "date" field if the given value is not nil.
-func (cuo *ChecksymptomUpdateOne) SetNillableDate(t *time.Time) *ChecksymptomUpdateOne {
-	if t != nil {
-		cuo.SetDate(*t)
-	}
 	return cuo
 }
 

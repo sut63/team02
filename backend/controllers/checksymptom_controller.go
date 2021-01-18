@@ -10,29 +10,29 @@ import (
 	"github.com/to63/app/ent"
 	"github.com/to63/app/ent/patient"
 	"github.com/to63/app/ent/personnel"
-	"github.com/to63/app/ent/doctorordersheet"
 	"github.com/to63/app/ent/disease"
+	"github.com/to63/app/ent/doctorordersheet"
 	
 )
 
-//ChecksymptomController struct
+// ChecksymptomController defines the struct for the Checksymptom controller
 type ChecksymptomController struct {
 	client *ent.Client
 	router gin.IRouter
 }
 
-//Checksymptom struct
+// Checksymptom defines the struct for the Checksymptom
 type Checksymptom struct {
-	Personnel  			int
-	Disease 			int
-	Doctorordersheet   	int
-	Patient      		int
-	date				string
-	times				string
-	note				string
+	PatientID			int
+	PersonnelID         int
+	DoctorordersheetID  int
+	DiseaseID			int
+	Date				string
+	Times          		string
+	Note				string
 }
 
-// CreateChecksymptom handles POST requests for adding checksymptom entities
+// CreateChecksymptom handles POST requests for adding Checksymptom entities
 // @Summary Create checksymptom
 // @Description Create checksymptom
 // @ID create-checksymptom
@@ -47,28 +47,16 @@ func (ctl *ChecksymptomController) CreateChecksymptom(c *gin.Context) {
 	obj := Checksymptom{}
 	if err := c.ShouldBind(&obj); err != nil {
 		c.JSON(400, gin.H{
-			"error": "checksymptom binding failed",
-		})
-		return
-	}
-
-	personnel, err := ctl.client.Personnel.
-		Query().
-		Where(personnel.IDEQ(int(obj.Personnel))).
-		Only(context.Background())
-
-	if err != nil {
-		c.JSON(400, gin.H{
-			"error": "personnel not found",
+			"error": "Checksymptom binding failed",
 		})
 		return
 	}
 
 	patient, err := ctl.client.Patient.
-		Query().
-		Where(patient.IDEQ(int(obj.Patient))).
-		Only(context.Background())
-
+	Query().
+	Where(patient.IDEQ(int(obj.PatientID))).
+	Only(context.Background())
+	
 	if err != nil {
 		c.JSON(400, gin.H{
 			"error": "patient not found",
@@ -76,65 +64,71 @@ func (ctl *ChecksymptomController) CreateChecksymptom(c *gin.Context) {
 		return
 	}
 
-	disease, err := ctl.client.Disease.
-		Query().
-		Where(disease.IDEQ(int(obj.Disease))).
-		Only(context.Background())
-
+	personnel, err := ctl.client.Personnel.
+	Query().
+	Where(personnel.IDEQ(int(obj.PersonnelID))).
+	Only(context.Background())
+	
 	if err != nil {
 		c.JSON(400, gin.H{
-			"error": "disease not found",
+			"error": "personnel diagnostic  not found",
 		})
 		return
 	}
-
 	
-
 	doctorordersheet, err := ctl.client.Doctorordersheet.
-		Query().
-		Where(doctorordersheet.IDEQ(int(obj.Doctorordersheet))).
-		Only(context.Background())
-
+	Query().
+	Where(doctorordersheet.IDEQ(int(obj.DoctorordersheetID))).
+	Only(context.Background())
+	
 	if err != nil {
 		c.JSON(400, gin.H{
-			"error": "doctorordersheet not found",
+			"error": "Doctorordersheet diagnostic  not found",
 		})
 		return
 	}
 
-
+	disease, err := ctl.client.Disease.
+	Query().
+	Where(disease.IDEQ(int(obj.DiseaseID))).
+	Only(context.Background())
 	
+	if err != nil {
+		c.JSON(400, gin.H{
+			"error": "personnel diagnostic  not found",
+		})
+		return
+	}
 
-
-
-	dateee, err := time.Parse(time.RFC3339, obj.date)
-
+	time, err := time.Parse(time.RFC3339, obj.Date)
 
 	checksymptom, err := ctl.client.Checksymptom.
-		Create().
-		SetPatient(patient).
-		SetPersonnel(personnel).
-		SetDoctorordersheet(doctorordersheet).
-		SetDisease(disease).
-		SetDate(dateee).
-		SetTimes(obj.times).
-		SetNote(obj.note).
-		Save(context.Background()) 
-
+	Create().
+	SetPersonnel(personnel).
+	SetPatient(patient).
+	SetDoctorordersheet(doctorordersheet).
+	SetDisease(disease).
+	SetTimes(obj.Times).
+	SetDate(time).
+	SetNote(obj.Note).
+	Save(context.Background())
+	
 	if err != nil {
-		c.JSON(400, gin.H{
-			"error": "saving failed",
-		})
-		return
-	}
+        c.JSON(400, gin.H{
+            "error": "saving failed",
+        })
+        return
+    }
 
-	c.JSON(200, gin.H{
-		"status": true,
-		"data":   checksymptom,
-	})
+    c.JSON(200, gin.H{
+        "status": true,
+        "data":   checksymptom,
+    })
+
 }
 
-// ListChecksymptom handles request to get a list of checksymptom entities
+
+// ListChecksymptom handles request to get a list of Checksymptom entities
 // @Summary List checksymptom entities
 // @Description list checksymptom entities
 // @ID list-checksymptom
@@ -164,7 +158,7 @@ func (ctl *ChecksymptomController) ListChecksymptom(c *gin.Context) {
 		}
 	}
 
-	checksymptom, err := ctl.client.Checksymptom.
+	checksymptoms, err := ctl.client.Checksymptom.
 		Query().
 		WithPersonnel().
 		WithPatient().
@@ -173,18 +167,17 @@ func (ctl *ChecksymptomController) ListChecksymptom(c *gin.Context) {
 		Limit(limit).
 		Offset(offset).
 		All(context.Background())
-
 	if err != nil {
-		c.JSON(400, gin.H{
-			"error": err.Error(),
-		})
+		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
 
-	c.JSON(200, checksymptom)
+	c.JSON(200, checksymptoms)
 }
 
-// DeleteChecksymptom handles DELETE requests to delete a checksymptom entity
+
+
+// DeleteChecksymptom handles DELETE requests to delete a Checksymptom entity
 // @Summary Delete a checksymptom entity by ID
 // @Description get checksymptom by ID
 // @ID delete-checksymptom
@@ -194,7 +187,7 @@ func (ctl *ChecksymptomController) ListChecksymptom(c *gin.Context) {
 // @Failure 400 {object} gin.H
 // @Failure 404 {object} gin.H
 // @Failure 500 {object} gin.H
-// @Router/checksymptoms/{id} [delete]
+// @Router /checksymptoms/{id} [delete]
 func (ctl *ChecksymptomController) DeleteChecksymptom(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
@@ -217,25 +210,23 @@ func (ctl *ChecksymptomController) DeleteChecksymptom(c *gin.Context) {
 	c.JSON(200, gin.H{"result": fmt.Sprintf("ok deleted %v", id)})
 }
 
-// NewChecksymptomController creates and registers handles for the checksymptom controller
+// NewChecksymptomController creates and registers handles for the Checksymptom controller
 func NewChecksymptomController(router gin.IRouter, client *ent.Client) *ChecksymptomController {
-	check := &ChecksymptomController{
+	checksymptomController := &ChecksymptomController{
 		client: client,
 		router: router,
 	}
-
-	check.register()
-
-	return check
-
+	checksymptomController.register()
+	return checksymptomController
 }
 
+// InitChecksymptomController registers routes to the main engine
 func (ctl *ChecksymptomController) register() {
 	checksymptoms := ctl.router.Group("/checksymptoms")
-	
 
-	checksymptoms.POST("", ctl.CreateChecksymptom)
 	checksymptoms.GET("", ctl.ListChecksymptom)
-	checksymptoms.DELETE(":id", ctl.DeleteChecksymptom)
 
+	// CRUD
+	checksymptoms.POST("", ctl.CreateChecksymptom)
+	checksymptoms.DELETE(":id", ctl.DeleteChecksymptom)
 }

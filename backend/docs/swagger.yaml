@@ -30,14 +30,20 @@ definitions:
     type: object
   controllers.Checksymptom:
     properties:
-      disease:
+      date:
+        type: string
+      diseaseID:
         type: integer
-      doctorordersheet:
+      doctorordersheetID:
         type: integer
-      patient:
+      note:
+        type: string
+      patientID:
         type: integer
-      personnel:
+      personnelID:
         type: integer
+      times:
+        type: string
     type: object
   controllers.Dentalappointment:
     properties:
@@ -984,6 +990,36 @@ paths:
           schema:
             $ref: '#/definitions/gin.H'
       summary: Create checksymptom
+  /checksymptoms/{id}:
+    delete:
+      description: get checksymptom by ID
+      operationId: delete-checksymptom
+      parameters:
+      - description: Checksymptom ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/gin.H'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Delete a checksymptom entity by ID
   /dentalappointments:
     get:
       description: list dentalappointment entities
@@ -1261,7 +1297,7 @@ paths:
       description: Create disease
       operationId: create-disease
       parameters:
-      - description: disease entity
+      - description: Disease entity
         in: body
         name: disease
         required: true
@@ -1288,7 +1324,7 @@ paths:
       description: get disease by ID
       operationId: delete-disease
       parameters:
-      - description: disease ID
+      - description: Disease ID
         in: path
         name: id
         required: true
@@ -1317,7 +1353,7 @@ paths:
       description: get disease by ID
       operationId: get-disease
       parameters:
-      - description: disease ID
+      - description: Disease ID
         in: path
         name: id
         required: true
@@ -1348,12 +1384,12 @@ paths:
       description: update disease by ID
       operationId: update-disease
       parameters:
-      - description: disease ID
+      - description: Disease ID
         in: path
         name: id
         required: true
         type: integer
-      - description: disease entity
+      - description: Disease entity
         in: body
         name: disease
         required: true
@@ -1412,7 +1448,7 @@ paths:
       description: Create doctorordersheet
       operationId: create-doctorordersheet
       parameters:
-      - description: doctorordersheet entity
+      - description: Doctorordersheet entity
         in: body
         name: doctorordersheet
         required: true
@@ -1439,7 +1475,7 @@ paths:
       description: get doctorordersheet by ID
       operationId: delete-doctorordersheet
       parameters:
-      - description: DeleteDoctorordersheet ID
+      - description: Doctorordersheet ID
         in: path
         name: id
         required: true

@@ -2,10 +2,6 @@
 
 package checksymptom
 
-import (
-	"time"
-)
-
 const (
 	// Label holds the string label denoting the checksymptom type in the database.
 	Label = "checksymptom"
@@ -91,8 +87,6 @@ func ValidColumn(column string) bool {
 }
 
 var (
-	// DefaultDate holds the default value on creation for the "date" field.
-	DefaultDate func() time.Time
 	// TimesValidator is a validator for the "times" field. It is called by the builders before save.
 	TimesValidator func(string) error
 	// NoteValidator is a validator for the "note" field. It is called by the builders before save.

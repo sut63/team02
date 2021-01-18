@@ -162,6 +162,10 @@ export interface DeleteBonediseaseRequest {
     id: number;
 }
 
+export interface DeleteChecksymptomRequest {
+    id: number;
+}
+
 export interface DeleteDentalappointmentRequest {
     id: number;
 }
@@ -1038,6 +1042,38 @@ export class DefaultApi extends runtime.BaseAPI {
      */
     async deleteBonedisease(requestParameters: DeleteBonediseaseRequest): Promise<object> {
         const response = await this.deleteBonediseaseRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
+     * get checksymptom by ID
+     * Delete a checksymptom entity by ID
+     */
+    async deleteChecksymptomRaw(requestParameters: DeleteChecksymptomRequest): Promise<runtime.ApiResponse<object>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deleteChecksymptom.');
+        }
+
+        const queryParameters: runtime.HTTPQuery = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/checksymptoms/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse<any>(response);
+    }
+
+    /**
+     * get checksymptom by ID
+     * Delete a checksymptom entity by ID
+     */
+    async deleteChecksymptom(requestParameters: DeleteChecksymptomRequest): Promise<object> {
+        const response = await this.deleteChecksymptomRaw(requestParameters);
         return await response.value();
     }
 

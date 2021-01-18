@@ -44,10 +44,6 @@ func init() {
 	bonedisease.AdviceValidator = bonediseaseDescAdvice.Validators[0].(func(string) error)
 	checksymptomFields := schema.Checksymptom{}.Fields()
 	_ = checksymptomFields
-	// checksymptomDescDate is the schema descriptor for date field.
-	checksymptomDescDate := checksymptomFields[0].Descriptor()
-	// checksymptom.DefaultDate holds the default value on creation for the date field.
-	checksymptom.DefaultDate = checksymptomDescDate.Default.(func() time.Time)
 	// checksymptomDescTimes is the schema descriptor for times field.
 	checksymptomDescTimes := checksymptomFields[1].Descriptor()
 	// checksymptom.TimesValidator is a validator for the "times" field. It is called by the builders before save.

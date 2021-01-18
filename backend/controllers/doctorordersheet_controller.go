@@ -22,7 +22,7 @@ type DoctorordersheetController struct {
 // @ID create-doctorordersheet
 // @Accept   json
 // @Produce  json
-// @Param doctorordersheet body ent.Doctorordersheet true "doctorordersheet entity"
+// @Param doctorordersheet body ent.Doctorordersheet true "Doctorordersheet entity"
 // @Success 200 {object} ent.Doctorordersheet
 // @Failure 400 {object} gin.H
 // @Failure 500 {object} gin.H
@@ -42,7 +42,7 @@ func (ctl *DoctorordersheetController) CreateDoctorordersheet(c *gin.Context) {
 		Save(context.Background())
 	if err != nil {
 		c.JSON(400, gin.H{
-			"error": "saving failed",
+			"error": "doctorordersheet saving failed",
 		})
 		return
 	} 
@@ -132,7 +132,7 @@ func (ctl *DoctorordersheetController) ListDoctorordersheet(c *gin.Context) {
 // @Description get doctorordersheet by ID
 // @ID delete-doctorordersheet
 // @Produce  json
-// @Param id path int true "DeleteDoctorordersheet ID"
+// @Param id path int true "Doctorordersheet ID"
 // @Success 200 {object} gin.H
 // @Failure 400 {object} gin.H
 // @Failure 404 {object} gin.H

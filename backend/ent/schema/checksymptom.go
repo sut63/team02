@@ -1,7 +1,7 @@
 package schema
 
 import  (
-	"time"
+	
 	"github.com/facebook/ent"
 	"github.com/facebook/ent/schema/edge"
 	"github.com/facebook/ent/schema/field"
@@ -15,7 +15,7 @@ type Checksymptom struct {
 // Fields of the Checksymptom.
 func (Checksymptom) Fields() []ent.Field {
 	return []ent.Field{
-		field.Time("date").Default(time.Now),
+		field.Time("date"),
 		field.String("times").NotEmpty(),
 		field.String("note").NotEmpty(),
 

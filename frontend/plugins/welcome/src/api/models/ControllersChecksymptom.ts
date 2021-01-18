@@ -21,28 +21,46 @@ import { exists, mapValues } from '../runtime';
 export interface ControllersChecksymptom {
     /**
      * 
-     * @type {number}
+     * @type {string}
      * @memberof ControllersChecksymptom
      */
-    disease?: number;
+    date?: string;
     /**
      * 
      * @type {number}
      * @memberof ControllersChecksymptom
      */
-    doctorordersheet?: number;
+    diseaseID?: number;
     /**
      * 
      * @type {number}
      * @memberof ControllersChecksymptom
      */
-    patient?: number;
+    doctorordersheetID?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof ControllersChecksymptom
+     */
+    note?: string;
     /**
      * 
      * @type {number}
      * @memberof ControllersChecksymptom
      */
-    personnel?: number;
+    patientID?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof ControllersChecksymptom
+     */
+    personnelID?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof ControllersChecksymptom
+     */
+    times?: string;
 }
 
 export function ControllersChecksymptomFromJSON(json: any): ControllersChecksymptom {
@@ -55,10 +73,13 @@ export function ControllersChecksymptomFromJSONTyped(json: any, ignoreDiscrimina
     }
     return {
         
-        'disease': !exists(json, 'disease') ? undefined : json['disease'],
-        'doctorordersheet': !exists(json, 'doctorordersheet') ? undefined : json['doctorordersheet'],
-        'patient': !exists(json, 'patient') ? undefined : json['patient'],
-        'personnel': !exists(json, 'personnel') ? undefined : json['personnel'],
+        'date': !exists(json, 'date') ? undefined : json['date'],
+        'diseaseID': !exists(json, 'diseaseID') ? undefined : json['diseaseID'],
+        'doctorordersheetID': !exists(json, 'doctorordersheetID') ? undefined : json['doctorordersheetID'],
+        'note': !exists(json, 'note') ? undefined : json['note'],
+        'patientID': !exists(json, 'patientID') ? undefined : json['patientID'],
+        'personnelID': !exists(json, 'personnelID') ? undefined : json['personnelID'],
+        'times': !exists(json, 'times') ? undefined : json['times'],
     };
 }
 
@@ -71,10 +92,13 @@ export function ControllersChecksymptomToJSON(value?: ControllersChecksymptom | 
     }
     return {
         
-        'disease': value.disease,
-        'doctorordersheet': value.doctorordersheet,
-        'patient': value.patient,
-        'personnel': value.personnel,
+        'date': value.date,
+        'diseaseID': value.diseaseID,
+        'doctorordersheetID': value.doctorordersheetID,
+        'note': value.note,
+        'patientID': value.patientID,
+        'personnelID': value.personnelID,
+        'times': value.times,
     };
 }
 

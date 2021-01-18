@@ -570,6 +570,51 @@ var doc = `{
                 }
             }
         },
+        "/checksymptoms/{id}": {
+            "delete": {
+                "description": "get checksymptom by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Delete a checksymptom entity by ID",
+                "operationId": "delete-checksymptom",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Checksymptom ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            }
+        },
         "/dentalappointments": {
             "get": {
                 "description": "list dentalappointment entities",
@@ -988,7 +1033,7 @@ var doc = `{
                 "operationId": "create-disease",
                 "parameters": [
                     {
-                        "description": "disease entity",
+                        "description": "Disease entity",
                         "name": "disease",
                         "in": "body",
                         "required": true,
@@ -1030,7 +1075,7 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "disease ID",
+                        "description": "Disease ID",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -1076,13 +1121,13 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "disease ID",
+                        "description": "Disease ID",
                         "name": "id",
                         "in": "path",
                         "required": true
                     },
                     {
-                        "description": "disease entity",
+                        "description": "Disease entity",
                         "name": "disease",
                         "in": "body",
                         "required": true,
@@ -1122,7 +1167,7 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "disease ID",
+                        "description": "Disease ID",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -1214,7 +1259,7 @@ var doc = `{
                 "operationId": "create-doctorordersheet",
                 "parameters": [
                     {
-                        "description": "doctorordersheet entity",
+                        "description": "Doctorordersheet entity",
                         "name": "doctorordersheet",
                         "in": "body",
                         "required": true,
@@ -1347,7 +1392,7 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "DeleteDoctorordersheet ID",
+                        "description": "Doctorordersheet ID",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -3103,17 +3148,26 @@ var doc = `{
         "controllers.Checksymptom": {
             "type": "object",
             "properties": {
-                "disease": {
+                "date": {
+                    "type": "string"
+                },
+                "diseaseID": {
                     "type": "integer"
                 },
-                "doctorordersheet": {
+                "doctorordersheetID": {
                     "type": "integer"
                 },
-                "patient": {
+                "note": {
+                    "type": "string"
+                },
+                "patientID": {
                     "type": "integer"
                 },
-                "personnel": {
+                "personnelID": {
                     "type": "integer"
+                },
+                "times": {
+                    "type": "string"
                 }
             }
         },
