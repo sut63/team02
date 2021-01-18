@@ -106,28 +106,34 @@ export default function Create() {
   }, [loading]);
  
   const CreateBonedisease = async () => {
-    if((addedTime != null) && (patientid != null) && (personnelid != null) && (remedyid != null) && (adviceid != null) ){
+    if((addedTime != null)&& (addedTime != "") && (patientid != null) && (personnelid != null) && (remedyid != null) && (adviceid != null)&&(adviceid != "")){
       const bonedisease = {
          addedTime          : addedTime + ":00+07:00", //+ "T00:00:00+07:00", //2020-10-20T11:53  yyyy-MM-ddT07:mm
          patientID          : patientid,
          personnelID        : personnelid,
          remedyID           : remedyid,
-         advice           : adviceid
+         advice             : adviceid,
       }
       console.log(bonedisease);
 
-  const res:any = await api.createBonedisease({ bonedisease : bonedisease});
-      setStatus(true);
-      if (res.id != ''){
-          setAlert(true);
-          //window.location.reload(false);
+      const res:any = await api.createBonedisease({ bonedisease : bonedisease});
+             setStatus(true);
+            if (res.id != '') {
+                setAlert(true);
+                setTimeout(() => {
+                  setStatus(false);
+                }, 5000);
+                window.location.reload(false);
+            }
+        }
+        else {
+            setStatus(true);
+            setAlert(false);
             setTimeout(() => {
               setStatus(false);
-            }, 10000);
-      } 
-    }
+            }, 5000);
+        }
   };
- 
   const Patiant_handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     setPatientid(event.target.value as number);
     };
@@ -162,12 +168,11 @@ export default function Create() {
              <Alert variant="filled" severity="success">
                บันทึกเรียบร้อย!
              </Alert>
-           ) : null}
+           ) : (<Alert variant="filled" severity="error">
+               บันทึกไม่สำเร็จ!
+           </Alert>)}
          </div>
-       ) : 
-       <Alert variant="filled" severity="error">
-       ใส่ข้อมูลให้ครบก่อนบันทึก!
-       </Alert>}
+       ) : null}
 
       </ContentHeader>
         <Container maxWidth="sm">
