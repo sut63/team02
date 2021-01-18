@@ -83,7 +83,7 @@ export default function createDentalappointment() {
       setPersonnels(res);
     };
     getPersonnels();
-
+    setPersonnel(Number(localStorage.getItem("personaldata")))
   }, [loading]);
 
   const PatienthandleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
@@ -157,7 +157,21 @@ export default function createDentalappointment() {
         <div className={classes.root}>
           <form noValidate autoComplete="off">
           
-            
+            <div>
+              <FormControl
+                className={classes.margin}
+                variant="outlined"
+              >
+                <div><strong>ชื่อทันตแพทย์</strong></div>
+                <TextField
+                                    id="user"
+                                    type="string"
+                                    size="medium"
+                                    value={personnels.filter((filter:EntPersonnel) => filter.id == personnelName).map((item:EntPersonnel) => `${item.name}`)}
+                                    style={{ width: 400 }}
+                                />
+              </FormControl>
+            </div>
           <div>
               <FormControl
                 className={classes.margin}

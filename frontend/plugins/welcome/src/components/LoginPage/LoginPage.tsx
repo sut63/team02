@@ -80,13 +80,13 @@ export default function Login(props: any) {
   const LoginChecker = async () => {
     personnels.map((item: any) => {
       console.log(item.name);
-      if ((item.name == name) && (item.password == password)) {
+      if ((item.user == name) && (item.password == password)) {
         setAlert(true);
-        localStorage.setItem("PersonnelData", JSON.stringify(item.id));
-        localStorage.setItem("PersonnelData", JSON.stringify(item.edges.Personnel))
-        if (item.edges.Personnel == item.edges.Personnel) {
+        localStorage.setItem("personaldata", JSON.stringify(item.id));
+        
+        
           history.pushState("", "", "/WelcomePage");
-        }
+        
         window.location.reload(false);
 
       }
@@ -99,7 +99,7 @@ export default function Login(props: any) {
   return (
     <Page theme={pageTheme.home}>
       <Header
-        title={`ยินดีต้อนรับสู่ ระบบบันทึกนัดหมายโรคกระดูก`}
+        title={`ยินดีต้อนรับสู่ ระบบนัดหมาย`}
       ></Header>
       <Content>
         <ContentHeader title="โปรดทำการ Login ก่อนใช้งาน">
