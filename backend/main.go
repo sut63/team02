@@ -212,6 +212,7 @@ func main() {
 			Personnel{"Nutchaya", "Dentist", "nutchaya@email.com", "12321"},
 			Personnel{"Thanawut", "Doctor", "thanawut@email.com", "12321"},
 			Personnel{"Jay", "Physicaltherapy", "Jay@email.com", "12321"},
+			Personnel{"Varissara", "Obstetrician", "Varissara@email.com", "12321"},
 		},
 	}
 

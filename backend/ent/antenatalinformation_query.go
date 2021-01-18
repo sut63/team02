@@ -120,7 +120,7 @@ func (aq *AntenatalinformationQuery) QueryPregnancystatus() *PregnancystatusQuer
 		step := sqlgraph.NewStep(
 			sqlgraph.From(antenatalinformation.Table, antenatalinformation.FieldID, selector),
 			sqlgraph.To(pregnancystatus.Table, pregnancystatus.FieldID),
-			sqlgraph.Edge(sqlgraph.O2O, true, antenatalinformation.PregnancystatusTable, antenatalinformation.PregnancystatusColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, antenatalinformation.PregnancystatusTable, antenatalinformation.PregnancystatusColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(aq.driver.Dialect(), step)
 		return fromU, nil
@@ -142,7 +142,7 @@ func (aq *AntenatalinformationQuery) QueryRisks() *RisksQuery {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(antenatalinformation.Table, antenatalinformation.FieldID, selector),
 			sqlgraph.To(risks.Table, risks.FieldID),
-			sqlgraph.Edge(sqlgraph.O2O, true, antenatalinformation.RisksTable, antenatalinformation.RisksColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, antenatalinformation.RisksTable, antenatalinformation.RisksColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(aq.driver.Dialect(), step)
 		return fromU, nil

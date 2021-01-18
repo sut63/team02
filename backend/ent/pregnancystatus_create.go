@@ -26,23 +26,19 @@ func (pc *PregnancystatusCreate) SetPregnancystatus(s string) *PregnancystatusCr
 	return pc
 }
 
-// SetAntenatalinformationID sets the "Antenatalinformation" edge to the Antenatalinformation entity by ID.
-func (pc *PregnancystatusCreate) SetAntenatalinformationID(id int) *PregnancystatusCreate {
-	pc.mutation.SetAntenatalinformationID(id)
+// AddAntenatalinformationIDs adds the "Antenatalinformation" edge to the Antenatalinformation entity by IDs.
+func (pc *PregnancystatusCreate) AddAntenatalinformationIDs(ids ...int) *PregnancystatusCreate {
+	pc.mutation.AddAntenatalinformationIDs(ids...)
 	return pc
 }
 
-// SetNillableAntenatalinformationID sets the "Antenatalinformation" edge to the Antenatalinformation entity by ID if the given value is not nil.
-func (pc *PregnancystatusCreate) SetNillableAntenatalinformationID(id *int) *PregnancystatusCreate {
-	if id != nil {
-		pc = pc.SetAntenatalinformationID(*id)
+// AddAntenatalinformation adds the "Antenatalinformation" edges to the Antenatalinformation entity.
+func (pc *PregnancystatusCreate) AddAntenatalinformation(a ...*Antenatalinformation) *PregnancystatusCreate {
+	ids := make([]int, len(a))
+	for i := range a {
+		ids[i] = a[i].ID
 	}
-	return pc
-}
-
-// SetAntenatalinformation sets the "Antenatalinformation" edge to the Antenatalinformation entity.
-func (pc *PregnancystatusCreate) SetAntenatalinformation(a *Antenatalinformation) *PregnancystatusCreate {
-	return pc.SetAntenatalinformationID(a.ID)
+	return pc.AddAntenatalinformationIDs(ids...)
 }
 
 // Mutation returns the PregnancystatusMutation object of the builder.
@@ -141,7 +137,7 @@ func (pc *PregnancystatusCreate) createSpec() (*Pregnancystatus, *sqlgraph.Creat
 	}
 	if nodes := pc.mutation.AntenatalinformationIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2O,
+			Rel:     sqlgraph.O2M,
 			Inverse: false,
 			Table:   pregnancystatus.AntenatalinformationTable,
 			Columns: []string{pregnancystatus.AntenatalinformationColumn},

@@ -6206,7 +6206,8 @@ type PregnancystatusMutation struct {
 	id                           *int
 	_Pregnancystatus             *string
 	clearedFields                map[string]struct{}
-	_Antenatalinformation        *int
+	_Antenatalinformation        map[int]struct{}
+	removed_Antenatalinformation map[int]struct{}
 	cleared_Antenatalinformation bool
 	done                         bool
 	oldValue                     func(context.Context) (*Pregnancystatus, error)
@@ -6328,9 +6329,14 @@ func (m *PregnancystatusMutation) ResetPregnancystatus() {
 	m._Pregnancystatus = nil
 }
 
-// SetAntenatalinformationID sets the "Antenatalinformation" edge to the Antenatalinformation entity by id.
-func (m *PregnancystatusMutation) SetAntenatalinformationID(id int) {
-	m._Antenatalinformation = &id
+// AddAntenatalinformationIDs adds the "Antenatalinformation" edge to the Antenatalinformation entity by ids.
+func (m *PregnancystatusMutation) AddAntenatalinformationIDs(ids ...int) {
+	if m._Antenatalinformation == nil {
+		m._Antenatalinformation = make(map[int]struct{})
+	}
+	for i := range ids {
+		m._Antenatalinformation[ids[i]] = struct{}{}
+	}
 }
 
 // ClearAntenatalinformation clears the "Antenatalinformation" edge to the Antenatalinformation entity.
@@ -6343,20 +6349,28 @@ func (m *PregnancystatusMutation) AntenatalinformationCleared() bool {
 	return m.cleared_Antenatalinformation
 }
 
-// AntenatalinformationID returns the "Antenatalinformation" edge ID in the mutation.
-func (m *PregnancystatusMutation) AntenatalinformationID() (id int, exists bool) {
-	if m._Antenatalinformation != nil {
-		return *m._Antenatalinformation, true
+// RemoveAntenatalinformationIDs removes the "Antenatalinformation" edge to the Antenatalinformation entity by IDs.
+func (m *PregnancystatusMutation) RemoveAntenatalinformationIDs(ids ...int) {
+	if m.removed_Antenatalinformation == nil {
+		m.removed_Antenatalinformation = make(map[int]struct{})
+	}
+	for i := range ids {
+		m.removed_Antenatalinformation[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedAntenatalinformation returns the removed IDs of the "Antenatalinformation" edge to the Antenatalinformation entity.
+func (m *PregnancystatusMutation) RemovedAntenatalinformationIDs() (ids []int) {
+	for id := range m.removed_Antenatalinformation {
+		ids = append(ids, id)
 	}
 	return
 }
 
 // AntenatalinformationIDs returns the "Antenatalinformation" edge IDs in the mutation.
-// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
-// AntenatalinformationID instead. It exists only for internal usage by the builders.
 func (m *PregnancystatusMutation) AntenatalinformationIDs() (ids []int) {
-	if id := m._Antenatalinformation; id != nil {
-		ids = append(ids, *id)
+	for id := range m._Antenatalinformation {
+		ids = append(ids, id)
 	}
 	return
 }
@@ -6365,6 +6379,7 @@ func (m *PregnancystatusMutation) AntenatalinformationIDs() (ids []int) {
 func (m *PregnancystatusMutation) ResetAntenatalinformation() {
 	m._Antenatalinformation = nil
 	m.cleared_Antenatalinformation = false
+	m.removed_Antenatalinformation = nil
 }
 
 // Op returns the operation name.
@@ -6492,9 +6507,11 @@ func (m *PregnancystatusMutation) AddedEdges() []string {
 func (m *PregnancystatusMutation) AddedIDs(name string) []ent.Value {
 	switch name {
 	case pregnancystatus.EdgeAntenatalinformation:
-		if id := m._Antenatalinformation; id != nil {
-			return []ent.Value{*id}
+		ids := make([]ent.Value, 0, len(m._Antenatalinformation))
+		for id := range m._Antenatalinformation {
+			ids = append(ids, id)
 		}
+		return ids
 	}
 	return nil
 }
@@ -6502,6 +6519,9 @@ func (m *PregnancystatusMutation) AddedIDs(name string) []ent.Value {
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *PregnancystatusMutation) RemovedEdges() []string {
 	edges := make([]string, 0, 1)
+	if m.removed_Antenatalinformation != nil {
+		edges = append(edges, pregnancystatus.EdgeAntenatalinformation)
+	}
 	return edges
 }
 
@@ -6509,6 +6529,12 @@ func (m *PregnancystatusMutation) RemovedEdges() []string {
 // the given name in this mutation.
 func (m *PregnancystatusMutation) RemovedIDs(name string) []ent.Value {
 	switch name {
+	case pregnancystatus.EdgeAntenatalinformation:
+		ids := make([]ent.Value, 0, len(m.removed_Antenatalinformation))
+		for id := range m.removed_Antenatalinformation {
+			ids = append(ids, id)
+		}
+		return ids
 	}
 	return nil
 }
@@ -6536,9 +6562,6 @@ func (m *PregnancystatusMutation) EdgeCleared(name string) bool {
 // if that edge is not defined in the schema.
 func (m *PregnancystatusMutation) ClearEdge(name string) error {
 	switch name {
-	case pregnancystatus.EdgeAntenatalinformation:
-		m.ClearAntenatalinformation()
-		return nil
 	}
 	return fmt.Errorf("unknown Pregnancystatus unique edge %s", name)
 }
@@ -6941,7 +6964,8 @@ type RisksMutation struct {
 	id                           *int
 	_Risks                       *string
 	clearedFields                map[string]struct{}
-	_Antenatalinformation        *int
+	_Antenatalinformation        map[int]struct{}
+	removed_Antenatalinformation map[int]struct{}
 	cleared_Antenatalinformation bool
 	done                         bool
 	oldValue                     func(context.Context) (*Risks, error)
@@ -7063,9 +7087,14 @@ func (m *RisksMutation) ResetRisks() {
 	m._Risks = nil
 }
 
-// SetAntenatalinformationID sets the "Antenatalinformation" edge to the Antenatalinformation entity by id.
-func (m *RisksMutation) SetAntenatalinformationID(id int) {
-	m._Antenatalinformation = &id
+// AddAntenatalinformationIDs adds the "Antenatalinformation" edge to the Antenatalinformation entity by ids.
+func (m *RisksMutation) AddAntenatalinformationIDs(ids ...int) {
+	if m._Antenatalinformation == nil {
+		m._Antenatalinformation = make(map[int]struct{})
+	}
+	for i := range ids {
+		m._Antenatalinformation[ids[i]] = struct{}{}
+	}
 }
 
 // ClearAntenatalinformation clears the "Antenatalinformation" edge to the Antenatalinformation entity.
@@ -7078,20 +7107,28 @@ func (m *RisksMutation) AntenatalinformationCleared() bool {
 	return m.cleared_Antenatalinformation
 }
 
-// AntenatalinformationID returns the "Antenatalinformation" edge ID in the mutation.
-func (m *RisksMutation) AntenatalinformationID() (id int, exists bool) {
-	if m._Antenatalinformation != nil {
-		return *m._Antenatalinformation, true
+// RemoveAntenatalinformationIDs removes the "Antenatalinformation" edge to the Antenatalinformation entity by IDs.
+func (m *RisksMutation) RemoveAntenatalinformationIDs(ids ...int) {
+	if m.removed_Antenatalinformation == nil {
+		m.removed_Antenatalinformation = make(map[int]struct{})
+	}
+	for i := range ids {
+		m.removed_Antenatalinformation[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedAntenatalinformation returns the removed IDs of the "Antenatalinformation" edge to the Antenatalinformation entity.
+func (m *RisksMutation) RemovedAntenatalinformationIDs() (ids []int) {
+	for id := range m.removed_Antenatalinformation {
+		ids = append(ids, id)
 	}
 	return
 }
 
 // AntenatalinformationIDs returns the "Antenatalinformation" edge IDs in the mutation.
-// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
-// AntenatalinformationID instead. It exists only for internal usage by the builders.
 func (m *RisksMutation) AntenatalinformationIDs() (ids []int) {
-	if id := m._Antenatalinformation; id != nil {
-		ids = append(ids, *id)
+	for id := range m._Antenatalinformation {
+		ids = append(ids, id)
 	}
 	return
 }
@@ -7100,6 +7137,7 @@ func (m *RisksMutation) AntenatalinformationIDs() (ids []int) {
 func (m *RisksMutation) ResetAntenatalinformation() {
 	m._Antenatalinformation = nil
 	m.cleared_Antenatalinformation = false
+	m.removed_Antenatalinformation = nil
 }
 
 // Op returns the operation name.
@@ -7227,9 +7265,11 @@ func (m *RisksMutation) AddedEdges() []string {
 func (m *RisksMutation) AddedIDs(name string) []ent.Value {
 	switch name {
 	case risks.EdgeAntenatalinformation:
-		if id := m._Antenatalinformation; id != nil {
-			return []ent.Value{*id}
+		ids := make([]ent.Value, 0, len(m._Antenatalinformation))
+		for id := range m._Antenatalinformation {
+			ids = append(ids, id)
 		}
+		return ids
 	}
 	return nil
 }
@@ -7237,6 +7277,9 @@ func (m *RisksMutation) AddedIDs(name string) []ent.Value {
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *RisksMutation) RemovedEdges() []string {
 	edges := make([]string, 0, 1)
+	if m.removed_Antenatalinformation != nil {
+		edges = append(edges, risks.EdgeAntenatalinformation)
+	}
 	return edges
 }
 
@@ -7244,6 +7287,12 @@ func (m *RisksMutation) RemovedEdges() []string {
 // the given name in this mutation.
 func (m *RisksMutation) RemovedIDs(name string) []ent.Value {
 	switch name {
+	case risks.EdgeAntenatalinformation:
+		ids := make([]ent.Value, 0, len(m.removed_Antenatalinformation))
+		for id := range m.removed_Antenatalinformation {
+			ids = append(ids, id)
+		}
+		return ids
 	}
 	return nil
 }
@@ -7271,9 +7320,6 @@ func (m *RisksMutation) EdgeCleared(name string) bool {
 // if that edge is not defined in the schema.
 func (m *RisksMutation) ClearEdge(name string) error {
 	switch name {
-	case risks.EdgeAntenatalinformation:
-		m.ClearAntenatalinformation()
-		return nil
 	}
 	return fmt.Errorf("unknown Risks unique edge %s", name)
 }

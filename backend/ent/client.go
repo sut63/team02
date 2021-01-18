@@ -352,7 +352,7 @@ func (c *AntenatalinformationClient) QueryPregnancystatus(a *Antenatalinformatio
 		step := sqlgraph.NewStep(
 			sqlgraph.From(antenatalinformation.Table, antenatalinformation.FieldID, id),
 			sqlgraph.To(pregnancystatus.Table, pregnancystatus.FieldID),
-			sqlgraph.Edge(sqlgraph.O2O, true, antenatalinformation.PregnancystatusTable, antenatalinformation.PregnancystatusColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, antenatalinformation.PregnancystatusTable, antenatalinformation.PregnancystatusColumn),
 		)
 		fromV = sqlgraph.Neighbors(a.driver.Dialect(), step)
 		return fromV, nil
@@ -368,7 +368,7 @@ func (c *AntenatalinformationClient) QueryRisks(a *Antenatalinformation) *RisksQ
 		step := sqlgraph.NewStep(
 			sqlgraph.From(antenatalinformation.Table, antenatalinformation.FieldID, id),
 			sqlgraph.To(risks.Table, risks.FieldID),
-			sqlgraph.Edge(sqlgraph.O2O, true, antenatalinformation.RisksTable, antenatalinformation.RisksColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, antenatalinformation.RisksTable, antenatalinformation.RisksColumn),
 		)
 		fromV = sqlgraph.Neighbors(a.driver.Dialect(), step)
 		return fromV, nil
@@ -1832,7 +1832,7 @@ func (c *PregnancystatusClient) QueryAntenatalinformation(pr *Pregnancystatus) *
 		step := sqlgraph.NewStep(
 			sqlgraph.From(pregnancystatus.Table, pregnancystatus.FieldID, id),
 			sqlgraph.To(antenatalinformation.Table, antenatalinformation.FieldID),
-			sqlgraph.Edge(sqlgraph.O2O, false, pregnancystatus.AntenatalinformationTable, pregnancystatus.AntenatalinformationColumn),
+			sqlgraph.Edge(sqlgraph.O2M, false, pregnancystatus.AntenatalinformationTable, pregnancystatus.AntenatalinformationColumn),
 		)
 		fromV = sqlgraph.Neighbors(pr.driver.Dialect(), step)
 		return fromV, nil
@@ -2040,7 +2040,7 @@ func (c *RisksClient) QueryAntenatalinformation(r *Risks) *AntenatalinformationQ
 		step := sqlgraph.NewStep(
 			sqlgraph.From(risks.Table, risks.FieldID, id),
 			sqlgraph.To(antenatalinformation.Table, antenatalinformation.FieldID),
-			sqlgraph.Edge(sqlgraph.O2O, false, risks.AntenatalinformationTable, risks.AntenatalinformationColumn),
+			sqlgraph.Edge(sqlgraph.O2M, false, risks.AntenatalinformationTable, risks.AntenatalinformationColumn),
 		)
 		fromV = sqlgraph.Neighbors(r.driver.Dialect(), step)
 		return fromV, nil

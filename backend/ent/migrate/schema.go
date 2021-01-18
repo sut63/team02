@@ -15,8 +15,8 @@ var (
 		{Name: "time", Type: field.TypeTime},
 		{Name: "Patient_id", Type: field.TypeInt, Nullable: true},
 		{Name: "Personnel_id", Type: field.TypeInt, Nullable: true},
-		{Name: "pregnancystatus_antenatalinformation", Type: field.TypeInt, Unique: true, Nullable: true},
-		{Name: "risks_antenatalinformation", Type: field.TypeInt, Unique: true, Nullable: true},
+		{Name: "pregnancystatus_antenatalinformation", Type: field.TypeInt, Nullable: true},
+		{Name: "risks_antenatalinformation", Type: field.TypeInt, Nullable: true},
 	}
 	// AntenatalinformationsTable holds the schema information for the "antenatalinformations" table.
 	AntenatalinformationsTable = &schema.Table{

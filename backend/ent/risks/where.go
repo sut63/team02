@@ -215,7 +215,7 @@ func HasAntenatalinformation() predicate.Risks {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
 			sqlgraph.To(AntenatalinformationTable, FieldID),
-			sqlgraph.Edge(sqlgraph.O2O, false, AntenatalinformationTable, AntenatalinformationColumn),
+			sqlgraph.Edge(sqlgraph.O2M, false, AntenatalinformationTable, AntenatalinformationColumn),
 		)
 		sqlgraph.HasNeighbors(s, step)
 	})
@@ -227,7 +227,7 @@ func HasAntenatalinformationWith(preds ...predicate.Antenatalinformation) predic
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
 			sqlgraph.To(AntenatalinformationInverseTable, FieldID),
-			sqlgraph.Edge(sqlgraph.O2O, false, AntenatalinformationTable, AntenatalinformationColumn),
+			sqlgraph.Edge(sqlgraph.O2M, false, AntenatalinformationTable, AntenatalinformationColumn),
 		)
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {

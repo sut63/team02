@@ -26,23 +26,19 @@ func (rc *RisksCreate) SetRisks(s string) *RisksCreate {
 	return rc
 }
 
-// SetAntenatalinformationID sets the "Antenatalinformation" edge to the Antenatalinformation entity by ID.
-func (rc *RisksCreate) SetAntenatalinformationID(id int) *RisksCreate {
-	rc.mutation.SetAntenatalinformationID(id)
+// AddAntenatalinformationIDs adds the "Antenatalinformation" edge to the Antenatalinformation entity by IDs.
+func (rc *RisksCreate) AddAntenatalinformationIDs(ids ...int) *RisksCreate {
+	rc.mutation.AddAntenatalinformationIDs(ids...)
 	return rc
 }
 
-// SetNillableAntenatalinformationID sets the "Antenatalinformation" edge to the Antenatalinformation entity by ID if the given value is not nil.
-func (rc *RisksCreate) SetNillableAntenatalinformationID(id *int) *RisksCreate {
-	if id != nil {
-		rc = rc.SetAntenatalinformationID(*id)
+// AddAntenatalinformation adds the "Antenatalinformation" edges to the Antenatalinformation entity.
+func (rc *RisksCreate) AddAntenatalinformation(a ...*Antenatalinformation) *RisksCreate {
+	ids := make([]int, len(a))
+	for i := range a {
+		ids[i] = a[i].ID
 	}
-	return rc
-}
-
-// SetAntenatalinformation sets the "Antenatalinformation" edge to the Antenatalinformation entity.
-func (rc *RisksCreate) SetAntenatalinformation(a *Antenatalinformation) *RisksCreate {
-	return rc.SetAntenatalinformationID(a.ID)
+	return rc.AddAntenatalinformationIDs(ids...)
 }
 
 // Mutation returns the RisksMutation object of the builder.
@@ -141,7 +137,7 @@ func (rc *RisksCreate) createSpec() (*Risks, *sqlgraph.CreateSpec) {
 	}
 	if nodes := rc.mutation.AntenatalinformationIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2O,
+			Rel:     sqlgraph.O2M,
 			Inverse: false,
 			Table:   risks.AntenatalinformationTable,
 			Columns: []string{risks.AntenatalinformationColumn},

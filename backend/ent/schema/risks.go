@@ -21,6 +21,6 @@ func (Risks) Fields() []ent.Field {
 // Edges of the Risks.
 func (Risks) Edges() []ent.Edge {
 	return []ent.Edge{
-		edge.To("Antenatalinformation", Antenatalinformation.Type).Unique(),
+		edge.To("Antenatalinformation", Antenatalinformation.Type),
 	}
 }

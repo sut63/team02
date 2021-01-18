@@ -257,7 +257,7 @@ func (ac *AntenatalinformationCreate) createSpec() (*Antenatalinformation, *sqlg
 	}
 	if nodes := ac.mutation.PregnancystatusIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2O,
+			Rel:     sqlgraph.M2O,
 			Inverse: true,
 			Table:   antenatalinformation.PregnancystatusTable,
 			Columns: []string{antenatalinformation.PregnancystatusColumn},
@@ -276,7 +276,7 @@ func (ac *AntenatalinformationCreate) createSpec() (*Antenatalinformation, *sqlg
 	}
 	if nodes := ac.mutation.RisksIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2O,
+			Rel:     sqlgraph.M2O,
 			Inverse: true,
 			Table:   antenatalinformation.RisksTable,
 			Columns: []string{antenatalinformation.RisksColumn},

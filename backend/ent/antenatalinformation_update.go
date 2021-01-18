@@ -333,7 +333,7 @@ func (au *AntenatalinformationUpdate) sqlSave(ctx context.Context) (n int, err e
 	}
 	if au.mutation.PregnancystatusCleared() {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2O,
+			Rel:     sqlgraph.M2O,
 			Inverse: true,
 			Table:   antenatalinformation.PregnancystatusTable,
 			Columns: []string{antenatalinformation.PregnancystatusColumn},
@@ -349,7 +349,7 @@ func (au *AntenatalinformationUpdate) sqlSave(ctx context.Context) (n int, err e
 	}
 	if nodes := au.mutation.PregnancystatusIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2O,
+			Rel:     sqlgraph.M2O,
 			Inverse: true,
 			Table:   antenatalinformation.PregnancystatusTable,
 			Columns: []string{antenatalinformation.PregnancystatusColumn},
@@ -368,7 +368,7 @@ func (au *AntenatalinformationUpdate) sqlSave(ctx context.Context) (n int, err e
 	}
 	if au.mutation.RisksCleared() {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2O,
+			Rel:     sqlgraph.M2O,
 			Inverse: true,
 			Table:   antenatalinformation.RisksTable,
 			Columns: []string{antenatalinformation.RisksColumn},
@@ -384,7 +384,7 @@ func (au *AntenatalinformationUpdate) sqlSave(ctx context.Context) (n int, err e
 	}
 	if nodes := au.mutation.RisksIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2O,
+			Rel:     sqlgraph.M2O,
 			Inverse: true,
 			Table:   antenatalinformation.RisksTable,
 			Columns: []string{antenatalinformation.RisksColumn},
@@ -719,7 +719,7 @@ func (auo *AntenatalinformationUpdateOne) sqlSave(ctx context.Context) (_node *A
 	}
 	if auo.mutation.PregnancystatusCleared() {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2O,
+			Rel:     sqlgraph.M2O,
 			Inverse: true,
 			Table:   antenatalinformation.PregnancystatusTable,
 			Columns: []string{antenatalinformation.PregnancystatusColumn},
@@ -735,7 +735,7 @@ func (auo *AntenatalinformationUpdateOne) sqlSave(ctx context.Context) (_node *A
 	}
 	if nodes := auo.mutation.PregnancystatusIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2O,
+			Rel:     sqlgraph.M2O,
 			Inverse: true,
 			Table:   antenatalinformation.PregnancystatusTable,
 			Columns: []string{antenatalinformation.PregnancystatusColumn},
@@ -754,7 +754,7 @@ func (auo *AntenatalinformationUpdateOne) sqlSave(ctx context.Context) (_node *A
 	}
 	if auo.mutation.RisksCleared() {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2O,
+			Rel:     sqlgraph.M2O,
 			Inverse: true,
 			Table:   antenatalinformation.RisksTable,
 			Columns: []string{antenatalinformation.RisksColumn},
@@ -770,7 +770,7 @@ func (auo *AntenatalinformationUpdateOne) sqlSave(ctx context.Context) (_node *A
 	}
 	if nodes := auo.mutation.RisksIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2O,
+			Rel:     sqlgraph.M2O,
 			Inverse: true,
 			Table:   antenatalinformation.RisksTable,
 			Columns: []string{antenatalinformation.RisksColumn},

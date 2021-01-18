@@ -33,23 +33,19 @@ func (ru *RisksUpdate) SetRisks(s string) *RisksUpdate {
 	return ru
 }
 
-// SetAntenatalinformationID sets the "Antenatalinformation" edge to the Antenatalinformation entity by ID.
-func (ru *RisksUpdate) SetAntenatalinformationID(id int) *RisksUpdate {
-	ru.mutation.SetAntenatalinformationID(id)
+// AddAntenatalinformationIDs adds the "Antenatalinformation" edge to the Antenatalinformation entity by IDs.
+func (ru *RisksUpdate) AddAntenatalinformationIDs(ids ...int) *RisksUpdate {
+	ru.mutation.AddAntenatalinformationIDs(ids...)
 	return ru
 }
 
-// SetNillableAntenatalinformationID sets the "Antenatalinformation" edge to the Antenatalinformation entity by ID if the given value is not nil.
-func (ru *RisksUpdate) SetNillableAntenatalinformationID(id *int) *RisksUpdate {
-	if id != nil {
-		ru = ru.SetAntenatalinformationID(*id)
+// AddAntenatalinformation adds the "Antenatalinformation" edges to the Antenatalinformation entity.
+func (ru *RisksUpdate) AddAntenatalinformation(a ...*Antenatalinformation) *RisksUpdate {
+	ids := make([]int, len(a))
+	for i := range a {
+		ids[i] = a[i].ID
 	}
-	return ru
-}
-
-// SetAntenatalinformation sets the "Antenatalinformation" edge to the Antenatalinformation entity.
-func (ru *RisksUpdate) SetAntenatalinformation(a *Antenatalinformation) *RisksUpdate {
-	return ru.SetAntenatalinformationID(a.ID)
+	return ru.AddAntenatalinformationIDs(ids...)
 }
 
 // Mutation returns the RisksMutation object of the builder.
@@ -57,10 +53,25 @@ func (ru *RisksUpdate) Mutation() *RisksMutation {
 	return ru.mutation
 }
 
-// ClearAntenatalinformation clears the "Antenatalinformation" edge to the Antenatalinformation entity.
+// ClearAntenatalinformation clears all "Antenatalinformation" edges to the Antenatalinformation entity.
 func (ru *RisksUpdate) ClearAntenatalinformation() *RisksUpdate {
 	ru.mutation.ClearAntenatalinformation()
 	return ru
+}
+
+// RemoveAntenatalinformationIDs removes the "Antenatalinformation" edge to Antenatalinformation entities by IDs.
+func (ru *RisksUpdate) RemoveAntenatalinformationIDs(ids ...int) *RisksUpdate {
+	ru.mutation.RemoveAntenatalinformationIDs(ids...)
+	return ru
+}
+
+// RemoveAntenatalinformation removes "Antenatalinformation" edges to Antenatalinformation entities.
+func (ru *RisksUpdate) RemoveAntenatalinformation(a ...*Antenatalinformation) *RisksUpdate {
+	ids := make([]int, len(a))
+	for i := range a {
+		ids[i] = a[i].ID
+	}
+	return ru.RemoveAntenatalinformationIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -157,7 +168,7 @@ func (ru *RisksUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if ru.mutation.AntenatalinformationCleared() {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2O,
+			Rel:     sqlgraph.O2M,
 			Inverse: false,
 			Table:   risks.AntenatalinformationTable,
 			Columns: []string{risks.AntenatalinformationColumn},
@@ -171,9 +182,28 @@ func (ru *RisksUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
+	if nodes := ru.mutation.RemovedAntenatalinformationIDs(); len(nodes) > 0 && !ru.mutation.AntenatalinformationCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   risks.AntenatalinformationTable,
+			Columns: []string{risks.AntenatalinformationColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: antenatalinformation.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
 	if nodes := ru.mutation.AntenatalinformationIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2O,
+			Rel:     sqlgraph.O2M,
 			Inverse: false,
 			Table:   risks.AntenatalinformationTable,
 			Columns: []string{risks.AntenatalinformationColumn},
@@ -214,23 +244,19 @@ func (ruo *RisksUpdateOne) SetRisks(s string) *RisksUpdateOne {
 	return ruo
 }
 
-// SetAntenatalinformationID sets the "Antenatalinformation" edge to the Antenatalinformation entity by ID.
-func (ruo *RisksUpdateOne) SetAntenatalinformationID(id int) *RisksUpdateOne {
-	ruo.mutation.SetAntenatalinformationID(id)
+// AddAntenatalinformationIDs adds the "Antenatalinformation" edge to the Antenatalinformation entity by IDs.
+func (ruo *RisksUpdateOne) AddAntenatalinformationIDs(ids ...int) *RisksUpdateOne {
+	ruo.mutation.AddAntenatalinformationIDs(ids...)
 	return ruo
 }
 
-// SetNillableAntenatalinformationID sets the "Antenatalinformation" edge to the Antenatalinformation entity by ID if the given value is not nil.
-func (ruo *RisksUpdateOne) SetNillableAntenatalinformationID(id *int) *RisksUpdateOne {
-	if id != nil {
-		ruo = ruo.SetAntenatalinformationID(*id)
+// AddAntenatalinformation adds the "Antenatalinformation" edges to the Antenatalinformation entity.
+func (ruo *RisksUpdateOne) AddAntenatalinformation(a ...*Antenatalinformation) *RisksUpdateOne {
+	ids := make([]int, len(a))
+	for i := range a {
+		ids[i] = a[i].ID
 	}
-	return ruo
-}
-
-// SetAntenatalinformation sets the "Antenatalinformation" edge to the Antenatalinformation entity.
-func (ruo *RisksUpdateOne) SetAntenatalinformation(a *Antenatalinformation) *RisksUpdateOne {
-	return ruo.SetAntenatalinformationID(a.ID)
+	return ruo.AddAntenatalinformationIDs(ids...)
 }
 
 // Mutation returns the RisksMutation object of the builder.
@@ -238,10 +264,25 @@ func (ruo *RisksUpdateOne) Mutation() *RisksMutation {
 	return ruo.mutation
 }
 
-// ClearAntenatalinformation clears the "Antenatalinformation" edge to the Antenatalinformation entity.
+// ClearAntenatalinformation clears all "Antenatalinformation" edges to the Antenatalinformation entity.
 func (ruo *RisksUpdateOne) ClearAntenatalinformation() *RisksUpdateOne {
 	ruo.mutation.ClearAntenatalinformation()
 	return ruo
+}
+
+// RemoveAntenatalinformationIDs removes the "Antenatalinformation" edge to Antenatalinformation entities by IDs.
+func (ruo *RisksUpdateOne) RemoveAntenatalinformationIDs(ids ...int) *RisksUpdateOne {
+	ruo.mutation.RemoveAntenatalinformationIDs(ids...)
+	return ruo
+}
+
+// RemoveAntenatalinformation removes "Antenatalinformation" edges to Antenatalinformation entities.
+func (ruo *RisksUpdateOne) RemoveAntenatalinformation(a ...*Antenatalinformation) *RisksUpdateOne {
+	ids := make([]int, len(a))
+	for i := range a {
+		ids[i] = a[i].ID
+	}
+	return ruo.RemoveAntenatalinformationIDs(ids...)
 }
 
 // Save executes the query and returns the updated Risks entity.
@@ -336,7 +377,7 @@ func (ruo *RisksUpdateOne) sqlSave(ctx context.Context) (_node *Risks, err error
 	}
 	if ruo.mutation.AntenatalinformationCleared() {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2O,
+			Rel:     sqlgraph.O2M,
 			Inverse: false,
 			Table:   risks.AntenatalinformationTable,
 			Columns: []string{risks.AntenatalinformationColumn},
@@ -350,9 +391,28 @@ func (ruo *RisksUpdateOne) sqlSave(ctx context.Context) (_node *Risks, err error
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
+	if nodes := ruo.mutation.RemovedAntenatalinformationIDs(); len(nodes) > 0 && !ruo.mutation.AntenatalinformationCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   risks.AntenatalinformationTable,
+			Columns: []string{risks.AntenatalinformationColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: antenatalinformation.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
 	if nodes := ruo.mutation.AntenatalinformationIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2O,
+			Rel:     sqlgraph.O2M,
 			Inverse: false,
 			Table:   risks.AntenatalinformationTable,
 			Columns: []string{risks.AntenatalinformationColumn},

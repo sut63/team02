@@ -21,6 +21,6 @@ func (Pregnancystatus) Fields() []ent.Field {
 // Edges of the Pregnancystatus.
 func (Pregnancystatus) Edges() []ent.Edge {
 	return []ent.Edge{
-		edge.To("Antenatalinformation" , Antenatalinformation.Type).Unique(),
+		edge.To("Antenatalinformation" , Antenatalinformation.Type),
 	}
 }

@@ -481,10 +481,11 @@ definitions:
   ent.PregnancystatusEdges:
     properties:
       antenatalinformation:
-        $ref: '#/definitions/ent.Antenatalinformation'
         description: Antenatalinformation holds the value of the Antenatalinformation
           edge.
-        type: object
+        items:
+          $ref: '#/definitions/ent.Antenatalinformation'
+        type: array
     type: object
   ent.Remedy:
     properties:
@@ -527,10 +528,11 @@ definitions:
   ent.RisksEdges:
     properties:
       antenatalinformation:
-        $ref: '#/definitions/ent.Antenatalinformation'
         description: Antenatalinformation holds the value of the Antenatalinformation
           edge.
-        type: object
+        items:
+          $ref: '#/definitions/ent.Antenatalinformation'
+        type: array
     type: object
   ent.Status:
     properties:

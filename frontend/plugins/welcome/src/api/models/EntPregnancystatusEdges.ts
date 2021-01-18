@@ -27,11 +27,11 @@ import {
  */
 export interface EntPregnancystatusEdges {
     /**
-     * 
-     * @type {EntAntenatalinformation}
+     * Antenatalinformation holds the value of the Antenatalinformation edge.
+     * @type {Array<EntAntenatalinformation>}
      * @memberof EntPregnancystatusEdges
      */
-    antenatalinformation?: EntAntenatalinformation;
+    antenatalinformation?: Array<EntAntenatalinformation>;
 }
 
 export function EntPregnancystatusEdgesFromJSON(json: any): EntPregnancystatusEdges {
@@ -44,7 +44,7 @@ export function EntPregnancystatusEdgesFromJSONTyped(json: any, ignoreDiscrimina
     }
     return {
         
-        'antenatalinformation': !exists(json, 'antenatalinformation') ? undefined : EntAntenatalinformationFromJSON(json['antenatalinformation']),
+        'antenatalinformation': !exists(json, 'antenatalinformation') ? undefined : ((json['antenatalinformation'] as Array<any>).map(EntAntenatalinformationFromJSON)),
     };
 }
 
@@ -57,7 +57,7 @@ export function EntPregnancystatusEdgesToJSON(value?: EntPregnancystatusEdges | 
     }
     return {
         
-        'antenatalinformation': EntAntenatalinformationToJSON(value.antenatalinformation),
+        'antenatalinformation': value.antenatalinformation === undefined ? undefined : ((value.antenatalinformation as Array<any>).map(EntAntenatalinformationToJSON)),
     };
 }
 

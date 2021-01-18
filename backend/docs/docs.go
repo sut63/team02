@@ -3689,8 +3689,10 @@ var doc = `{
             "properties": {
                 "antenatalinformation": {
                     "description": "Antenatalinformation holds the value of the Antenatalinformation edge.",
-                    "type": "object",
-                    "$ref": "#/definitions/ent.Antenatalinformation"
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ent.Antenatalinformation"
+                    }
                 }
             }
         },
@@ -3747,8 +3749,10 @@ var doc = `{
             "properties": {
                 "antenatalinformation": {
                     "description": "Antenatalinformation holds the value of the Antenatalinformation edge.",
-                    "type": "object",
-                    "$ref": "#/definitions/ent.Antenatalinformation"
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ent.Antenatalinformation"
+                    }
                 }
             }
         },

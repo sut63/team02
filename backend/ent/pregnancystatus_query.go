@@ -70,7 +70,7 @@ func (pq *PregnancystatusQuery) QueryAntenatalinformation() *Antenatalinformatio
 		step := sqlgraph.NewStep(
 			sqlgraph.From(pregnancystatus.Table, pregnancystatus.FieldID, selector),
 			sqlgraph.To(antenatalinformation.Table, antenatalinformation.FieldID),
-			sqlgraph.Edge(sqlgraph.O2O, false, pregnancystatus.AntenatalinformationTable, pregnancystatus.AntenatalinformationColumn),
+			sqlgraph.Edge(sqlgraph.O2M, false, pregnancystatus.AntenatalinformationTable, pregnancystatus.AntenatalinformationColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(pq.driver.Dialect(), step)
 		return fromU, nil
@@ -372,6 +372,7 @@ func (pq *PregnancystatusQuery) sqlAll(ctx context.Context) ([]*Pregnancystatus,
 		for i := range nodes {
 			fks = append(fks, nodes[i].ID)
 			nodeids[nodes[i].ID] = nodes[i]
+			nodes[i].Edges.Antenatalinformation = []*Antenatalinformation{}
 		}
 		query.withFKs = true
 		query.Where(predicate.Antenatalinformation(func(s *sql.Selector) {
@@ -390,7 +391,7 @@ func (pq *PregnancystatusQuery) sqlAll(ctx context.Context) ([]*Pregnancystatus,
 			if !ok {
 				return nil, fmt.Errorf(`unexpected foreign-key "pregnancystatus_antenatalinformation" returned %v for node %v`, *fk, n.ID)
 			}
-			node.Edges.Antenatalinformation = n
+			node.Edges.Antenatalinformation = append(node.Edges.Antenatalinformation, n)
 		}
 	}
 

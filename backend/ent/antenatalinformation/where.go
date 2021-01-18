@@ -321,7 +321,7 @@ func HasPregnancystatus() predicate.Antenatalinformation {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
 			sqlgraph.To(PregnancystatusTable, FieldID),
-			sqlgraph.Edge(sqlgraph.O2O, true, PregnancystatusTable, PregnancystatusColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, PregnancystatusTable, PregnancystatusColumn),
 		)
 		sqlgraph.HasNeighbors(s, step)
 	})
@@ -333,7 +333,7 @@ func HasPregnancystatusWith(preds ...predicate.Pregnancystatus) predicate.Antena
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
 			sqlgraph.To(PregnancystatusInverseTable, FieldID),
-			sqlgraph.Edge(sqlgraph.O2O, true, PregnancystatusTable, PregnancystatusColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, PregnancystatusTable, PregnancystatusColumn),
 		)
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
@@ -349,7 +349,7 @@ func HasRisks() predicate.Antenatalinformation {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
 			sqlgraph.To(RisksTable, FieldID),
-			sqlgraph.Edge(sqlgraph.O2O, true, RisksTable, RisksColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, RisksTable, RisksColumn),
 		)
 		sqlgraph.HasNeighbors(s, step)
 	})
@@ -361,7 +361,7 @@ func HasRisksWith(preds ...predicate.Risks) predicate.Antenatalinformation {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
 			sqlgraph.To(RisksInverseTable, FieldID),
-			sqlgraph.Edge(sqlgraph.O2O, true, RisksTable, RisksColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, RisksTable, RisksColumn),
 		)
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {

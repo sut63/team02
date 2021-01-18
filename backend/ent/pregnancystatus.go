@@ -7,7 +7,6 @@ import (
 	"strings"
 
 	"github.com/facebook/ent/dialect/sql"
-	"github.com/to63/app/ent/antenatalinformation"
 	"github.com/to63/app/ent/pregnancystatus"
 )
 
@@ -26,21 +25,16 @@ type Pregnancystatus struct {
 // PregnancystatusEdges holds the relations/edges for other nodes in the graph.
 type PregnancystatusEdges struct {
 	// Antenatalinformation holds the value of the Antenatalinformation edge.
-	Antenatalinformation *Antenatalinformation
+	Antenatalinformation []*Antenatalinformation
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
 	loadedTypes [1]bool
 }
 
 // AntenatalinformationOrErr returns the Antenatalinformation value or an error if the edge
-// was not loaded in eager-loading, or loaded but was not found.
-func (e PregnancystatusEdges) AntenatalinformationOrErr() (*Antenatalinformation, error) {
+// was not loaded in eager-loading.
+func (e PregnancystatusEdges) AntenatalinformationOrErr() ([]*Antenatalinformation, error) {
 	if e.loadedTypes[0] {
-		if e.Antenatalinformation == nil {
-			// The edge Antenatalinformation was loaded in eager-loading,
-			// but was not found.
-			return nil, &NotFoundError{label: antenatalinformation.Label}
-		}
 		return e.Antenatalinformation, nil
 	}
 	return nil, &NotLoadedError{edge: "Antenatalinformation"}
