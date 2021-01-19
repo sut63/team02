@@ -134,8 +134,8 @@ const getStatuss = async () => {
                 setAlert(true);
                 setTimeout(() => {
                   setStatus(false);
-                }, 5000);
-                window.location.reload(false);
+                }, 10000);
+   
             }
         }
         else {
@@ -143,7 +143,7 @@ const getStatuss = async () => {
             setAlert(false);
             setTimeout(() => {
               setStatus(false);
-            }, 5000);
+            }, 10000);
         }
   };
   const Patiant_handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
