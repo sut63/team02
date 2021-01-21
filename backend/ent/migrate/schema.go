@@ -143,6 +143,9 @@ var (
 	DentalappointmentsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "appointtime", Type: field.TypeTime},
+		{Name: "amount", Type: field.TypeInt},
+		{Name: "price", Type: field.TypeInt},
+		{Name: "note", Type: field.TypeString, Size: 25},
 		{Name: "kindname", Type: field.TypeInt, Nullable: true},
 		{Name: "Patient_id", Type: field.TypeInt, Nullable: true},
 		{Name: "Personnel_id", Type: field.TypeInt, Nullable: true},
@@ -155,21 +158,21 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:  "dentalappointments_dentalkinds_Dentalappointment",
-				Columns: []*schema.Column{DentalappointmentsColumns[2]},
+				Columns: []*schema.Column{DentalappointmentsColumns[5]},
 
 				RefColumns: []*schema.Column{DentalkindsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:  "dentalappointments_patients_Dentalappointment",
-				Columns: []*schema.Column{DentalappointmentsColumns[3]},
+				Columns: []*schema.Column{DentalappointmentsColumns[6]},
 
 				RefColumns: []*schema.Column{PatientsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:  "dentalappointments_personnels_Dentalappointment",
-				Columns: []*schema.Column{DentalappointmentsColumns[4]},
+				Columns: []*schema.Column{DentalappointmentsColumns[7]},
 
 				RefColumns: []*schema.Column{PersonnelsColumns[0]},
 				OnDelete:   schema.SetNull,

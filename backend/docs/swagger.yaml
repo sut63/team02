@@ -47,13 +47,19 @@ definitions:
     type: object
   controllers.Dentalappointment:
     properties:
+      amount:
+        type: integer
       appointTime:
         type: string
       kindName:
         type: integer
+      note:
+        type: string
       patientID:
         type: integer
       personnelID:
+        type: integer
+      price:
         type: integer
     type: object
   controllers.Physicaltherapyrecord:
@@ -192,6 +198,9 @@ definitions:
     type: object
   ent.Dentalappointment:
     properties:
+      amount:
+        description: Amount holds the value of the "amount" field.
+        type: integer
       appointtime:
         description: Appointtime holds the value of the "appointtime" field.
         type: string
@@ -203,6 +212,12 @@ definitions:
         type: object
       id:
         description: ID of the ent.
+        type: integer
+      note:
+        description: Note holds the value of the "note" field.
+        type: string
+      price:
+        description: Price holds the value of the "price" field.
         type: integer
     type: object
   ent.DentalappointmentEdges:

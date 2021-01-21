@@ -36,6 +36,38 @@ func (du *DentalappointmentUpdate) SetAppointtime(t time.Time) *Dentalappointmen
 	return du
 }
 
+// SetAmount sets the "amount" field.
+func (du *DentalappointmentUpdate) SetAmount(i int) *DentalappointmentUpdate {
+	du.mutation.ResetAmount()
+	du.mutation.SetAmount(i)
+	return du
+}
+
+// AddAmount adds i to the "amount" field.
+func (du *DentalappointmentUpdate) AddAmount(i int) *DentalappointmentUpdate {
+	du.mutation.AddAmount(i)
+	return du
+}
+
+// SetPrice sets the "price" field.
+func (du *DentalappointmentUpdate) SetPrice(i int) *DentalappointmentUpdate {
+	du.mutation.ResetPrice()
+	du.mutation.SetPrice(i)
+	return du
+}
+
+// AddPrice adds i to the "price" field.
+func (du *DentalappointmentUpdate) AddPrice(i int) *DentalappointmentUpdate {
+	du.mutation.AddPrice(i)
+	return du
+}
+
+// SetNote sets the "note" field.
+func (du *DentalappointmentUpdate) SetNote(s string) *DentalappointmentUpdate {
+	du.mutation.SetNote(s)
+	return du
+}
+
 // SetPersonnelID sets the "Personnel" edge to the Personnel entity by ID.
 func (du *DentalappointmentUpdate) SetPersonnelID(id int) *DentalappointmentUpdate {
 	du.mutation.SetPersonnelID(id)
@@ -123,12 +155,18 @@ func (du *DentalappointmentUpdate) Save(ctx context.Context) (int, error) {
 		affected int
 	)
 	if len(du.hooks) == 0 {
+		if err = du.check(); err != nil {
+			return 0, err
+		}
 		affected, err = du.sqlSave(ctx)
 	} else {
 		var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 			mutation, ok := m.(*DentalappointmentMutation)
 			if !ok {
 				return nil, fmt.Errorf("unexpected mutation type %T", m)
+			}
+			if err = du.check(); err != nil {
+				return 0, err
 			}
 			du.mutation = mutation
 			affected, err = du.sqlSave(ctx)
@@ -167,6 +205,26 @@ func (du *DentalappointmentUpdate) ExecX(ctx context.Context) {
 	}
 }
 
+// check runs all checks and user-defined validators on the builder.
+func (du *DentalappointmentUpdate) check() error {
+	if v, ok := du.mutation.Amount(); ok {
+		if err := dentalappointment.AmountValidator(v); err != nil {
+			return &ValidationError{Name: "amount", err: fmt.Errorf("ent: validator failed for field \"amount\": %w", err)}
+		}
+	}
+	if v, ok := du.mutation.Price(); ok {
+		if err := dentalappointment.PriceValidator(v); err != nil {
+			return &ValidationError{Name: "price", err: fmt.Errorf("ent: validator failed for field \"price\": %w", err)}
+		}
+	}
+	if v, ok := du.mutation.Note(); ok {
+		if err := dentalappointment.NoteValidator(v); err != nil {
+			return &ValidationError{Name: "note", err: fmt.Errorf("ent: validator failed for field \"note\": %w", err)}
+		}
+	}
+	return nil
+}
+
 func (du *DentalappointmentUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	_spec := &sqlgraph.UpdateSpec{
 		Node: &sqlgraph.NodeSpec{
@@ -190,6 +248,41 @@ func (du *DentalappointmentUpdate) sqlSave(ctx context.Context) (n int, err erro
 			Type:   field.TypeTime,
 			Value:  value,
 			Column: dentalappointment.FieldAppointtime,
+		})
+	}
+	if value, ok := du.mutation.Amount(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: dentalappointment.FieldAmount,
+		})
+	}
+	if value, ok := du.mutation.AddedAmount(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: dentalappointment.FieldAmount,
+		})
+	}
+	if value, ok := du.mutation.Price(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: dentalappointment.FieldPrice,
+		})
+	}
+	if value, ok := du.mutation.AddedPrice(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: dentalappointment.FieldPrice,
+		})
+	}
+	if value, ok := du.mutation.Note(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: dentalappointment.FieldNote,
 		})
 	}
 	if du.mutation.PersonnelCleared() {
@@ -321,6 +414,38 @@ func (duo *DentalappointmentUpdateOne) SetAppointtime(t time.Time) *Dentalappoin
 	return duo
 }
 
+// SetAmount sets the "amount" field.
+func (duo *DentalappointmentUpdateOne) SetAmount(i int) *DentalappointmentUpdateOne {
+	duo.mutation.ResetAmount()
+	duo.mutation.SetAmount(i)
+	return duo
+}
+
+// AddAmount adds i to the "amount" field.
+func (duo *DentalappointmentUpdateOne) AddAmount(i int) *DentalappointmentUpdateOne {
+	duo.mutation.AddAmount(i)
+	return duo
+}
+
+// SetPrice sets the "price" field.
+func (duo *DentalappointmentUpdateOne) SetPrice(i int) *DentalappointmentUpdateOne {
+	duo.mutation.ResetPrice()
+	duo.mutation.SetPrice(i)
+	return duo
+}
+
+// AddPrice adds i to the "price" field.
+func (duo *DentalappointmentUpdateOne) AddPrice(i int) *DentalappointmentUpdateOne {
+	duo.mutation.AddPrice(i)
+	return duo
+}
+
+// SetNote sets the "note" field.
+func (duo *DentalappointmentUpdateOne) SetNote(s string) *DentalappointmentUpdateOne {
+	duo.mutation.SetNote(s)
+	return duo
+}
+
 // SetPersonnelID sets the "Personnel" edge to the Personnel entity by ID.
 func (duo *DentalappointmentUpdateOne) SetPersonnelID(id int) *DentalappointmentUpdateOne {
 	duo.mutation.SetPersonnelID(id)
@@ -408,12 +533,18 @@ func (duo *DentalappointmentUpdateOne) Save(ctx context.Context) (*Dentalappoint
 		node *Dentalappointment
 	)
 	if len(duo.hooks) == 0 {
+		if err = duo.check(); err != nil {
+			return nil, err
+		}
 		node, err = duo.sqlSave(ctx)
 	} else {
 		var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 			mutation, ok := m.(*DentalappointmentMutation)
 			if !ok {
 				return nil, fmt.Errorf("unexpected mutation type %T", m)
+			}
+			if err = duo.check(); err != nil {
+				return nil, err
 			}
 			duo.mutation = mutation
 			node, err = duo.sqlSave(ctx)
@@ -452,6 +583,26 @@ func (duo *DentalappointmentUpdateOne) ExecX(ctx context.Context) {
 	}
 }
 
+// check runs all checks and user-defined validators on the builder.
+func (duo *DentalappointmentUpdateOne) check() error {
+	if v, ok := duo.mutation.Amount(); ok {
+		if err := dentalappointment.AmountValidator(v); err != nil {
+			return &ValidationError{Name: "amount", err: fmt.Errorf("ent: validator failed for field \"amount\": %w", err)}
+		}
+	}
+	if v, ok := duo.mutation.Price(); ok {
+		if err := dentalappointment.PriceValidator(v); err != nil {
+			return &ValidationError{Name: "price", err: fmt.Errorf("ent: validator failed for field \"price\": %w", err)}
+		}
+	}
+	if v, ok := duo.mutation.Note(); ok {
+		if err := dentalappointment.NoteValidator(v); err != nil {
+			return &ValidationError{Name: "note", err: fmt.Errorf("ent: validator failed for field \"note\": %w", err)}
+		}
+	}
+	return nil
+}
+
 func (duo *DentalappointmentUpdateOne) sqlSave(ctx context.Context) (_node *Dentalappointment, err error) {
 	_spec := &sqlgraph.UpdateSpec{
 		Node: &sqlgraph.NodeSpec{
@@ -473,6 +624,41 @@ func (duo *DentalappointmentUpdateOne) sqlSave(ctx context.Context) (_node *Dent
 			Type:   field.TypeTime,
 			Value:  value,
 			Column: dentalappointment.FieldAppointtime,
+		})
+	}
+	if value, ok := duo.mutation.Amount(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: dentalappointment.FieldAmount,
+		})
+	}
+	if value, ok := duo.mutation.AddedAmount(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: dentalappointment.FieldAmount,
+		})
+	}
+	if value, ok := duo.mutation.Price(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: dentalappointment.FieldPrice,
+		})
+	}
+	if value, ok := duo.mutation.AddedPrice(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: dentalappointment.FieldPrice,
+		})
+	}
+	if value, ok := duo.mutation.Note(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: dentalappointment.FieldNote,
 		})
 	}
 	if duo.mutation.PersonnelCleared() {

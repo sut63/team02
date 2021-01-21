@@ -15,6 +15,9 @@ type Dentalappointment struct {
 func (Dentalappointment) Fields() []ent.Field {
 	return []ent.Field{
 		field.Time("appointtime"),
+		field.Int("amount").Min(1),
+		field.Int("price").Min(1),
+		field.String("note").MinLen(1).MaxLen(25),
 	}
 }
 

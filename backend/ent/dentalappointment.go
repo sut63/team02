@@ -21,6 +21,12 @@ type Dentalappointment struct {
 	ID int `json:"id,omitempty"`
 	// Appointtime holds the value of the "appointtime" field.
 	Appointtime time.Time `json:"appointtime,omitempty"`
+	// Amount holds the value of the "amount" field.
+	Amount int `json:"amount,omitempty"`
+	// Price holds the value of the "price" field.
+	Price int `json:"price,omitempty"`
+	// Note holds the value of the "note" field.
+	Note string `json:"note,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the DentalappointmentQuery when eager-loading is set.
 	Edges         DentalappointmentEdges `json:"edges"`
@@ -89,8 +95,10 @@ func (*Dentalappointment) scanValues(columns []string) ([]interface{}, error) {
 	values := make([]interface{}, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case dentalappointment.FieldID:
+		case dentalappointment.FieldID, dentalappointment.FieldAmount, dentalappointment.FieldPrice:
 			values[i] = &sql.NullInt64{}
+		case dentalappointment.FieldNote:
+			values[i] = &sql.NullString{}
 		case dentalappointment.FieldAppointtime:
 			values[i] = &sql.NullTime{}
 		case dentalappointment.ForeignKeys[0]: // kindname
@@ -125,6 +133,24 @@ func (d *Dentalappointment) assignValues(columns []string, values []interface{})
 				return fmt.Errorf("unexpected type %T for field appointtime", values[i])
 			} else if value.Valid {
 				d.Appointtime = value.Time
+			}
+		case dentalappointment.FieldAmount:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field amount", values[i])
+			} else if value.Valid {
+				d.Amount = int(value.Int64)
+			}
+		case dentalappointment.FieldPrice:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field price", values[i])
+			} else if value.Valid {
+				d.Price = int(value.Int64)
+			}
+		case dentalappointment.FieldNote:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field note", values[i])
+			} else if value.Valid {
+				d.Note = value.String
 			}
 		case dentalappointment.ForeignKeys[0]:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -192,6 +218,12 @@ func (d *Dentalappointment) String() string {
 	builder.WriteString(fmt.Sprintf("id=%v", d.ID))
 	builder.WriteString(", appointtime=")
 	builder.WriteString(d.Appointtime.Format(time.ANSIC))
+	builder.WriteString(", amount=")
+	builder.WriteString(fmt.Sprintf("%v", d.Amount))
+	builder.WriteString(", price=")
+	builder.WriteString(fmt.Sprintf("%v", d.Price))
+	builder.WriteString(", note=")
+	builder.WriteString(d.Note)
 	builder.WriteByte(')')
 	return builder.String()
 }

@@ -20,6 +20,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
+import Swal from 'sweetalert2';
 
 import { EntPatient,EntDentalkind,EntPersonnel } from '../../api';
 
@@ -41,6 +42,20 @@ const useStyles = makeStyles((theme: Theme) =>
     },
   }),
 );
+
+//updateforlab9
+const Toast = Swal.mixin({
+  toast: true,
+  position: 'top-end',
+  showConfirmButton: false,
+  timer: 3000,
+  timerProgressBar: true,
+  didOpen: (toast: { addEventListener: (arg0: string, arg1: any) => void; }) => {
+    toast.addEventListener('mouseenter', Swal.stopTimer);
+    toast.addEventListener('mouseleave', Swal.resumeTimer);
+  },
+});
+
 export default function createDentalappointment() {
   const classes = useStyles();
   const profile = { givenName: ''};
@@ -59,6 +74,9 @@ export default function createDentalappointment() {
   const [kindName, setKindname] = useState(Number);
   const [personnelName, setPersonnel] = useState(Number);
   const [datetime, setDateTime] = useState(String);
+  const [amount, setAmount] = useState(Number);
+  const [price, setPrice] = useState(Number);
+  const [note, setNote] = useState(String);
 
   useEffect(() => {
 
@@ -86,6 +104,71 @@ export default function createDentalappointment() {
     setPersonnel(Number(localStorage.getItem("personaldata")))
   }, [loading]);
 
+  //updateforlab9
+  const alertMessage = (icon: any, title: any) => {
+    Toast.fire({
+      icon: icon,
+      title: title,
+    });
+  }
+
+  const checkCaseSaveError = (field: string) => {
+    switch(field) {
+      case 'amount':
+        alertMessage("warning","กรุณาจำนวนฟันที่ต้องรักษา");
+        return;
+      case 'price':
+        alertMessage("warning","กรุณากรอกราคาค่ารักษา");
+        return;
+      case 'note':
+        alertMessage("warning","กรุณากรอกข้อความไม่เกิน 25 ตัวอักษร ถ้าไม่มีกรอก '-' ");
+        return;
+      default:
+        alertMessage("error","บันทึกข้อมูลไม่สำเร็จ");
+        return;
+    }
+  }
+
+  
+
+
+  function save() {
+    const apiUrl = 'http://localhost:8080/api/v1/dentalappointments';
+    const dentalappointment = {
+      patientID: patientName,
+      kindName: kindName,
+      personnelID: personnelName,
+      appointTime: datetime + ":00+07:00",
+      amount: Number(amount),
+      price: Number(price),
+      note: note,
+    };
+    console.log(dentalappointment);
+
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(dentalappointment),
+    };
+
+    console.log(dentalappointment); // log ดูข้อมูล สามารถ Inspect ดูข้อมูลได้ F12 เลือก Tab Console
+
+    fetch(apiUrl, requestOptions)
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        if (data.status === true) {
+          //clear();
+          Toast.fire({
+            icon: 'success',
+            title: 'บันทึกข้อมูลสำเร็จ',
+          });window.setTimeout(function(){location.reload()},5000);
+        } else {
+          checkCaseSaveError(data.error.Name)
+        }
+      });
+  }
+
   const PatienthandleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     setPatient(event.target.value as number);
   };
@@ -101,32 +184,20 @@ export default function createDentalappointment() {
     setDateTime(event.target.value as string);
   };
 
-  const listDapm = () => {
-    window.location.href ="http://localhost:3000/Dentalappointment";
+  const AmounthandleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    setAmount(event.target.value as number);
+  };
+
+  const PricehandleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    setPrice(event.target.value as number);
+  };
+
+  const NotehandleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    setNote(event.target.value as string);
   };
 
 
-  const createDentalappointment = async () => {
-    if((patientName!=0)&&(kindName!=0)&&(personnelName!=0)&&(datetime!="")){
-    const dentalappointment = {
-      patientID: patientName,
-      kindName: kindName,
-      personnelID: personnelName,
-      appointTime: datetime + ":00+07:00",
 
-    };
-    console.log(dentalappointment);
-    const res: any =  await api.createDentalappointment({ dentalappointment : dentalappointment});
-    setStatus(true);
-    if (res.id != '') {
-      setAlert(true);
-      }
-    } 
-    else {
-      setAlert(false);
-      setStatus(true);
-    }
-  };
 
   return (
     <Page theme={pageTheme.home}>
@@ -143,19 +214,7 @@ export default function createDentalappointment() {
             </Button>
           </Link>
           </div>
-          {status ? (
-            <div>
-              {alert ? (
-                <Alert severity="success" onClose={() => {window.location.reload(false)}} style={{ marginTop: 20 }}>
-                  success!
-                </Alert>
-              ) : (
-                  <Alert severity="warning" onClose={() => {window.location.reload(false)}} style={{ marginTop: 20 }}>
-                    This is a warning alert — Please enter all information!
-                  </Alert>
-                )}
-            </div>
-          ) : null}
+          
         </ContentHeader>
         <div className={classes.root}>
           <form noValidate autoComplete="off">
@@ -256,12 +315,58 @@ export default function createDentalappointment() {
             </td>
           </tr>
 
+          <div>
+              <FormControl
+                className={classes.margin}
+                variant="outlined"
+              >
+                <div>จำนวนฟันที่ต้องทำการรักษา</div>
+                <TextField id="amount"  InputLabelProps={{
+                  shrink: true,
+                }} label="amount" variant="outlined"
+                  onChange={AmounthandleChange}
+                  value={amount || ''}
+                />
+              </FormControl>
+            </div>
+
+            <div>
+              <FormControl
+                className={classes.margin}
+                variant="outlined"
+              >
+                <div>กรอกค่ารักษาที่ต้องชำระ</div>
+                <TextField id="price"  InputLabelProps={{
+                  shrink: true,
+                }} label="price" variant="outlined"
+                  onChange={PricehandleChange}
+                  value={price || ''}
+                />
+              </FormControl>
+            </div>
+
+
+            <div>
+              <FormControl
+                className={classes.margin}
+                variant="outlined"
+              >
+                <div>หมายเหตุ * (ไม่เกิน 25 ตัวอักษร ถ้าไม่มีกรอก -)</div>
+                <TextField id="note" type='string' InputLabelProps={{
+                  shrink: true,
+                }} label="note" variant="outlined"
+                  onChange={NotehandleChange}
+                  value={note || ''}
+                />
+              </FormControl>
+            </div>
+
                         
             <div className={classes.margin}>
             <Typography variant="h6" gutterBottom  align="center">
               <Button
                 onClick={() => {
-                  createDentalappointment();
+                  save();
                 }}
                 variant="contained"
                 color="primary"

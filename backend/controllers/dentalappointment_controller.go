@@ -25,6 +25,9 @@ type Dentalappointment struct {
 	PersonnelID int
 	KindName    int
 	AppointTime string
+	Amount      int
+	Price       int
+	Note        string
 }
 
 // CreateDentalappointment handles POST requests for adding dentalappointment entities
@@ -93,15 +96,23 @@ func (ctl *DentalappointmentController) CreateDentalappointment(c *gin.Context) 
 		SetPersonnel(personnel).
 		SetDentalkind(kindname).
 		SetAppointtime(time).
+		SetAmount(obj.Amount).
+		SetPrice(obj.Price).
+		SetNote(obj.Note).
 		Save(context.Background())
+
 	if err != nil {
 		c.JSON(400, gin.H{
-			"error": "saving failed",
+			"status": false,
+			"error":  err,
 		})
 		return
 	}
 
-	c.JSON(200, dentalapp)
+	c.JSON(200, gin.H{
+		"status": true,
+		"data":   dentalapp,
+	})
 }
 
 // ListDentalappointment handles request to get a list of Dentalappointment entities

@@ -29,6 +29,24 @@ func (dc *DentalappointmentCreate) SetAppointtime(t time.Time) *Dentalappointmen
 	return dc
 }
 
+// SetAmount sets the "amount" field.
+func (dc *DentalappointmentCreate) SetAmount(i int) *DentalappointmentCreate {
+	dc.mutation.SetAmount(i)
+	return dc
+}
+
+// SetPrice sets the "price" field.
+func (dc *DentalappointmentCreate) SetPrice(i int) *DentalappointmentCreate {
+	dc.mutation.SetPrice(i)
+	return dc
+}
+
+// SetNote sets the "note" field.
+func (dc *DentalappointmentCreate) SetNote(s string) *DentalappointmentCreate {
+	dc.mutation.SetNote(s)
+	return dc
+}
+
 // SetPersonnelID sets the "Personnel" edge to the Personnel entity by ID.
 func (dc *DentalappointmentCreate) SetPersonnelID(id int) *DentalappointmentCreate {
 	dc.mutation.SetPersonnelID(id)
@@ -140,6 +158,30 @@ func (dc *DentalappointmentCreate) check() error {
 	if _, ok := dc.mutation.Appointtime(); !ok {
 		return &ValidationError{Name: "appointtime", err: errors.New("ent: missing required field \"appointtime\"")}
 	}
+	if _, ok := dc.mutation.Amount(); !ok {
+		return &ValidationError{Name: "amount", err: errors.New("ent: missing required field \"amount\"")}
+	}
+	if v, ok := dc.mutation.Amount(); ok {
+		if err := dentalappointment.AmountValidator(v); err != nil {
+			return &ValidationError{Name: "amount", err: fmt.Errorf("ent: validator failed for field \"amount\": %w", err)}
+		}
+	}
+	if _, ok := dc.mutation.Price(); !ok {
+		return &ValidationError{Name: "price", err: errors.New("ent: missing required field \"price\"")}
+	}
+	if v, ok := dc.mutation.Price(); ok {
+		if err := dentalappointment.PriceValidator(v); err != nil {
+			return &ValidationError{Name: "price", err: fmt.Errorf("ent: validator failed for field \"price\": %w", err)}
+		}
+	}
+	if _, ok := dc.mutation.Note(); !ok {
+		return &ValidationError{Name: "note", err: errors.New("ent: missing required field \"note\"")}
+	}
+	if v, ok := dc.mutation.Note(); ok {
+		if err := dentalappointment.NoteValidator(v); err != nil {
+			return &ValidationError{Name: "note", err: fmt.Errorf("ent: validator failed for field \"note\": %w", err)}
+		}
+	}
 	return nil
 }
 
@@ -174,6 +216,30 @@ func (dc *DentalappointmentCreate) createSpec() (*Dentalappointment, *sqlgraph.C
 			Column: dentalappointment.FieldAppointtime,
 		})
 		_node.Appointtime = value
+	}
+	if value, ok := dc.mutation.Amount(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: dentalappointment.FieldAmount,
+		})
+		_node.Amount = value
+	}
+	if value, ok := dc.mutation.Price(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: dentalappointment.FieldPrice,
+		})
+		_node.Price = value
+	}
+	if value, ok := dc.mutation.Note(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: dentalappointment.FieldNote,
+		})
+		_node.Note = value
 	}
 	if nodes := dc.mutation.PersonnelIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{

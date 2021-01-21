@@ -8,6 +8,7 @@ import (
 	"github.com/to63/app/ent/antenatalinformation"
 	"github.com/to63/app/ent/bonedisease"
 	"github.com/to63/app/ent/checksymptom"
+	"github.com/to63/app/ent/dentalappointment"
 	"github.com/to63/app/ent/disease"
 	"github.com/to63/app/ent/doctorordersheet"
 	"github.com/to63/app/ent/patient"
@@ -51,6 +52,34 @@ func init() {
 	checksymptomDescNote := checksymptomFields[2].Descriptor()
 	// checksymptom.NoteValidator is a validator for the "note" field. It is called by the builders before save.
 	checksymptom.NoteValidator = checksymptomDescNote.Validators[0].(func(string) error)
+	dentalappointmentFields := schema.Dentalappointment{}.Fields()
+	_ = dentalappointmentFields
+	// dentalappointmentDescAmount is the schema descriptor for amount field.
+	dentalappointmentDescAmount := dentalappointmentFields[1].Descriptor()
+	// dentalappointment.AmountValidator is a validator for the "amount" field. It is called by the builders before save.
+	dentalappointment.AmountValidator = dentalappointmentDescAmount.Validators[0].(func(int) error)
+	// dentalappointmentDescPrice is the schema descriptor for price field.
+	dentalappointmentDescPrice := dentalappointmentFields[2].Descriptor()
+	// dentalappointment.PriceValidator is a validator for the "price" field. It is called by the builders before save.
+	dentalappointment.PriceValidator = dentalappointmentDescPrice.Validators[0].(func(int) error)
+	// dentalappointmentDescNote is the schema descriptor for note field.
+	dentalappointmentDescNote := dentalappointmentFields[3].Descriptor()
+	// dentalappointment.NoteValidator is a validator for the "note" field. It is called by the builders before save.
+	dentalappointment.NoteValidator = func() func(string) error {
+		validators := dentalappointmentDescNote.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(note string) error {
+			for _, fn := range fns {
+				if err := fn(note); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
 	diseaseFields := schema.Disease{}.Fields()
 	_ = diseaseFields
 	// diseaseDescDisease is the schema descriptor for disease field.

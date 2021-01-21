@@ -3129,16 +3129,25 @@ var doc = `{
         "controllers.Dentalappointment": {
             "type": "object",
             "properties": {
+                "amount": {
+                    "type": "integer"
+                },
                 "appointTime": {
                     "type": "string"
                 },
                 "kindName": {
                     "type": "integer"
                 },
+                "note": {
+                    "type": "string"
+                },
                 "patientID": {
                     "type": "integer"
                 },
                 "personnelID": {
+                    "type": "integer"
+                },
+                "price": {
                     "type": "integer"
                 }
             }
@@ -3323,6 +3332,10 @@ var doc = `{
         "ent.Dentalappointment": {
             "type": "object",
             "properties": {
+                "amount": {
+                    "description": "Amount holds the value of the \"amount\" field.",
+                    "type": "integer"
+                },
                 "appointtime": {
                     "description": "Appointtime holds the value of the \"appointtime\" field.",
                     "type": "string"
@@ -3334,6 +3347,14 @@ var doc = `{
                 },
                 "id": {
                     "description": "ID of the ent.",
+                    "type": "integer"
+                },
+                "note": {
+                    "description": "Note holds the value of the \"note\" field.",
+                    "type": "string"
+                },
+                "price": {
+                    "description": "Price holds the value of the \"price\" field.",
                     "type": "integer"
                 }
             }

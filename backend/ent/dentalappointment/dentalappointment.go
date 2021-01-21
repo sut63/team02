@@ -9,6 +9,12 @@ const (
 	FieldID = "id"
 	// FieldAppointtime holds the string denoting the appointtime field in the database.
 	FieldAppointtime = "appointtime"
+	// FieldAmount holds the string denoting the amount field in the database.
+	FieldAmount = "amount"
+	// FieldPrice holds the string denoting the price field in the database.
+	FieldPrice = "price"
+	// FieldNote holds the string denoting the note field in the database.
+	FieldNote = "note"
 
 	// EdgePersonnel holds the string denoting the personnel edge name in mutations.
 	EdgePersonnel = "Personnel"
@@ -46,6 +52,9 @@ const (
 var Columns = []string{
 	FieldID,
 	FieldAppointtime,
+	FieldAmount,
+	FieldPrice,
+	FieldNote,
 }
 
 // ForeignKeys holds the SQL foreign-keys that are owned by the Dentalappointment type.
@@ -69,3 +78,12 @@ func ValidColumn(column string) bool {
 	}
 	return false
 }
+
+var (
+	// AmountValidator is a validator for the "amount" field. It is called by the builders before save.
+	AmountValidator func(int) error
+	// PriceValidator is a validator for the "price" field. It is called by the builders before save.
+	PriceValidator func(int) error
+	// NoteValidator is a validator for the "note" field. It is called by the builders before save.
+	NoteValidator func(string) error
+)
