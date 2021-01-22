@@ -30,15 +30,21 @@ func (cc *ChecksymptomCreate) SetDate(t time.Time) *ChecksymptomCreate {
 	return cc
 }
 
-// SetTimes sets the "times" field.
-func (cc *ChecksymptomCreate) SetTimes(s string) *ChecksymptomCreate {
-	cc.mutation.SetTimes(s)
-	return cc
-}
-
 // SetNote sets the "note" field.
 func (cc *ChecksymptomCreate) SetNote(s string) *ChecksymptomCreate {
 	cc.mutation.SetNote(s)
+	return cc
+}
+
+// SetIdentitycard sets the "Identitycard" field.
+func (cc *ChecksymptomCreate) SetIdentitycard(s string) *ChecksymptomCreate {
+	cc.mutation.SetIdentitycard(s)
+	return cc
+}
+
+// SetPhone sets the "phone" field.
+func (cc *ChecksymptomCreate) SetPhone(s string) *ChecksymptomCreate {
+	cc.mutation.SetPhone(s)
 	return cc
 }
 
@@ -172,20 +178,28 @@ func (cc *ChecksymptomCreate) check() error {
 	if _, ok := cc.mutation.Date(); !ok {
 		return &ValidationError{Name: "date", err: errors.New("ent: missing required field \"date\"")}
 	}
-	if _, ok := cc.mutation.Times(); !ok {
-		return &ValidationError{Name: "times", err: errors.New("ent: missing required field \"times\"")}
-	}
-	if v, ok := cc.mutation.Times(); ok {
-		if err := checksymptom.TimesValidator(v); err != nil {
-			return &ValidationError{Name: "times", err: fmt.Errorf("ent: validator failed for field \"times\": %w", err)}
-		}
-	}
 	if _, ok := cc.mutation.Note(); !ok {
 		return &ValidationError{Name: "note", err: errors.New("ent: missing required field \"note\"")}
 	}
 	if v, ok := cc.mutation.Note(); ok {
 		if err := checksymptom.NoteValidator(v); err != nil {
 			return &ValidationError{Name: "note", err: fmt.Errorf("ent: validator failed for field \"note\": %w", err)}
+		}
+	}
+	if _, ok := cc.mutation.Identitycard(); !ok {
+		return &ValidationError{Name: "Identitycard", err: errors.New("ent: missing required field \"Identitycard\"")}
+	}
+	if v, ok := cc.mutation.Identitycard(); ok {
+		if err := checksymptom.IdentitycardValidator(v); err != nil {
+			return &ValidationError{Name: "Identitycard", err: fmt.Errorf("ent: validator failed for field \"Identitycard\": %w", err)}
+		}
+	}
+	if _, ok := cc.mutation.Phone(); !ok {
+		return &ValidationError{Name: "phone", err: errors.New("ent: missing required field \"phone\"")}
+	}
+	if v, ok := cc.mutation.Phone(); ok {
+		if err := checksymptom.PhoneValidator(v); err != nil {
+			return &ValidationError{Name: "phone", err: fmt.Errorf("ent: validator failed for field \"phone\": %w", err)}
 		}
 	}
 	return nil
@@ -223,14 +237,6 @@ func (cc *ChecksymptomCreate) createSpec() (*Checksymptom, *sqlgraph.CreateSpec)
 		})
 		_node.Date = value
 	}
-	if value, ok := cc.mutation.Times(); ok {
-		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
-			Value:  value,
-			Column: checksymptom.FieldTimes,
-		})
-		_node.Times = value
-	}
 	if value, ok := cc.mutation.Note(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
@@ -238,6 +244,22 @@ func (cc *ChecksymptomCreate) createSpec() (*Checksymptom, *sqlgraph.CreateSpec)
 			Column: checksymptom.FieldNote,
 		})
 		_node.Note = value
+	}
+	if value, ok := cc.mutation.Identitycard(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: checksymptom.FieldIdentitycard,
+		})
+		_node.Identitycard = value
+	}
+	if value, ok := cc.mutation.Phone(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: checksymptom.FieldPhone,
+		})
+		_node.Phone = value
 	}
 	if nodes := cc.mutation.PatientIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{

@@ -100,17 +100,24 @@ func Date(v time.Time) predicate.Checksymptom {
 	})
 }
 
-// Times applies equality check predicate on the "times" field. It's identical to TimesEQ.
-func Times(v string) predicate.Checksymptom {
-	return predicate.Checksymptom(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldTimes), v))
-	})
-}
-
 // Note applies equality check predicate on the "note" field. It's identical to NoteEQ.
 func Note(v string) predicate.Checksymptom {
 	return predicate.Checksymptom(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldNote), v))
+	})
+}
+
+// Identitycard applies equality check predicate on the "Identitycard" field. It's identical to IdentitycardEQ.
+func Identitycard(v string) predicate.Checksymptom {
+	return predicate.Checksymptom(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldIdentitycard), v))
+	})
+}
+
+// Phone applies equality check predicate on the "phone" field. It's identical to PhoneEQ.
+func Phone(v string) predicate.Checksymptom {
+	return predicate.Checksymptom(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldPhone), v))
 	})
 }
 
@@ -187,117 +194,6 @@ func DateLT(v time.Time) predicate.Checksymptom {
 func DateLTE(v time.Time) predicate.Checksymptom {
 	return predicate.Checksymptom(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldDate), v))
-	})
-}
-
-// TimesEQ applies the EQ predicate on the "times" field.
-func TimesEQ(v string) predicate.Checksymptom {
-	return predicate.Checksymptom(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldTimes), v))
-	})
-}
-
-// TimesNEQ applies the NEQ predicate on the "times" field.
-func TimesNEQ(v string) predicate.Checksymptom {
-	return predicate.Checksymptom(func(s *sql.Selector) {
-		s.Where(sql.NEQ(s.C(FieldTimes), v))
-	})
-}
-
-// TimesIn applies the In predicate on the "times" field.
-func TimesIn(vs ...string) predicate.Checksymptom {
-	v := make([]interface{}, len(vs))
-	for i := range v {
-		v[i] = vs[i]
-	}
-	return predicate.Checksymptom(func(s *sql.Selector) {
-		// if not arguments were provided, append the FALSE constants,
-		// since we can't apply "IN ()". This will make this predicate falsy.
-		if len(v) == 0 {
-			s.Where(sql.False())
-			return
-		}
-		s.Where(sql.In(s.C(FieldTimes), v...))
-	})
-}
-
-// TimesNotIn applies the NotIn predicate on the "times" field.
-func TimesNotIn(vs ...string) predicate.Checksymptom {
-	v := make([]interface{}, len(vs))
-	for i := range v {
-		v[i] = vs[i]
-	}
-	return predicate.Checksymptom(func(s *sql.Selector) {
-		// if not arguments were provided, append the FALSE constants,
-		// since we can't apply "IN ()". This will make this predicate falsy.
-		if len(v) == 0 {
-			s.Where(sql.False())
-			return
-		}
-		s.Where(sql.NotIn(s.C(FieldTimes), v...))
-	})
-}
-
-// TimesGT applies the GT predicate on the "times" field.
-func TimesGT(v string) predicate.Checksymptom {
-	return predicate.Checksymptom(func(s *sql.Selector) {
-		s.Where(sql.GT(s.C(FieldTimes), v))
-	})
-}
-
-// TimesGTE applies the GTE predicate on the "times" field.
-func TimesGTE(v string) predicate.Checksymptom {
-	return predicate.Checksymptom(func(s *sql.Selector) {
-		s.Where(sql.GTE(s.C(FieldTimes), v))
-	})
-}
-
-// TimesLT applies the LT predicate on the "times" field.
-func TimesLT(v string) predicate.Checksymptom {
-	return predicate.Checksymptom(func(s *sql.Selector) {
-		s.Where(sql.LT(s.C(FieldTimes), v))
-	})
-}
-
-// TimesLTE applies the LTE predicate on the "times" field.
-func TimesLTE(v string) predicate.Checksymptom {
-	return predicate.Checksymptom(func(s *sql.Selector) {
-		s.Where(sql.LTE(s.C(FieldTimes), v))
-	})
-}
-
-// TimesContains applies the Contains predicate on the "times" field.
-func TimesContains(v string) predicate.Checksymptom {
-	return predicate.Checksymptom(func(s *sql.Selector) {
-		s.Where(sql.Contains(s.C(FieldTimes), v))
-	})
-}
-
-// TimesHasPrefix applies the HasPrefix predicate on the "times" field.
-func TimesHasPrefix(v string) predicate.Checksymptom {
-	return predicate.Checksymptom(func(s *sql.Selector) {
-		s.Where(sql.HasPrefix(s.C(FieldTimes), v))
-	})
-}
-
-// TimesHasSuffix applies the HasSuffix predicate on the "times" field.
-func TimesHasSuffix(v string) predicate.Checksymptom {
-	return predicate.Checksymptom(func(s *sql.Selector) {
-		s.Where(sql.HasSuffix(s.C(FieldTimes), v))
-	})
-}
-
-// TimesEqualFold applies the EqualFold predicate on the "times" field.
-func TimesEqualFold(v string) predicate.Checksymptom {
-	return predicate.Checksymptom(func(s *sql.Selector) {
-		s.Where(sql.EqualFold(s.C(FieldTimes), v))
-	})
-}
-
-// TimesContainsFold applies the ContainsFold predicate on the "times" field.
-func TimesContainsFold(v string) predicate.Checksymptom {
-	return predicate.Checksymptom(func(s *sql.Selector) {
-		s.Where(sql.ContainsFold(s.C(FieldTimes), v))
 	})
 }
 
@@ -409,6 +305,228 @@ func NoteEqualFold(v string) predicate.Checksymptom {
 func NoteContainsFold(v string) predicate.Checksymptom {
 	return predicate.Checksymptom(func(s *sql.Selector) {
 		s.Where(sql.ContainsFold(s.C(FieldNote), v))
+	})
+}
+
+// IdentitycardEQ applies the EQ predicate on the "Identitycard" field.
+func IdentitycardEQ(v string) predicate.Checksymptom {
+	return predicate.Checksymptom(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldIdentitycard), v))
+	})
+}
+
+// IdentitycardNEQ applies the NEQ predicate on the "Identitycard" field.
+func IdentitycardNEQ(v string) predicate.Checksymptom {
+	return predicate.Checksymptom(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldIdentitycard), v))
+	})
+}
+
+// IdentitycardIn applies the In predicate on the "Identitycard" field.
+func IdentitycardIn(vs ...string) predicate.Checksymptom {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Checksymptom(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.In(s.C(FieldIdentitycard), v...))
+	})
+}
+
+// IdentitycardNotIn applies the NotIn predicate on the "Identitycard" field.
+func IdentitycardNotIn(vs ...string) predicate.Checksymptom {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Checksymptom(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.NotIn(s.C(FieldIdentitycard), v...))
+	})
+}
+
+// IdentitycardGT applies the GT predicate on the "Identitycard" field.
+func IdentitycardGT(v string) predicate.Checksymptom {
+	return predicate.Checksymptom(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldIdentitycard), v))
+	})
+}
+
+// IdentitycardGTE applies the GTE predicate on the "Identitycard" field.
+func IdentitycardGTE(v string) predicate.Checksymptom {
+	return predicate.Checksymptom(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldIdentitycard), v))
+	})
+}
+
+// IdentitycardLT applies the LT predicate on the "Identitycard" field.
+func IdentitycardLT(v string) predicate.Checksymptom {
+	return predicate.Checksymptom(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldIdentitycard), v))
+	})
+}
+
+// IdentitycardLTE applies the LTE predicate on the "Identitycard" field.
+func IdentitycardLTE(v string) predicate.Checksymptom {
+	return predicate.Checksymptom(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldIdentitycard), v))
+	})
+}
+
+// IdentitycardContains applies the Contains predicate on the "Identitycard" field.
+func IdentitycardContains(v string) predicate.Checksymptom {
+	return predicate.Checksymptom(func(s *sql.Selector) {
+		s.Where(sql.Contains(s.C(FieldIdentitycard), v))
+	})
+}
+
+// IdentitycardHasPrefix applies the HasPrefix predicate on the "Identitycard" field.
+func IdentitycardHasPrefix(v string) predicate.Checksymptom {
+	return predicate.Checksymptom(func(s *sql.Selector) {
+		s.Where(sql.HasPrefix(s.C(FieldIdentitycard), v))
+	})
+}
+
+// IdentitycardHasSuffix applies the HasSuffix predicate on the "Identitycard" field.
+func IdentitycardHasSuffix(v string) predicate.Checksymptom {
+	return predicate.Checksymptom(func(s *sql.Selector) {
+		s.Where(sql.HasSuffix(s.C(FieldIdentitycard), v))
+	})
+}
+
+// IdentitycardEqualFold applies the EqualFold predicate on the "Identitycard" field.
+func IdentitycardEqualFold(v string) predicate.Checksymptom {
+	return predicate.Checksymptom(func(s *sql.Selector) {
+		s.Where(sql.EqualFold(s.C(FieldIdentitycard), v))
+	})
+}
+
+// IdentitycardContainsFold applies the ContainsFold predicate on the "Identitycard" field.
+func IdentitycardContainsFold(v string) predicate.Checksymptom {
+	return predicate.Checksymptom(func(s *sql.Selector) {
+		s.Where(sql.ContainsFold(s.C(FieldIdentitycard), v))
+	})
+}
+
+// PhoneEQ applies the EQ predicate on the "phone" field.
+func PhoneEQ(v string) predicate.Checksymptom {
+	return predicate.Checksymptom(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldPhone), v))
+	})
+}
+
+// PhoneNEQ applies the NEQ predicate on the "phone" field.
+func PhoneNEQ(v string) predicate.Checksymptom {
+	return predicate.Checksymptom(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldPhone), v))
+	})
+}
+
+// PhoneIn applies the In predicate on the "phone" field.
+func PhoneIn(vs ...string) predicate.Checksymptom {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Checksymptom(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.In(s.C(FieldPhone), v...))
+	})
+}
+
+// PhoneNotIn applies the NotIn predicate on the "phone" field.
+func PhoneNotIn(vs ...string) predicate.Checksymptom {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Checksymptom(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.NotIn(s.C(FieldPhone), v...))
+	})
+}
+
+// PhoneGT applies the GT predicate on the "phone" field.
+func PhoneGT(v string) predicate.Checksymptom {
+	return predicate.Checksymptom(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldPhone), v))
+	})
+}
+
+// PhoneGTE applies the GTE predicate on the "phone" field.
+func PhoneGTE(v string) predicate.Checksymptom {
+	return predicate.Checksymptom(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldPhone), v))
+	})
+}
+
+// PhoneLT applies the LT predicate on the "phone" field.
+func PhoneLT(v string) predicate.Checksymptom {
+	return predicate.Checksymptom(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldPhone), v))
+	})
+}
+
+// PhoneLTE applies the LTE predicate on the "phone" field.
+func PhoneLTE(v string) predicate.Checksymptom {
+	return predicate.Checksymptom(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldPhone), v))
+	})
+}
+
+// PhoneContains applies the Contains predicate on the "phone" field.
+func PhoneContains(v string) predicate.Checksymptom {
+	return predicate.Checksymptom(func(s *sql.Selector) {
+		s.Where(sql.Contains(s.C(FieldPhone), v))
+	})
+}
+
+// PhoneHasPrefix applies the HasPrefix predicate on the "phone" field.
+func PhoneHasPrefix(v string) predicate.Checksymptom {
+	return predicate.Checksymptom(func(s *sql.Selector) {
+		s.Where(sql.HasPrefix(s.C(FieldPhone), v))
+	})
+}
+
+// PhoneHasSuffix applies the HasSuffix predicate on the "phone" field.
+func PhoneHasSuffix(v string) predicate.Checksymptom {
+	return predicate.Checksymptom(func(s *sql.Selector) {
+		s.Where(sql.HasSuffix(s.C(FieldPhone), v))
+	})
+}
+
+// PhoneEqualFold applies the EqualFold predicate on the "phone" field.
+func PhoneEqualFold(v string) predicate.Checksymptom {
+	return predicate.Checksymptom(func(s *sql.Selector) {
+		s.Where(sql.EqualFold(s.C(FieldPhone), v))
+	})
+}
+
+// PhoneContainsFold applies the ContainsFold predicate on the "phone" field.
+func PhoneContainsFold(v string) predicate.Checksymptom {
+	return predicate.Checksymptom(func(s *sql.Selector) {
+		s.Where(sql.ContainsFold(s.C(FieldPhone), v))
 	})
 }
 

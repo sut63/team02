@@ -96,8 +96,9 @@ var (
 	ChecksymptomsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "date", Type: field.TypeTime},
-		{Name: "times", Type: field.TypeString},
-		{Name: "note", Type: field.TypeString},
+		{Name: "note", Type: field.TypeString, Size: 40},
+		{Name: "identitycard", Type: field.TypeString, Size: 13},
+		{Name: "phone", Type: field.TypeString, Size: 10},
 		{Name: "disease_id", Type: field.TypeInt, Nullable: true},
 		{Name: "Doctorordersheet_id", Type: field.TypeInt, Nullable: true},
 		{Name: "Patient_id", Type: field.TypeInt, Nullable: true},
@@ -111,28 +112,28 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:  "checksymptoms_diseases_Checksymptom",
-				Columns: []*schema.Column{ChecksymptomsColumns[4]},
+				Columns: []*schema.Column{ChecksymptomsColumns[5]},
 
 				RefColumns: []*schema.Column{DiseasesColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:  "checksymptoms_doctorordersheets_Checksymptom",
-				Columns: []*schema.Column{ChecksymptomsColumns[5]},
+				Columns: []*schema.Column{ChecksymptomsColumns[6]},
 
 				RefColumns: []*schema.Column{DoctorordersheetsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:  "checksymptoms_patients_Checksymptom",
-				Columns: []*schema.Column{ChecksymptomsColumns[6]},
+				Columns: []*schema.Column{ChecksymptomsColumns[7]},
 
 				RefColumns: []*schema.Column{PatientsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:  "checksymptoms_personnels_Checksymptom",
-				Columns: []*schema.Column{ChecksymptomsColumns[7]},
+				Columns: []*schema.Column{ChecksymptomsColumns[8]},
 
 				RefColumns: []*schema.Column{PersonnelsColumns[0]},
 				OnDelete:   schema.SetNull,

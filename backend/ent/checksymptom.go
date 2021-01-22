@@ -22,10 +22,12 @@ type Checksymptom struct {
 	ID int `json:"id,omitempty"`
 	// Date holds the value of the "date" field.
 	Date time.Time `json:"date,omitempty"`
-	// Times holds the value of the "times" field.
-	Times string `json:"times,omitempty"`
 	// Note holds the value of the "note" field.
 	Note string `json:"note,omitempty"`
+	// Identitycard holds the value of the "Identitycard" field.
+	Identitycard string `json:"Identitycard,omitempty"`
+	// Phone holds the value of the "phone" field.
+	Phone string `json:"phone,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the ChecksymptomQuery when eager-loading is set.
 	Edges                ChecksymptomEdges `json:"edges"`
@@ -113,7 +115,7 @@ func (*Checksymptom) scanValues(columns []string) ([]interface{}, error) {
 		switch columns[i] {
 		case checksymptom.FieldID:
 			values[i] = &sql.NullInt64{}
-		case checksymptom.FieldTimes, checksymptom.FieldNote:
+		case checksymptom.FieldNote, checksymptom.FieldIdentitycard, checksymptom.FieldPhone:
 			values[i] = &sql.NullString{}
 		case checksymptom.FieldDate:
 			values[i] = &sql.NullTime{}
@@ -152,17 +154,23 @@ func (c *Checksymptom) assignValues(columns []string, values []interface{}) erro
 			} else if value.Valid {
 				c.Date = value.Time
 			}
-		case checksymptom.FieldTimes:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field times", values[i])
-			} else if value.Valid {
-				c.Times = value.String
-			}
 		case checksymptom.FieldNote:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field note", values[i])
 			} else if value.Valid {
 				c.Note = value.String
+			}
+		case checksymptom.FieldIdentitycard:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field Identitycard", values[i])
+			} else if value.Valid {
+				c.Identitycard = value.String
+			}
+		case checksymptom.FieldPhone:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field phone", values[i])
+			} else if value.Valid {
+				c.Phone = value.String
 			}
 		case checksymptom.ForeignKeys[0]:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -242,10 +250,12 @@ func (c *Checksymptom) String() string {
 	builder.WriteString(fmt.Sprintf("id=%v", c.ID))
 	builder.WriteString(", date=")
 	builder.WriteString(c.Date.Format(time.ANSIC))
-	builder.WriteString(", times=")
-	builder.WriteString(c.Times)
 	builder.WriteString(", note=")
 	builder.WriteString(c.Note)
+	builder.WriteString(", Identitycard=")
+	builder.WriteString(c.Identitycard)
+	builder.WriteString(", phone=")
+	builder.WriteString(c.Phone)
 	builder.WriteByte(')')
 	return builder.String()
 }

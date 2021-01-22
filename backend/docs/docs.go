@@ -3112,6 +3112,9 @@ var doc = `{
                 "doctorordersheetID": {
                     "type": "integer"
                 },
+                "identitycard": {
+                    "type": "string"
+                },
                 "note": {
                     "type": "string"
                 },
@@ -3121,7 +3124,7 @@ var doc = `{
                 "personnelID": {
                     "type": "integer"
                 },
-                "times": {
+                "phone": {
                     "type": "string"
                 }
             }
@@ -3281,6 +3284,10 @@ var doc = `{
         "ent.Checksymptom": {
             "type": "object",
             "properties": {
+                "Identitycard": {
+                    "description": "Identitycard holds the value of the \"Identitycard\" field.",
+                    "type": "string"
+                },
                 "date": {
                     "description": "Date holds the value of the \"date\" field.",
                     "type": "string"
@@ -3298,8 +3305,8 @@ var doc = `{
                     "description": "Note holds the value of the \"note\" field.",
                     "type": "string"
                 },
-                "times": {
-                    "description": "Times holds the value of the \"times\" field.",
+                "phone": {
+                    "description": "Phone holds the value of the \"phone\" field.",
                     "type": "string"
                 }
             }

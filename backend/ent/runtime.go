@@ -44,14 +44,46 @@ func init() {
 	bonedisease.AdviceValidator = bonediseaseDescAdvice.Validators[0].(func(string) error)
 	checksymptomFields := schema.Checksymptom{}.Fields()
 	_ = checksymptomFields
-	// checksymptomDescTimes is the schema descriptor for times field.
-	checksymptomDescTimes := checksymptomFields[1].Descriptor()
-	// checksymptom.TimesValidator is a validator for the "times" field. It is called by the builders before save.
-	checksymptom.TimesValidator = checksymptomDescTimes.Validators[0].(func(string) error)
 	// checksymptomDescNote is the schema descriptor for note field.
-	checksymptomDescNote := checksymptomFields[2].Descriptor()
+	checksymptomDescNote := checksymptomFields[1].Descriptor()
 	// checksymptom.NoteValidator is a validator for the "note" field. It is called by the builders before save.
 	checksymptom.NoteValidator = checksymptomDescNote.Validators[0].(func(string) error)
+	// checksymptomDescIdentitycard is the schema descriptor for Identitycard field.
+	checksymptomDescIdentitycard := checksymptomFields[2].Descriptor()
+	// checksymptom.IdentitycardValidator is a validator for the "Identitycard" field. It is called by the builders before save.
+	checksymptom.IdentitycardValidator = func() func(string) error {
+		validators := checksymptomDescIdentitycard.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(_Identitycard string) error {
+			for _, fn := range fns {
+				if err := fn(_Identitycard); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
+	// checksymptomDescPhone is the schema descriptor for phone field.
+	checksymptomDescPhone := checksymptomFields[3].Descriptor()
+	// checksymptom.PhoneValidator is a validator for the "phone" field. It is called by the builders before save.
+	checksymptom.PhoneValidator = func() func(string) error {
+		validators := checksymptomDescPhone.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(phone string) error {
+			for _, fn := range fns {
+				if err := fn(phone); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
 	dentalappointmentFields := schema.Dentalappointment{}.Fields()
 	_ = dentalappointmentFields
 	// dentalappointmentDescAmount is the schema descriptor for amount field.

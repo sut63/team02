@@ -37,15 +37,21 @@ func (cu *ChecksymptomUpdate) SetDate(t time.Time) *ChecksymptomUpdate {
 	return cu
 }
 
-// SetTimes sets the "times" field.
-func (cu *ChecksymptomUpdate) SetTimes(s string) *ChecksymptomUpdate {
-	cu.mutation.SetTimes(s)
-	return cu
-}
-
 // SetNote sets the "note" field.
 func (cu *ChecksymptomUpdate) SetNote(s string) *ChecksymptomUpdate {
 	cu.mutation.SetNote(s)
+	return cu
+}
+
+// SetIdentitycard sets the "Identitycard" field.
+func (cu *ChecksymptomUpdate) SetIdentitycard(s string) *ChecksymptomUpdate {
+	cu.mutation.SetIdentitycard(s)
+	return cu
+}
+
+// SetPhone sets the "phone" field.
+func (cu *ChecksymptomUpdate) SetPhone(s string) *ChecksymptomUpdate {
+	cu.mutation.SetPhone(s)
 	return cu
 }
 
@@ -213,14 +219,19 @@ func (cu *ChecksymptomUpdate) ExecX(ctx context.Context) {
 
 // check runs all checks and user-defined validators on the builder.
 func (cu *ChecksymptomUpdate) check() error {
-	if v, ok := cu.mutation.Times(); ok {
-		if err := checksymptom.TimesValidator(v); err != nil {
-			return &ValidationError{Name: "times", err: fmt.Errorf("ent: validator failed for field \"times\": %w", err)}
-		}
-	}
 	if v, ok := cu.mutation.Note(); ok {
 		if err := checksymptom.NoteValidator(v); err != nil {
 			return &ValidationError{Name: "note", err: fmt.Errorf("ent: validator failed for field \"note\": %w", err)}
+		}
+	}
+	if v, ok := cu.mutation.Identitycard(); ok {
+		if err := checksymptom.IdentitycardValidator(v); err != nil {
+			return &ValidationError{Name: "Identitycard", err: fmt.Errorf("ent: validator failed for field \"Identitycard\": %w", err)}
+		}
+	}
+	if v, ok := cu.mutation.Phone(); ok {
+		if err := checksymptom.PhoneValidator(v); err != nil {
+			return &ValidationError{Name: "phone", err: fmt.Errorf("ent: validator failed for field \"phone\": %w", err)}
 		}
 	}
 	return nil
@@ -251,18 +262,25 @@ func (cu *ChecksymptomUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: checksymptom.FieldDate,
 		})
 	}
-	if value, ok := cu.mutation.Times(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
-			Value:  value,
-			Column: checksymptom.FieldTimes,
-		})
-	}
 	if value, ok := cu.mutation.Note(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
 			Column: checksymptom.FieldNote,
+		})
+	}
+	if value, ok := cu.mutation.Identitycard(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: checksymptom.FieldIdentitycard,
+		})
+	}
+	if value, ok := cu.mutation.Phone(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: checksymptom.FieldPhone,
 		})
 	}
 	if cu.mutation.PatientCleared() {
@@ -429,15 +447,21 @@ func (cuo *ChecksymptomUpdateOne) SetDate(t time.Time) *ChecksymptomUpdateOne {
 	return cuo
 }
 
-// SetTimes sets the "times" field.
-func (cuo *ChecksymptomUpdateOne) SetTimes(s string) *ChecksymptomUpdateOne {
-	cuo.mutation.SetTimes(s)
-	return cuo
-}
-
 // SetNote sets the "note" field.
 func (cuo *ChecksymptomUpdateOne) SetNote(s string) *ChecksymptomUpdateOne {
 	cuo.mutation.SetNote(s)
+	return cuo
+}
+
+// SetIdentitycard sets the "Identitycard" field.
+func (cuo *ChecksymptomUpdateOne) SetIdentitycard(s string) *ChecksymptomUpdateOne {
+	cuo.mutation.SetIdentitycard(s)
+	return cuo
+}
+
+// SetPhone sets the "phone" field.
+func (cuo *ChecksymptomUpdateOne) SetPhone(s string) *ChecksymptomUpdateOne {
+	cuo.mutation.SetPhone(s)
 	return cuo
 }
 
@@ -605,14 +629,19 @@ func (cuo *ChecksymptomUpdateOne) ExecX(ctx context.Context) {
 
 // check runs all checks and user-defined validators on the builder.
 func (cuo *ChecksymptomUpdateOne) check() error {
-	if v, ok := cuo.mutation.Times(); ok {
-		if err := checksymptom.TimesValidator(v); err != nil {
-			return &ValidationError{Name: "times", err: fmt.Errorf("ent: validator failed for field \"times\": %w", err)}
-		}
-	}
 	if v, ok := cuo.mutation.Note(); ok {
 		if err := checksymptom.NoteValidator(v); err != nil {
 			return &ValidationError{Name: "note", err: fmt.Errorf("ent: validator failed for field \"note\": %w", err)}
+		}
+	}
+	if v, ok := cuo.mutation.Identitycard(); ok {
+		if err := checksymptom.IdentitycardValidator(v); err != nil {
+			return &ValidationError{Name: "Identitycard", err: fmt.Errorf("ent: validator failed for field \"Identitycard\": %w", err)}
+		}
+	}
+	if v, ok := cuo.mutation.Phone(); ok {
+		if err := checksymptom.PhoneValidator(v); err != nil {
+			return &ValidationError{Name: "phone", err: fmt.Errorf("ent: validator failed for field \"phone\": %w", err)}
 		}
 	}
 	return nil
@@ -641,18 +670,25 @@ func (cuo *ChecksymptomUpdateOne) sqlSave(ctx context.Context) (_node *Checksymp
 			Column: checksymptom.FieldDate,
 		})
 	}
-	if value, ok := cuo.mutation.Times(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
-			Value:  value,
-			Column: checksymptom.FieldTimes,
-		})
-	}
 	if value, ok := cuo.mutation.Note(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
 			Column: checksymptom.FieldNote,
+		})
+	}
+	if value, ok := cuo.mutation.Identitycard(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: checksymptom.FieldIdentitycard,
+		})
+	}
+	if value, ok := cuo.mutation.Phone(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: checksymptom.FieldPhone,
 		})
 	}
 	if cuo.mutation.PatientCleared() {

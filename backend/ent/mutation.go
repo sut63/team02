@@ -1216,8 +1216,9 @@ type ChecksymptomMutation struct {
 	typ                     string
 	id                      *int
 	date                    *time.Time
-	times                   *string
 	note                    *string
+	_Identitycard           *string
+	phone                   *string
 	clearedFields           map[string]struct{}
 	patient                 *int
 	clearedpatient          bool
@@ -1347,42 +1348,6 @@ func (m *ChecksymptomMutation) ResetDate() {
 	m.date = nil
 }
 
-// SetTimes sets the "times" field.
-func (m *ChecksymptomMutation) SetTimes(s string) {
-	m.times = &s
-}
-
-// Times returns the value of the "times" field in the mutation.
-func (m *ChecksymptomMutation) Times() (r string, exists bool) {
-	v := m.times
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldTimes returns the old "times" field's value of the Checksymptom entity.
-// If the Checksymptom object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ChecksymptomMutation) OldTimes(ctx context.Context) (v string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, fmt.Errorf("OldTimes is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, fmt.Errorf("OldTimes requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldTimes: %w", err)
-	}
-	return oldValue.Times, nil
-}
-
-// ResetTimes resets all changes to the "times" field.
-func (m *ChecksymptomMutation) ResetTimes() {
-	m.times = nil
-}
-
 // SetNote sets the "note" field.
 func (m *ChecksymptomMutation) SetNote(s string) {
 	m.note = &s
@@ -1417,6 +1382,78 @@ func (m *ChecksymptomMutation) OldNote(ctx context.Context) (v string, err error
 // ResetNote resets all changes to the "note" field.
 func (m *ChecksymptomMutation) ResetNote() {
 	m.note = nil
+}
+
+// SetIdentitycard sets the "Identitycard" field.
+func (m *ChecksymptomMutation) SetIdentitycard(s string) {
+	m._Identitycard = &s
+}
+
+// Identitycard returns the value of the "Identitycard" field in the mutation.
+func (m *ChecksymptomMutation) Identitycard() (r string, exists bool) {
+	v := m._Identitycard
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldIdentitycard returns the old "Identitycard" field's value of the Checksymptom entity.
+// If the Checksymptom object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ChecksymptomMutation) OldIdentitycard(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldIdentitycard is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldIdentitycard requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldIdentitycard: %w", err)
+	}
+	return oldValue.Identitycard, nil
+}
+
+// ResetIdentitycard resets all changes to the "Identitycard" field.
+func (m *ChecksymptomMutation) ResetIdentitycard() {
+	m._Identitycard = nil
+}
+
+// SetPhone sets the "phone" field.
+func (m *ChecksymptomMutation) SetPhone(s string) {
+	m.phone = &s
+}
+
+// Phone returns the value of the "phone" field in the mutation.
+func (m *ChecksymptomMutation) Phone() (r string, exists bool) {
+	v := m.phone
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPhone returns the old "phone" field's value of the Checksymptom entity.
+// If the Checksymptom object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ChecksymptomMutation) OldPhone(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldPhone is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldPhone requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPhone: %w", err)
+	}
+	return oldValue.Phone, nil
+}
+
+// ResetPhone resets all changes to the "phone" field.
+func (m *ChecksymptomMutation) ResetPhone() {
+	m.phone = nil
 }
 
 // SetPatientID sets the "patient" edge to the Patient entity by id.
@@ -1589,15 +1626,18 @@ func (m *ChecksymptomMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *ChecksymptomMutation) Fields() []string {
-	fields := make([]string, 0, 3)
+	fields := make([]string, 0, 4)
 	if m.date != nil {
 		fields = append(fields, checksymptom.FieldDate)
 	}
-	if m.times != nil {
-		fields = append(fields, checksymptom.FieldTimes)
-	}
 	if m.note != nil {
 		fields = append(fields, checksymptom.FieldNote)
+	}
+	if m._Identitycard != nil {
+		fields = append(fields, checksymptom.FieldIdentitycard)
+	}
+	if m.phone != nil {
+		fields = append(fields, checksymptom.FieldPhone)
 	}
 	return fields
 }
@@ -1609,10 +1649,12 @@ func (m *ChecksymptomMutation) Field(name string) (ent.Value, bool) {
 	switch name {
 	case checksymptom.FieldDate:
 		return m.Date()
-	case checksymptom.FieldTimes:
-		return m.Times()
 	case checksymptom.FieldNote:
 		return m.Note()
+	case checksymptom.FieldIdentitycard:
+		return m.Identitycard()
+	case checksymptom.FieldPhone:
+		return m.Phone()
 	}
 	return nil, false
 }
@@ -1624,10 +1666,12 @@ func (m *ChecksymptomMutation) OldField(ctx context.Context, name string) (ent.V
 	switch name {
 	case checksymptom.FieldDate:
 		return m.OldDate(ctx)
-	case checksymptom.FieldTimes:
-		return m.OldTimes(ctx)
 	case checksymptom.FieldNote:
 		return m.OldNote(ctx)
+	case checksymptom.FieldIdentitycard:
+		return m.OldIdentitycard(ctx)
+	case checksymptom.FieldPhone:
+		return m.OldPhone(ctx)
 	}
 	return nil, fmt.Errorf("unknown Checksymptom field %s", name)
 }
@@ -1644,19 +1688,26 @@ func (m *ChecksymptomMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetDate(v)
 		return nil
-	case checksymptom.FieldTimes:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetTimes(v)
-		return nil
 	case checksymptom.FieldNote:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetNote(v)
+		return nil
+	case checksymptom.FieldIdentitycard:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetIdentitycard(v)
+		return nil
+	case checksymptom.FieldPhone:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPhone(v)
 		return nil
 	}
 	return fmt.Errorf("unknown Checksymptom field %s", name)
@@ -1710,11 +1761,14 @@ func (m *ChecksymptomMutation) ResetField(name string) error {
 	case checksymptom.FieldDate:
 		m.ResetDate()
 		return nil
-	case checksymptom.FieldTimes:
-		m.ResetTimes()
-		return nil
 	case checksymptom.FieldNote:
 		m.ResetNote()
+		return nil
+	case checksymptom.FieldIdentitycard:
+		m.ResetIdentitycard()
+		return nil
+	case checksymptom.FieldPhone:
+		m.ResetPhone()
 		return nil
 	}
 	return fmt.Errorf("unknown Checksymptom field %s", name)

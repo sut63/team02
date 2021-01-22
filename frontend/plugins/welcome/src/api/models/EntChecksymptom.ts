@@ -27,6 +27,12 @@ import {
  */
 export interface EntChecksymptom {
     /**
+     * Identitycard holds the value of the "Identitycard" field.
+     * @type {string}
+     * @memberof EntChecksymptom
+     */
+    identitycard?: string;
+    /**
      * Date holds the value of the "date" field.
      * @type {string}
      * @memberof EntChecksymptom
@@ -51,11 +57,11 @@ export interface EntChecksymptom {
      */
     note?: string;
     /**
-     * Times holds the value of the "times" field.
+     * Phone holds the value of the "phone" field.
      * @type {string}
      * @memberof EntChecksymptom
      */
-    times?: string;
+    phone?: string;
 }
 
 export function EntChecksymptomFromJSON(json: any): EntChecksymptom {
@@ -68,11 +74,12 @@ export function EntChecksymptomFromJSONTyped(json: any, ignoreDiscriminator: boo
     }
     return {
         
+        'identitycard': !exists(json, 'Identitycard') ? undefined : json['Identitycard'],
         'date': !exists(json, 'date') ? undefined : json['date'],
         'edges': !exists(json, 'edges') ? undefined : EntChecksymptomEdgesFromJSON(json['edges']),
         'id': !exists(json, 'id') ? undefined : json['id'],
         'note': !exists(json, 'note') ? undefined : json['note'],
-        'times': !exists(json, 'times') ? undefined : json['times'],
+        'phone': !exists(json, 'phone') ? undefined : json['phone'],
     };
 }
 
@@ -85,11 +92,12 @@ export function EntChecksymptomToJSON(value?: EntChecksymptom | null): any {
     }
     return {
         
+        'Identitycard': value.identitycard,
         'date': value.date,
         'edges': EntChecksymptomEdgesToJSON(value.edges),
         'id': value.id,
         'note': value.note,
-        'times': value.times,
+        'phone': value.phone,
     };
 }
 

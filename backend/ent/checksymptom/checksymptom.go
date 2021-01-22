@@ -9,10 +9,12 @@ const (
 	FieldID = "id"
 	// FieldDate holds the string denoting the date field in the database.
 	FieldDate = "date"
-	// FieldTimes holds the string denoting the times field in the database.
-	FieldTimes = "times"
 	// FieldNote holds the string denoting the note field in the database.
 	FieldNote = "note"
+	// FieldIdentitycard holds the string denoting the identitycard field in the database.
+	FieldIdentitycard = "identitycard"
+	// FieldPhone holds the string denoting the phone field in the database.
+	FieldPhone = "phone"
 
 	// EdgePatient holds the string denoting the patient edge name in mutations.
 	EdgePatient = "patient"
@@ -59,8 +61,9 @@ const (
 var Columns = []string{
 	FieldID,
 	FieldDate,
-	FieldTimes,
 	FieldNote,
+	FieldIdentitycard,
+	FieldPhone,
 }
 
 // ForeignKeys holds the SQL foreign-keys that are owned by the Checksymptom type.
@@ -87,8 +90,10 @@ func ValidColumn(column string) bool {
 }
 
 var (
-	// TimesValidator is a validator for the "times" field. It is called by the builders before save.
-	TimesValidator func(string) error
 	// NoteValidator is a validator for the "note" field. It is called by the builders before save.
 	NoteValidator func(string) error
+	// IdentitycardValidator is a validator for the "Identitycard" field. It is called by the builders before save.
+	IdentitycardValidator func(string) error
+	// PhoneValidator is a validator for the "phone" field. It is called by the builders before save.
+	PhoneValidator func(string) error
 )

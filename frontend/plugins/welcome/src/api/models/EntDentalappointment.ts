@@ -27,6 +27,12 @@ import {
  */
 export interface EntDentalappointment {
     /**
+     * Amount holds the value of the "amount" field.
+     * @type {number}
+     * @memberof EntDentalappointment
+     */
+    amount?: number;
+    /**
      * Appointtime holds the value of the "appointtime" field.
      * @type {string}
      * @memberof EntDentalappointment
@@ -44,6 +50,18 @@ export interface EntDentalappointment {
      * @memberof EntDentalappointment
      */
     id?: number;
+    /**
+     * Note holds the value of the "note" field.
+     * @type {string}
+     * @memberof EntDentalappointment
+     */
+    note?: string;
+    /**
+     * Price holds the value of the "price" field.
+     * @type {number}
+     * @memberof EntDentalappointment
+     */
+    price?: number;
 }
 
 export function EntDentalappointmentFromJSON(json: any): EntDentalappointment {
@@ -56,9 +74,12 @@ export function EntDentalappointmentFromJSONTyped(json: any, ignoreDiscriminator
     }
     return {
         
+        'amount': !exists(json, 'amount') ? undefined : json['amount'],
         'appointtime': !exists(json, 'appointtime') ? undefined : json['appointtime'],
         'edges': !exists(json, 'edges') ? undefined : EntDentalappointmentEdgesFromJSON(json['edges']),
         'id': !exists(json, 'id') ? undefined : json['id'],
+        'note': !exists(json, 'note') ? undefined : json['note'],
+        'price': !exists(json, 'price') ? undefined : json['price'],
     };
 }
 
@@ -71,9 +92,12 @@ export function EntDentalappointmentToJSON(value?: EntDentalappointment | null):
     }
     return {
         
+        'amount': value.amount,
         'appointtime': value.appointtime,
         'edges': EntDentalappointmentEdgesToJSON(value.edges),
         'id': value.id,
+        'note': value.note,
+        'price': value.price,
     };
 }
 

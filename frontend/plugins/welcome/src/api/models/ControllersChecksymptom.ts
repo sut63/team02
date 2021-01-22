@@ -42,6 +42,12 @@ export interface ControllersChecksymptom {
      * @type {string}
      * @memberof ControllersChecksymptom
      */
+    identitycard?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ControllersChecksymptom
+     */
     note?: string;
     /**
      * 
@@ -60,7 +66,7 @@ export interface ControllersChecksymptom {
      * @type {string}
      * @memberof ControllersChecksymptom
      */
-    times?: string;
+    phone?: string;
 }
 
 export function ControllersChecksymptomFromJSON(json: any): ControllersChecksymptom {
@@ -76,10 +82,11 @@ export function ControllersChecksymptomFromJSONTyped(json: any, ignoreDiscrimina
         'date': !exists(json, 'date') ? undefined : json['date'],
         'diseaseID': !exists(json, 'diseaseID') ? undefined : json['diseaseID'],
         'doctorordersheetID': !exists(json, 'doctorordersheetID') ? undefined : json['doctorordersheetID'],
+        'identitycard': !exists(json, 'identitycard') ? undefined : json['identitycard'],
         'note': !exists(json, 'note') ? undefined : json['note'],
         'patientID': !exists(json, 'patientID') ? undefined : json['patientID'],
         'personnelID': !exists(json, 'personnelID') ? undefined : json['personnelID'],
-        'times': !exists(json, 'times') ? undefined : json['times'],
+        'phone': !exists(json, 'phone') ? undefined : json['phone'],
     };
 }
 
@@ -95,10 +102,11 @@ export function ControllersChecksymptomToJSON(value?: ControllersChecksymptom | 
         'date': value.date,
         'diseaseID': value.diseaseID,
         'doctorordersheetID': value.doctorordersheetID,
+        'identitycard': value.identitycard,
         'note': value.note,
         'patientID': value.patientID,
         'personnelID': value.personnelID,
-        'times': value.times,
+        'phone': value.phone,
     };
 }
 

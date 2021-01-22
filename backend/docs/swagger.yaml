@@ -36,13 +36,15 @@ definitions:
         type: integer
       doctorordersheetID:
         type: integer
+      identitycard:
+        type: string
       note:
         type: string
       patientID:
         type: integer
       personnelID:
         type: integer
-      times:
+      phone:
         type: string
     type: object
   controllers.Dentalappointment:
@@ -158,6 +160,9 @@ definitions:
     type: object
   ent.Checksymptom:
     properties:
+      Identitycard:
+        description: Identitycard holds the value of the "Identitycard" field.
+        type: string
       date:
         description: Date holds the value of the "date" field.
         type: string
@@ -173,8 +178,8 @@ definitions:
       note:
         description: Note holds the value of the "note" field.
         type: string
-      times:
-        description: Times holds the value of the "times" field.
+      phone:
+        description: Phone holds the value of the "phone" field.
         type: string
     type: object
   ent.ChecksymptomEdges:

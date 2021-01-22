@@ -16,8 +16,9 @@ type Checksymptom struct {
 func (Checksymptom) Fields() []ent.Field {
 	return []ent.Field{
 		field.Time("date"),
-		field.String("times").NotEmpty(),
-		field.String("note").NotEmpty(),
+		field.String("note").MaxLen(40),
+		field.String("Identitycard").MaxLen(13).MinLen(13),
+		field.String("phone").MaxLen(10).MinLen(10),
 
 	}
 }

@@ -28,8 +28,10 @@ type Checksymptom struct {
 	DoctorordersheetID  int
 	DiseaseID			int
 	Date				string
-	Times          		string
+	Phone          		string 
 	Note				string
+	Identitycard		string
+
 }
 
 // CreateChecksymptom handles POST requests for adding Checksymptom entities
@@ -108,17 +110,21 @@ func (ctl *ChecksymptomController) CreateChecksymptom(c *gin.Context) {
 	SetPatient(patient).
 	SetDoctorordersheet(doctorordersheet).
 	SetDisease(disease).
-	SetTimes(obj.Times).
+	SetPhone(obj.Phone).
 	SetDate(time).
+
+	SetIdentitycard(obj.Identitycard).
 	SetNote(obj.Note).
 	Save(context.Background())
 	
 	if err != nil {
-        c.JSON(400, gin.H{
-            "error": "saving failed",
-        })
-        return
-    }
+		fmt.Println(err)
+		c.JSON(400, gin.H{
+			"status": false,
+			"error":  err,
+		})
+		return
+	}
 
     c.JSON(200, gin.H{
         "status": true,

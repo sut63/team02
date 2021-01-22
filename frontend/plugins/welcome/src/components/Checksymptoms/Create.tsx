@@ -1,223 +1,259 @@
 import React, { useState, useEffect } from 'react';
-import SaveIcon from '@material-ui/icons/Save'; // icon save
 import { Link as RouterLink } from 'react-router-dom';
-import { Alert } from '@material-ui/lab';
 import {
- Content,
- Header,
- Page,
- pageTheme,
- ContentHeader,
+  Content,
+  Header,
+  Page,
+  Link,
+  pageTheme,
+  ContentHeader, 
 } from '@backstage/core';
-import {
-  Container,
-  Grid,
-  FormControl,
-  Select,
-  InputLabel,
-  MenuItem, 
-  TextField, 
-  Button,
-  Link, 
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+//import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import FormControl from '@material-ui/core/FormControl';
+import { Alert } from '@material-ui/lab';
 import { DefaultApi } from '../../api/apis';
-import { EntPatient } from '../../api/models/EntPatient';
-import { EntPersonnel } from '../../api/models/EntPersonnel';
-import { EntDisease } from './../../api/models/EntDisease';
-import { EntDoctorordersheet } from './../../api/models/EntDoctorordersheet';
+
+import MenuItem from '@material-ui/core/MenuItem';
+//import FormHelperText from '@material-ui/core/FormHelperText';
+import Select from '@material-ui/core/Select';
+import Typography from '@material-ui/core/Typography';
+import TextField from '@material-ui/core/TextField';
+import Swal from 'sweetalert2';
+
+import { EntPatient,EntDoctorordersheet,EntPersonnel,EntDisease } from '../../api';
 
 
-// css style  
-const useStyles = makeStyles(theme => ({
-  root: {
-    flexGrow: 1,
-  },
 
-  margin: {
-    margin: theme.spacing(3),
-},
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      display: 'flex',
+      flexWrap: 'wrap',
+      justifyContent: 'center',
+    },
+    margin: {
+      margin: theme.spacing(3),
+    },
+    withoutLabel: {
+      marginTop: theme.spacing(3),
+    },
+    textField: {
+      width: '25ch',
+    },
+  }),
+);
 
+//updateforlab9
+const Toast = Swal.mixin({
+  toast: true,
+  position: 'top-end',
+  showConfirmButton: false,
+  timer: 3000,
+  timerProgressBar: true,
+  didOpen: (toast: { addEventListener: (arg0: string, arg1: any) => void; }) => {
+    toast.addEventListener('mouseenter', Swal.stopTimer);
+    toast.addEventListener('mouseleave', Swal.resumeTimer);
+  },
+});
 
-  paper: {
-    marginTop: theme.spacing(2),
-    marginBottom: theme.spacing(1),
-  },
-  formControl: {
-    width: 300,
-  },
-  selectEmpty: {
-    marginTop: theme.spacing(2),
-  },
-  container: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
-  textField: {
-    width: 300,
-  },
-  datetimepicker:{
-    width: 300,
-  },
-}));
- 
-const HeaderCustom = {
-  minHeight: '70px',
-};
-
-export default function Create() {
+export default function CreateChecksymptom() {
   const classes = useStyles();
+  const profile = { givenName: ''};
   const api = new DefaultApi();
 
-  
-  const [personnels, setPersonnels] = useState<EntPersonnel[]>([]);
-  const [patients, setPatients] = useState<EntPatient[]>([]);
-  const [diseases, setDiseases] = useState<EntDisease[]>([]);
-  const [doctorordersheets, setDoctorordersheets] = useState<EntDoctorordersheet[]>([]);
+  //const [deceased, setDeceased] = useState(String);
   const [status, setStatus] = useState(false);
   const [alert, setAlert] = useState(true);
+  const [patients, setPatients] = useState<EntPatient[]>([]);
+  const [diseases, setDiseases] = useState<EntDisease[]>([]);
+  const [personnels, setPersonnels] = useState<EntPersonnel[]>([]);
+  const [doctorordersheets, setDoctorordersheets] = useState<EntDoctorordersheet[]>([]);
+
   const [loading, setLoading] = useState(true);
- 
- 
-  const [personnelid, setPersonnelid] = useState(Number);
-  const [patientid, setPatientid] = useState(Number);
-  const [diseaseid, setDiseaseid] = useState(Number);
-  const [doctorordersheetid, setDoctorordersheetid] = useState(Number);
-  const [addedTime, setAddedTime] = useState(String);
-  const [times, setTimes] = useState(String);
+
+  const [patientName, setPatient] = useState(Number);
+  const [diseaseName, setDisease] = useState(Number);
+  const [personnelName, setPersonnel] = useState(Number);
+  const [doctorordersheetName, setDoctorordersheet] = useState(Number);
+  const [datetime, setDateTime] = useState(String);
+  const [phone, setPhone] = useState(String);
+  const [identitycard, setIdentitycard] = useState(String);
   const [note, setNote] = useState(String);
- 
+
   useEffect(() => {
-// 
-    const getPersonnels = async () => {
- 
-      const personnels = await api.listPersonnel({ limit: 10, offset: 0 });
-      setLoading(false);
-      setPersonnels(personnels);
-    };
-    getPersonnels();
-// 
+
     const getPatients = async () => {
- 
-    const patients = await api.listPatient({ limit: 10, offset: 0 });
+      const res = await api.listPatient({ limit: 10, offset: 0 });
       setLoading(false);
-      setPatients(patients);
+      setPatients(res);
+      console.log(res);
     };
     getPatients();
-// 
+
     const getDiseases = async () => {
- 
-     const diseases = await api.listDisease({ limit: 10, offset: 0 });
-       setLoading(false);
-       setDiseases(diseases);
-     };
-     getDiseases();
-//
-const getDoctorordersheets = async () => {
- 
-  const doctorordersheets = await api.listDoctorordersheet({ limit: 10, offset: 0 });
-    setLoading(false);
-    setDoctorordersheets(doctorordersheets);
-  };
-  getDoctorordersheets();
-//
- 
+      const res = await api.listDisease({ limit: 10, offset: 0 });
+      setLoading(false);
+      setDiseases(res);
+    };
+    getDiseases();
+
+    const getDoctorordersheets = async () => {
+      const res = await api.listDoctorordersheet({ limit: 10, offset: 0 });
+      setLoading(false);
+      setDoctorordersheets(res);
+    };
+    getDoctorordersheets();
+
+
+    const getPersonnels = async () => {
+      const res = await api.listPersonnel({ limit: 10, offset: 0 });
+      setLoading(false);
+      setPersonnels(res);
+    };
+    getPersonnels();
   }, [loading]);
- 
-  const CreateChecksymptom = async () => {
-    if((addedTime != "" )&& (patientid != 0) &&(personnelid != 0)&&(doctorordersheetid != 0)&&
-    (diseaseid != 0)&&(times != "")&&(note != "")){
-      const checksymptom = {
-         date        : addedTime + ":00+07:00", //+ "T00:00:00+07:00", //2020-10-20T11:53  yyyy-MM-ddT07:mm
-         patientID          : patientid,
-         personnelID        : personnelid,
-         doctorordersheetID           : doctorordersheetid,
-         diseaseID      : diseaseid,
-         times : times,
-         note : note,
-      }
-      console.log(checksymptom);
 
-    const res:any = await api.createChecksymptom({ checksymptom : checksymptom});
-    setStatus(true);
-    if (res.id != ''){
-      setAlert(true);
+  //updateforlab9
+  const alertMessage = (icon: any, title: any) => {
+    Toast.fire({
+      icon: icon,
+      title: title,
+    });
+  }
+
+  const checkCaseSaveError = (field: string) => {
+    switch(field) {
+      
+      case 'phone':
+        alertMessage("warning","กรุณากรอกเบอร์โทรศัพท์ให้ครบ 10 ตัว");
+        return;
+      case 'Identitycard':
+        alertMessage("warning","กรุณากรอกเลขบัตรประชาชนให้ครบ 13 ตัว");
+        return;
+      case 'note':
+        alertMessage("warning","กรุณากรอกข้อความไม่เกิน 40 ตัวอักษร ถ้าไม่มีกรอก '-' ");
+        return;
+      default:
+        alertMessage("error","บันทึกข้อมูลไม่สำเร็จ");
+        return;
     }
-    } else {
-      setAlert(false);
-      setStatus(true);
-    }
- 
+  }
+
+  
+
+
+  function save() {
+    const apiUrl = 'http://localhost:8080/api/v1/checksymptoms';
+    const checksymptom = {
+      patientID: patientName,
+      diseaseID: diseaseName,
+      personnelID: personnelName,
+      doctorordersheetID: doctorordersheetName,
+      date: datetime + ":00+07:00",
+      phone: phone,
+      identitycard: identitycard,
+      note: note,
+    };
+    console.log(checksymptom);
+
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(checksymptom),
+    };
+
+    console.log(checksymptom); // log ดูข้อมูล สามารถ Inspect ดูข้อมูลได้ F12 เลือก Tab Console
+
+    fetch(apiUrl, requestOptions)
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        if (data.status === true) {
+          //clear();
+          Toast.fire({
+            icon: 'success',
+            title: 'บันทึกข้อมูลสำเร็จ',
+          });window.setTimeout(function(){location.reload()},15000);
+        } else {
+          checkCaseSaveError(data.error.Name)
+        }
+      });
+  }
+
+  const PatienthandleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    setPatient(event.target.value as number);
   };
- 
-  const Patiant_handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setPatientid(event.target.value as number);
-    };
 
-   const Personnel_handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setPersonnelid(event.target.value as number);
-    };
+  const DiseasehandleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    setDisease(event.target.value as number);
+  };
 
-    const Disease_handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-      setDiseaseid(event.target.value as number);
-     };
 
-     const Doctorordersheet_handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-      setDoctorordersheetid(event.target.value as number);
-     };
+  const PhonehandleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    setPhone(event.target.value as string);
+  };
 
-     const Added_Time_handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-      setAddedTime(event.target.value as string);
-    };
+  const PersonnelhandleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    setPersonnel(event.target.value as number);
+  };
+  const DateTimehandleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    setDateTime(event.target.value as string);
+  };
 
-    const TimeshandleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-      setTimes(event.target.value as string);
-     };
+  const IdentitycardhandleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    setIdentitycard(event.target.value as string);
+  };
 
-     const NotehandleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-      setNote(event.target.value as string);
-     };
+  const DoctorordersheethandleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    setDoctorordersheet(event.target.value as number);
+  };
 
- 
+  const NotehandleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    setNote(event.target.value as string);
+  };
+
+
+
+
   return (
-    <Page theme={pageTheme.website}>
-      <Header style={HeaderCustom} title={`ระบบบันทึกการนัดตรวจอาการ`}>
-      </Header>
+    <Page theme={pageTheme.home}>
+      <Header
+      title={`${profile.givenName || 'Checksymptom '}`}
+      subtitle=""
+     ></Header>
       <Content>
-      <ContentHeader title="ระบบบันทึกการนัดตรวจอาการ">
-         {status ? (
-           <div>
-             {alert ? (
-               <Alert severity="success">
-                 บันทึกสำเร็จ
-               </Alert>
-             ) : (
-               <Alert severity="warning" style={{ marginTop: 30 }}>
-                 บันทึกไม่สำเร็จ ไปทำมาใหม่
-               </Alert>
-             )}
-           </div>
-         ) : null}
-      </ContentHeader>
-
-
-
-
-        <Container maxWidth="sm">
-          <Grid container spacing={3}>
-            <Grid item xs={12}></Grid>
-            <Grid item xs={4}>
-              <div className={classes.paper}>Personnel</div>
-            </Grid>
-            <Grid item xs={8}>
-              <FormControl variant="outlined" className={classes.formControl}>
-                <InputLabel>เลือกผู้ใช้งาน</InputLabel>
+        <ContentHeader title="บันทึกนัดตรวจอาการ">
+          <div>
+            <Link component={RouterLink} to="/WelcomePage">
+            <Button variant="contained" color="primary" style={{backgroundColor: "#21b6ae"}}>
+              Back
+            </Button>
+          </Link>
+          </div>
+          
+        </ContentHeader>
+        <div className={classes.root}>
+          <form noValidate autoComplete="off">
+          
+            
+          <div>
+              <FormControl
+                className={classes.margin}
+                variant="outlined"
+              >
+                <Typography variant="h6" gutterBottom  align="center">
+                Personnel Name : 
+                <Typography variant="body1" gutterBottom> 
                 <Select
-                  name="personnel"
-                  value={personnelid || ''}
-                  onChange={Personnel_handleChange}
+                  labelId="personnel"
+                  id="personnel"
+                  value={personnelName}
+                  onChange={PersonnelhandleChange}
+                  style={{ width: 400 }}
                 >
-                  {personnels.map(item => {
+               {personnels.map(item => {
                     return (
                       <MenuItem key={item.id} value={item.id}>
                         {item.name}
@@ -225,27 +261,29 @@ const getDoctorordersheets = async () => {
                     );
                   })}
                 </Select>
+                </Typography>
+                </Typography>
               </FormControl>
-            </Grid>
+            </div>
 
 
-
-
-
-
-
-            <Grid item xs={4}>
-              <div className={classes.paper}>Patient</div>
-            </Grid>
-            <Grid item xs={8}>
-              <FormControl variant="outlined" className={classes.formControl}>
-                <InputLabel>เลือกผู้ป่วย</InputLabel>
+            
+            <div>
+              <FormControl
+                className={classes.margin}
+                variant="outlined"
+              >
+                <Typography variant="h6" gutterBottom  align="center">
+                Patient Name : 
+                <Typography variant="body1" gutterBottom> 
                 <Select
-                  name="patient"
-                  value={patientid || ''}
-                  onChange={Patiant_handleChange}
+                  labelId="patient"
+                  id="patient"
+                  value={patientName}
+                  onChange={PatienthandleChange}
+                  style={{ width: 400 }}
                 >
-                  {patients.map(item => {
+               {patients.map(item => {
                     return (
                       <MenuItem key={item.id} value={item.id}>
                         {item.name}
@@ -253,151 +291,161 @@ const getDoctorordersheets = async () => {
                     );
                   })}
                 </Select>
+                </Typography>
+                </Typography>
               </FormControl>
-            </Grid>
-
-
-
-
-
-
-
-
-
-            <Grid item xs={4}>
-              <div className={classes.paper}>Disease</div>
-            </Grid>
-            <Grid item xs={8}>
-              <FormControl variant="outlined" className={classes.formControl}>
-                <InputLabel>เลือกโรค</InputLabel>
-                <Select
-                  name="Disease"
-                  value={diseaseid || ''}
-                  onChange={Disease_handleChange}
-                >
-                  {diseases.map(item => {
+            </div>
+<div>
+            <FormControl
+              className={classes.margin}
+              variant="outlined"
+            >
+              <Typography variant="h6" gutterBottom  align="center">
+                Disease Name : 
+                <Typography variant="body1" gutterBottom> 
+              <Select
+                labelId="disease"
+                id="disease"
+                value={diseaseName}
+                onChange={DiseasehandleChange}
+                style={{ width: 400 }}
+              > 
+                {diseases.map(item => {
                     return (
                       <MenuItem key={item.id} value={item.id}>
                         {item.disease}
                       </MenuItem>
                     );
                   })}
-                </Select>
-              </FormControl>
-            </Grid>
+              </Select>
+                </Typography>
+                </Typography>
+            </FormControl>
+            </div>
 
-
-            <Grid item xs={4}>
-              <div className={classes.paper}>Doctorordersheet</div>
-            </Grid>
-            <Grid item xs={8}>
-              <FormControl variant="outlined" className={classes.formControl}>
-                <InputLabel>นายแพทย์</InputLabel>
-                <Select
-                  name="doctorordersheet"
-                  value={doctorordersheetid || ''}
-                  onChange={Doctorordersheet_handleChange}
-                >
-                  {doctorordersheets.map(item => {
+            <div>
+            <FormControl
+              className={classes.margin}
+              variant="outlined"
+            >
+              <Typography variant="h6" gutterBottom  align="center">
+                Doctorordersheet Name : 
+                <Typography variant="body1" gutterBottom> 
+              <Select
+                labelId="doctorordersheet"
+                id="doctorordersheet"
+                value={doctorordersheetName}
+                onChange={DoctorordersheethandleChange}
+                style={{ width: 400 }}
+              > 
+                {doctorordersheets.map(item => {
                     return (
                       <MenuItem key={item.id} value={item.id}>
                         {item.name}
                       </MenuItem>
                     );
                   })}
-                </Select>
-              </FormControl>
-            </Grid>
+              </Select>
+                </Typography>
+                </Typography>
+            </FormControl>
+</div>
+
+
+            
+            <tr>
+            <td>
+            <FormControl
+                  fullWidth
+                  className={classes.margin}
+                  variant="outlined"
+                >
+                  <form className={classes.root} noValidate>
+                      <TextField
+                        id="datetime-local"                                                            
+                        label="Date"
+                        type="datetime-local"
+                        //defaultValue="2017-05-24T10:30"
+                        className={classes.textField}
+                        onChange={DateTimehandleChange}
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                      />
+                </form>
+               </FormControl>
+            </td>
+          </tr>
 
 
 
 
-
-            <Grid item xs={4}>
-              <div className={classes.paper}>หมายเหตุ</div>
-            </Grid>
-            <Grid item xs={8}>
-              <TextField
-                id="note"
-                label="Note"
+          <div>
+              <FormControl
+                className={classes.margin}
                 variant="outlined"
-                type="string"
-                size="medium"
-                value={note}
-                onChange={NotehandleChange}
-                style = {{width: 300}}
-              />
-            </Grid>
-
-
-
-
-            <Grid item xs={4}>
-              <div className={classes.paper}>วันที่</div>
-            </Grid>
-            <Grid item xs={8}>
-            <form className={classes.container} noValidate>
-                <TextField
-                  label="เลือกวันและเวลา"
-                  name="added"
-                  type="datetime-local"
-                  value={addedTime|| ''} // (undefined || '') = ''
-                  className={classes.textField}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  onChange={Added_Time_handleChange}
+              >
+                <div>เลขบัตรประชาชน</div>
+                <TextField id="identitycard"  InputLabelProps={{
+                  shrink: true,
+                }} label="identitycard" variant="outlined"
+                  onChange={IdentitycardhandleChange}
+                  value={identitycard || ''}
                 />
-              </form>
-            </Grid>
+              </FormControl>
+            </div>
 
 
+            
 
-
-
-
-
-
-            <Grid item xs={4}>
-              <div className={classes.paper}>เวลา</div>
-            </Grid>
-            <Grid item xs={8}>
-              <TextField
-                id="times"
-                label="Times"
+            <div>
+              <FormControl
+                className={classes.margin}
                 variant="outlined"
-                type="string"
-                size="medium"
-                value={times}
-                onChange={TimeshandleChange}
-                style = {{width: 300}}
-              />
-            </Grid>
+              >
+                <div>เบอร์โทรศัพท์</div>
+                <TextField id="phone"  InputLabelProps={{
+                  shrink: true,
+                }} label="phone" variant="outlined"
+                  onChange={PhonehandleChange}
+                  value={phone || ''}
+                />
+              </FormControl>
+            </div>
 
 
+            <div>
+              <FormControl
+                className={classes.margin}
+                variant="outlined"
+              >
+                <div>หมายเหตุ * (ไม่เกิน 40 ตัวอักษร ถ้าไม่มีกรอก -)</div>
+                <TextField id="note" type='string' InputLabelProps={{
+                  shrink: true,
+                }} label="note" variant="outlined"
+                  onChange={NotehandleChange}
+                  value={note || ''}
+                />
+              </FormControl>
+            </div>
+
+                        
             <div className={classes.margin}>
-                    <Button
-                    onClick={() => {
-                      CreateChecksymptom();}}
-                      variant="contained"
-                      color="primary"
-                    >
-                      ยืนยัน
-              </Button>
-                                           
+            <Typography variant="h6" gutterBottom  align="center">
+              <Button
+                onClick={() => {
+                  save();
+                }}
+                variant="contained"
+                color="primary"
+              >
+                Create
+             </Button>
+              </Typography>
+            </div>
+          </form>
         </div>
-
-
-
-
-
-
-        
-        
-
-          </Grid>
-        </Container>
       </Content>
     </Page>
   );
-};
+}

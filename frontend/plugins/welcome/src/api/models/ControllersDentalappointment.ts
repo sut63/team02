@@ -21,6 +21,12 @@ import { exists, mapValues } from '../runtime';
 export interface ControllersDentalappointment {
     /**
      * 
+     * @type {number}
+     * @memberof ControllersDentalappointment
+     */
+    amount?: number;
+    /**
+     * 
      * @type {string}
      * @memberof ControllersDentalappointment
      */
@@ -33,6 +39,12 @@ export interface ControllersDentalappointment {
     kindName?: number;
     /**
      * 
+     * @type {string}
+     * @memberof ControllersDentalappointment
+     */
+    note?: string;
+    /**
+     * 
      * @type {number}
      * @memberof ControllersDentalappointment
      */
@@ -43,6 +55,12 @@ export interface ControllersDentalappointment {
      * @memberof ControllersDentalappointment
      */
     personnelID?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof ControllersDentalappointment
+     */
+    price?: number;
 }
 
 export function ControllersDentalappointmentFromJSON(json: any): ControllersDentalappointment {
@@ -55,10 +73,13 @@ export function ControllersDentalappointmentFromJSONTyped(json: any, ignoreDiscr
     }
     return {
         
+        'amount': !exists(json, 'amount') ? undefined : json['amount'],
         'appointTime': !exists(json, 'appointTime') ? undefined : json['appointTime'],
         'kindName': !exists(json, 'kindName') ? undefined : json['kindName'],
+        'note': !exists(json, 'note') ? undefined : json['note'],
         'patientID': !exists(json, 'patientID') ? undefined : json['patientID'],
         'personnelID': !exists(json, 'personnelID') ? undefined : json['personnelID'],
+        'price': !exists(json, 'price') ? undefined : json['price'],
     };
 }
 
@@ -71,10 +92,13 @@ export function ControllersDentalappointmentToJSON(value?: ControllersDentalappo
     }
     return {
         
+        'amount': value.amount,
         'appointTime': value.appointTime,
         'kindName': value.kindName,
+        'note': value.note,
         'patientID': value.patientID,
         'personnelID': value.personnelID,
+        'price': value.price,
     };
 }
 
