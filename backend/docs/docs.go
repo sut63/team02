@@ -3178,7 +3178,13 @@ var doc = `{
         "controllers.Surgeryappointment": {
             "type": "object",
             "properties": {
+                "age": {
+                    "type": "integer"
+                },
                 "appointtime": {
+                    "type": "string"
+                },
+                "note": {
                     "type": "string"
                 },
                 "patientid": {
@@ -3186,6 +3192,9 @@ var doc = `{
                 },
                 "personelid": {
                     "type": "integer"
+                },
+                "phone": {
+                    "type": "string"
                 },
                 "surgerytypeid": {
                     "type": "integer"
@@ -3822,6 +3831,10 @@ var doc = `{
         "ent.Surgeryappointment": {
             "type": "object",
             "properties": {
+                "age": {
+                    "description": "Age holds the value of the \"age\" field.",
+                    "type": "integer"
+                },
                 "appoint_time": {
                     "description": "AppointTime holds the value of the \"appoint_time\" field.",
                     "type": "string"
@@ -3834,6 +3847,14 @@ var doc = `{
                 "id": {
                     "description": "ID of the ent.",
                     "type": "integer"
+                },
+                "note": {
+                    "description": "Note holds the value of the \"note\" field.",
+                    "type": "string"
+                },
+                "phone": {
+                    "description": "Phone holds the value of the \"phone\" field.",
+                    "type": "string"
                 }
             }
         },

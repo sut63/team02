@@ -9,6 +9,12 @@ const (
 	FieldID = "id"
 	// FieldAppointTime holds the string denoting the appoint_time field in the database.
 	FieldAppointTime = "appoint_time"
+	// FieldPhone holds the string denoting the phone field in the database.
+	FieldPhone = "phone"
+	// FieldNote holds the string denoting the note field in the database.
+	FieldNote = "note"
+	// FieldAge holds the string denoting the age field in the database.
+	FieldAge = "age"
 
 	// EdgePersonnel holds the string denoting the personnel edge name in mutations.
 	EdgePersonnel = "Personnel"
@@ -46,6 +52,9 @@ const (
 var Columns = []string{
 	FieldID,
 	FieldAppointTime,
+	FieldPhone,
+	FieldNote,
+	FieldAge,
 }
 
 // ForeignKeys holds the SQL foreign-keys that are owned by the Surgeryappointment type.
@@ -69,3 +78,12 @@ func ValidColumn(column string) bool {
 	}
 	return false
 }
+
+var (
+	// PhoneValidator is a validator for the "phone" field. It is called by the builders before save.
+	PhoneValidator func(string) error
+	// NoteValidator is a validator for the "note" field. It is called by the builders before save.
+	NoteValidator func(string) error
+	// AgeValidator is a validator for the "age" field. It is called by the builders before save.
+	AgeValidator func(int) error
+)

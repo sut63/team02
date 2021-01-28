@@ -27,6 +27,12 @@ import {
  */
 export interface EntSurgeryappointment {
     /**
+     * Age holds the value of the "age" field.
+     * @type {number}
+     * @memberof EntSurgeryappointment
+     */
+    age?: number;
+    /**
      * AppointTime holds the value of the "appoint_time" field.
      * @type {string}
      * @memberof EntSurgeryappointment
@@ -44,6 +50,18 @@ export interface EntSurgeryappointment {
      * @memberof EntSurgeryappointment
      */
     id?: number;
+    /**
+     * Note holds the value of the "note" field.
+     * @type {string}
+     * @memberof EntSurgeryappointment
+     */
+    note?: string;
+    /**
+     * Phone holds the value of the "phone" field.
+     * @type {string}
+     * @memberof EntSurgeryappointment
+     */
+    phone?: string;
 }
 
 export function EntSurgeryappointmentFromJSON(json: any): EntSurgeryappointment {
@@ -56,9 +74,12 @@ export function EntSurgeryappointmentFromJSONTyped(json: any, ignoreDiscriminato
     }
     return {
         
+        'age': !exists(json, 'age') ? undefined : json['age'],
         'appointTime': !exists(json, 'appoint_time') ? undefined : json['appoint_time'],
         'edges': !exists(json, 'edges') ? undefined : EntSurgeryappointmentEdgesFromJSON(json['edges']),
         'id': !exists(json, 'id') ? undefined : json['id'],
+        'note': !exists(json, 'note') ? undefined : json['note'],
+        'phone': !exists(json, 'phone') ? undefined : json['phone'],
     };
 }
 
@@ -71,9 +92,12 @@ export function EntSurgeryappointmentToJSON(value?: EntSurgeryappointment | null
     }
     return {
         
+        'age': value.age,
         'appoint_time': value.appointTime,
         'edges': EntSurgeryappointmentEdgesToJSON(value.edges),
         'id': value.id,
+        'note': value.note,
+        'phone': value.phone,
     };
 }
 

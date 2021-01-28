@@ -100,6 +100,27 @@ func AppointTime(v time.Time) predicate.Surgeryappointment {
 	})
 }
 
+// Phone applies equality check predicate on the "phone" field. It's identical to PhoneEQ.
+func Phone(v string) predicate.Surgeryappointment {
+	return predicate.Surgeryappointment(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldPhone), v))
+	})
+}
+
+// Note applies equality check predicate on the "note" field. It's identical to NoteEQ.
+func Note(v string) predicate.Surgeryappointment {
+	return predicate.Surgeryappointment(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldNote), v))
+	})
+}
+
+// Age applies equality check predicate on the "age" field. It's identical to AgeEQ.
+func Age(v int) predicate.Surgeryappointment {
+	return predicate.Surgeryappointment(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldAge), v))
+	})
+}
+
 // AppointTimeEQ applies the EQ predicate on the "appoint_time" field.
 func AppointTimeEQ(v time.Time) predicate.Surgeryappointment {
 	return predicate.Surgeryappointment(func(s *sql.Selector) {
@@ -173,6 +194,304 @@ func AppointTimeLT(v time.Time) predicate.Surgeryappointment {
 func AppointTimeLTE(v time.Time) predicate.Surgeryappointment {
 	return predicate.Surgeryappointment(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldAppointTime), v))
+	})
+}
+
+// PhoneEQ applies the EQ predicate on the "phone" field.
+func PhoneEQ(v string) predicate.Surgeryappointment {
+	return predicate.Surgeryappointment(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldPhone), v))
+	})
+}
+
+// PhoneNEQ applies the NEQ predicate on the "phone" field.
+func PhoneNEQ(v string) predicate.Surgeryappointment {
+	return predicate.Surgeryappointment(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldPhone), v))
+	})
+}
+
+// PhoneIn applies the In predicate on the "phone" field.
+func PhoneIn(vs ...string) predicate.Surgeryappointment {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Surgeryappointment(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.In(s.C(FieldPhone), v...))
+	})
+}
+
+// PhoneNotIn applies the NotIn predicate on the "phone" field.
+func PhoneNotIn(vs ...string) predicate.Surgeryappointment {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Surgeryappointment(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.NotIn(s.C(FieldPhone), v...))
+	})
+}
+
+// PhoneGT applies the GT predicate on the "phone" field.
+func PhoneGT(v string) predicate.Surgeryappointment {
+	return predicate.Surgeryappointment(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldPhone), v))
+	})
+}
+
+// PhoneGTE applies the GTE predicate on the "phone" field.
+func PhoneGTE(v string) predicate.Surgeryappointment {
+	return predicate.Surgeryappointment(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldPhone), v))
+	})
+}
+
+// PhoneLT applies the LT predicate on the "phone" field.
+func PhoneLT(v string) predicate.Surgeryappointment {
+	return predicate.Surgeryappointment(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldPhone), v))
+	})
+}
+
+// PhoneLTE applies the LTE predicate on the "phone" field.
+func PhoneLTE(v string) predicate.Surgeryappointment {
+	return predicate.Surgeryappointment(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldPhone), v))
+	})
+}
+
+// PhoneContains applies the Contains predicate on the "phone" field.
+func PhoneContains(v string) predicate.Surgeryappointment {
+	return predicate.Surgeryappointment(func(s *sql.Selector) {
+		s.Where(sql.Contains(s.C(FieldPhone), v))
+	})
+}
+
+// PhoneHasPrefix applies the HasPrefix predicate on the "phone" field.
+func PhoneHasPrefix(v string) predicate.Surgeryappointment {
+	return predicate.Surgeryappointment(func(s *sql.Selector) {
+		s.Where(sql.HasPrefix(s.C(FieldPhone), v))
+	})
+}
+
+// PhoneHasSuffix applies the HasSuffix predicate on the "phone" field.
+func PhoneHasSuffix(v string) predicate.Surgeryappointment {
+	return predicate.Surgeryappointment(func(s *sql.Selector) {
+		s.Where(sql.HasSuffix(s.C(FieldPhone), v))
+	})
+}
+
+// PhoneEqualFold applies the EqualFold predicate on the "phone" field.
+func PhoneEqualFold(v string) predicate.Surgeryappointment {
+	return predicate.Surgeryappointment(func(s *sql.Selector) {
+		s.Where(sql.EqualFold(s.C(FieldPhone), v))
+	})
+}
+
+// PhoneContainsFold applies the ContainsFold predicate on the "phone" field.
+func PhoneContainsFold(v string) predicate.Surgeryappointment {
+	return predicate.Surgeryappointment(func(s *sql.Selector) {
+		s.Where(sql.ContainsFold(s.C(FieldPhone), v))
+	})
+}
+
+// NoteEQ applies the EQ predicate on the "note" field.
+func NoteEQ(v string) predicate.Surgeryappointment {
+	return predicate.Surgeryappointment(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldNote), v))
+	})
+}
+
+// NoteNEQ applies the NEQ predicate on the "note" field.
+func NoteNEQ(v string) predicate.Surgeryappointment {
+	return predicate.Surgeryappointment(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldNote), v))
+	})
+}
+
+// NoteIn applies the In predicate on the "note" field.
+func NoteIn(vs ...string) predicate.Surgeryappointment {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Surgeryappointment(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.In(s.C(FieldNote), v...))
+	})
+}
+
+// NoteNotIn applies the NotIn predicate on the "note" field.
+func NoteNotIn(vs ...string) predicate.Surgeryappointment {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Surgeryappointment(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.NotIn(s.C(FieldNote), v...))
+	})
+}
+
+// NoteGT applies the GT predicate on the "note" field.
+func NoteGT(v string) predicate.Surgeryappointment {
+	return predicate.Surgeryappointment(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldNote), v))
+	})
+}
+
+// NoteGTE applies the GTE predicate on the "note" field.
+func NoteGTE(v string) predicate.Surgeryappointment {
+	return predicate.Surgeryappointment(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldNote), v))
+	})
+}
+
+// NoteLT applies the LT predicate on the "note" field.
+func NoteLT(v string) predicate.Surgeryappointment {
+	return predicate.Surgeryappointment(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldNote), v))
+	})
+}
+
+// NoteLTE applies the LTE predicate on the "note" field.
+func NoteLTE(v string) predicate.Surgeryappointment {
+	return predicate.Surgeryappointment(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldNote), v))
+	})
+}
+
+// NoteContains applies the Contains predicate on the "note" field.
+func NoteContains(v string) predicate.Surgeryappointment {
+	return predicate.Surgeryappointment(func(s *sql.Selector) {
+		s.Where(sql.Contains(s.C(FieldNote), v))
+	})
+}
+
+// NoteHasPrefix applies the HasPrefix predicate on the "note" field.
+func NoteHasPrefix(v string) predicate.Surgeryappointment {
+	return predicate.Surgeryappointment(func(s *sql.Selector) {
+		s.Where(sql.HasPrefix(s.C(FieldNote), v))
+	})
+}
+
+// NoteHasSuffix applies the HasSuffix predicate on the "note" field.
+func NoteHasSuffix(v string) predicate.Surgeryappointment {
+	return predicate.Surgeryappointment(func(s *sql.Selector) {
+		s.Where(sql.HasSuffix(s.C(FieldNote), v))
+	})
+}
+
+// NoteEqualFold applies the EqualFold predicate on the "note" field.
+func NoteEqualFold(v string) predicate.Surgeryappointment {
+	return predicate.Surgeryappointment(func(s *sql.Selector) {
+		s.Where(sql.EqualFold(s.C(FieldNote), v))
+	})
+}
+
+// NoteContainsFold applies the ContainsFold predicate on the "note" field.
+func NoteContainsFold(v string) predicate.Surgeryappointment {
+	return predicate.Surgeryappointment(func(s *sql.Selector) {
+		s.Where(sql.ContainsFold(s.C(FieldNote), v))
+	})
+}
+
+// AgeEQ applies the EQ predicate on the "age" field.
+func AgeEQ(v int) predicate.Surgeryappointment {
+	return predicate.Surgeryappointment(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldAge), v))
+	})
+}
+
+// AgeNEQ applies the NEQ predicate on the "age" field.
+func AgeNEQ(v int) predicate.Surgeryappointment {
+	return predicate.Surgeryappointment(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldAge), v))
+	})
+}
+
+// AgeIn applies the In predicate on the "age" field.
+func AgeIn(vs ...int) predicate.Surgeryappointment {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Surgeryappointment(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.In(s.C(FieldAge), v...))
+	})
+}
+
+// AgeNotIn applies the NotIn predicate on the "age" field.
+func AgeNotIn(vs ...int) predicate.Surgeryappointment {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Surgeryappointment(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.NotIn(s.C(FieldAge), v...))
+	})
+}
+
+// AgeGT applies the GT predicate on the "age" field.
+func AgeGT(v int) predicate.Surgeryappointment {
+	return predicate.Surgeryappointment(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldAge), v))
+	})
+}
+
+// AgeGTE applies the GTE predicate on the "age" field.
+func AgeGTE(v int) predicate.Surgeryappointment {
+	return predicate.Surgeryappointment(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldAge), v))
+	})
+}
+
+// AgeLT applies the LT predicate on the "age" field.
+func AgeLT(v int) predicate.Surgeryappointment {
+	return predicate.Surgeryappointment(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldAge), v))
+	})
+}
+
+// AgeLTE applies the LTE predicate on the "age" field.
+func AgeLTE(v int) predicate.Surgeryappointment {
+	return predicate.Surgeryappointment(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldAge), v))
 	})
 }
 

@@ -79,12 +79,18 @@ definitions:
     type: object
   controllers.Surgeryappointment:
     properties:
+      age:
+        type: integer
       appointtime:
+        type: string
+      note:
         type: string
       patientid:
         type: integer
       personelid:
         type: integer
+      phone:
+        type: string
       surgerytypeid:
         type: integer
     type: object
@@ -583,6 +589,9 @@ definitions:
     type: object
   ent.Surgeryappointment:
     properties:
+      age:
+        description: Age holds the value of the "age" field.
+        type: integer
       appoint_time:
         description: AppointTime holds the value of the "appoint_time" field.
         type: string
@@ -595,6 +604,12 @@ definitions:
       id:
         description: ID of the ent.
         type: integer
+      note:
+        description: Note holds the value of the "note" field.
+        type: string
+      phone:
+        description: Phone holds the value of the "phone" field.
+        type: string
     type: object
   ent.SurgeryappointmentEdges:
     properties:

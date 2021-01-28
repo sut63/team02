@@ -36,6 +36,31 @@ func (su *SurgeryappointmentUpdate) SetAppointTime(t time.Time) *Surgeryappointm
 	return su
 }
 
+// SetPhone sets the "phone" field.
+func (su *SurgeryappointmentUpdate) SetPhone(s string) *SurgeryappointmentUpdate {
+	su.mutation.SetPhone(s)
+	return su
+}
+
+// SetNote sets the "note" field.
+func (su *SurgeryappointmentUpdate) SetNote(s string) *SurgeryappointmentUpdate {
+	su.mutation.SetNote(s)
+	return su
+}
+
+// SetAge sets the "age" field.
+func (su *SurgeryappointmentUpdate) SetAge(i int) *SurgeryappointmentUpdate {
+	su.mutation.ResetAge()
+	su.mutation.SetAge(i)
+	return su
+}
+
+// AddAge adds i to the "age" field.
+func (su *SurgeryappointmentUpdate) AddAge(i int) *SurgeryappointmentUpdate {
+	su.mutation.AddAge(i)
+	return su
+}
+
 // SetPersonnelID sets the "Personnel" edge to the Personnel entity by ID.
 func (su *SurgeryappointmentUpdate) SetPersonnelID(id int) *SurgeryappointmentUpdate {
 	su.mutation.SetPersonnelID(id)
@@ -123,12 +148,18 @@ func (su *SurgeryappointmentUpdate) Save(ctx context.Context) (int, error) {
 		affected int
 	)
 	if len(su.hooks) == 0 {
+		if err = su.check(); err != nil {
+			return 0, err
+		}
 		affected, err = su.sqlSave(ctx)
 	} else {
 		var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 			mutation, ok := m.(*SurgeryappointmentMutation)
 			if !ok {
 				return nil, fmt.Errorf("unexpected mutation type %T", m)
+			}
+			if err = su.check(); err != nil {
+				return 0, err
 			}
 			su.mutation = mutation
 			affected, err = su.sqlSave(ctx)
@@ -167,6 +198,26 @@ func (su *SurgeryappointmentUpdate) ExecX(ctx context.Context) {
 	}
 }
 
+// check runs all checks and user-defined validators on the builder.
+func (su *SurgeryappointmentUpdate) check() error {
+	if v, ok := su.mutation.Phone(); ok {
+		if err := surgeryappointment.PhoneValidator(v); err != nil {
+			return &ValidationError{Name: "phone", err: fmt.Errorf("ent: validator failed for field \"phone\": %w", err)}
+		}
+	}
+	if v, ok := su.mutation.Note(); ok {
+		if err := surgeryappointment.NoteValidator(v); err != nil {
+			return &ValidationError{Name: "note", err: fmt.Errorf("ent: validator failed for field \"note\": %w", err)}
+		}
+	}
+	if v, ok := su.mutation.Age(); ok {
+		if err := surgeryappointment.AgeValidator(v); err != nil {
+			return &ValidationError{Name: "age", err: fmt.Errorf("ent: validator failed for field \"age\": %w", err)}
+		}
+	}
+	return nil
+}
+
 func (su *SurgeryappointmentUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	_spec := &sqlgraph.UpdateSpec{
 		Node: &sqlgraph.NodeSpec{
@@ -190,6 +241,34 @@ func (su *SurgeryappointmentUpdate) sqlSave(ctx context.Context) (n int, err err
 			Type:   field.TypeTime,
 			Value:  value,
 			Column: surgeryappointment.FieldAppointTime,
+		})
+	}
+	if value, ok := su.mutation.Phone(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: surgeryappointment.FieldPhone,
+		})
+	}
+	if value, ok := su.mutation.Note(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: surgeryappointment.FieldNote,
+		})
+	}
+	if value, ok := su.mutation.Age(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: surgeryappointment.FieldAge,
+		})
+	}
+	if value, ok := su.mutation.AddedAge(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: surgeryappointment.FieldAge,
 		})
 	}
 	if su.mutation.PersonnelCleared() {
@@ -321,6 +400,31 @@ func (suo *SurgeryappointmentUpdateOne) SetAppointTime(t time.Time) *Surgeryappo
 	return suo
 }
 
+// SetPhone sets the "phone" field.
+func (suo *SurgeryappointmentUpdateOne) SetPhone(s string) *SurgeryappointmentUpdateOne {
+	suo.mutation.SetPhone(s)
+	return suo
+}
+
+// SetNote sets the "note" field.
+func (suo *SurgeryappointmentUpdateOne) SetNote(s string) *SurgeryappointmentUpdateOne {
+	suo.mutation.SetNote(s)
+	return suo
+}
+
+// SetAge sets the "age" field.
+func (suo *SurgeryappointmentUpdateOne) SetAge(i int) *SurgeryappointmentUpdateOne {
+	suo.mutation.ResetAge()
+	suo.mutation.SetAge(i)
+	return suo
+}
+
+// AddAge adds i to the "age" field.
+func (suo *SurgeryappointmentUpdateOne) AddAge(i int) *SurgeryappointmentUpdateOne {
+	suo.mutation.AddAge(i)
+	return suo
+}
+
 // SetPersonnelID sets the "Personnel" edge to the Personnel entity by ID.
 func (suo *SurgeryappointmentUpdateOne) SetPersonnelID(id int) *SurgeryappointmentUpdateOne {
 	suo.mutation.SetPersonnelID(id)
@@ -408,12 +512,18 @@ func (suo *SurgeryappointmentUpdateOne) Save(ctx context.Context) (*Surgeryappoi
 		node *Surgeryappointment
 	)
 	if len(suo.hooks) == 0 {
+		if err = suo.check(); err != nil {
+			return nil, err
+		}
 		node, err = suo.sqlSave(ctx)
 	} else {
 		var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 			mutation, ok := m.(*SurgeryappointmentMutation)
 			if !ok {
 				return nil, fmt.Errorf("unexpected mutation type %T", m)
+			}
+			if err = suo.check(); err != nil {
+				return nil, err
 			}
 			suo.mutation = mutation
 			node, err = suo.sqlSave(ctx)
@@ -452,6 +562,26 @@ func (suo *SurgeryappointmentUpdateOne) ExecX(ctx context.Context) {
 	}
 }
 
+// check runs all checks and user-defined validators on the builder.
+func (suo *SurgeryappointmentUpdateOne) check() error {
+	if v, ok := suo.mutation.Phone(); ok {
+		if err := surgeryappointment.PhoneValidator(v); err != nil {
+			return &ValidationError{Name: "phone", err: fmt.Errorf("ent: validator failed for field \"phone\": %w", err)}
+		}
+	}
+	if v, ok := suo.mutation.Note(); ok {
+		if err := surgeryappointment.NoteValidator(v); err != nil {
+			return &ValidationError{Name: "note", err: fmt.Errorf("ent: validator failed for field \"note\": %w", err)}
+		}
+	}
+	if v, ok := suo.mutation.Age(); ok {
+		if err := surgeryappointment.AgeValidator(v); err != nil {
+			return &ValidationError{Name: "age", err: fmt.Errorf("ent: validator failed for field \"age\": %w", err)}
+		}
+	}
+	return nil
+}
+
 func (suo *SurgeryappointmentUpdateOne) sqlSave(ctx context.Context) (_node *Surgeryappointment, err error) {
 	_spec := &sqlgraph.UpdateSpec{
 		Node: &sqlgraph.NodeSpec{
@@ -473,6 +603,34 @@ func (suo *SurgeryappointmentUpdateOne) sqlSave(ctx context.Context) (_node *Sur
 			Type:   field.TypeTime,
 			Value:  value,
 			Column: surgeryappointment.FieldAppointTime,
+		})
+	}
+	if value, ok := suo.mutation.Phone(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: surgeryappointment.FieldPhone,
+		})
+	}
+	if value, ok := suo.mutation.Note(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: surgeryappointment.FieldNote,
+		})
+	}
+	if value, ok := suo.mutation.Age(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: surgeryappointment.FieldAge,
+		})
+	}
+	if value, ok := suo.mutation.AddedAge(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: surgeryappointment.FieldAge,
 		})
 	}
 	if suo.mutation.PersonnelCleared() {

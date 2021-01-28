@@ -19,6 +19,7 @@ import (
 	"github.com/to63/app/ent/risks"
 	"github.com/to63/app/ent/schema"
 	"github.com/to63/app/ent/status"
+	"github.com/to63/app/ent/surgeryappointment"
 	"github.com/to63/app/ent/surgerytype"
 )
 
@@ -186,6 +187,48 @@ func init() {
 	statusDescStatusname := statusFields[0].Descriptor()
 	// status.StatusnameValidator is a validator for the "statusname" field. It is called by the builders before save.
 	status.StatusnameValidator = statusDescStatusname.Validators[0].(func(string) error)
+	surgeryappointmentFields := schema.Surgeryappointment{}.Fields()
+	_ = surgeryappointmentFields
+	// surgeryappointmentDescPhone is the schema descriptor for phone field.
+	surgeryappointmentDescPhone := surgeryappointmentFields[1].Descriptor()
+	// surgeryappointment.PhoneValidator is a validator for the "phone" field. It is called by the builders before save.
+	surgeryappointment.PhoneValidator = func() func(string) error {
+		validators := surgeryappointmentDescPhone.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(phone string) error {
+			for _, fn := range fns {
+				if err := fn(phone); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
+	// surgeryappointmentDescNote is the schema descriptor for note field.
+	surgeryappointmentDescNote := surgeryappointmentFields[2].Descriptor()
+	// surgeryappointment.NoteValidator is a validator for the "note" field. It is called by the builders before save.
+	surgeryappointment.NoteValidator = func() func(string) error {
+		validators := surgeryappointmentDescNote.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(note string) error {
+			for _, fn := range fns {
+				if err := fn(note); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
+	// surgeryappointmentDescAge is the schema descriptor for age field.
+	surgeryappointmentDescAge := surgeryappointmentFields[3].Descriptor()
+	// surgeryappointment.AgeValidator is a validator for the "age" field. It is called by the builders before save.
+	surgeryappointment.AgeValidator = surgeryappointmentDescAge.Validators[0].(func(int) error)
 	surgerytypeFields := schema.Surgerytype{}.Fields()
 	_ = surgerytypeFields
 	// surgerytypeDescTypename is the schema descriptor for typename field.

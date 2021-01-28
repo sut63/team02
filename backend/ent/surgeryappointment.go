@@ -21,6 +21,12 @@ type Surgeryappointment struct {
 	ID int `json:"id,omitempty"`
 	// AppointTime holds the value of the "appoint_time" field.
 	AppointTime time.Time `json:"appoint_time,omitempty"`
+	// Phone holds the value of the "phone" field.
+	Phone string `json:"phone,omitempty"`
+	// Note holds the value of the "note" field.
+	Note string `json:"note,omitempty"`
+	// Age holds the value of the "age" field.
+	Age int `json:"age,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the SurgeryappointmentQuery when eager-loading is set.
 	Edges         SurgeryappointmentEdges `json:"edges"`
@@ -89,8 +95,10 @@ func (*Surgeryappointment) scanValues(columns []string) ([]interface{}, error) {
 	values := make([]interface{}, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case surgeryappointment.FieldID:
+		case surgeryappointment.FieldID, surgeryappointment.FieldAge:
 			values[i] = &sql.NullInt64{}
+		case surgeryappointment.FieldPhone, surgeryappointment.FieldNote:
+			values[i] = &sql.NullString{}
 		case surgeryappointment.FieldAppointTime:
 			values[i] = &sql.NullTime{}
 		case surgeryappointment.ForeignKeys[0]: // _Patient_id
@@ -125,6 +133,24 @@ func (s *Surgeryappointment) assignValues(columns []string, values []interface{}
 				return fmt.Errorf("unexpected type %T for field appoint_time", values[i])
 			} else if value.Valid {
 				s.AppointTime = value.Time
+			}
+		case surgeryappointment.FieldPhone:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field phone", values[i])
+			} else if value.Valid {
+				s.Phone = value.String
+			}
+		case surgeryappointment.FieldNote:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field note", values[i])
+			} else if value.Valid {
+				s.Note = value.String
+			}
+		case surgeryappointment.FieldAge:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field age", values[i])
+			} else if value.Valid {
+				s.Age = int(value.Int64)
 			}
 		case surgeryappointment.ForeignKeys[0]:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -192,6 +218,12 @@ func (s *Surgeryappointment) String() string {
 	builder.WriteString(fmt.Sprintf("id=%v", s.ID))
 	builder.WriteString(", appoint_time=")
 	builder.WriteString(s.AppointTime.Format(time.ANSIC))
+	builder.WriteString(", phone=")
+	builder.WriteString(s.Phone)
+	builder.WriteString(", note=")
+	builder.WriteString(s.Note)
+	builder.WriteString(", age=")
+	builder.WriteString(fmt.Sprintf("%v", s.Age))
 	builder.WriteByte(')')
 	return builder.String()
 }

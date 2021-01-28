@@ -29,6 +29,24 @@ func (sc *SurgeryappointmentCreate) SetAppointTime(t time.Time) *Surgeryappointm
 	return sc
 }
 
+// SetPhone sets the "phone" field.
+func (sc *SurgeryappointmentCreate) SetPhone(s string) *SurgeryappointmentCreate {
+	sc.mutation.SetPhone(s)
+	return sc
+}
+
+// SetNote sets the "note" field.
+func (sc *SurgeryappointmentCreate) SetNote(s string) *SurgeryappointmentCreate {
+	sc.mutation.SetNote(s)
+	return sc
+}
+
+// SetAge sets the "age" field.
+func (sc *SurgeryappointmentCreate) SetAge(i int) *SurgeryappointmentCreate {
+	sc.mutation.SetAge(i)
+	return sc
+}
+
 // SetPersonnelID sets the "Personnel" edge to the Personnel entity by ID.
 func (sc *SurgeryappointmentCreate) SetPersonnelID(id int) *SurgeryappointmentCreate {
 	sc.mutation.SetPersonnelID(id)
@@ -140,6 +158,30 @@ func (sc *SurgeryappointmentCreate) check() error {
 	if _, ok := sc.mutation.AppointTime(); !ok {
 		return &ValidationError{Name: "appoint_time", err: errors.New("ent: missing required field \"appoint_time\"")}
 	}
+	if _, ok := sc.mutation.Phone(); !ok {
+		return &ValidationError{Name: "phone", err: errors.New("ent: missing required field \"phone\"")}
+	}
+	if v, ok := sc.mutation.Phone(); ok {
+		if err := surgeryappointment.PhoneValidator(v); err != nil {
+			return &ValidationError{Name: "phone", err: fmt.Errorf("ent: validator failed for field \"phone\": %w", err)}
+		}
+	}
+	if _, ok := sc.mutation.Note(); !ok {
+		return &ValidationError{Name: "note", err: errors.New("ent: missing required field \"note\"")}
+	}
+	if v, ok := sc.mutation.Note(); ok {
+		if err := surgeryappointment.NoteValidator(v); err != nil {
+			return &ValidationError{Name: "note", err: fmt.Errorf("ent: validator failed for field \"note\": %w", err)}
+		}
+	}
+	if _, ok := sc.mutation.Age(); !ok {
+		return &ValidationError{Name: "age", err: errors.New("ent: missing required field \"age\"")}
+	}
+	if v, ok := sc.mutation.Age(); ok {
+		if err := surgeryappointment.AgeValidator(v); err != nil {
+			return &ValidationError{Name: "age", err: fmt.Errorf("ent: validator failed for field \"age\": %w", err)}
+		}
+	}
 	return nil
 }
 
@@ -174,6 +216,30 @@ func (sc *SurgeryappointmentCreate) createSpec() (*Surgeryappointment, *sqlgraph
 			Column: surgeryappointment.FieldAppointTime,
 		})
 		_node.AppointTime = value
+	}
+	if value, ok := sc.mutation.Phone(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: surgeryappointment.FieldPhone,
+		})
+		_node.Phone = value
+	}
+	if value, ok := sc.mutation.Note(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: surgeryappointment.FieldNote,
+		})
+		_node.Note = value
+	}
+	if value, ok := sc.mutation.Age(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: surgeryappointment.FieldAge,
+		})
+		_node.Age = value
 	}
 	if nodes := sc.mutation.PersonnelIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{

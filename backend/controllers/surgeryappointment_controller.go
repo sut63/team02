@@ -25,6 +25,9 @@ type Surgeryappointment struct {
 	Personelid    int
 	Patientid     int
 	Surgerytypeid int
+	Phone         string
+	Age           int
+	Note          string
 }
 
 // CreateSurgeryappointment handles POST requests for adding Surgeryappointment entities
@@ -90,11 +93,15 @@ func (ctl *SurgeryappointmentController) CreateSurgeryappointment(c *gin.Context
 		SetPersonnel(ps).
 		SetPatient(s).
 		SetSurgerytype(ar).
+		SetPhone(obj.Phone).
+		SetAge(obj.Age).
+		SetNote(obj.Note).
 		Save(context.Background())
 
 	if err != nil {
 		c.JSON(400, gin.H{
-			"error": "saving failed",
+			"status": false,
+			"error":  err,
 		})
 		return
 	}

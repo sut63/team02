@@ -354,6 +354,9 @@ var (
 	SurgeryappointmentsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "appoint_time", Type: field.TypeTime},
+		{Name: "phone", Type: field.TypeString},
+		{Name: "note", Type: field.TypeString},
+		{Name: "age", Type: field.TypeInt},
 		{Name: "Patient_id", Type: field.TypeInt, Nullable: true},
 		{Name: "Personnel_id", Type: field.TypeInt, Nullable: true},
 		{Name: "Surgerytype", Type: field.TypeInt, Nullable: true},
@@ -366,21 +369,21 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:  "surgeryappointments_patients_Surgeryappointment",
-				Columns: []*schema.Column{SurgeryappointmentsColumns[2]},
+				Columns: []*schema.Column{SurgeryappointmentsColumns[5]},
 
 				RefColumns: []*schema.Column{PatientsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:  "surgeryappointments_personnels_Surgeryappointment",
-				Columns: []*schema.Column{SurgeryappointmentsColumns[3]},
+				Columns: []*schema.Column{SurgeryappointmentsColumns[6]},
 
 				RefColumns: []*schema.Column{PersonnelsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:  "surgeryappointments_surgerytypes_Surgeryappointment",
-				Columns: []*schema.Column{SurgeryappointmentsColumns[4]},
+				Columns: []*schema.Column{SurgeryappointmentsColumns[7]},
 
 				RefColumns: []*schema.Column{SurgerytypesColumns[0]},
 				OnDelete:   schema.SetNull,

@@ -21,10 +21,22 @@ import { exists, mapValues } from '../runtime';
 export interface ControllersSurgeryappointment {
     /**
      * 
+     * @type {number}
+     * @memberof ControllersSurgeryappointment
+     */
+    age?: number;
+    /**
+     * 
      * @type {string}
      * @memberof ControllersSurgeryappointment
      */
     appointtime?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ControllersSurgeryappointment
+     */
+    note?: string;
     /**
      * 
      * @type {number}
@@ -37,6 +49,12 @@ export interface ControllersSurgeryappointment {
      * @memberof ControllersSurgeryappointment
      */
     personelid?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof ControllersSurgeryappointment
+     */
+    phone?: string;
     /**
      * 
      * @type {number}
@@ -55,9 +73,12 @@ export function ControllersSurgeryappointmentFromJSONTyped(json: any, ignoreDisc
     }
     return {
         
+        'age': !exists(json, 'age') ? undefined : json['age'],
         'appointtime': !exists(json, 'appointtime') ? undefined : json['appointtime'],
+        'note': !exists(json, 'note') ? undefined : json['note'],
         'patientid': !exists(json, 'patientid') ? undefined : json['patientid'],
         'personelid': !exists(json, 'personelid') ? undefined : json['personelid'],
+        'phone': !exists(json, 'phone') ? undefined : json['phone'],
         'surgerytypeid': !exists(json, 'surgerytypeid') ? undefined : json['surgerytypeid'],
     };
 }
@@ -71,9 +92,12 @@ export function ControllersSurgeryappointmentToJSON(value?: ControllersSurgeryap
     }
     return {
         
+        'age': value.age,
         'appointtime': value.appointtime,
+        'note': value.note,
         'patientid': value.patientid,
         'personelid': value.personelid,
+        'phone': value.phone,
         'surgerytypeid': value.surgerytypeid,
     };
 }

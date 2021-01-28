@@ -8029,6 +8029,10 @@ type SurgeryappointmentMutation struct {
 	typ                 string
 	id                  *int
 	appoint_time        *time.Time
+	phone               *string
+	note                *string
+	age                 *int
+	addage              *int
 	clearedFields       map[string]struct{}
 	_Personnel          *int
 	cleared_Personnel   bool
@@ -8154,6 +8158,134 @@ func (m *SurgeryappointmentMutation) OldAppointTime(ctx context.Context) (v time
 // ResetAppointTime resets all changes to the "appoint_time" field.
 func (m *SurgeryappointmentMutation) ResetAppointTime() {
 	m.appoint_time = nil
+}
+
+// SetPhone sets the "phone" field.
+func (m *SurgeryappointmentMutation) SetPhone(s string) {
+	m.phone = &s
+}
+
+// Phone returns the value of the "phone" field in the mutation.
+func (m *SurgeryappointmentMutation) Phone() (r string, exists bool) {
+	v := m.phone
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPhone returns the old "phone" field's value of the Surgeryappointment entity.
+// If the Surgeryappointment object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SurgeryappointmentMutation) OldPhone(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldPhone is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldPhone requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPhone: %w", err)
+	}
+	return oldValue.Phone, nil
+}
+
+// ResetPhone resets all changes to the "phone" field.
+func (m *SurgeryappointmentMutation) ResetPhone() {
+	m.phone = nil
+}
+
+// SetNote sets the "note" field.
+func (m *SurgeryappointmentMutation) SetNote(s string) {
+	m.note = &s
+}
+
+// Note returns the value of the "note" field in the mutation.
+func (m *SurgeryappointmentMutation) Note() (r string, exists bool) {
+	v := m.note
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldNote returns the old "note" field's value of the Surgeryappointment entity.
+// If the Surgeryappointment object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SurgeryappointmentMutation) OldNote(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldNote is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldNote requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldNote: %w", err)
+	}
+	return oldValue.Note, nil
+}
+
+// ResetNote resets all changes to the "note" field.
+func (m *SurgeryappointmentMutation) ResetNote() {
+	m.note = nil
+}
+
+// SetAge sets the "age" field.
+func (m *SurgeryappointmentMutation) SetAge(i int) {
+	m.age = &i
+	m.addage = nil
+}
+
+// Age returns the value of the "age" field in the mutation.
+func (m *SurgeryappointmentMutation) Age() (r int, exists bool) {
+	v := m.age
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldAge returns the old "age" field's value of the Surgeryappointment entity.
+// If the Surgeryappointment object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SurgeryappointmentMutation) OldAge(ctx context.Context) (v int, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldAge is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldAge requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldAge: %w", err)
+	}
+	return oldValue.Age, nil
+}
+
+// AddAge adds i to the "age" field.
+func (m *SurgeryappointmentMutation) AddAge(i int) {
+	if m.addage != nil {
+		*m.addage += i
+	} else {
+		m.addage = &i
+	}
+}
+
+// AddedAge returns the value that was added to the "age" field in this mutation.
+func (m *SurgeryappointmentMutation) AddedAge() (r int, exists bool) {
+	v := m.addage
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetAge resets all changes to the "age" field.
+func (m *SurgeryappointmentMutation) ResetAge() {
+	m.age = nil
+	m.addage = nil
 }
 
 // SetPersonnelID sets the "Personnel" edge to the Personnel entity by id.
@@ -8287,9 +8419,18 @@ func (m *SurgeryappointmentMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *SurgeryappointmentMutation) Fields() []string {
-	fields := make([]string, 0, 1)
+	fields := make([]string, 0, 4)
 	if m.appoint_time != nil {
 		fields = append(fields, surgeryappointment.FieldAppointTime)
+	}
+	if m.phone != nil {
+		fields = append(fields, surgeryappointment.FieldPhone)
+	}
+	if m.note != nil {
+		fields = append(fields, surgeryappointment.FieldNote)
+	}
+	if m.age != nil {
+		fields = append(fields, surgeryappointment.FieldAge)
 	}
 	return fields
 }
@@ -8301,6 +8442,12 @@ func (m *SurgeryappointmentMutation) Field(name string) (ent.Value, bool) {
 	switch name {
 	case surgeryappointment.FieldAppointTime:
 		return m.AppointTime()
+	case surgeryappointment.FieldPhone:
+		return m.Phone()
+	case surgeryappointment.FieldNote:
+		return m.Note()
+	case surgeryappointment.FieldAge:
+		return m.Age()
 	}
 	return nil, false
 }
@@ -8312,6 +8459,12 @@ func (m *SurgeryappointmentMutation) OldField(ctx context.Context, name string) 
 	switch name {
 	case surgeryappointment.FieldAppointTime:
 		return m.OldAppointTime(ctx)
+	case surgeryappointment.FieldPhone:
+		return m.OldPhone(ctx)
+	case surgeryappointment.FieldNote:
+		return m.OldNote(ctx)
+	case surgeryappointment.FieldAge:
+		return m.OldAge(ctx)
 	}
 	return nil, fmt.Errorf("unknown Surgeryappointment field %s", name)
 }
@@ -8328,6 +8481,27 @@ func (m *SurgeryappointmentMutation) SetField(name string, value ent.Value) erro
 		}
 		m.SetAppointTime(v)
 		return nil
+	case surgeryappointment.FieldPhone:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPhone(v)
+		return nil
+	case surgeryappointment.FieldNote:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetNote(v)
+		return nil
+	case surgeryappointment.FieldAge:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetAge(v)
+		return nil
 	}
 	return fmt.Errorf("unknown Surgeryappointment field %s", name)
 }
@@ -8335,13 +8509,21 @@ func (m *SurgeryappointmentMutation) SetField(name string, value ent.Value) erro
 // AddedFields returns all numeric fields that were incremented/decremented during
 // this mutation.
 func (m *SurgeryappointmentMutation) AddedFields() []string {
-	return nil
+	var fields []string
+	if m.addage != nil {
+		fields = append(fields, surgeryappointment.FieldAge)
+	}
+	return fields
 }
 
 // AddedField returns the numeric value that was incremented/decremented on a field
 // with the given name. The second boolean return value indicates that this field
 // was not set, or was not defined in the schema.
 func (m *SurgeryappointmentMutation) AddedField(name string) (ent.Value, bool) {
+	switch name {
+	case surgeryappointment.FieldAge:
+		return m.AddedAge()
+	}
 	return nil, false
 }
 
@@ -8350,6 +8532,13 @@ func (m *SurgeryappointmentMutation) AddedField(name string) (ent.Value, bool) {
 // type.
 func (m *SurgeryappointmentMutation) AddField(name string, value ent.Value) error {
 	switch name {
+	case surgeryappointment.FieldAge:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddAge(v)
+		return nil
 	}
 	return fmt.Errorf("unknown Surgeryappointment numeric field %s", name)
 }
@@ -8379,6 +8568,15 @@ func (m *SurgeryappointmentMutation) ResetField(name string) error {
 	switch name {
 	case surgeryappointment.FieldAppointTime:
 		m.ResetAppointTime()
+		return nil
+	case surgeryappointment.FieldPhone:
+		m.ResetPhone()
+		return nil
+	case surgeryappointment.FieldNote:
+		m.ResetNote()
+		return nil
+	case surgeryappointment.FieldAge:
+		m.ResetAge()
 		return nil
 	}
 	return fmt.Errorf("unknown Surgeryappointment field %s", name)
