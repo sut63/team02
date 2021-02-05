@@ -202,6 +202,10 @@ export interface GetAntenatalinformationRequest {
     id: number;
 }
 
+export interface GetDentalappointmentRequest {
+    id: number;
+}
+
 export interface GetDentalkindRequest {
     id: number;
 }
@@ -1358,6 +1362,38 @@ export class DefaultApi extends runtime.BaseAPI {
      */
     async getAntenatalinformation(requestParameters: GetAntenatalinformationRequest): Promise<EntAntenatalinformation> {
         const response = await this.getAntenatalinformationRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
+     * get dentalappointment by ID
+     * Get a dentalappointment entity by ID
+     */
+    async getDentalappointmentRaw(requestParameters: GetDentalappointmentRequest): Promise<runtime.ApiResponse<EntDentalappointment>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getDentalappointment.');
+        }
+
+        const queryParameters: runtime.HTTPQuery = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/dentalappointments/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => EntDentalappointmentFromJSON(jsonValue));
+    }
+
+    /**
+     * get dentalappointment by ID
+     * Get a dentalappointment entity by ID
+     */
+    async getDentalappointment(requestParameters: GetDentalappointmentRequest): Promise<EntDentalappointment> {
+        const response = await this.getDentalappointmentRaw(requestParameters);
         return await response.value();
     }
 

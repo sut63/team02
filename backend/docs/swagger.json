@@ -690,6 +690,49 @@
             }
         },
         "/dentalappointments/{id}": {
+            "get": {
+                "description": "get dentalappointment by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get a dentalappointment entity by ID",
+                "operationId": "get-dentalappointment",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Dentalappointment ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ent.Dentalappointment"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            },
             "delete": {
                 "description": "get dentalappointment by ID",
                 "produces": [

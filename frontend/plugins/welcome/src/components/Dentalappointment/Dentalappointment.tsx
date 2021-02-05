@@ -207,6 +207,14 @@ export default function createDentalappointment() {
      ></Header>
       <Content>
         <ContentHeader title="บันทึกนัดการทำทันตกรรม">
+        <div>
+            <Link component={RouterLink} to="/SearchDentalappointment">
+            <Button variant="contained" color="primary" style={{backgroundColor: "#21b6ae"}}>
+              ค้นหา
+            </Button>
+          </Link>
+          </div>
+
           <div>
             <Link component={RouterLink} to="/WelcomePage">
             <Button variant="contained" color="primary" style={{backgroundColor: "#21b6ae"}}>
@@ -352,7 +360,7 @@ export default function createDentalappointment() {
                 variant="outlined"
               >
                 <div>หมายเหตุ * (ไม่เกิน 25 ตัวอักษร ถ้าไม่มีกรอก -)</div>
-                <TextField id="note" type='string' InputLabelProps={{
+                <TextField id="note"  InputLabelProps={{
                   shrink: true,
                 }} label="note" variant="outlined"
                   onChange={NotehandleChange}

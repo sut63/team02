@@ -8,6 +8,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/to63/app/ent"
+	"github.com/to63/app/ent/dentalappointment"
 	"github.com/to63/app/ent/dentalkind"
 	"github.com/to63/app/ent/patient"
 	"github.com/to63/app/ent/personnel"
@@ -86,9 +87,7 @@ func (ctl *DentalappointmentController) CreateDentalappointment(c *gin.Context) 
 		return
 	}
 
-	t1 := time.Now()
-	t2 := t1.Format("2020-01-02T15:04:14Z07:00")
-	time, err := time.Parse(time.RFC3339, t2)
+	time, err := time.Parse(time.RFC3339, obj.AppointTime)
 
 	dentalapp, err := ctl.client.Dentalappointment.
 		Create().
@@ -113,6 +112,41 @@ func (ctl *DentalappointmentController) CreateDentalappointment(c *gin.Context) 
 		"status": true,
 		"data":   dentalapp,
 	})
+}
+
+// GetDentalappointment handles GET requests to retrieve a dentalappointment entity
+// @Summary Get a dentalappointment entity by ID
+// @Description get dentalappointment by ID
+// @ID get-dentalappointment
+// @Produce  json
+// @Param id path int true "Dentalappointment ID"
+// @Success 200 {object} ent.Dentalappointment
+// @Failure 400 {object} gin.H
+// @Failure 404 {object} gin.H
+// @Failure 500 {object} gin.H
+// @Router /dentalappointments/{id} [get]
+func (ctl *DentalappointmentController) GetDentalappointment(c *gin.Context) {
+	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
+	if err != nil {
+		c.JSON(400, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	dentrec, err := ctl.client.Dentalappointment.
+		Query().
+		WithPatient().
+		Where(dentalappointment.IDEQ(int(id))).
+		Only(context.Background())
+	if err != nil {
+		c.JSON(404, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	c.JSON(200, dentrec)
 }
 
 // ListDentalappointment handles request to get a list of Dentalappointment entities
@@ -149,6 +183,7 @@ func (ctl *DentalappointmentController) ListDentalappointment(c *gin.Context) {
 		Query().
 		WithPersonnel().
 		WithPatient().
+		WithDentalkind().
 		Limit(limit).
 		Offset(offset).
 		All(context.Background())
@@ -210,6 +245,7 @@ func (ctl *DentalappointmentController) register() {
 	Dentalappointments.GET("", ctl.ListDentalappointment)
 
 	// CRUD
+	Dentalappointments.GET(":id", ctl.GetDentalappointment)
 	Dentalappointments.POST("", ctl.CreateDentalappointment)
 	Dentalappointments.DELETE(":id", ctl.DeleteDentalappointment)
 }
