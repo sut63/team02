@@ -4,6 +4,7 @@ import {
   Content,
   Header,
   Page,
+  Link,
   pageTheme,
   ContentHeader,
 } from '@backstage/core';
@@ -67,6 +68,7 @@ export default function Create() {
 
   useEffect(() => {
     const getPersonnel = async () => {
+      setPersonnelID(Number(localStorage.getItem("personnel")))
       const res = await api.listPersonnel({ limit: 10, offset: 0 });
       setLoading(false);
       setPersonnel(res);
@@ -171,14 +173,21 @@ export default function Create() {
       ></Header>
       <Content>
         <ContentHeader title="นัดหมายผ่าตัด">
-        <Button
-                style={{ marginLeft: 20 }}
-                component={RouterLink}
-                to="/"
-                variant="contained"
-              >
-                กลับ
-             </Button>
+        <div>
+            <Link component={RouterLink} to="/SearchSurgeryappointment">
+            <Button variant="contained" color="primary" style={{backgroundColor: "#21b6ae"}}>
+              ค้นหา
+            </Button>
+          </Link>
+          </div>
+            <div>
+            <Link component={RouterLink} to="/WelcomePage">
+            <Button variant="contained" color="primary" style={{backgroundColor: "#21b6ae"}}>
+              กลับ
+            </Button>
+          </Link>
+          </div>
+        
         </ContentHeader>
         <div>
             <p><font size='2'><b>แพทย์</b></font></p>  
@@ -186,18 +195,16 @@ export default function Create() {
               className={classes.margin}
               variant="outlined"
             >
-              <InputLabel id="personnel-label"></InputLabel>
-              <Select
-                labelId="personnel-label"
-                id="personnel"
-                value={personnelid}
-                onChange={PersonnelhandleChange}
-                style={{ width: 250 }}
-              >
-                {personnels.map((item: EntPersonnel) => (
-                  <MenuItem value={item.id}>{item.name}</MenuItem>
-                ))}
-              </Select>
+              <TextField className={classes.textField}
+                style={{ width:  200 ,marginLeft:20,marginRight:-10}}
+              id="personnel"
+              label=""
+              variant="standard"
+              color="secondary"
+              type="string"
+              size="medium"
+              value={personnels.filter((filter: EntPersonnel) => filter.id == personnelid).map((item: EntPersonnel) => `${item.name}`)}
+            />
             </FormControl>
           </div>
           <div>

@@ -180,6 +180,9 @@ func (ctl *SurgeryappointmentController) ListSurgeryappointment(c *gin.Context) 
 		Query().
 		Limit(limit).
 		Offset(offset).
+		WithPersonnel().
+		WithPatient().
+		WithSurgerytype().
 		All(context.Background())
 	if err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})

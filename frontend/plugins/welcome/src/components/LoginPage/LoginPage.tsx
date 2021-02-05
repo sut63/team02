@@ -83,6 +83,7 @@ export default function Login(props: any) {
       if ((item.user == user) && (item.password == password)) {
         setAlert(true);
         if (item.edges.Personnel == item.edges.Personnel) {
+          localStorage.setItem("personnel", JSON.stringify(item.id));
           history.pushState("", "", "/WelcomePage");
         }
         window.location.reload(false);
