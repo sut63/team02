@@ -279,7 +279,7 @@ export default function Insurance() {
               </Grid>
               <Grid item xs={8}>
                 <FormControl variant="outlined" className={classes.formControl}>
-                  <InputLabel>เลือกผลิตภัณฑ์</InputLabel>
+                  <InputLabel>เลือกเจ้าหน้าที่</InputLabel>
                   <Select
                     name="personnel"
                     value={personnelid || ''} // (undefined || '') = ''
