@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta content="text/html; charset=UTF-8" http-equiv="content-type" />
+	<title>SurgeryAppointmaent Test Case</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">Case OK</td></tr>
+</thead>
+<tbody>
+<tr><td>open</td><td>http://localhost:3000/surgeryappointment<datalist><option>http://localhost:3000/surgeryappointment</option></datalist></td><td></td>
+</tr>
+<tr><td>click</td><td>id=personnel<datalist><option>//body</option><option>css=body</option><option>id=personnel</option></datalist></td><td></td>
+</tr>
+<tr><td>click</td><td>//div[@id='menu-']/div[3]/ul/li<datalist><option>//div[@id='menu-']/div[3]/ul/li</option><option>//li</option><option>css=li.MuiButtonBase-root.MuiListItem-root.MuiMenuItem-root.MuiMenuItem-gutters.MuiListItem-gutters.MuiListItem-button.Mui-focusVisible.Mui-focusVisible</option></datalist></td><td></td>
+</tr>
+<tr><td>click</td><td>id=patient<datalist><option>//body</option><option>css=body</option><option>id=patient</option></datalist></td><td></td>
+</tr>
+<tr><td>click</td><td>//div[@id='menu-']/div[3]/ul/li<datalist><option>//div[@id='menu-']/div[3]/ul/li</option><option>//li</option><option>css=li.MuiButtonBase-root.MuiListItem-root.MuiMenuItem-root.MuiMenuItem-gutters.MuiListItem-gutters.MuiListItem-button.Mui-focusVisible.Mui-focusVisible</option></datalist></td><td></td>
+</tr>
+<tr><td>click</td><td>id=surgerytype<datalist><option>//body</option><option>css=body</option><option>id=surgerytype</option></datalist></td><td></td>
+</tr>
+<tr><td>click</td><td>//div[@id='menu-']/div[3]/ul/li<datalist><option>//div[@id='menu-']/div[3]/ul/li</option><option>//li</option><option>css=li.MuiButtonBase-root.MuiListItem-root.MuiMenuItem-root.MuiMenuItem-gutters.MuiListItem-gutters.MuiListItem-button.Mui-focusVisible.Mui-focusVisible</option></datalist></td><td></td>
+</tr>
+<tr><td>click</td><td>id=datetime-local<datalist><option>id=datetime-local</option><option>//input[@id='datetime-local']</option><option>//div[@id='root']/div/article/div[5]/div/div/input</option><option>//div[5]/div/div/input</option><option>css=#datetime-local</option></datalist></td><td></td>
+</tr>
+<tr><td>setText</td><td>id=datetime-local<datalist><option>id=datetime-local</option><option>//input[@id='datetime-local']</option><option>//div[@id='root']/div/article/div[5]/div/div/input</option><option>//div[5]/div/div/input</option><option>css=#datetime-local</option></datalist></td><td>2021-01-19T21:20</td>
+</tr>
+<tr><td>click</td><td>//div[@id='root']/div/article/div[6]<datalist><option>//div[@id='root']/div/article/div[6]</option><option>//div[6]</option><option>css=article.makeStyles-root-13 &gt; div.makeStyles-margin-2</option></datalist></td><td></td>
+</tr>
+<tr><td>click</td><td>//div[@id='root']/div/article/div[6]/button/span<datalist><option>//div[@id='root']/div/article/div[6]/button/span</option><option>//button/span</option><option>css=button.MuiButtonBase-root.MuiButton-root.MuiButton-contained.MuiButton-containedPrimary &gt; span.MuiButton-label</option></datalist></td><td></td>
+</tr>
+<tr><td>click</td><td>//div[@id='root']/div/article/div[6]/div<datalist><option>//div[@id='root']/div/article/div[6]/div</option><option>//div[6]/div</option><option>css=div.MuiPaper-root.MuiAlert-root.MuiAlert-standardSuccess.MuiPaper-elevation0</option></datalist></td><td></td>
+</tr>
+<tr><td>assertText</td><td>//div[@id='root']/div/article/div[6]/div/div[2]<datalist><option>//div[@id='root']/div/article/div[6]/div/div[2]</option><option>//div[6]/div/div[2]</option><option>css=div.MuiAlert-message</option></datalist></td><td>บันทึกสำเร็จ</td>
+</tr>
+</tbody></table>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">Case Failure</td></tr>
+</thead>
+<tbody>
+<tr><td>open</td><td>http://localhost:3000/surgeryappointment<datalist><option>http://localhost:3000/surgeryappointment</option></datalist></td><td></td>
+</tr>
+<tr><td>click</td><td>id=personnel<datalist><option>//body</option><option>css=body</option><option> id=personnel</option><option>id=personnel</option></datalist></td><td></td>
+</tr>
+<tr><td>click</td><td>//div[@id='menu-']/div[3]/ul/li[2]<datalist><option>//div[@id='menu-']/div[3]/ul/li[2]</option><option>//li[2]</option></datalist></td><td></td>
+</tr>
+<tr><td>click</td><td>//div[@id='root']/div/article/div[6]/button/span<datalist><option>//div[@id='root']/div/article/div[6]/button/span</option><option>//button/span</option><option>css=button.MuiButtonBase-root.MuiButton-root.MuiButton-contained.MuiButton-containedPrimary &gt; span.MuiButton-label</option></datalist></td><td></td>
+</tr>
+<tr><td>click</td><td>//div[@id='root']/div/article/div[6]/div<datalist><option>//div[@id='root']/div/article/div[6]/div</option><option>//div[6]/div</option><option>css=div.MuiPaper-root.MuiAlert-root.MuiAlert-standardWarning.MuiPaper-elevation0</option></datalist></td><td></td>
+</tr>
+<tr><td>assertText</td><td>//div[@id='root']/div/article/div[6]/div/div[2]<datalist><option>//div[@id='root']/div/article/div[6]/div/div[2]</option><option>//div[6]/div/div[2]</option><option>css=div.MuiAlert-message</option></datalist></td><td>ข้อมูลไม่ถูกต้อง</td>
+</tr>
+</tbody></table>
+</body>
+</html>
