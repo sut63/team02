@@ -1,5 +1,4 @@
 package controllers
-//merge
 import (
 	"context"
 	"fmt"
@@ -226,3 +225,4 @@ func (ctl *PatientController) register() {
 	Patient.PUT(":id", ctl.UpdatePatient)
 	Patient.DELETE(":id", ctl.DeletePatient)
 }
+//merge
