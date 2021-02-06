@@ -114,6 +114,7 @@ export default function CreateChecksymptom() {
 
 
     const getPersonnels = async () => {
+      setPersonnel(Number(localStorage.getItem("personnel")))
       const res = await api.listPersonnel({ limit: 10, offset: 0 });
       setLoading(false);
       setPersonnels(res);
@@ -255,23 +256,19 @@ export default function CreateChecksymptom() {
             <Grid item xs={4}>
               <div className={classes.paper}>Personnel</div>
             </Grid>
-            <Grid item xs={8}>
-              <FormControl variant="outlined" className={classes.formControl}>
-                <InputLabel>เลือกผู้ใช้งาน</InputLabel>
-                <Select
-                  name="personnel"
-                  value={personnelName}
-                  onChange={PersonnelhandleChange}
-                  style={{ width: 300 }}
-                >
-                  {personnels.map(item => {
-                    return (
-                      <MenuItem key={item.id} value={item.id}>
-                        {item.name}
-                      </MenuItem>
-                    );
-                  })}
-                </Select>
+            <Grid item xs={6}>
+            <FormControl
+                className={classes.margin}
+                variant="outlined"
+              >
+                
+                <TextField
+                    id="personnel"
+                    type="string"
+                    size="medium"
+                    value={personnels.filter((filter:EntPersonnel) => filter.id == personnelName).map((item:EntPersonnel) => `${item.name}`)}
+                    style={{ width: 400 }}
+              />
               </FormControl>
             </Grid>
 
