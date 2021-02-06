@@ -31,3 +31,4 @@ func (Patient) Edges() []ent.Edge {
 		edge.To("Surgeryappointment", Surgeryappointment.Type).StorageKey(edge.Column("Patient_id")),
 	}
 }
+//merge
