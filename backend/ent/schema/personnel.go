@@ -32,3 +32,4 @@ func (Personnel) Edges() []ent.Edge {
 		edge.To("Antenatalinformation", Antenatalinformation.Type).StorageKey(edge.Column("Personnel_id")),
 	}
 }
+//merge
