@@ -222,3 +222,4 @@ func (ctl *RemedyController) register() {
 	Remedy.PUT(":id", ctl.UpdateRemedy)
 	Remedy.DELETE(":id", ctl.DeleteRemedy)
 }
+//merge
