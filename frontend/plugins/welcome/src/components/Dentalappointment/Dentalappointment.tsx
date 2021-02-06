@@ -96,12 +96,13 @@ export default function createDentalappointment() {
     getDentalkinds();
 
     const getPersonnels = async () => {
+      setPersonnel(Number(localStorage.getItem("personnel")))
       const res = await api.listPersonnel({ limit: 10, offset: 0 });
       setLoading(false);
       setPersonnels(res);
     };
     getPersonnels();
-    setPersonnel(Number(localStorage.getItem("personaldata")))
+    
   }, [loading]);
 
   //updateforlab9
@@ -234,7 +235,7 @@ export default function createDentalappointment() {
               >
                 <div><strong>ชื่อทันตแพทย์</strong></div>
                 <TextField
-                                    id="user"
+                                    id="personnel"
                                     type="string"
                                     size="medium"
                                     value={personnels.filter((filter:EntPersonnel) => filter.id == personnelName).map((item:EntPersonnel) => `${item.name}`)}

@@ -17,7 +17,10 @@ import {
   ContentHeader,
   SupportButton,
 } from '@backstage/core';
+import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
+import { typography } from '@material-ui/system';
+
 
 const WelcomePage: FC<{}> = () => {
   const profile = { givenName: '' };
@@ -29,17 +32,25 @@ const WelcomePage: FC<{}> = () => {
       >
       </Header>
       <Content>
-      <ContentHeader title="ตัวเลือกการนัดหมาย">  
+      <ContentHeader title="ตัวเลือกการนัดหมาย">
+      <Link component={RouterLink} to="/">
+         <Button variant="contained" color="secondary">
+             ออกจากระบบ
+           </Button>
+           </Link>
+   
        </ContentHeader>
+
        <tr>
          <td>
        <Link component={RouterLink} to="/Checksymptom">
-         <Button variant="contained" color="primary">
+         <Button variant="contained" color="primary" >
              ตรวจอาการ
            </Button>
            </Link>
            </td>
       </tr>
+      <Grid item xs={3}>
       <tr>
        <Link component={RouterLink} to="/Dentalappointment">
          <Button variant="contained" color="primary">
@@ -47,6 +58,7 @@ const WelcomePage: FC<{}> = () => {
            </Button>
            </Link>
       </tr> 
+      </Grid>
       <tr>
        <Link component={RouterLink} to="/Antenatal">
          <Button variant="contained" color="primary">
