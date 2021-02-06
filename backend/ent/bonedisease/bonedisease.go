@@ -15,6 +15,10 @@ const (
 	FieldAddedTime = "added_time"
 	// FieldAdvice holds the string denoting the advice field in the database.
 	FieldAdvice = "advice"
+	// FieldTel holds the string denoting the tel field in the database.
+	FieldTel = "tel"
+	// FieldIdentificationCard holds the string denoting the identificationcard field in the database.
+	FieldIdentificationCard = "identification_card"
 
 	// EdgeRemedy holds the string denoting the remedy edge name in mutations.
 	EdgeRemedy = "remedy"
@@ -53,6 +57,8 @@ var Columns = []string{
 	FieldID,
 	FieldAddedTime,
 	FieldAdvice,
+	FieldTel,
+	FieldIdentificationCard,
 }
 
 // ForeignKeys holds the SQL foreign-keys that are owned by the Bonedisease type.
@@ -82,4 +88,8 @@ var (
 	DefaultAddedTime func() time.Time
 	// AdviceValidator is a validator for the "advice" field. It is called by the builders before save.
 	AdviceValidator func(string) error
+	// TelValidator is a validator for the "tel" field. It is called by the builders before save.
+	TelValidator func(string) error
+	// IdentificationCardValidator is a validator for the "identificationCard" field. It is called by the builders before save.
+	IdentificationCardValidator func(string) error
 )

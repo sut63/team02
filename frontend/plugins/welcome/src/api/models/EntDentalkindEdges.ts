@@ -44,7 +44,7 @@ export function EntDentalkindEdgesFromJSONTyped(json: any, ignoreDiscriminator: 
     }
     return {
         
-        'dentalappointment': !exists(json, 'Dentalappointment') ? undefined : ((json['Dentalappointment'] as Array<any>).map(EntDentalappointmentFromJSON)),
+        'dentalappointment': !exists(json, 'dentalappointment') ? undefined : ((json['dentalappointment'] as Array<any>).map(EntDentalappointmentFromJSON)),
     };
 }
 

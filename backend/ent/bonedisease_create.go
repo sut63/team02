@@ -43,6 +43,18 @@ func (bc *BonediseaseCreate) SetAdvice(s string) *BonediseaseCreate {
 	return bc
 }
 
+// SetTel sets the "tel" field.
+func (bc *BonediseaseCreate) SetTel(s string) *BonediseaseCreate {
+	bc.mutation.SetTel(s)
+	return bc
+}
+
+// SetIdentificationCard sets the "identificationCard" field.
+func (bc *BonediseaseCreate) SetIdentificationCard(s string) *BonediseaseCreate {
+	bc.mutation.SetIdentificationCard(s)
+	return bc
+}
+
 // SetRemedyID sets the "remedy" edge to the Remedy entity by ID.
 func (bc *BonediseaseCreate) SetRemedyID(id int) *BonediseaseCreate {
 	bc.mutation.SetRemedyID(id)
@@ -171,6 +183,22 @@ func (bc *BonediseaseCreate) check() error {
 			return &ValidationError{Name: "advice", err: fmt.Errorf("ent: validator failed for field \"advice\": %w", err)}
 		}
 	}
+	if _, ok := bc.mutation.Tel(); !ok {
+		return &ValidationError{Name: "tel", err: errors.New("ent: missing required field \"tel\"")}
+	}
+	if v, ok := bc.mutation.Tel(); ok {
+		if err := bonedisease.TelValidator(v); err != nil {
+			return &ValidationError{Name: "tel", err: fmt.Errorf("ent: validator failed for field \"tel\": %w", err)}
+		}
+	}
+	if _, ok := bc.mutation.IdentificationCard(); !ok {
+		return &ValidationError{Name: "identificationCard", err: errors.New("ent: missing required field \"identificationCard\"")}
+	}
+	if v, ok := bc.mutation.IdentificationCard(); ok {
+		if err := bonedisease.IdentificationCardValidator(v); err != nil {
+			return &ValidationError{Name: "identificationCard", err: fmt.Errorf("ent: validator failed for field \"identificationCard\": %w", err)}
+		}
+	}
 	return nil
 }
 
@@ -213,6 +241,22 @@ func (bc *BonediseaseCreate) createSpec() (*Bonedisease, *sqlgraph.CreateSpec) {
 			Column: bonedisease.FieldAdvice,
 		})
 		_node.Advice = value
+	}
+	if value, ok := bc.mutation.Tel(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: bonedisease.FieldTel,
+		})
+		_node.Tel = value
+	}
+	if value, ok := bc.mutation.IdentificationCard(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: bonedisease.FieldIdentificationCard,
+		})
+		_node.IdentificationCard = value
 	}
 	if nodes := bc.mutation.RemedyIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{

@@ -97,7 +97,7 @@ export function EntPatientEdgesFromJSONTyped(json: any, ignoreDiscriminator: boo
         'antenatalinformation': !exists(json, 'antenatalinformation') ? undefined : ((json['antenatalinformation'] as Array<any>).map(EntAntenatalinformationFromJSON)),
         'bonedisease': !exists(json, 'bonedisease') ? undefined : ((json['bonedisease'] as Array<any>).map(EntBonediseaseFromJSON)),
         'checksymptom': !exists(json, 'checksymptom') ? undefined : ((json['checksymptom'] as Array<any>).map(EntChecksymptomFromJSON)),
-        'dentalappointment': !exists(json, 'Dentalappointment') ? undefined : ((json['Dentalappointment'] as Array<any>).map(EntDentalappointmentFromJSON)),
+        'dentalappointment': !exists(json, 'dentalappointment') ? undefined : ((json['dentalappointment'] as Array<any>).map(EntDentalappointmentFromJSON)),
         'physicaltherapyrecord': !exists(json, 'physicaltherapyrecord') ? undefined : ((json['physicaltherapyrecord'] as Array<any>).map(EntPhysicaltherapyrecordFromJSON)),
         'surgeryappointment': !exists(json, 'surgeryappointment') ? undefined : ((json['surgeryappointment'] as Array<any>).map(EntSurgeryappointmentFromJSON)),
     };

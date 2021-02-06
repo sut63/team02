@@ -43,6 +43,46 @@ func init() {
 	bonediseaseDescAdvice := bonediseaseFields[1].Descriptor()
 	// bonedisease.AdviceValidator is a validator for the "advice" field. It is called by the builders before save.
 	bonedisease.AdviceValidator = bonediseaseDescAdvice.Validators[0].(func(string) error)
+	// bonediseaseDescTel is the schema descriptor for tel field.
+	bonediseaseDescTel := bonediseaseFields[2].Descriptor()
+	// bonedisease.TelValidator is a validator for the "tel" field. It is called by the builders before save.
+	bonedisease.TelValidator = func() func(string) error {
+		validators := bonediseaseDescTel.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+			validators[2].(func(string) error),
+			validators[3].(func(string) error),
+		}
+		return func(tel string) error {
+			for _, fn := range fns {
+				if err := fn(tel); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
+	// bonediseaseDescIdentificationCard is the schema descriptor for identificationCard field.
+	bonediseaseDescIdentificationCard := bonediseaseFields[3].Descriptor()
+	// bonedisease.IdentificationCardValidator is a validator for the "identificationCard" field. It is called by the builders before save.
+	bonedisease.IdentificationCardValidator = func() func(string) error {
+		validators := bonediseaseDescIdentificationCard.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+			validators[2].(func(string) error),
+			validators[3].(func(string) error),
+		}
+		return func(identificationCard string) error {
+			for _, fn := range fns {
+				if err := fn(identificationCard); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
 	checksymptomFields := schema.Checksymptom{}.Fields()
 	_ = checksymptomFields
 	// checksymptomDescNote is the schema descriptor for note field.

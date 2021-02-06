@@ -3132,6 +3132,9 @@ var doc = `{
                 "advice": {
                     "type": "string"
                 },
+                "identificationCard": {
+                    "type": "string"
+                },
                 "patientID": {
                     "type": "integer"
                 },
@@ -3140,6 +3143,9 @@ var doc = `{
                 },
                 "remedyID": {
                     "type": "integer"
+                },
+                "tel": {
+                    "type": "string"
                 }
             }
         },
@@ -3310,6 +3316,14 @@ var doc = `{
                 "id": {
                     "description": "ID of the ent.",
                     "type": "integer"
+                },
+                "identificationCard": {
+                    "description": "IdentificationCard holds the value of the \"identificationCard\" field.",
+                    "type": "string"
+                },
+                "tel": {
+                    "description": "Tel holds the value of the \"tel\" field.",
+                    "type": "string"
                 }
             }
         },

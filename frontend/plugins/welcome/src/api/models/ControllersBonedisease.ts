@@ -33,6 +33,12 @@ export interface ControllersBonedisease {
     advice?: string;
     /**
      * 
+     * @type {string}
+     * @memberof ControllersBonedisease
+     */
+    identificationCard?: string;
+    /**
+     * 
      * @type {number}
      * @memberof ControllersBonedisease
      */
@@ -49,6 +55,12 @@ export interface ControllersBonedisease {
      * @memberof ControllersBonedisease
      */
     remedyID?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof ControllersBonedisease
+     */
+    tel?: string;
 }
 
 export function ControllersBonediseaseFromJSON(json: any): ControllersBonedisease {
@@ -63,9 +75,11 @@ export function ControllersBonediseaseFromJSONTyped(json: any, ignoreDiscriminat
         
         'addedTime': !exists(json, 'addedTime') ? undefined : json['addedTime'],
         'advice': !exists(json, 'advice') ? undefined : json['advice'],
+        'identificationCard': !exists(json, 'identificationCard') ? undefined : json['identificationCard'],
         'patientID': !exists(json, 'patientID') ? undefined : json['patientID'],
         'personnelID': !exists(json, 'personnelID') ? undefined : json['personnelID'],
         'remedyID': !exists(json, 'remedyID') ? undefined : json['remedyID'],
+        'tel': !exists(json, 'tel') ? undefined : json['tel'],
     };
 }
 
@@ -80,9 +94,11 @@ export function ControllersBonediseaseToJSON(value?: ControllersBonedisease | nu
         
         'addedTime': value.addedTime,
         'advice': value.advice,
+        'identificationCard': value.identificationCard,
         'patientID': value.patientID,
         'personnelID': value.personnelID,
         'remedyID': value.remedyID,
+        'tel': value.tel,
     };
 }
 

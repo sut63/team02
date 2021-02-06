@@ -50,6 +50,18 @@ func (bu *BonediseaseUpdate) SetAdvice(s string) *BonediseaseUpdate {
 	return bu
 }
 
+// SetTel sets the "tel" field.
+func (bu *BonediseaseUpdate) SetTel(s string) *BonediseaseUpdate {
+	bu.mutation.SetTel(s)
+	return bu
+}
+
+// SetIdentificationCard sets the "identificationCard" field.
+func (bu *BonediseaseUpdate) SetIdentificationCard(s string) *BonediseaseUpdate {
+	bu.mutation.SetIdentificationCard(s)
+	return bu
+}
+
 // SetRemedyID sets the "remedy" edge to the Remedy entity by ID.
 func (bu *BonediseaseUpdate) SetRemedyID(id int) *BonediseaseUpdate {
 	bu.mutation.SetRemedyID(id)
@@ -194,6 +206,16 @@ func (bu *BonediseaseUpdate) check() error {
 			return &ValidationError{Name: "advice", err: fmt.Errorf("ent: validator failed for field \"advice\": %w", err)}
 		}
 	}
+	if v, ok := bu.mutation.Tel(); ok {
+		if err := bonedisease.TelValidator(v); err != nil {
+			return &ValidationError{Name: "tel", err: fmt.Errorf("ent: validator failed for field \"tel\": %w", err)}
+		}
+	}
+	if v, ok := bu.mutation.IdentificationCard(); ok {
+		if err := bonedisease.IdentificationCardValidator(v); err != nil {
+			return &ValidationError{Name: "identificationCard", err: fmt.Errorf("ent: validator failed for field \"identificationCard\": %w", err)}
+		}
+	}
 	return nil
 }
 
@@ -227,6 +249,20 @@ func (bu *BonediseaseUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Type:   field.TypeString,
 			Value:  value,
 			Column: bonedisease.FieldAdvice,
+		})
+	}
+	if value, ok := bu.mutation.Tel(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: bonedisease.FieldTel,
+		})
+	}
+	if value, ok := bu.mutation.IdentificationCard(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: bonedisease.FieldIdentificationCard,
 		})
 	}
 	if bu.mutation.RemedyCleared() {
@@ -369,6 +405,18 @@ func (buo *BonediseaseUpdateOne) SetNillableAddedTime(t *time.Time) *Bonedisease
 // SetAdvice sets the "advice" field.
 func (buo *BonediseaseUpdateOne) SetAdvice(s string) *BonediseaseUpdateOne {
 	buo.mutation.SetAdvice(s)
+	return buo
+}
+
+// SetTel sets the "tel" field.
+func (buo *BonediseaseUpdateOne) SetTel(s string) *BonediseaseUpdateOne {
+	buo.mutation.SetTel(s)
+	return buo
+}
+
+// SetIdentificationCard sets the "identificationCard" field.
+func (buo *BonediseaseUpdateOne) SetIdentificationCard(s string) *BonediseaseUpdateOne {
+	buo.mutation.SetIdentificationCard(s)
 	return buo
 }
 
@@ -516,6 +564,16 @@ func (buo *BonediseaseUpdateOne) check() error {
 			return &ValidationError{Name: "advice", err: fmt.Errorf("ent: validator failed for field \"advice\": %w", err)}
 		}
 	}
+	if v, ok := buo.mutation.Tel(); ok {
+		if err := bonedisease.TelValidator(v); err != nil {
+			return &ValidationError{Name: "tel", err: fmt.Errorf("ent: validator failed for field \"tel\": %w", err)}
+		}
+	}
+	if v, ok := buo.mutation.IdentificationCard(); ok {
+		if err := bonedisease.IdentificationCardValidator(v); err != nil {
+			return &ValidationError{Name: "identificationCard", err: fmt.Errorf("ent: validator failed for field \"identificationCard\": %w", err)}
+		}
+	}
 	return nil
 }
 
@@ -547,6 +605,20 @@ func (buo *BonediseaseUpdateOne) sqlSave(ctx context.Context) (_node *Bonediseas
 			Type:   field.TypeString,
 			Value:  value,
 			Column: bonedisease.FieldAdvice,
+		})
+	}
+	if value, ok := buo.mutation.Tel(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: bonedisease.FieldTel,
+		})
+	}
+	if value, ok := buo.mutation.IdentificationCard(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: bonedisease.FieldIdentificationCard,
 		})
 	}
 	if buo.mutation.RemedyCleared() {

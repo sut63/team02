@@ -23,6 +23,10 @@ type Bonedisease struct {
 	AddedTime time.Time `json:"addedTime,omitempty"`
 	// Advice holds the value of the "advice" field.
 	Advice string `json:"advice,omitempty"`
+	// Tel holds the value of the "tel" field.
+	Tel string `json:"tel,omitempty"`
+	// IdentificationCard holds the value of the "identificationCard" field.
+	IdentificationCard string `json:"identificationCard,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the BonediseaseQuery when eager-loading is set.
 	Edges         BonediseaseEdges `json:"edges"`
@@ -93,7 +97,7 @@ func (*Bonedisease) scanValues(columns []string) ([]interface{}, error) {
 		switch columns[i] {
 		case bonedisease.FieldID:
 			values[i] = &sql.NullInt64{}
-		case bonedisease.FieldAdvice:
+		case bonedisease.FieldAdvice, bonedisease.FieldTel, bonedisease.FieldIdentificationCard:
 			values[i] = &sql.NullString{}
 		case bonedisease.FieldAddedTime:
 			values[i] = &sql.NullTime{}
@@ -135,6 +139,18 @@ func (b *Bonedisease) assignValues(columns []string, values []interface{}) error
 				return fmt.Errorf("unexpected type %T for field advice", values[i])
 			} else if value.Valid {
 				b.Advice = value.String
+			}
+		case bonedisease.FieldTel:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field tel", values[i])
+			} else if value.Valid {
+				b.Tel = value.String
+			}
+		case bonedisease.FieldIdentificationCard:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field identificationCard", values[i])
+			} else if value.Valid {
+				b.IdentificationCard = value.String
 			}
 		case bonedisease.ForeignKeys[0]:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -204,6 +220,10 @@ func (b *Bonedisease) String() string {
 	builder.WriteString(b.AddedTime.Format(time.ANSIC))
 	builder.WriteString(", advice=")
 	builder.WriteString(b.Advice)
+	builder.WriteString(", tel=")
+	builder.WriteString(b.Tel)
+	builder.WriteString(", identificationCard=")
+	builder.WriteString(b.IdentificationCard)
 	builder.WriteByte(')')
 	return builder.String()
 }

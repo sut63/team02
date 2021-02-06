@@ -50,6 +50,18 @@ export interface EntBonedisease {
      * @memberof EntBonedisease
      */
     id?: number;
+    /**
+     * IdentificationCard holds the value of the "identificationCard" field.
+     * @type {string}
+     * @memberof EntBonedisease
+     */
+    identificationCard?: string;
+    /**
+     * Tel holds the value of the "tel" field.
+     * @type {string}
+     * @memberof EntBonedisease
+     */
+    tel?: string;
 }
 
 export function EntBonediseaseFromJSON(json: any): EntBonedisease {
@@ -66,6 +78,8 @@ export function EntBonediseaseFromJSONTyped(json: any, ignoreDiscriminator: bool
         'advice': !exists(json, 'advice') ? undefined : json['advice'],
         'edges': !exists(json, 'edges') ? undefined : EntBonediseaseEdgesFromJSON(json['edges']),
         'id': !exists(json, 'id') ? undefined : json['id'],
+        'identificationCard': !exists(json, 'identificationCard') ? undefined : json['identificationCard'],
+        'tel': !exists(json, 'tel') ? undefined : json['tel'],
     };
 }
 
@@ -82,6 +96,8 @@ export function EntBonediseaseToJSON(value?: EntBonedisease | null): any {
         'advice': value.advice,
         'edges': EntBonediseaseEdgesToJSON(value.edges),
         'id': value.id,
+        'identificationCard': value.identificationCard,
+        'tel': value.tel,
     };
 }
 

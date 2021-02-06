@@ -684,21 +684,23 @@ func (m *AntenatalinformationMutation) ResetEdge(name string) error {
 // BonediseaseMutation represents an operation that mutates the Bonedisease nodes in the graph.
 type BonediseaseMutation struct {
 	config
-	op               Op
-	typ              string
-	id               *int
-	addedTime        *time.Time
-	advice           *string
-	clearedFields    map[string]struct{}
-	remedy           *int
-	clearedremedy    bool
-	patient          *int
-	clearedpatient   bool
-	personnel        *int
-	clearedpersonnel bool
-	done             bool
-	oldValue         func(context.Context) (*Bonedisease, error)
-	predicates       []predicate.Bonedisease
+	op                 Op
+	typ                string
+	id                 *int
+	addedTime          *time.Time
+	advice             *string
+	tel                *string
+	identificationCard *string
+	clearedFields      map[string]struct{}
+	remedy             *int
+	clearedremedy      bool
+	patient            *int
+	clearedpatient     bool
+	personnel          *int
+	clearedpersonnel   bool
+	done               bool
+	oldValue           func(context.Context) (*Bonedisease, error)
+	predicates         []predicate.Bonedisease
 }
 
 var _ ent.Mutation = (*BonediseaseMutation)(nil)
@@ -852,6 +854,78 @@ func (m *BonediseaseMutation) ResetAdvice() {
 	m.advice = nil
 }
 
+// SetTel sets the "tel" field.
+func (m *BonediseaseMutation) SetTel(s string) {
+	m.tel = &s
+}
+
+// Tel returns the value of the "tel" field in the mutation.
+func (m *BonediseaseMutation) Tel() (r string, exists bool) {
+	v := m.tel
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldTel returns the old "tel" field's value of the Bonedisease entity.
+// If the Bonedisease object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BonediseaseMutation) OldTel(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldTel is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldTel requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldTel: %w", err)
+	}
+	return oldValue.Tel, nil
+}
+
+// ResetTel resets all changes to the "tel" field.
+func (m *BonediseaseMutation) ResetTel() {
+	m.tel = nil
+}
+
+// SetIdentificationCard sets the "identificationCard" field.
+func (m *BonediseaseMutation) SetIdentificationCard(s string) {
+	m.identificationCard = &s
+}
+
+// IdentificationCard returns the value of the "identificationCard" field in the mutation.
+func (m *BonediseaseMutation) IdentificationCard() (r string, exists bool) {
+	v := m.identificationCard
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldIdentificationCard returns the old "identificationCard" field's value of the Bonedisease entity.
+// If the Bonedisease object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BonediseaseMutation) OldIdentificationCard(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldIdentificationCard is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldIdentificationCard requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldIdentificationCard: %w", err)
+	}
+	return oldValue.IdentificationCard, nil
+}
+
+// ResetIdentificationCard resets all changes to the "identificationCard" field.
+func (m *BonediseaseMutation) ResetIdentificationCard() {
+	m.identificationCard = nil
+}
+
 // SetRemedyID sets the "remedy" edge to the Remedy entity by id.
 func (m *BonediseaseMutation) SetRemedyID(id int) {
 	m.remedy = &id
@@ -983,12 +1057,18 @@ func (m *BonediseaseMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *BonediseaseMutation) Fields() []string {
-	fields := make([]string, 0, 2)
+	fields := make([]string, 0, 4)
 	if m.addedTime != nil {
 		fields = append(fields, bonedisease.FieldAddedTime)
 	}
 	if m.advice != nil {
 		fields = append(fields, bonedisease.FieldAdvice)
+	}
+	if m.tel != nil {
+		fields = append(fields, bonedisease.FieldTel)
+	}
+	if m.identificationCard != nil {
+		fields = append(fields, bonedisease.FieldIdentificationCard)
 	}
 	return fields
 }
@@ -1002,6 +1082,10 @@ func (m *BonediseaseMutation) Field(name string) (ent.Value, bool) {
 		return m.AddedTime()
 	case bonedisease.FieldAdvice:
 		return m.Advice()
+	case bonedisease.FieldTel:
+		return m.Tel()
+	case bonedisease.FieldIdentificationCard:
+		return m.IdentificationCard()
 	}
 	return nil, false
 }
@@ -1015,6 +1099,10 @@ func (m *BonediseaseMutation) OldField(ctx context.Context, name string) (ent.Va
 		return m.OldAddedTime(ctx)
 	case bonedisease.FieldAdvice:
 		return m.OldAdvice(ctx)
+	case bonedisease.FieldTel:
+		return m.OldTel(ctx)
+	case bonedisease.FieldIdentificationCard:
+		return m.OldIdentificationCard(ctx)
 	}
 	return nil, fmt.Errorf("unknown Bonedisease field %s", name)
 }
@@ -1037,6 +1125,20 @@ func (m *BonediseaseMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetAdvice(v)
+		return nil
+	case bonedisease.FieldTel:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetTel(v)
+		return nil
+	case bonedisease.FieldIdentificationCard:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetIdentificationCard(v)
 		return nil
 	}
 	return fmt.Errorf("unknown Bonedisease field %s", name)
@@ -1092,6 +1194,12 @@ func (m *BonediseaseMutation) ResetField(name string) error {
 		return nil
 	case bonedisease.FieldAdvice:
 		m.ResetAdvice()
+		return nil
+	case bonedisease.FieldTel:
+		m.ResetTel()
+		return nil
+	case bonedisease.FieldIdentificationCard:
+		m.ResetIdentificationCard()
 		return nil
 	}
 	return fmt.Errorf("unknown Bonedisease field %s", name)

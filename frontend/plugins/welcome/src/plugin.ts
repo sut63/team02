@@ -1,5 +1,6 @@
 import { createPlugin } from '@backstage/core';
 import Bonedisease from './components/Bonedisease';
+import BonediseaseSearch from './components/BonediseaseSearch';
 import LoginPage from './components/LoginPage';
 import WelcomePage from './components/WelcomePage';
 import Dentalappointment from './components/Dentalappointment';
@@ -20,6 +21,7 @@ export const plugin = createPlugin({
     router.registerRoute('/', LoginPage);
     router.registerRoute('/WelcomePage', WelcomePage);
     router.registerRoute('/Bonedisease', Bonedisease);
+    router.registerRoute('/BonediseaseSearch', BonediseaseSearch);
     router.registerRoute('/Dentalappointment', Dentalappointment);
     router.registerRoute('/Surgeryappointment', Surgeryappointment);
     router.registerRoute('/Createphysicaltherapyrecord', Physicaltherapyrecord);

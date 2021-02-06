@@ -25,8 +25,10 @@ type Bonedisease struct {
 	PatientID			 int
 	PersonnelID          int
 	RemedyID             int
-	Advice				 string
 	AddedTime            string
+	Advice				 string
+	Tel					 string
+	IdentificationCard	 string
 }
 
 // CreateBonedisease handles POST requests for adding Bonedisease entities
@@ -42,6 +44,7 @@ type Bonedisease struct {
 // @Router /bonediseases [post]
 func (ctl *BonediseaseController) CreateBonedisease(c *gin.Context) {
 	obj := Bonedisease{}
+	
 	if err := c.ShouldBind(&obj); err != nil {
 		c.JSON(400, gin.H{
 			"error": "Bonedisease binding failed",
@@ -83,29 +86,50 @@ func (ctl *BonediseaseController) CreateBonedisease(c *gin.Context) {
 			"error": "Remedy diagnostic  not found",
 		})
 		return
+	}	
+	if obj.Advice == "" {
+			c.JSON(400, gin.H{
+				"error": "Advice ไม่ถูกต้อง",
+			})
+			return
 	}
-
-	t1 := time.Now()
-	t2 := t1.Format("2020-01-02T15:04:14Z07:00")
-	time,err := time.Parse(time.RFC3339, t2)
-
+	if obj.Tel == "" {
+			c.JSON(400, gin.H{
+				"error": "Tel ไม่ถูกต้อง",
+			})
+			return
+	}
+	
+	if obj.IdentificationCard == "" {
+			c.JSON(400, gin.H{
+				"error": "IdentificationCard ไม่ถูกต้อง",
+			})
+			return
+	}
+	
+	ti,_ := time.Parse(time.RFC3339, obj.AddedTime)
 	bonedisease, err := ctl.client.Bonedisease.
-
 	Create().
 	SetPersonnel(personnel).
 	SetPatient(patient).
 	SetRemedy(remedy).
 	SetAdvice(obj.Advice).
-	SetAddedTime(time).
+	SetTel(obj.Tel).
+	SetIdentificationCard(obj.IdentificationCard).
+	SetAddedTime(ti).
 	Save(context.Background())
 	if err != nil {
 		c.JSON(400, gin.H{
-			"error": "saving failed",
+			"status": false,
+			"error": err,
 		})
 		return
 	}
 
-	c.JSON(200, bonedisease)
+	c.JSON(200, gin.H{
+		"status": true,
+		"data": bonedisease,
+	})
 }
 
 
@@ -207,6 +231,7 @@ func (ctl *BonediseaseController) register() {
 	Bonediseases.GET("", ctl.ListBonedisease)
 
 	// CRUD
+	Bonediseases.GET("id", ctl.ListBonedisease)
 	Bonediseases.POST("", ctl.CreateBonedisease)
 	Bonediseases.DELETE(":id", ctl.DeleteBonedisease)
 }

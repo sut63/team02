@@ -73,46 +73,7 @@ export default function Searchtable() {
   
 
   useEffect(() => {
-    /* const getCarservices = async () => {
-      const res = await api.listCarservice({ limit: 10, offset: 0 });
-      setLoading(false);
-      setCarservices(res);
-    };
-    getCarservices();
- */
-    /* const getUsers = async () => {
-      const res = await api.listUser();
-      setLoading(false);
-      setUsers(res);
-    };
-    getUsers();
-    const getUrgents = async () => {
-      const res = await api.listUrgent({ offset: 0 });
-      setLoading(false);
-      setUrgents(res);
-    };
-    getUrgents();
-    const getDistances = async () => {
-      const res = await api.listDistance({ offset: 0 });
-      setLoading(false);
-      setDistances(res);
-    };
-    getDistances(); */
-    /*const checkJobPosition = async () => {
-      const jobdata = JSON.parse(String(localStorage.getItem("jobpositiondata")));
-      setLoading(false);
-      if (jobdata != "เจ้าหน้าที่โอเปอร์เรเตอร์" ) {
-        localStorage.setItem("userdata",JSON.stringify(null));
-        localStorage.setItem("jobpositiondata",JSON.stringify(null));
-        history.pushState("","","./");
-        window.location.reload(false);        
-      }
-      else{
-          setUser(Number(localStorage.getItem("userdata")))
-      }
-    }
-  checkJobPosition();
-    */
+  
   }, [loading]);
 
 
@@ -174,7 +135,7 @@ export default function Searchtable() {
                     ) : null}
         </ContentHeader>
   
-        <div className={classes.paper}><strong>ค้นหาชื่อผู้ใช้บริการ</strong></div>
+        <div className={classes.paper}><strong>ค้นหาผู้ป่วยที่เคยได้รับการตรวจโรคกระดูก (ด้วยเลข ปชช)</strong></div>
         <TextField className={classes.textField}
           style={{ width: 400, marginLeft: 20, marginRight: -10 }}
           id="customer"
@@ -219,7 +180,7 @@ export default function Searchtable() {
                   <TableCell align="center">{item.edges?.remedy?.remedy}</TableCell>
                   <TableCell align="center">{item.advice}</TableCell>
                   <TableCell align="center">{item.edges?.personnel?.name}</TableCell>
-                  <TableCell align="center">{moment(item.datetime).format('DD/MM/YYYY HH.mm น.')}</TableCell>
+                  <TableCell align="center">{moment(item.addedTime).format('DD/MM/YYYY HH.mm น.')}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

@@ -107,6 +107,20 @@ func Advice(v string) predicate.Bonedisease {
 	})
 }
 
+// Tel applies equality check predicate on the "tel" field. It's identical to TelEQ.
+func Tel(v string) predicate.Bonedisease {
+	return predicate.Bonedisease(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldTel), v))
+	})
+}
+
+// IdentificationCard applies equality check predicate on the "identificationCard" field. It's identical to IdentificationCardEQ.
+func IdentificationCard(v string) predicate.Bonedisease {
+	return predicate.Bonedisease(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldIdentificationCard), v))
+	})
+}
+
 // AddedTimeEQ applies the EQ predicate on the "addedTime" field.
 func AddedTimeEQ(v time.Time) predicate.Bonedisease {
 	return predicate.Bonedisease(func(s *sql.Selector) {
@@ -291,6 +305,228 @@ func AdviceEqualFold(v string) predicate.Bonedisease {
 func AdviceContainsFold(v string) predicate.Bonedisease {
 	return predicate.Bonedisease(func(s *sql.Selector) {
 		s.Where(sql.ContainsFold(s.C(FieldAdvice), v))
+	})
+}
+
+// TelEQ applies the EQ predicate on the "tel" field.
+func TelEQ(v string) predicate.Bonedisease {
+	return predicate.Bonedisease(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldTel), v))
+	})
+}
+
+// TelNEQ applies the NEQ predicate on the "tel" field.
+func TelNEQ(v string) predicate.Bonedisease {
+	return predicate.Bonedisease(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldTel), v))
+	})
+}
+
+// TelIn applies the In predicate on the "tel" field.
+func TelIn(vs ...string) predicate.Bonedisease {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Bonedisease(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.In(s.C(FieldTel), v...))
+	})
+}
+
+// TelNotIn applies the NotIn predicate on the "tel" field.
+func TelNotIn(vs ...string) predicate.Bonedisease {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Bonedisease(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.NotIn(s.C(FieldTel), v...))
+	})
+}
+
+// TelGT applies the GT predicate on the "tel" field.
+func TelGT(v string) predicate.Bonedisease {
+	return predicate.Bonedisease(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldTel), v))
+	})
+}
+
+// TelGTE applies the GTE predicate on the "tel" field.
+func TelGTE(v string) predicate.Bonedisease {
+	return predicate.Bonedisease(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldTel), v))
+	})
+}
+
+// TelLT applies the LT predicate on the "tel" field.
+func TelLT(v string) predicate.Bonedisease {
+	return predicate.Bonedisease(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldTel), v))
+	})
+}
+
+// TelLTE applies the LTE predicate on the "tel" field.
+func TelLTE(v string) predicate.Bonedisease {
+	return predicate.Bonedisease(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldTel), v))
+	})
+}
+
+// TelContains applies the Contains predicate on the "tel" field.
+func TelContains(v string) predicate.Bonedisease {
+	return predicate.Bonedisease(func(s *sql.Selector) {
+		s.Where(sql.Contains(s.C(FieldTel), v))
+	})
+}
+
+// TelHasPrefix applies the HasPrefix predicate on the "tel" field.
+func TelHasPrefix(v string) predicate.Bonedisease {
+	return predicate.Bonedisease(func(s *sql.Selector) {
+		s.Where(sql.HasPrefix(s.C(FieldTel), v))
+	})
+}
+
+// TelHasSuffix applies the HasSuffix predicate on the "tel" field.
+func TelHasSuffix(v string) predicate.Bonedisease {
+	return predicate.Bonedisease(func(s *sql.Selector) {
+		s.Where(sql.HasSuffix(s.C(FieldTel), v))
+	})
+}
+
+// TelEqualFold applies the EqualFold predicate on the "tel" field.
+func TelEqualFold(v string) predicate.Bonedisease {
+	return predicate.Bonedisease(func(s *sql.Selector) {
+		s.Where(sql.EqualFold(s.C(FieldTel), v))
+	})
+}
+
+// TelContainsFold applies the ContainsFold predicate on the "tel" field.
+func TelContainsFold(v string) predicate.Bonedisease {
+	return predicate.Bonedisease(func(s *sql.Selector) {
+		s.Where(sql.ContainsFold(s.C(FieldTel), v))
+	})
+}
+
+// IdentificationCardEQ applies the EQ predicate on the "identificationCard" field.
+func IdentificationCardEQ(v string) predicate.Bonedisease {
+	return predicate.Bonedisease(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldIdentificationCard), v))
+	})
+}
+
+// IdentificationCardNEQ applies the NEQ predicate on the "identificationCard" field.
+func IdentificationCardNEQ(v string) predicate.Bonedisease {
+	return predicate.Bonedisease(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldIdentificationCard), v))
+	})
+}
+
+// IdentificationCardIn applies the In predicate on the "identificationCard" field.
+func IdentificationCardIn(vs ...string) predicate.Bonedisease {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Bonedisease(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.In(s.C(FieldIdentificationCard), v...))
+	})
+}
+
+// IdentificationCardNotIn applies the NotIn predicate on the "identificationCard" field.
+func IdentificationCardNotIn(vs ...string) predicate.Bonedisease {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Bonedisease(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.NotIn(s.C(FieldIdentificationCard), v...))
+	})
+}
+
+// IdentificationCardGT applies the GT predicate on the "identificationCard" field.
+func IdentificationCardGT(v string) predicate.Bonedisease {
+	return predicate.Bonedisease(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldIdentificationCard), v))
+	})
+}
+
+// IdentificationCardGTE applies the GTE predicate on the "identificationCard" field.
+func IdentificationCardGTE(v string) predicate.Bonedisease {
+	return predicate.Bonedisease(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldIdentificationCard), v))
+	})
+}
+
+// IdentificationCardLT applies the LT predicate on the "identificationCard" field.
+func IdentificationCardLT(v string) predicate.Bonedisease {
+	return predicate.Bonedisease(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldIdentificationCard), v))
+	})
+}
+
+// IdentificationCardLTE applies the LTE predicate on the "identificationCard" field.
+func IdentificationCardLTE(v string) predicate.Bonedisease {
+	return predicate.Bonedisease(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldIdentificationCard), v))
+	})
+}
+
+// IdentificationCardContains applies the Contains predicate on the "identificationCard" field.
+func IdentificationCardContains(v string) predicate.Bonedisease {
+	return predicate.Bonedisease(func(s *sql.Selector) {
+		s.Where(sql.Contains(s.C(FieldIdentificationCard), v))
+	})
+}
+
+// IdentificationCardHasPrefix applies the HasPrefix predicate on the "identificationCard" field.
+func IdentificationCardHasPrefix(v string) predicate.Bonedisease {
+	return predicate.Bonedisease(func(s *sql.Selector) {
+		s.Where(sql.HasPrefix(s.C(FieldIdentificationCard), v))
+	})
+}
+
+// IdentificationCardHasSuffix applies the HasSuffix predicate on the "identificationCard" field.
+func IdentificationCardHasSuffix(v string) predicate.Bonedisease {
+	return predicate.Bonedisease(func(s *sql.Selector) {
+		s.Where(sql.HasSuffix(s.C(FieldIdentificationCard), v))
+	})
+}
+
+// IdentificationCardEqualFold applies the EqualFold predicate on the "identificationCard" field.
+func IdentificationCardEqualFold(v string) predicate.Bonedisease {
+	return predicate.Bonedisease(func(s *sql.Selector) {
+		s.Where(sql.EqualFold(s.C(FieldIdentificationCard), v))
+	})
+}
+
+// IdentificationCardContainsFold applies the ContainsFold predicate on the "identificationCard" field.
+func IdentificationCardContainsFold(v string) predicate.Bonedisease {
+	return predicate.Bonedisease(func(s *sql.Selector) {
+		s.Where(sql.ContainsFold(s.C(FieldIdentificationCard), v))
 	})
 }
 

@@ -2,7 +2,8 @@ package schema
 
 import (
 	"time"
-
+	"regexp"
+	"errors"
 	"github.com/facebook/ent"
 	"github.com/facebook/ent/schema/edge"
 	"github.com/facebook/ent/schema/field"
@@ -17,7 +18,30 @@ type Bonedisease struct {
 func (Bonedisease) Fields() []ent.Field {
 	return []ent.Field{
 		field.Time("addedTime").Default(time.Now),
-		field.String("advice").NotEmpty(),
+		field.String("advice").
+			Validate(func(s string) error {
+				match, _ := regexp.MatchString("[ก-๘]", s)
+				if !match {
+					return errors.New("รูปแบบไม่ถูกต้อง")
+				}
+				return nil
+			}),
+		field.String("tel").NotEmpty().MinLen(10).MaxLen(10).
+			Validate(func (s string) error {
+				match, _ := regexp.MatchString("^[0]{1}[8926]{1}[0-9]{8}$", s)
+				if !match {
+					return errors.New("รูปแบบเบอร์ไม่ถูกต้อง")
+				}
+				return nil
+			}),
+		field.String("identificationCard").NotEmpty().MinLen(13).MaxLen(13).
+			Validate(func (s string) error {
+				match, _ := regexp.MatchString("^[0-9]{13}$", s)
+				if !match {
+					return errors.New("รูปแบบเลขบัตรประชาชนไม่ถูกต้องไม่ถูกต้อง")
+				}
+				return nil
+			}),
 	}
 }
 

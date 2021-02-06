@@ -59,6 +59,8 @@ var (
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "added_time", Type: field.TypeTime},
 		{Name: "advice", Type: field.TypeString},
+		{Name: "tel", Type: field.TypeString, Size: 10},
+		{Name: "identification_card", Type: field.TypeString, Size: 13},
 		{Name: "Patient_id", Type: field.TypeInt, Nullable: true},
 		{Name: "Personnel_id", Type: field.TypeInt, Nullable: true},
 		{Name: "remedy_id", Type: field.TypeInt, Nullable: true},
@@ -71,21 +73,21 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:  "bonediseases_patients_Bonedisease",
-				Columns: []*schema.Column{BonediseasesColumns[3]},
+				Columns: []*schema.Column{BonediseasesColumns[5]},
 
 				RefColumns: []*schema.Column{PatientsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:  "bonediseases_personnels_Bonedisease",
-				Columns: []*schema.Column{BonediseasesColumns[4]},
+				Columns: []*schema.Column{BonediseasesColumns[6]},
 
 				RefColumns: []*schema.Column{PersonnelsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:  "bonediseases_remedies_Bonedisease",
-				Columns: []*schema.Column{BonediseasesColumns[5]},
+				Columns: []*schema.Column{BonediseasesColumns[7]},
 
 				RefColumns: []*schema.Column{RemediesColumns[0]},
 				OnDelete:   schema.SetNull,
