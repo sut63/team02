@@ -228,3 +228,5 @@ func (ctl *PersonnelController) register() {
 	Personnel.PUT(":id", ctl.UpdatePersonnel)
 	Personnel.DELETE(":id", ctl.DeletePersonnel)
 }
+
+//merge
