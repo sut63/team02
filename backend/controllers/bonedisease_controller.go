@@ -235,3 +235,4 @@ func (ctl *BonediseaseController) register() {
 	Bonediseases.POST("", ctl.CreateBonedisease)
 	Bonediseases.DELETE(":id", ctl.DeleteBonedisease)
 }
+//merge
