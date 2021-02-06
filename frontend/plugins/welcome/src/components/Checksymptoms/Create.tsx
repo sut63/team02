@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
+import SaveIcon from '@material-ui/icons/Save'; // icon save
 import {
   Content,
   Header,
@@ -8,11 +9,17 @@ import {
   pageTheme,
   ContentHeader, 
 } from '@backstage/core';
+
+import {
+  Grid,
+  InputLabel,
+  Container,
+} from '@material-ui/core';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 //import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
-import { Alert } from '@material-ui/lab';
+
 import { DefaultApi } from '../../api/apis';
 
 import MenuItem from '@material-ui/core/MenuItem';
@@ -64,8 +71,7 @@ export default function CreateChecksymptom() {
   const api = new DefaultApi();
 
   //const [deceased, setDeceased] = useState(String);
-  const [status, setStatus] = useState(false);
-  const [alert, setAlert] = useState(true);
+
   const [patients, setPatients] = useState<EntPatient[]>([]);
   const [diseases, setDiseases] = useState<EntDisease[]>([]);
   const [personnels, setPersonnels] = useState<EntPersonnel[]>([]);
@@ -218,42 +224,47 @@ export default function CreateChecksymptom() {
 
 
   return (
-    <Page theme={pageTheme.home}>
-      <Header
-      title={`${profile.givenName || 'Checksymptom '}`}
-      subtitle=""
-     ></Header>
+    <Page theme={pageTheme.website}>
+      <Header title={`ยินดีต้อนรับสู่ระบบบันทึกการนัดตรวจอาการ`}>
+      <Link component={RouterLink} to="/WelcomePage">
+ <Button variant="contained" color="secondary" >
+   หน้า Welcome
+ </Button>
+ </Link>
+      </Header>
       <Content>
-        <ContentHeader title="บันทึกนัดตรวจอาการ">
-          <div>
-            <Link component={RouterLink} to="/WelcomePage">
-            <Button variant="contained" color="primary" style={{backgroundColor: "#21b6ae"}}>
-              Back
-            </Button>
-          </Link>
-          </div>
-          
-        </ContentHeader>
-        <div className={classes.root}>
-          <form noValidate autoComplete="off">
-          
-            
-          <div>
-              <FormControl
-                className={classes.margin}
-                variant="outlined"
-              >
-                <Typography variant="h6" gutterBottom  align="center">
-                Personnel Name : 
-                <Typography variant="body1" gutterBottom> 
+      <ContentHeader title="-ระบบบันทึกการนัดตรวจอาการ-">
+         <Link component={RouterLink} to="/Checksymptomsearch">
+ <Button variant="contained" color="primary" style={{backgroundColor: "#21b6ae"}}>
+   ค้นหา
+ </Button>
+ </Link>
+ 
+ <Link component={RouterLink} to="/Checksymptommain">
+ <Button variant="contained" color="primary" style={{backgroundColor: "#21b6ae"}}>
+   ตาราง
+ </Button>
+ </Link>
+        
+  
+
+      </ContentHeader>
+      <Container maxWidth="sm">
+          <Grid container spacing={3}>
+            <Grid item xs={12}></Grid>
+            <Grid item xs={4}>
+              <div className={classes.paper}>Personnel</div>
+            </Grid>
+            <Grid item xs={8}>
+              <FormControl variant="outlined" className={classes.formControl}>
+                <InputLabel>เลือกผู้ใช้งาน</InputLabel>
                 <Select
-                  labelId="personnel"
-                  id="personnel"
+                  name="personnel"
                   value={personnelName}
                   onChange={PersonnelhandleChange}
-                  style={{ width: 400 }}
+                  style={{ width: 300 }}
                 >
-               {personnels.map(item => {
+                  {personnels.map(item => {
                     return (
                       <MenuItem key={item.id} value={item.id}>
                         {item.name}
@@ -261,191 +272,181 @@ export default function CreateChecksymptom() {
                     );
                   })}
                 </Select>
-                </Typography>
-                </Typography>
               </FormControl>
-            </div>
+            </Grid>
+
+
+    <Grid item xs={4}>
+            <div className={classes.paper}>Patient</div>
+  </Grid>
+  <Grid item xs={8}>
+    <FormControl variant="outlined" >
+      <InputLabel>เลือกผู้ป่วย</InputLabel>
+      <Select
+        name="patient"
+        value={patientName || ''}
+        onChange={PatienthandleChange}
+        style={{ width: 300 }}
+      >
+        {patients.map(item => {
+          return (
+            <MenuItem key={item.id} value={item.id}>
+              {item.name}
+            </MenuItem>
+          );
+        })}
+      </Select>
+    </FormControl>
+  </Grid>
+
+
+
+  <Grid item xs={4}>
+    <div >Disease</div>
+  </Grid>
+  <Grid item xs={8}>
+    <FormControl variant="outlined" >
+      <InputLabel>เลือกโรค</InputLabel>
+      <Select
+        name="disease"
+        value={diseaseName || ''}
+        onChange={DiseasehandleChange}
+        style={{ width: 300 }}
+      >
+        {diseases.map(item => {
+          return (
+            <MenuItem key={item.id} value={item.id}>
+              {item.disease}
+            </MenuItem>
+          );
+        })}
+      </Select>
+    </FormControl>
+  </Grid>
+
+
+
+  <Grid item xs={4}>
+    <div >Doctorordersheet</div>
+  </Grid>
+  <Grid item xs={8}>
+    <FormControl variant="outlined" >
+      
+      <InputLabel>เลือกแพทย์ที่ทำการรักษา</InputLabel>
+      <Select
+        name="Doctorordersheet"
+        value={doctorordersheetName || ''}
+        onChange={DoctorordersheethandleChange}
+        style={{ width: 300 }}
+      >
+        {doctorordersheets.map(item => {
+          return (
+            <MenuItem key={item.id} value={item.id}>
+              {item.name}
+            </MenuItem>
+          );
+        })}
+      </Select>
+    </FormControl>
+  </Grid>
+
+           
 
 
             
-            <div>
-              <FormControl
-                className={classes.margin}
-                variant="outlined"
-              >
-                <Typography variant="h6" gutterBottom  align="center">
-                Patient Name : 
-                <Typography variant="body1" gutterBottom> 
-                <Select
-                  labelId="patient"
-                  id="patient"
-                  value={patientName}
-                  onChange={PatienthandleChange}
-                  style={{ width: 400 }}
-                >
-               {patients.map(item => {
-                    return (
-                      <MenuItem key={item.id} value={item.id}>
-                        {item.name}
-                      </MenuItem>
-                    );
-                  })}
-                </Select>
-                </Typography>
-                </Typography>
-              </FormControl>
-            </div>
-<div>
-            <FormControl
-              className={classes.margin}
-              variant="outlined"
-            >
-              <Typography variant="h6" gutterBottom  align="center">
-                Disease Name : 
-                <Typography variant="body1" gutterBottom> 
-              <Select
-                labelId="disease"
-                id="disease"
-                value={diseaseName}
-                onChange={DiseasehandleChange}
-                style={{ width: 400 }}
-              > 
-                {diseases.map(item => {
-                    return (
-                      <MenuItem key={item.id} value={item.id}>
-                        {item.disease}
-                      </MenuItem>
-                    );
-                  })}
-              </Select>
-                </Typography>
-                </Typography>
-            </FormControl>
-            </div>
-
-            <div>
-            <FormControl
-              className={classes.margin}
-              variant="outlined"
-            >
-              <Typography variant="h6" gutterBottom  align="center">
-                Doctorordersheet Name : 
-                <Typography variant="body1" gutterBottom> 
-              <Select
-                labelId="doctorordersheet"
-                id="doctorordersheet"
-                value={doctorordersheetName}
-                onChange={DoctorordersheethandleChange}
-                style={{ width: 400 }}
-              > 
-                {doctorordersheets.map(item => {
-                    return (
-                      <MenuItem key={item.id} value={item.id}>
-                        {item.name}
-                      </MenuItem>
-                    );
-                  })}
-              </Select>
-                </Typography>
-                </Typography>
-            </FormControl>
-</div>
-
-
-            
-            <tr>
-            <td>
-            <FormControl
-                  fullWidth
-                  className={classes.margin}
-                  variant="outlined"
-                >
-                  <form className={classes.root} noValidate>
-                      <TextField
-                        id="datetime-local"                                                            
-                        label="Date"
-                        type="datetime-local"
-                        //defaultValue="2017-05-24T10:30"
-                        className={classes.textField}
-                        onChange={DateTimehandleChange}
-                        InputLabelProps={{
-                          shrink: true,
-                        }}
-                      />
-                </form>
-               </FormControl>
-            </td>
-          </tr>
+  <Grid item xs={4}>
+    <div >วันและเวลา</div>
+  </Grid>
+  <Grid item xs={8}>
+  <form  noValidate>
+      <TextField
+        label="เลือกเวลา"
+        name="added"
+        type="datetime-local"
+        value={datetime|| ''} // (undefined || '') = ''
+        className={classes.textField}
+        InputLabelProps={{
+          shrink: true,
+        }}
+        onChange={DateTimehandleChange}
+      />
+    </form>
+  </Grid>
 
 
 
+  <Grid item xs={4}>
+    <div >เลขบัตรประชาชน</div>
+  </Grid>
+  <Grid item xs={8}>
+    <TextField
+      id="identitycard"
+      label="Identitycard"
+      variant="outlined"
+      type="string"
+      size="medium"
+      value={identitycard}
+      onChange={IdentitycardhandleChange}
+      style = {{width: 300}}
+    />
+    </Grid>
 
-          <div>
-              <FormControl
-                className={classes.margin}
-                variant="outlined"
-              >
-                <div>เลขบัตรประชาชน</div>
-                <TextField id="identitycard"  InputLabelProps={{
-                  shrink: true,
-                }} label="identitycard" variant="outlined"
-                  onChange={IdentitycardhandleChange}
-                  value={identitycard || ''}
-                />
-              </FormControl>
-            </div>
+    <Grid item xs={4}>
+    <div >เบอร์โทรศัพท์</div>
+  </Grid>
+  <Grid item xs={8}>
+    <TextField
+      id="phone"
+      label="Phone"
+      variant="outlined"
+      type="string"
+      size="medium"
+      value={phone}
+      onChange={PhonehandleChange}
+      style = {{width: 300}}
+    />
+  </Grid>
 
+
+  <Grid item xs={4}>
+    <div >หมายเหตุ</div>
+  </Grid>
+  <Grid item xs={8}>
+    <TextField
+      id="note"
+      label="Note"
+      variant="outlined"
+      type="string"
+      size="medium"
+      value={note}
+      onChange={NotehandleChange}
+      style = {{width: 300}}
+    />
+  </Grid>
 
             
 
-            <div>
-              <FormControl
-                className={classes.margin}
-                variant="outlined"
-              >
-                <div>เบอร์โทรศัพท์</div>
-                <TextField id="phone"  InputLabelProps={{
-                  shrink: true,
-                }} label="phone" variant="outlined"
-                  onChange={PhonehandleChange}
-                  value={phone || ''}
-                />
-              </FormControl>
-            </div>
-
-
-            <div>
-              <FormControl
-                className={classes.margin}
-                variant="outlined"
-              >
-                <div>หมายเหตุ * (ไม่เกิน 40 ตัวอักษร ถ้าไม่มีกรอก -)</div>
-                <TextField id="note" type='string' InputLabelProps={{
-                  shrink: true,
-                }} label="note" variant="outlined"
-                  onChange={NotehandleChange}
-                  value={note || ''}
-                />
-              </FormControl>
-            </div>
-
-                        
-            <div className={classes.margin}>
-            <Typography variant="h6" gutterBottom  align="center">
+ 
+  <Grid item xs={4}></Grid>
+            <Grid item xs={8}>
               <Button
+                variant="contained"
+                color="primary"
+                size="large"
+                startIcon={<SaveIcon />}
                 onClick={() => {
                   save();
                 }}
-                variant="contained"
-                color="primary"
               >
-                Create
-             </Button>
-              </Typography>
-            </div>
-          </form>
-        </div>
+                บันทึก
+              </Button>
+            </Grid>
+
+
+        
+         </Grid>
+        </Container>
       </Content>
     </Page>
   );
-}
+};

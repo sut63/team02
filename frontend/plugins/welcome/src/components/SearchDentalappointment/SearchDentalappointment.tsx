@@ -114,6 +114,7 @@ export default function SearchTableDentalappointment() {
   }
 
   const DentalappointmentSearch = (res: any) => {
+    
     const data = res.filter((filter: EntDentalappointment) => filter?.edges?.patient?.name?.includes(patientName))
     if (data.length != 0 && patientName != "") {
         return data;

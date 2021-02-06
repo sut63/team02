@@ -181,6 +181,8 @@ export default function Create() {
             <Grid item xs={4}>
               <div className={classes.paper}>Personnel</div>
             </Grid>
+
+
             <Grid item xs={8}>
               <FormControl variant="outlined" className={classes.formControl}>
                 <InputLabel>เลือกผู้ใช้งาน</InputLabel>
@@ -199,6 +201,9 @@ export default function Create() {
                 </Select>
               </FormControl>
             </Grid>
+
+
+
 
             <Grid item xs={4}>
               <div className={classes.paper}>Patient</div>
@@ -221,6 +226,9 @@ export default function Create() {
                 </Select>
               </FormControl>
             </Grid>
+
+
+
 
             <Grid item xs={4}>
               <div className={classes.paper}>Remedy</div>
@@ -245,6 +253,8 @@ export default function Create() {
             </Grid>
 
 
+
+
             <Grid item xs={4}>
               <div className={classes.paper}>แนะนำ</div>
             </Grid>
@@ -262,6 +272,8 @@ export default function Create() {
             </Grid>
 
            
+
+
             
             <Grid item xs={4}>
               <div className={classes.paper}>เวลา</div>
@@ -281,6 +293,8 @@ export default function Create() {
                 />
               </form>
             </Grid>
+
+            
 
             <Grid item xs={4}></Grid>
             <Grid item xs={8}>

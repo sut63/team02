@@ -9,8 +9,10 @@ import Checksymptom from './components/Checksymptoms';
 import Antenatal from './components/Antenatal';
 import SearchDentalappointment from './components/SearchDentalappointment';
 import SearchSurgeryappointment from './components/SearchSurgeryappointment';
-
-
+import Searchtable from './components/SearchChecksymptom';
+import checksymptommain from './components/Checksymptommain';
+import ComponentsTable from './components/TableCheck';
+ 
 
 export const plugin = createPlugin({
   id: 'welcome',
@@ -22,6 +24,9 @@ export const plugin = createPlugin({
     router.registerRoute('/Surgeryappointment', Surgeryappointment);
     router.registerRoute('/Createphysicaltherapyrecord', Physicaltherapyrecord);
     router.registerRoute('/Checksymptom', Checksymptom);
+    router.registerRoute('/Checksymptomsearch',Searchtable);
+    router.registerRoute('/Tables',ComponentsTable);
+    router.registerRoute('/Checksymptommain',checksymptommain);
     router.registerRoute('/Antenatal', Antenatal);
     router.registerRoute('/Searchdentalappointment', SearchDentalappointment);
     router.registerRoute('/SearchSurgeryappointment', SearchSurgeryappointment);

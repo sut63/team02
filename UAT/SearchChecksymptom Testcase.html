@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta content="text/html; charset=UTF-8" http-equiv="content-type" />
+	<title>SearchChecksymptom Testcase</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">OK</td></tr>
+</thead>
+<tbody>
+<tr><td>open</td><td>http://localhost:3000/Checksymptomsearch<datalist><option>http://localhost:3000/</option><option>http://localhost:3000/Checksymptomsearch</option></datalist></td><td></td>
+</tr>
+<tr><td>click</td><td>//div[@id='root']/div/article<datalist><option>//div[@id='root']/div/article</option><option>//article</option><option>css=article.makeStyles-root-15</option></datalist></td><td></td>
+</tr>
+<tr><td>click</td><td>id=customer<datalist><option>id=customer</option><option>//input[@id='customer']</option><option>//div[@id='root']/div/article/div[3]/div/input</option><option>//input</option><option>css=#customer</option></datalist></td><td></td>
+</tr>
+<tr><td>type</td><td>id=customer<datalist><option>id=customer</option><option>//input[@id='customer']</option><option>//div[@id='root']/div/article/div[3]/div/input</option><option>//input</option><option>css=#customer</option></datalist></td><td>นายแดง</td>
+</tr>
+<tr><td>click</td><td>//div[@id='root']/div/article/div[4]/button/span<datalist><option>//div[@id='root']/div/article/div[4]/button/span</option><option>//div[4]/button/span</option><option>css=div.makeStyles-margin-2 &gt; button.MuiButtonBase-root.MuiButton-root.MuiButton-contained.MuiButton-containedPrimary &gt; span.MuiButton-label</option></datalist></td><td></td>
+</tr>
+<tr><td>assertText</td><td>//div[@id='root']/div/article/div/div[2]/div/div/div[2]<datalist><option>//div[@id='root']/div/article/div/div[2]/div/div/div[2]</option><option>//div/div/div[2]</option><option>css=div.MuiAlert-message</option></datalist></td><td>พบข้อมูลที่ค้นหา</td>
+</tr>
+</tbody></table>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">Failure</td></tr>
+</thead>
+<tbody>
+<tr><td>open</td><td>http://localhost:3000/Checksymptomsearch<datalist><option>http://localhost:3000/</option><option>http://localhost:3000/Checksymptomsearch</option></datalist></td><td></td>
+</tr>
+<tr><td>click</td><td>id=customer<datalist><option>id=customer</option><option>//input[@id='customer']</option><option>//div[@id='root']/div/article/div[3]/div/input</option><option>//input</option><option>css=#customer</option></datalist></td><td></td>
+</tr>
+<tr><td>type</td><td>id=customer<datalist><option>id=customer</option><option>//input[@id='customer']</option><option>//div[@id='root']/div/article/div[3]/div/input</option><option>//input</option><option>css=#customer</option></datalist></td><td>นายหิว</td>
+</tr>
+<tr><td>click</td><td>//div[@id='root']/div/article/div[4]/button/span<datalist><option>//div[@id='root']/div/article/div[4]/button/span</option><option>//div[4]/button/span</option><option>css=div.makeStyles-margin-2 &gt; button.MuiButtonBase-root.MuiButton-root.MuiButton-contained.MuiButton-containedPrimary &gt; span.MuiButton-label</option></datalist></td><td></td>
+</tr>
+<tr><td>assertText</td><td>//div[@id='root']/div/article/div/div[2]/div/div/div[2]<datalist><option>//div[@id='root']/div/article/div/div[2]/div/div/div[2]</option><option>//div/div/div[2]</option><option>css=div.MuiAlert-message</option></datalist></td><td>ไม่พบข้อมูลที่ค้นหา</td>
+</tr>
+</tbody></table>
+</body>
+</html>
