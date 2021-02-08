@@ -28,6 +28,8 @@ type Antenatalinformation struct {
 	Pregnancystatus int
 	Risks           int
 	Gestationalage  int
+	Advice				string
+	Examinationresult	string
 	Time            string
 }
 
@@ -108,17 +110,24 @@ func (ctl *AntenatalinformationController) CreateAntenatalinformation(c *gin.Con
 		SetPregnancystatus(pre).
 		SetRisks(r).
 		SetGestationalage(obj.Gestationalage).
+		SetAdvice(obj.Advice).
+		SetExaminationresult(obj.Examinationresult).
 		SetTime(times).
 		Save(context.Background())
 
 	if err != nil {
+		fmt.Println(err)
 		c.JSON(400, gin.H{
-			"error": "saving failed",
+			"status": false,
+			"error": err,
 		})
 		return
 	}
 
-	c.JSON(200, ai)
+	c.JSON(200, gin.H{
+		"status": true,
+		"data": ai,
+	})
 }
 
 // GetAntenatalinformation handles GET requests to retrieve a antenatalinformation entity

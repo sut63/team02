@@ -44,6 +44,18 @@ func (au *AntenatalinformationUpdate) AddGestationalage(i int) *Antenatalinforma
 	return au
 }
 
+// SetExaminationresult sets the "examinationresult" field.
+func (au *AntenatalinformationUpdate) SetExaminationresult(s string) *AntenatalinformationUpdate {
+	au.mutation.SetExaminationresult(s)
+	return au
+}
+
+// SetAdvice sets the "advice" field.
+func (au *AntenatalinformationUpdate) SetAdvice(s string) *AntenatalinformationUpdate {
+	au.mutation.SetAdvice(s)
+	return au
+}
+
 // SetTime sets the "time" field.
 func (au *AntenatalinformationUpdate) SetTime(t time.Time) *AntenatalinformationUpdate {
 	au.mutation.SetTime(t)
@@ -219,6 +231,16 @@ func (au *AntenatalinformationUpdate) check() error {
 			return &ValidationError{Name: "gestationalage", err: fmt.Errorf("ent: validator failed for field \"gestationalage\": %w", err)}
 		}
 	}
+	if v, ok := au.mutation.Examinationresult(); ok {
+		if err := antenatalinformation.ExaminationresultValidator(v); err != nil {
+			return &ValidationError{Name: "examinationresult", err: fmt.Errorf("ent: validator failed for field \"examinationresult\": %w", err)}
+		}
+	}
+	if v, ok := au.mutation.Advice(); ok {
+		if err := antenatalinformation.AdviceValidator(v); err != nil {
+			return &ValidationError{Name: "advice", err: fmt.Errorf("ent: validator failed for field \"advice\": %w", err)}
+		}
+	}
 	return nil
 }
 
@@ -252,6 +274,20 @@ func (au *AntenatalinformationUpdate) sqlSave(ctx context.Context) (n int, err e
 			Type:   field.TypeInt,
 			Value:  value,
 			Column: antenatalinformation.FieldGestationalage,
+		})
+	}
+	if value, ok := au.mutation.Examinationresult(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: antenatalinformation.FieldExaminationresult,
+		})
+	}
+	if value, ok := au.mutation.Advice(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: antenatalinformation.FieldAdvice,
 		})
 	}
 	if value, ok := au.mutation.Time(); ok {
@@ -432,6 +468,18 @@ func (auo *AntenatalinformationUpdateOne) AddGestationalage(i int) *Antenatalinf
 	return auo
 }
 
+// SetExaminationresult sets the "examinationresult" field.
+func (auo *AntenatalinformationUpdateOne) SetExaminationresult(s string) *AntenatalinformationUpdateOne {
+	auo.mutation.SetExaminationresult(s)
+	return auo
+}
+
+// SetAdvice sets the "advice" field.
+func (auo *AntenatalinformationUpdateOne) SetAdvice(s string) *AntenatalinformationUpdateOne {
+	auo.mutation.SetAdvice(s)
+	return auo
+}
+
 // SetTime sets the "time" field.
 func (auo *AntenatalinformationUpdateOne) SetTime(t time.Time) *AntenatalinformationUpdateOne {
 	auo.mutation.SetTime(t)
@@ -607,6 +655,16 @@ func (auo *AntenatalinformationUpdateOne) check() error {
 			return &ValidationError{Name: "gestationalage", err: fmt.Errorf("ent: validator failed for field \"gestationalage\": %w", err)}
 		}
 	}
+	if v, ok := auo.mutation.Examinationresult(); ok {
+		if err := antenatalinformation.ExaminationresultValidator(v); err != nil {
+			return &ValidationError{Name: "examinationresult", err: fmt.Errorf("ent: validator failed for field \"examinationresult\": %w", err)}
+		}
+	}
+	if v, ok := auo.mutation.Advice(); ok {
+		if err := antenatalinformation.AdviceValidator(v); err != nil {
+			return &ValidationError{Name: "advice", err: fmt.Errorf("ent: validator failed for field \"advice\": %w", err)}
+		}
+	}
 	return nil
 }
 
@@ -638,6 +696,20 @@ func (auo *AntenatalinformationUpdateOne) sqlSave(ctx context.Context) (_node *A
 			Type:   field.TypeInt,
 			Value:  value,
 			Column: antenatalinformation.FieldGestationalage,
+		})
+	}
+	if value, ok := auo.mutation.Examinationresult(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: antenatalinformation.FieldExaminationresult,
+		})
+	}
+	if value, ok := auo.mutation.Advice(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: antenatalinformation.FieldAdvice,
 		})
 	}
 	if value, ok := auo.mutation.Time(); ok {

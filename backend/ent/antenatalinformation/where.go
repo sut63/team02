@@ -100,6 +100,20 @@ func Gestationalage(v int) predicate.Antenatalinformation {
 	})
 }
 
+// Examinationresult applies equality check predicate on the "examinationresult" field. It's identical to ExaminationresultEQ.
+func Examinationresult(v string) predicate.Antenatalinformation {
+	return predicate.Antenatalinformation(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldExaminationresult), v))
+	})
+}
+
+// Advice applies equality check predicate on the "advice" field. It's identical to AdviceEQ.
+func Advice(v string) predicate.Antenatalinformation {
+	return predicate.Antenatalinformation(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldAdvice), v))
+	})
+}
+
 // Time applies equality check predicate on the "time" field. It's identical to TimeEQ.
 func Time(v time.Time) predicate.Antenatalinformation {
 	return predicate.Antenatalinformation(func(s *sql.Selector) {
@@ -180,6 +194,228 @@ func GestationalageLT(v int) predicate.Antenatalinformation {
 func GestationalageLTE(v int) predicate.Antenatalinformation {
 	return predicate.Antenatalinformation(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldGestationalage), v))
+	})
+}
+
+// ExaminationresultEQ applies the EQ predicate on the "examinationresult" field.
+func ExaminationresultEQ(v string) predicate.Antenatalinformation {
+	return predicate.Antenatalinformation(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldExaminationresult), v))
+	})
+}
+
+// ExaminationresultNEQ applies the NEQ predicate on the "examinationresult" field.
+func ExaminationresultNEQ(v string) predicate.Antenatalinformation {
+	return predicate.Antenatalinformation(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldExaminationresult), v))
+	})
+}
+
+// ExaminationresultIn applies the In predicate on the "examinationresult" field.
+func ExaminationresultIn(vs ...string) predicate.Antenatalinformation {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Antenatalinformation(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.In(s.C(FieldExaminationresult), v...))
+	})
+}
+
+// ExaminationresultNotIn applies the NotIn predicate on the "examinationresult" field.
+func ExaminationresultNotIn(vs ...string) predicate.Antenatalinformation {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Antenatalinformation(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.NotIn(s.C(FieldExaminationresult), v...))
+	})
+}
+
+// ExaminationresultGT applies the GT predicate on the "examinationresult" field.
+func ExaminationresultGT(v string) predicate.Antenatalinformation {
+	return predicate.Antenatalinformation(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldExaminationresult), v))
+	})
+}
+
+// ExaminationresultGTE applies the GTE predicate on the "examinationresult" field.
+func ExaminationresultGTE(v string) predicate.Antenatalinformation {
+	return predicate.Antenatalinformation(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldExaminationresult), v))
+	})
+}
+
+// ExaminationresultLT applies the LT predicate on the "examinationresult" field.
+func ExaminationresultLT(v string) predicate.Antenatalinformation {
+	return predicate.Antenatalinformation(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldExaminationresult), v))
+	})
+}
+
+// ExaminationresultLTE applies the LTE predicate on the "examinationresult" field.
+func ExaminationresultLTE(v string) predicate.Antenatalinformation {
+	return predicate.Antenatalinformation(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldExaminationresult), v))
+	})
+}
+
+// ExaminationresultContains applies the Contains predicate on the "examinationresult" field.
+func ExaminationresultContains(v string) predicate.Antenatalinformation {
+	return predicate.Antenatalinformation(func(s *sql.Selector) {
+		s.Where(sql.Contains(s.C(FieldExaminationresult), v))
+	})
+}
+
+// ExaminationresultHasPrefix applies the HasPrefix predicate on the "examinationresult" field.
+func ExaminationresultHasPrefix(v string) predicate.Antenatalinformation {
+	return predicate.Antenatalinformation(func(s *sql.Selector) {
+		s.Where(sql.HasPrefix(s.C(FieldExaminationresult), v))
+	})
+}
+
+// ExaminationresultHasSuffix applies the HasSuffix predicate on the "examinationresult" field.
+func ExaminationresultHasSuffix(v string) predicate.Antenatalinformation {
+	return predicate.Antenatalinformation(func(s *sql.Selector) {
+		s.Where(sql.HasSuffix(s.C(FieldExaminationresult), v))
+	})
+}
+
+// ExaminationresultEqualFold applies the EqualFold predicate on the "examinationresult" field.
+func ExaminationresultEqualFold(v string) predicate.Antenatalinformation {
+	return predicate.Antenatalinformation(func(s *sql.Selector) {
+		s.Where(sql.EqualFold(s.C(FieldExaminationresult), v))
+	})
+}
+
+// ExaminationresultContainsFold applies the ContainsFold predicate on the "examinationresult" field.
+func ExaminationresultContainsFold(v string) predicate.Antenatalinformation {
+	return predicate.Antenatalinformation(func(s *sql.Selector) {
+		s.Where(sql.ContainsFold(s.C(FieldExaminationresult), v))
+	})
+}
+
+// AdviceEQ applies the EQ predicate on the "advice" field.
+func AdviceEQ(v string) predicate.Antenatalinformation {
+	return predicate.Antenatalinformation(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldAdvice), v))
+	})
+}
+
+// AdviceNEQ applies the NEQ predicate on the "advice" field.
+func AdviceNEQ(v string) predicate.Antenatalinformation {
+	return predicate.Antenatalinformation(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldAdvice), v))
+	})
+}
+
+// AdviceIn applies the In predicate on the "advice" field.
+func AdviceIn(vs ...string) predicate.Antenatalinformation {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Antenatalinformation(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.In(s.C(FieldAdvice), v...))
+	})
+}
+
+// AdviceNotIn applies the NotIn predicate on the "advice" field.
+func AdviceNotIn(vs ...string) predicate.Antenatalinformation {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Antenatalinformation(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.NotIn(s.C(FieldAdvice), v...))
+	})
+}
+
+// AdviceGT applies the GT predicate on the "advice" field.
+func AdviceGT(v string) predicate.Antenatalinformation {
+	return predicate.Antenatalinformation(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldAdvice), v))
+	})
+}
+
+// AdviceGTE applies the GTE predicate on the "advice" field.
+func AdviceGTE(v string) predicate.Antenatalinformation {
+	return predicate.Antenatalinformation(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldAdvice), v))
+	})
+}
+
+// AdviceLT applies the LT predicate on the "advice" field.
+func AdviceLT(v string) predicate.Antenatalinformation {
+	return predicate.Antenatalinformation(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldAdvice), v))
+	})
+}
+
+// AdviceLTE applies the LTE predicate on the "advice" field.
+func AdviceLTE(v string) predicate.Antenatalinformation {
+	return predicate.Antenatalinformation(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldAdvice), v))
+	})
+}
+
+// AdviceContains applies the Contains predicate on the "advice" field.
+func AdviceContains(v string) predicate.Antenatalinformation {
+	return predicate.Antenatalinformation(func(s *sql.Selector) {
+		s.Where(sql.Contains(s.C(FieldAdvice), v))
+	})
+}
+
+// AdviceHasPrefix applies the HasPrefix predicate on the "advice" field.
+func AdviceHasPrefix(v string) predicate.Antenatalinformation {
+	return predicate.Antenatalinformation(func(s *sql.Selector) {
+		s.Where(sql.HasPrefix(s.C(FieldAdvice), v))
+	})
+}
+
+// AdviceHasSuffix applies the HasSuffix predicate on the "advice" field.
+func AdviceHasSuffix(v string) predicate.Antenatalinformation {
+	return predicate.Antenatalinformation(func(s *sql.Selector) {
+		s.Where(sql.HasSuffix(s.C(FieldAdvice), v))
+	})
+}
+
+// AdviceEqualFold applies the EqualFold predicate on the "advice" field.
+func AdviceEqualFold(v string) predicate.Antenatalinformation {
+	return predicate.Antenatalinformation(func(s *sql.Selector) {
+		s.Where(sql.EqualFold(s.C(FieldAdvice), v))
+	})
+}
+
+// AdviceContainsFold applies the ContainsFold predicate on the "advice" field.
+func AdviceContainsFold(v string) predicate.Antenatalinformation {
+	return predicate.Antenatalinformation(func(s *sql.Selector) {
+		s.Where(sql.ContainsFold(s.C(FieldAdvice), v))
 	})
 }
 

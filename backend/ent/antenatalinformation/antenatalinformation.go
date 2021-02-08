@@ -9,6 +9,10 @@ const (
 	FieldID = "id"
 	// FieldGestationalage holds the string denoting the gestationalage field in the database.
 	FieldGestationalage = "gestationalage"
+	// FieldExaminationresult holds the string denoting the examinationresult field in the database.
+	FieldExaminationresult = "examinationresult"
+	// FieldAdvice holds the string denoting the advice field in the database.
+	FieldAdvice = "advice"
 	// FieldTime holds the string denoting the time field in the database.
 	FieldTime = "time"
 
@@ -57,6 +61,8 @@ const (
 var Columns = []string{
 	FieldID,
 	FieldGestationalage,
+	FieldExaminationresult,
+	FieldAdvice,
 	FieldTime,
 }
 
@@ -86,4 +92,8 @@ func ValidColumn(column string) bool {
 var (
 	// GestationalageValidator is a validator for the "gestationalage" field. It is called by the builders before save.
 	GestationalageValidator func(int) error
+	// ExaminationresultValidator is a validator for the "examinationresult" field. It is called by the builders before save.
+	ExaminationresultValidator func(string) error
+	// AdviceValidator is a validator for the "advice" field. It is called by the builders before save.
+	AdviceValidator func(string) error
 )

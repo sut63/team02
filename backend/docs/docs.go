@@ -3103,6 +3103,12 @@ var doc = `{
         "controllers.Antenatalinformation": {
             "type": "object",
             "properties": {
+                "advice": {
+                    "type": "string"
+                },
+                "examinationresult": {
+                    "type": "string"
+                },
                 "gestationalage": {
                     "type": "integer"
                 },
@@ -3262,10 +3268,18 @@ var doc = `{
         "ent.Antenatalinformation": {
             "type": "object",
             "properties": {
+                "advice": {
+                    "description": "Advice holds the value of the \"advice\" field.",
+                    "type": "string"
+                },
                 "edges": {
                     "description": "Edges holds the relations/edges for other nodes in the graph.\nThe values are being populated by the AntenatalinformationQuery when eager-loading is set.",
                     "type": "object",
                     "$ref": "#/definitions/ent.AntenatalinformationEdges"
+                },
+                "examinationresult": {
+                    "description": "Examinationresult holds the value of the \"examinationresult\" field.",
+                    "type": "string"
                 },
                 "gestationalage": {
                     "description": "Gestationalage holds the value of the \"gestationalage\" field.",
@@ -4012,7 +4026,6 @@ var doc = `{
         "OAuth2Application": {
             "type": "oauth2",
             "flow": "application",
-            "authorizationUrl": "",
             "tokenUrl": "https://example.com/oauth/token",
             "scopes": {
                 "admin": " Grants read and write access to administrative information",
@@ -4031,7 +4044,6 @@ var doc = `{
         "OAuth2Password": {
             "type": "oauth2",
             "flow": "password",
-            "authorizationUrl": "",
             "tokenUrl": "https://example.com/oauth/token",
             "scopes": {
                 "admin": " Grants read and write access to administrative information",

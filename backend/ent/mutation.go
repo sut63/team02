@@ -66,6 +66,8 @@ type AntenatalinformationMutation struct {
 	id                      *int
 	gestationalage          *int
 	addgestationalage       *int
+	examinationresult       *string
+	advice                  *string
 	time                    *time.Time
 	clearedFields           map[string]struct{}
 	_Personnel              *int
@@ -214,6 +216,78 @@ func (m *AntenatalinformationMutation) AddedGestationalage() (r int, exists bool
 func (m *AntenatalinformationMutation) ResetGestationalage() {
 	m.gestationalage = nil
 	m.addgestationalage = nil
+}
+
+// SetExaminationresult sets the "examinationresult" field.
+func (m *AntenatalinformationMutation) SetExaminationresult(s string) {
+	m.examinationresult = &s
+}
+
+// Examinationresult returns the value of the "examinationresult" field in the mutation.
+func (m *AntenatalinformationMutation) Examinationresult() (r string, exists bool) {
+	v := m.examinationresult
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldExaminationresult returns the old "examinationresult" field's value of the Antenatalinformation entity.
+// If the Antenatalinformation object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *AntenatalinformationMutation) OldExaminationresult(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldExaminationresult is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldExaminationresult requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldExaminationresult: %w", err)
+	}
+	return oldValue.Examinationresult, nil
+}
+
+// ResetExaminationresult resets all changes to the "examinationresult" field.
+func (m *AntenatalinformationMutation) ResetExaminationresult() {
+	m.examinationresult = nil
+}
+
+// SetAdvice sets the "advice" field.
+func (m *AntenatalinformationMutation) SetAdvice(s string) {
+	m.advice = &s
+}
+
+// Advice returns the value of the "advice" field in the mutation.
+func (m *AntenatalinformationMutation) Advice() (r string, exists bool) {
+	v := m.advice
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldAdvice returns the old "advice" field's value of the Antenatalinformation entity.
+// If the Antenatalinformation object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *AntenatalinformationMutation) OldAdvice(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldAdvice is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldAdvice requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldAdvice: %w", err)
+	}
+	return oldValue.Advice, nil
+}
+
+// ResetAdvice resets all changes to the "advice" field.
+func (m *AntenatalinformationMutation) ResetAdvice() {
+	m.advice = nil
 }
 
 // SetTime sets the "time" field.
@@ -422,9 +496,15 @@ func (m *AntenatalinformationMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *AntenatalinformationMutation) Fields() []string {
-	fields := make([]string, 0, 2)
+	fields := make([]string, 0, 4)
 	if m.gestationalage != nil {
 		fields = append(fields, antenatalinformation.FieldGestationalage)
+	}
+	if m.examinationresult != nil {
+		fields = append(fields, antenatalinformation.FieldExaminationresult)
+	}
+	if m.advice != nil {
+		fields = append(fields, antenatalinformation.FieldAdvice)
 	}
 	if m.time != nil {
 		fields = append(fields, antenatalinformation.FieldTime)
@@ -439,6 +519,10 @@ func (m *AntenatalinformationMutation) Field(name string) (ent.Value, bool) {
 	switch name {
 	case antenatalinformation.FieldGestationalage:
 		return m.Gestationalage()
+	case antenatalinformation.FieldExaminationresult:
+		return m.Examinationresult()
+	case antenatalinformation.FieldAdvice:
+		return m.Advice()
 	case antenatalinformation.FieldTime:
 		return m.Time()
 	}
@@ -452,6 +536,10 @@ func (m *AntenatalinformationMutation) OldField(ctx context.Context, name string
 	switch name {
 	case antenatalinformation.FieldGestationalage:
 		return m.OldGestationalage(ctx)
+	case antenatalinformation.FieldExaminationresult:
+		return m.OldExaminationresult(ctx)
+	case antenatalinformation.FieldAdvice:
+		return m.OldAdvice(ctx)
 	case antenatalinformation.FieldTime:
 		return m.OldTime(ctx)
 	}
@@ -469,6 +557,20 @@ func (m *AntenatalinformationMutation) SetField(name string, value ent.Value) er
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetGestationalage(v)
+		return nil
+	case antenatalinformation.FieldExaminationresult:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetExaminationresult(v)
+		return nil
+	case antenatalinformation.FieldAdvice:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetAdvice(v)
 		return nil
 	case antenatalinformation.FieldTime:
 		v, ok := value.(time.Time)
@@ -543,6 +645,12 @@ func (m *AntenatalinformationMutation) ResetField(name string) error {
 	switch name {
 	case antenatalinformation.FieldGestationalage:
 		m.ResetGestationalage()
+		return nil
+	case antenatalinformation.FieldExaminationresult:
+		m.ResetExaminationresult()
+		return nil
+	case antenatalinformation.FieldAdvice:
+		m.ResetAdvice()
 		return nil
 	case antenatalinformation.FieldTime:
 		m.ResetTime()

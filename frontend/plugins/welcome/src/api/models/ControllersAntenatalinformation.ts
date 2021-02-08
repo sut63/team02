@@ -21,6 +21,18 @@ import { exists, mapValues } from '../runtime';
 export interface ControllersAntenatalinformation {
     /**
      * 
+     * @type {string}
+     * @memberof ControllersAntenatalinformation
+     */
+    advice?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ControllersAntenatalinformation
+     */
+    examinationresult?: string;
+    /**
+     * 
      * @type {number}
      * @memberof ControllersAntenatalinformation
      */
@@ -67,6 +79,8 @@ export function ControllersAntenatalinformationFromJSONTyped(json: any, ignoreDi
     }
     return {
         
+        'advice': !exists(json, 'advice') ? undefined : json['advice'],
+        'examinationresult': !exists(json, 'examinationresult') ? undefined : json['examinationresult'],
         'gestationalage': !exists(json, 'gestationalage') ? undefined : json['gestationalage'],
         'patient': !exists(json, 'patient') ? undefined : json['patient'],
         'personnel': !exists(json, 'personnel') ? undefined : json['personnel'],
@@ -85,6 +99,8 @@ export function ControllersAntenatalinformationToJSON(value?: ControllersAntenat
     }
     return {
         
+        'advice': value.advice,
+        'examinationresult': value.examinationresult,
         'gestationalage': value.gestationalage,
         'patient': value.patient,
         'personnel': value.personnel,

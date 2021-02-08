@@ -27,11 +27,23 @@ import {
  */
 export interface EntAntenatalinformation {
     /**
+     * Advice holds the value of the "advice" field.
+     * @type {string}
+     * @memberof EntAntenatalinformation
+     */
+    advice?: string;
+    /**
      * 
      * @type {EntAntenatalinformationEdges}
      * @memberof EntAntenatalinformation
      */
     edges?: EntAntenatalinformationEdges;
+    /**
+     * Examinationresult holds the value of the "examinationresult" field.
+     * @type {string}
+     * @memberof EntAntenatalinformation
+     */
+    examinationresult?: string;
     /**
      * Gestationalage holds the value of the "gestationalage" field.
      * @type {number}
@@ -62,7 +74,9 @@ export function EntAntenatalinformationFromJSONTyped(json: any, ignoreDiscrimina
     }
     return {
         
+        'advice': !exists(json, 'advice') ? undefined : json['advice'],
         'edges': !exists(json, 'edges') ? undefined : EntAntenatalinformationEdgesFromJSON(json['edges']),
+        'examinationresult': !exists(json, 'examinationresult') ? undefined : json['examinationresult'],
         'gestationalage': !exists(json, 'gestationalage') ? undefined : json['gestationalage'],
         'id': !exists(json, 'id') ? undefined : json['id'],
         'time': !exists(json, 'time') ? undefined : json['time'],
@@ -78,7 +92,9 @@ export function EntAntenatalinformationToJSON(value?: EntAntenatalinformation | 
     }
     return {
         
+        'advice': value.advice,
         'edges': EntAntenatalinformationEdgesToJSON(value.edges),
+        'examinationresult': value.examinationresult,
         'gestationalage': value.gestationalage,
         'id': value.id,
         'time': value.time,

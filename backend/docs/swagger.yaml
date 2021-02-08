@@ -2,6 +2,10 @@ basePath: /api/v1
 definitions:
   controllers.Antenatalinformation:
     properties:
+      advice:
+        type: string
+      examinationresult:
+        type: string
       gestationalage:
         type: integer
       patient:
@@ -106,12 +110,19 @@ definitions:
     type: object
   ent.Antenatalinformation:
     properties:
+      advice:
+        description: Advice holds the value of the "advice" field.
+        type: string
       edges:
         $ref: '#/definitions/ent.AntenatalinformationEdges'
         description: |-
           Edges holds the relations/edges for other nodes in the graph.
           The values are being populated by the AntenatalinformationQuery when eager-loading is set.
         type: object
+      examinationresult:
+        description: Examinationresult holds the value of the "examinationresult"
+          field.
+        type: string
       gestationalage:
         description: Gestationalage holds the value of the "gestationalage" field.
         type: integer
@@ -2751,7 +2762,6 @@ securityDefinitions:
     tokenUrl: https://example.com/oauth/token
     type: oauth2
   OAuth2Application:
-    authorizationUrl: ""
     flow: application
     scopes:
       admin: ' Grants read and write access to administrative information'
@@ -2766,7 +2776,6 @@ securityDefinitions:
       write: ' Grants write access'
     type: oauth2
   OAuth2Password:
-    authorizationUrl: ""
     flow: password
     scopes:
       admin: ' Grants read and write access to administrative information'

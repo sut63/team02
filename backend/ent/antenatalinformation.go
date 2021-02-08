@@ -22,6 +22,10 @@ type Antenatalinformation struct {
 	ID int `json:"id,omitempty"`
 	// Gestationalage holds the value of the "gestationalage" field.
 	Gestationalage int `json:"gestationalage,omitempty"`
+	// Examinationresult holds the value of the "examinationresult" field.
+	Examinationresult string `json:"examinationresult,omitempty"`
+	// Advice holds the value of the "advice" field.
+	Advice string `json:"advice,omitempty"`
 	// Time holds the value of the "time" field.
 	Time time.Time `json:"time,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
@@ -111,6 +115,8 @@ func (*Antenatalinformation) scanValues(columns []string) ([]interface{}, error)
 		switch columns[i] {
 		case antenatalinformation.FieldID, antenatalinformation.FieldGestationalage:
 			values[i] = &sql.NullInt64{}
+		case antenatalinformation.FieldExaminationresult, antenatalinformation.FieldAdvice:
+			values[i] = &sql.NullString{}
 		case antenatalinformation.FieldTime:
 			values[i] = &sql.NullTime{}
 		case antenatalinformation.ForeignKeys[0]: // _Patient_id
@@ -147,6 +153,18 @@ func (a *Antenatalinformation) assignValues(columns []string, values []interface
 				return fmt.Errorf("unexpected type %T for field gestationalage", values[i])
 			} else if value.Valid {
 				a.Gestationalage = int(value.Int64)
+			}
+		case antenatalinformation.FieldExaminationresult:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field examinationresult", values[i])
+			} else if value.Valid {
+				a.Examinationresult = value.String
+			}
+		case antenatalinformation.FieldAdvice:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field advice", values[i])
+			} else if value.Valid {
+				a.Advice = value.String
 			}
 		case antenatalinformation.FieldTime:
 			if value, ok := values[i].(*sql.NullTime); !ok {
@@ -232,6 +250,10 @@ func (a *Antenatalinformation) String() string {
 	builder.WriteString(fmt.Sprintf("id=%v", a.ID))
 	builder.WriteString(", gestationalage=")
 	builder.WriteString(fmt.Sprintf("%v", a.Gestationalage))
+	builder.WriteString(", examinationresult=")
+	builder.WriteString(a.Examinationresult)
+	builder.WriteString(", advice=")
+	builder.WriteString(a.Advice)
 	builder.WriteString(", time=")
 	builder.WriteString(a.Time.Format(time.ANSIC))
 	builder.WriteByte(')')

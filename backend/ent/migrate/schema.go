@@ -12,6 +12,8 @@ var (
 	AntenatalinformationsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "gestationalage", Type: field.TypeInt},
+		{Name: "examinationresult", Type: field.TypeString},
+		{Name: "advice", Type: field.TypeString},
 		{Name: "time", Type: field.TypeTime},
 		{Name: "Patient_id", Type: field.TypeInt, Nullable: true},
 		{Name: "Personnel_id", Type: field.TypeInt, Nullable: true},
@@ -26,28 +28,28 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:  "antenatalinformations_patients_Antenatalinformation",
-				Columns: []*schema.Column{AntenatalinformationsColumns[3]},
+				Columns: []*schema.Column{AntenatalinformationsColumns[5]},
 
 				RefColumns: []*schema.Column{PatientsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:  "antenatalinformations_personnels_Antenatalinformation",
-				Columns: []*schema.Column{AntenatalinformationsColumns[4]},
+				Columns: []*schema.Column{AntenatalinformationsColumns[6]},
 
 				RefColumns: []*schema.Column{PersonnelsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:  "antenatalinformations_pregnancystatuses_Antenatalinformation",
-				Columns: []*schema.Column{AntenatalinformationsColumns[5]},
+				Columns: []*schema.Column{AntenatalinformationsColumns[7]},
 
 				RefColumns: []*schema.Column{PregnancystatusesColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:  "antenatalinformations_risks_Antenatalinformation",
-				Columns: []*schema.Column{AntenatalinformationsColumns[6]},
+				Columns: []*schema.Column{AntenatalinformationsColumns[8]},
 
 				RefColumns: []*schema.Column{RisksColumns[0]},
 				OnDelete:   schema.SetNull,

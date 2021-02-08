@@ -30,6 +30,18 @@ func (ac *AntenatalinformationCreate) SetGestationalage(i int) *Antenatalinforma
 	return ac
 }
 
+// SetExaminationresult sets the "examinationresult" field.
+func (ac *AntenatalinformationCreate) SetExaminationresult(s string) *AntenatalinformationCreate {
+	ac.mutation.SetExaminationresult(s)
+	return ac
+}
+
+// SetAdvice sets the "advice" field.
+func (ac *AntenatalinformationCreate) SetAdvice(s string) *AntenatalinformationCreate {
+	ac.mutation.SetAdvice(s)
+	return ac
+}
+
 // SetTime sets the "time" field.
 func (ac *AntenatalinformationCreate) SetTime(t time.Time) *AntenatalinformationCreate {
 	ac.mutation.SetTime(t)
@@ -171,6 +183,22 @@ func (ac *AntenatalinformationCreate) check() error {
 			return &ValidationError{Name: "gestationalage", err: fmt.Errorf("ent: validator failed for field \"gestationalage\": %w", err)}
 		}
 	}
+	if _, ok := ac.mutation.Examinationresult(); !ok {
+		return &ValidationError{Name: "examinationresult", err: errors.New("ent: missing required field \"examinationresult\"")}
+	}
+	if v, ok := ac.mutation.Examinationresult(); ok {
+		if err := antenatalinformation.ExaminationresultValidator(v); err != nil {
+			return &ValidationError{Name: "examinationresult", err: fmt.Errorf("ent: validator failed for field \"examinationresult\": %w", err)}
+		}
+	}
+	if _, ok := ac.mutation.Advice(); !ok {
+		return &ValidationError{Name: "advice", err: errors.New("ent: missing required field \"advice\"")}
+	}
+	if v, ok := ac.mutation.Advice(); ok {
+		if err := antenatalinformation.AdviceValidator(v); err != nil {
+			return &ValidationError{Name: "advice", err: fmt.Errorf("ent: validator failed for field \"advice\": %w", err)}
+		}
+	}
 	if _, ok := ac.mutation.Time(); !ok {
 		return &ValidationError{Name: "time", err: errors.New("ent: missing required field \"time\"")}
 	}
@@ -208,6 +236,22 @@ func (ac *AntenatalinformationCreate) createSpec() (*Antenatalinformation, *sqlg
 			Column: antenatalinformation.FieldGestationalage,
 		})
 		_node.Gestationalage = value
+	}
+	if value, ok := ac.mutation.Examinationresult(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: antenatalinformation.FieldExaminationresult,
+		})
+		_node.Examinationresult = value
+	}
+	if value, ok := ac.mutation.Advice(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: antenatalinformation.FieldAdvice,
+		})
+		_node.Advice = value
 	}
 	if value, ok := ac.mutation.Time(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{

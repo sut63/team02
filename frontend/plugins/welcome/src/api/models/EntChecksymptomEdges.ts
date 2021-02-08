@@ -74,10 +74,10 @@ export function EntChecksymptomEdgesFromJSONTyped(json: any, ignoreDiscriminator
     }
     return {
         
-        'disease': !exists(json, 'disease') ? undefined : EntDiseaseFromJSON(json['disease']),
-        'doctorordersheet': !exists(json, 'doctorordersheet') ? undefined : EntDoctorordersheetFromJSON(json['doctorordersheet']),
-        'patient': !exists(json, 'patient') ? undefined : EntPatientFromJSON(json['patient']),
-        'personnel': !exists(json, 'personnel') ? undefined : EntPersonnelFromJSON(json['personnel']),
+        'disease': !exists(json, 'Disease') ? undefined : EntDiseaseFromJSON(json['Disease']),
+        'doctorordersheet': !exists(json, 'Doctorordersheet') ? undefined : EntDoctorordersheetFromJSON(json['Doctorordersheet']),
+        'patient': !exists(json, 'Patient') ? undefined : EntPatientFromJSON(json['Patient']),
+        'personnel': !exists(json, 'Personnel') ? undefined : EntPersonnelFromJSON(json['Personnel']),
     };
 }
 

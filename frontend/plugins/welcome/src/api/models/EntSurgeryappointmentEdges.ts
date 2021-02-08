@@ -64,9 +64,9 @@ export function EntSurgeryappointmentEdgesFromJSONTyped(json: any, ignoreDiscrim
     }
     return {
         
-        'patient': !exists(json, 'patient') ? undefined : EntPatientFromJSON(json['patient']),
-        'personnel': !exists(json, 'personnel') ? undefined : EntPersonnelFromJSON(json['personnel']),
-        'surgerytype': !exists(json, 'surgerytype') ? undefined : EntSurgerytypeFromJSON(json['surgerytype']),
+        'patient': !exists(json, 'Patient') ? undefined : EntPatientFromJSON(json['Patient']),
+        'personnel': !exists(json, 'Personnel') ? undefined : EntPersonnelFromJSON(json['Personnel']),
+        'surgerytype': !exists(json, 'Surgerytype') ? undefined : EntSurgerytypeFromJSON(json['Surgerytype']),
     };
 }
 

@@ -34,6 +34,42 @@ func init() {
 	antenatalinformationDescGestationalage := antenatalinformationFields[0].Descriptor()
 	// antenatalinformation.GestationalageValidator is a validator for the "gestationalage" field. It is called by the builders before save.
 	antenatalinformation.GestationalageValidator = antenatalinformationDescGestationalage.Validators[0].(func(int) error)
+	// antenatalinformationDescExaminationresult is the schema descriptor for examinationresult field.
+	antenatalinformationDescExaminationresult := antenatalinformationFields[1].Descriptor()
+	// antenatalinformation.ExaminationresultValidator is a validator for the "examinationresult" field. It is called by the builders before save.
+	antenatalinformation.ExaminationresultValidator = func() func(string) error {
+		validators := antenatalinformationDescExaminationresult.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(examinationresult string) error {
+			for _, fn := range fns {
+				if err := fn(examinationresult); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
+	// antenatalinformationDescAdvice is the schema descriptor for advice field.
+	antenatalinformationDescAdvice := antenatalinformationFields[2].Descriptor()
+	// antenatalinformation.AdviceValidator is a validator for the "advice" field. It is called by the builders before save.
+	antenatalinformation.AdviceValidator = func() func(string) error {
+		validators := antenatalinformationDescAdvice.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(advice string) error {
+			for _, fn := range fns {
+				if err := fn(advice); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
 	bonediseaseFields := schema.Bonedisease{}.Fields()
 	_ = bonediseaseFields
 	// bonediseaseDescAddedTime is the schema descriptor for addedTime field.
