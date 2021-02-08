@@ -70,6 +70,10 @@ definitions:
     type: object
   controllers.Physicaltherapyrecord:
     properties:
+      age:
+        type: integer
+      idnumber:
+        type: string
       patient:
         type: integer
       personnel:
@@ -78,6 +82,8 @@ definitions:
         type: integer
       status:
         type: integer
+      telephone:
+        type: string
       time:
         type: string
     type: object
@@ -445,6 +451,9 @@ definitions:
     type: object
   ent.Physicaltherapyrecord:
     properties:
+      age:
+        description: Age holds the value of the "age" field.
+        type: integer
       appointtime:
         description: Appointtime holds the value of the "appointtime" field.
         type: string
@@ -457,6 +466,12 @@ definitions:
       id:
         description: ID of the ent.
         type: integer
+      idnumber:
+        description: Idnumber holds the value of the "idnumber" field.
+        type: string
+      telephone:
+        description: Telephone holds the value of the "telephone" field.
+        type: string
     type: object
   ent.PhysicaltherapyrecordEdges:
     properties:

@@ -5708,6 +5708,10 @@ type PhysicaltherapyrecordMutation struct {
 	op                         Op
 	typ                        string
 	id                         *int
+	idnumber                   *string
+	age                        *int
+	addage                     *int
+	telephone                  *string
 	appointtime                *time.Time
 	clearedFields              map[string]struct{}
 	personnel                  *int
@@ -5800,6 +5804,134 @@ func (m *PhysicaltherapyrecordMutation) ID() (id int, exists bool) {
 		return
 	}
 	return *m.id, true
+}
+
+// SetIdnumber sets the "idnumber" field.
+func (m *PhysicaltherapyrecordMutation) SetIdnumber(s string) {
+	m.idnumber = &s
+}
+
+// Idnumber returns the value of the "idnumber" field in the mutation.
+func (m *PhysicaltherapyrecordMutation) Idnumber() (r string, exists bool) {
+	v := m.idnumber
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldIdnumber returns the old "idnumber" field's value of the Physicaltherapyrecord entity.
+// If the Physicaltherapyrecord object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *PhysicaltherapyrecordMutation) OldIdnumber(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldIdnumber is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldIdnumber requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldIdnumber: %w", err)
+	}
+	return oldValue.Idnumber, nil
+}
+
+// ResetIdnumber resets all changes to the "idnumber" field.
+func (m *PhysicaltherapyrecordMutation) ResetIdnumber() {
+	m.idnumber = nil
+}
+
+// SetAge sets the "age" field.
+func (m *PhysicaltherapyrecordMutation) SetAge(i int) {
+	m.age = &i
+	m.addage = nil
+}
+
+// Age returns the value of the "age" field in the mutation.
+func (m *PhysicaltherapyrecordMutation) Age() (r int, exists bool) {
+	v := m.age
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldAge returns the old "age" field's value of the Physicaltherapyrecord entity.
+// If the Physicaltherapyrecord object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *PhysicaltherapyrecordMutation) OldAge(ctx context.Context) (v int, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldAge is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldAge requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldAge: %w", err)
+	}
+	return oldValue.Age, nil
+}
+
+// AddAge adds i to the "age" field.
+func (m *PhysicaltherapyrecordMutation) AddAge(i int) {
+	if m.addage != nil {
+		*m.addage += i
+	} else {
+		m.addage = &i
+	}
+}
+
+// AddedAge returns the value that was added to the "age" field in this mutation.
+func (m *PhysicaltherapyrecordMutation) AddedAge() (r int, exists bool) {
+	v := m.addage
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetAge resets all changes to the "age" field.
+func (m *PhysicaltherapyrecordMutation) ResetAge() {
+	m.age = nil
+	m.addage = nil
+}
+
+// SetTelephone sets the "telephone" field.
+func (m *PhysicaltherapyrecordMutation) SetTelephone(s string) {
+	m.telephone = &s
+}
+
+// Telephone returns the value of the "telephone" field in the mutation.
+func (m *PhysicaltherapyrecordMutation) Telephone() (r string, exists bool) {
+	v := m.telephone
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldTelephone returns the old "telephone" field's value of the Physicaltherapyrecord entity.
+// If the Physicaltherapyrecord object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *PhysicaltherapyrecordMutation) OldTelephone(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldTelephone is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldTelephone requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldTelephone: %w", err)
+	}
+	return oldValue.Telephone, nil
+}
+
+// ResetTelephone resets all changes to the "telephone" field.
+func (m *PhysicaltherapyrecordMutation) ResetTelephone() {
+	m.telephone = nil
 }
 
 // SetAppointtime sets the "appointtime" field.
@@ -6008,7 +6140,16 @@ func (m *PhysicaltherapyrecordMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *PhysicaltherapyrecordMutation) Fields() []string {
-	fields := make([]string, 0, 1)
+	fields := make([]string, 0, 4)
+	if m.idnumber != nil {
+		fields = append(fields, physicaltherapyrecord.FieldIdnumber)
+	}
+	if m.age != nil {
+		fields = append(fields, physicaltherapyrecord.FieldAge)
+	}
+	if m.telephone != nil {
+		fields = append(fields, physicaltherapyrecord.FieldTelephone)
+	}
 	if m.appointtime != nil {
 		fields = append(fields, physicaltherapyrecord.FieldAppointtime)
 	}
@@ -6020,6 +6161,12 @@ func (m *PhysicaltherapyrecordMutation) Fields() []string {
 // schema.
 func (m *PhysicaltherapyrecordMutation) Field(name string) (ent.Value, bool) {
 	switch name {
+	case physicaltherapyrecord.FieldIdnumber:
+		return m.Idnumber()
+	case physicaltherapyrecord.FieldAge:
+		return m.Age()
+	case physicaltherapyrecord.FieldTelephone:
+		return m.Telephone()
 	case physicaltherapyrecord.FieldAppointtime:
 		return m.Appointtime()
 	}
@@ -6031,6 +6178,12 @@ func (m *PhysicaltherapyrecordMutation) Field(name string) (ent.Value, bool) {
 // database failed.
 func (m *PhysicaltherapyrecordMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
 	switch name {
+	case physicaltherapyrecord.FieldIdnumber:
+		return m.OldIdnumber(ctx)
+	case physicaltherapyrecord.FieldAge:
+		return m.OldAge(ctx)
+	case physicaltherapyrecord.FieldTelephone:
+		return m.OldTelephone(ctx)
 	case physicaltherapyrecord.FieldAppointtime:
 		return m.OldAppointtime(ctx)
 	}
@@ -6042,6 +6195,27 @@ func (m *PhysicaltherapyrecordMutation) OldField(ctx context.Context, name strin
 // type.
 func (m *PhysicaltherapyrecordMutation) SetField(name string, value ent.Value) error {
 	switch name {
+	case physicaltherapyrecord.FieldIdnumber:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetIdnumber(v)
+		return nil
+	case physicaltherapyrecord.FieldAge:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetAge(v)
+		return nil
+	case physicaltherapyrecord.FieldTelephone:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetTelephone(v)
+		return nil
 	case physicaltherapyrecord.FieldAppointtime:
 		v, ok := value.(time.Time)
 		if !ok {
@@ -6056,13 +6230,21 @@ func (m *PhysicaltherapyrecordMutation) SetField(name string, value ent.Value) e
 // AddedFields returns all numeric fields that were incremented/decremented during
 // this mutation.
 func (m *PhysicaltherapyrecordMutation) AddedFields() []string {
-	return nil
+	var fields []string
+	if m.addage != nil {
+		fields = append(fields, physicaltherapyrecord.FieldAge)
+	}
+	return fields
 }
 
 // AddedField returns the numeric value that was incremented/decremented on a field
 // with the given name. The second boolean return value indicates that this field
 // was not set, or was not defined in the schema.
 func (m *PhysicaltherapyrecordMutation) AddedField(name string) (ent.Value, bool) {
+	switch name {
+	case physicaltherapyrecord.FieldAge:
+		return m.AddedAge()
+	}
 	return nil, false
 }
 
@@ -6071,6 +6253,13 @@ func (m *PhysicaltherapyrecordMutation) AddedField(name string) (ent.Value, bool
 // type.
 func (m *PhysicaltherapyrecordMutation) AddField(name string, value ent.Value) error {
 	switch name {
+	case physicaltherapyrecord.FieldAge:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddAge(v)
+		return nil
 	}
 	return fmt.Errorf("unknown Physicaltherapyrecord numeric field %s", name)
 }
@@ -6098,6 +6287,15 @@ func (m *PhysicaltherapyrecordMutation) ClearField(name string) error {
 // It returns an error if the field is not defined in the schema.
 func (m *PhysicaltherapyrecordMutation) ResetField(name string) error {
 	switch name {
+	case physicaltherapyrecord.FieldIdnumber:
+		m.ResetIdnumber()
+		return nil
+	case physicaltherapyrecord.FieldAge:
+		m.ResetAge()
+		return nil
+	case physicaltherapyrecord.FieldTelephone:
+		m.ResetTelephone()
+		return nil
 	case physicaltherapyrecord.FieldAppointtime:
 		m.ResetAppointtime()
 		return nil

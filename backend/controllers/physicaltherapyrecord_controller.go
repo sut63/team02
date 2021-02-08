@@ -12,6 +12,8 @@ import (
 	"github.com/to63/app/ent/personnel"
 	"github.com/to63/app/ent/physicaltherapyroom"
 	"github.com/to63/app/ent/status"
+
+
 )
 
 //PhysicaltherapyrecordController struct
@@ -24,6 +26,9 @@ type PhysicaltherapyrecordController struct {
 type Physicaltherapyrecord struct {
 	Personnel           int
 	Patient             int
+	IDnumber			string
+	Age					int
+	Telephone			string
 	Physicaltherapyroom int
 	Status              int
 	Time                string
@@ -103,6 +108,9 @@ func (ctl *PhysicaltherapyrecordController) CreatePhysicaltherapyrecord(c *gin.C
 		Create().
 		SetPatient(patient).
 		SetPersonnel(personnel).
+		SetIdnumber(obj.IDnumber).
+		SetAge(obj.Age).
+		SetTelephone(obj.Telephone).
 		SetStatus(status).
 		SetPhysicaltherapyroom(physicaltherapyroom).
 		SetAppointtime(times).
@@ -120,6 +128,9 @@ func (ctl *PhysicaltherapyrecordController) CreatePhysicaltherapyrecord(c *gin.C
 		"data":   physicaltherapyrecord,
 	})
 }
+
+
+
 
 // ListPhysicaltherapyrecord handles request to get a list of physicaltherapyrecord entities
 // @Summary List physicaltherapyrecord entities
@@ -159,6 +170,7 @@ func (ctl *PhysicaltherapyrecordController) ListPhysicaltherapyrecord(c *gin.Con
 		WithPhysicaltherapyroom().
 		Limit(limit).
 		Offset(offset).
+		
 		All(context.Background())
 
 	if err != nil {

@@ -3207,6 +3207,12 @@ var doc = `{
         "controllers.Physicaltherapyrecord": {
             "type": "object",
             "properties": {
+                "age": {
+                    "type": "integer"
+                },
+                "idnumber": {
+                    "type": "string"
+                },
                 "patient": {
                     "type": "integer"
                 },
@@ -3218,6 +3224,9 @@ var doc = `{
                 },
                 "status": {
                     "type": "integer"
+                },
+                "telephone": {
+                    "type": "string"
                 },
                 "time": {
                     "type": "string"
@@ -3695,6 +3704,10 @@ var doc = `{
         "ent.Physicaltherapyrecord": {
             "type": "object",
             "properties": {
+                "age": {
+                    "description": "Age holds the value of the \"age\" field.",
+                    "type": "integer"
+                },
                 "appointtime": {
                     "description": "Appointtime holds the value of the \"appointtime\" field.",
                     "type": "string"
@@ -3707,6 +3720,14 @@ var doc = `{
                 "id": {
                     "description": "ID of the ent.",
                     "type": "integer"
+                },
+                "idnumber": {
+                    "description": "Idnumber holds the value of the \"idnumber\" field.",
+                    "type": "string"
+                },
+                "telephone": {
+                    "description": "Telephone holds the value of the \"telephone\" field.",
+                    "type": "string"
                 }
             }
         },

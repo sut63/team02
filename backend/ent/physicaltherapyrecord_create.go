@@ -24,6 +24,24 @@ type PhysicaltherapyrecordCreate struct {
 	hooks    []Hook
 }
 
+// SetIdnumber sets the "idnumber" field.
+func (pc *PhysicaltherapyrecordCreate) SetIdnumber(s string) *PhysicaltherapyrecordCreate {
+	pc.mutation.SetIdnumber(s)
+	return pc
+}
+
+// SetAge sets the "age" field.
+func (pc *PhysicaltherapyrecordCreate) SetAge(i int) *PhysicaltherapyrecordCreate {
+	pc.mutation.SetAge(i)
+	return pc
+}
+
+// SetTelephone sets the "telephone" field.
+func (pc *PhysicaltherapyrecordCreate) SetTelephone(s string) *PhysicaltherapyrecordCreate {
+	pc.mutation.SetTelephone(s)
+	return pc
+}
+
 // SetAppointtime sets the "appointtime" field.
 func (pc *PhysicaltherapyrecordCreate) SetAppointtime(t time.Time) *PhysicaltherapyrecordCreate {
 	pc.mutation.SetAppointtime(t)
@@ -157,6 +175,30 @@ func (pc *PhysicaltherapyrecordCreate) SaveX(ctx context.Context) *Physicalthera
 
 // check runs all checks and user-defined validators on the builder.
 func (pc *PhysicaltherapyrecordCreate) check() error {
+	if _, ok := pc.mutation.Idnumber(); !ok {
+		return &ValidationError{Name: "idnumber", err: errors.New("ent: missing required field \"idnumber\"")}
+	}
+	if v, ok := pc.mutation.Idnumber(); ok {
+		if err := physicaltherapyrecord.IdnumberValidator(v); err != nil {
+			return &ValidationError{Name: "idnumber", err: fmt.Errorf("ent: validator failed for field \"idnumber\": %w", err)}
+		}
+	}
+	if _, ok := pc.mutation.Age(); !ok {
+		return &ValidationError{Name: "age", err: errors.New("ent: missing required field \"age\"")}
+	}
+	if v, ok := pc.mutation.Age(); ok {
+		if err := physicaltherapyrecord.AgeValidator(v); err != nil {
+			return &ValidationError{Name: "age", err: fmt.Errorf("ent: validator failed for field \"age\": %w", err)}
+		}
+	}
+	if _, ok := pc.mutation.Telephone(); !ok {
+		return &ValidationError{Name: "telephone", err: errors.New("ent: missing required field \"telephone\"")}
+	}
+	if v, ok := pc.mutation.Telephone(); ok {
+		if err := physicaltherapyrecord.TelephoneValidator(v); err != nil {
+			return &ValidationError{Name: "telephone", err: fmt.Errorf("ent: validator failed for field \"telephone\": %w", err)}
+		}
+	}
 	if _, ok := pc.mutation.Appointtime(); !ok {
 		return &ValidationError{Name: "appointtime", err: errors.New("ent: missing required field \"appointtime\"")}
 	}
@@ -187,6 +229,30 @@ func (pc *PhysicaltherapyrecordCreate) createSpec() (*Physicaltherapyrecord, *sq
 			},
 		}
 	)
+	if value, ok := pc.mutation.Idnumber(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: physicaltherapyrecord.FieldIdnumber,
+		})
+		_node.Idnumber = value
+	}
+	if value, ok := pc.mutation.Age(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: physicaltherapyrecord.FieldAge,
+		})
+		_node.Age = value
+	}
+	if value, ok := pc.mutation.Telephone(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: physicaltherapyrecord.FieldTelephone,
+		})
+		_node.Telephone = value
+	}
 	if value, ok := pc.mutation.Appointtime(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeTime,

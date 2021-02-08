@@ -7,6 +7,12 @@ const (
 	Label = "physicaltherapyrecord"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
+	// FieldIdnumber holds the string denoting the idnumber field in the database.
+	FieldIdnumber = "idnumber"
+	// FieldAge holds the string denoting the age field in the database.
+	FieldAge = "age"
+	// FieldTelephone holds the string denoting the telephone field in the database.
+	FieldTelephone = "telephone"
 	// FieldAppointtime holds the string denoting the appointtime field in the database.
 	FieldAppointtime = "appointtime"
 
@@ -54,6 +60,9 @@ const (
 // Columns holds all SQL columns for physicaltherapyrecord fields.
 var Columns = []string{
 	FieldID,
+	FieldIdnumber,
+	FieldAge,
+	FieldTelephone,
 	FieldAppointtime,
 }
 
@@ -79,3 +88,12 @@ func ValidColumn(column string) bool {
 	}
 	return false
 }
+
+var (
+	// IdnumberValidator is a validator for the "idnumber" field. It is called by the builders before save.
+	IdnumberValidator func(string) error
+	// AgeValidator is a validator for the "age" field. It is called by the builders before save.
+	AgeValidator func(int) error
+	// TelephoneValidator is a validator for the "telephone" field. It is called by the builders before save.
+	TelephoneValidator func(string) error
+)

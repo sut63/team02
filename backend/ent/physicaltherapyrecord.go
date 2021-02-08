@@ -20,6 +20,12 @@ type Physicaltherapyrecord struct {
 	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
+	// Idnumber holds the value of the "idnumber" field.
+	Idnumber string `json:"idnumber,omitempty"`
+	// Age holds the value of the "age" field.
+	Age int `json:"age,omitempty"`
+	// Telephone holds the value of the "telephone" field.
+	Telephone string `json:"telephone,omitempty"`
 	// Appointtime holds the value of the "appointtime" field.
 	Appointtime time.Time `json:"appointtime,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
@@ -107,8 +113,10 @@ func (*Physicaltherapyrecord) scanValues(columns []string) ([]interface{}, error
 	values := make([]interface{}, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case physicaltherapyrecord.FieldID:
+		case physicaltherapyrecord.FieldID, physicaltherapyrecord.FieldAge:
 			values[i] = &sql.NullInt64{}
+		case physicaltherapyrecord.FieldIdnumber, physicaltherapyrecord.FieldTelephone:
+			values[i] = &sql.NullString{}
 		case physicaltherapyrecord.FieldAppointtime:
 			values[i] = &sql.NullTime{}
 		case physicaltherapyrecord.ForeignKeys[0]: // _Patient_id
@@ -140,6 +148,24 @@ func (ph *Physicaltherapyrecord) assignValues(columns []string, values []interfa
 				return fmt.Errorf("unexpected type %T for field id", value)
 			}
 			ph.ID = int(value.Int64)
+		case physicaltherapyrecord.FieldIdnumber:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field idnumber", values[i])
+			} else if value.Valid {
+				ph.Idnumber = value.String
+			}
+		case physicaltherapyrecord.FieldAge:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field age", values[i])
+			} else if value.Valid {
+				ph.Age = int(value.Int64)
+			}
+		case physicaltherapyrecord.FieldTelephone:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field telephone", values[i])
+			} else if value.Valid {
+				ph.Telephone = value.String
+			}
 		case physicaltherapyrecord.FieldAppointtime:
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field appointtime", values[i])
@@ -222,6 +248,12 @@ func (ph *Physicaltherapyrecord) String() string {
 	var builder strings.Builder
 	builder.WriteString("Physicaltherapyrecord(")
 	builder.WriteString(fmt.Sprintf("id=%v", ph.ID))
+	builder.WriteString(", idnumber=")
+	builder.WriteString(ph.Idnumber)
+	builder.WriteString(", age=")
+	builder.WriteString(fmt.Sprintf("%v", ph.Age))
+	builder.WriteString(", telephone=")
+	builder.WriteString(ph.Telephone)
 	builder.WriteString(", appointtime=")
 	builder.WriteString(ph.Appointtime.Format(time.ANSIC))
 	builder.WriteByte(')')

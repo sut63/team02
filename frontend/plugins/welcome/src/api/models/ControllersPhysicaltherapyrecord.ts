@@ -24,6 +24,18 @@ export interface ControllersPhysicaltherapyrecord {
      * @type {number}
      * @memberof ControllersPhysicaltherapyrecord
      */
+    age?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof ControllersPhysicaltherapyrecord
+     */
+    idnumber?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof ControllersPhysicaltherapyrecord
+     */
     patient?: number;
     /**
      * 
@@ -48,6 +60,12 @@ export interface ControllersPhysicaltherapyrecord {
      * @type {string}
      * @memberof ControllersPhysicaltherapyrecord
      */
+    telephone?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ControllersPhysicaltherapyrecord
+     */
     time?: string;
 }
 
@@ -61,10 +79,13 @@ export function ControllersPhysicaltherapyrecordFromJSONTyped(json: any, ignoreD
     }
     return {
         
+        'age': !exists(json, 'age') ? undefined : json['age'],
+        'idnumber': !exists(json, 'idnumber') ? undefined : json['idnumber'],
         'patient': !exists(json, 'patient') ? undefined : json['patient'],
         'personnel': !exists(json, 'personnel') ? undefined : json['personnel'],
         'physicaltherapyroom': !exists(json, 'physicaltherapyroom') ? undefined : json['physicaltherapyroom'],
         'status': !exists(json, 'status') ? undefined : json['status'],
+        'telephone': !exists(json, 'telephone') ? undefined : json['telephone'],
         'time': !exists(json, 'time') ? undefined : json['time'],
     };
 }
@@ -78,10 +99,13 @@ export function ControllersPhysicaltherapyrecordToJSON(value?: ControllersPhysic
     }
     return {
         
+        'age': value.age,
+        'idnumber': value.idnumber,
         'patient': value.patient,
         'personnel': value.personnel,
         'physicaltherapyroom': value.physicaltherapyroom,
         'status': value.status,
+        'telephone': value.telephone,
         'time': value.time,
     };
 }

@@ -27,6 +27,12 @@ import {
  */
 export interface EntPhysicaltherapyrecord {
     /**
+     * Age holds the value of the "age" field.
+     * @type {number}
+     * @memberof EntPhysicaltherapyrecord
+     */
+    age?: number;
+    /**
      * Appointtime holds the value of the "appointtime" field.
      * @type {string}
      * @memberof EntPhysicaltherapyrecord
@@ -44,6 +50,18 @@ export interface EntPhysicaltherapyrecord {
      * @memberof EntPhysicaltherapyrecord
      */
     id?: number;
+    /**
+     * Idnumber holds the value of the "idnumber" field.
+     * @type {string}
+     * @memberof EntPhysicaltherapyrecord
+     */
+    idnumber?: string;
+    /**
+     * Telephone holds the value of the "telephone" field.
+     * @type {string}
+     * @memberof EntPhysicaltherapyrecord
+     */
+    telephone?: string;
 }
 
 export function EntPhysicaltherapyrecordFromJSON(json: any): EntPhysicaltherapyrecord {
@@ -56,9 +74,12 @@ export function EntPhysicaltherapyrecordFromJSONTyped(json: any, ignoreDiscrimin
     }
     return {
         
+        'age': !exists(json, 'age') ? undefined : json['age'],
         'appointtime': !exists(json, 'appointtime') ? undefined : json['appointtime'],
         'edges': !exists(json, 'edges') ? undefined : EntPhysicaltherapyrecordEdgesFromJSON(json['edges']),
         'id': !exists(json, 'id') ? undefined : json['id'],
+        'idnumber': !exists(json, 'idnumber') ? undefined : json['idnumber'],
+        'telephone': !exists(json, 'telephone') ? undefined : json['telephone'],
     };
 }
 
@@ -71,9 +92,12 @@ export function EntPhysicaltherapyrecordToJSON(value?: EntPhysicaltherapyrecord 
     }
     return {
         
+        'age': value.age,
         'appointtime': value.appointtime,
         'edges': EntPhysicaltherapyrecordEdgesToJSON(value.edges),
         'id': value.id,
+        'idnumber': value.idnumber,
+        'telephone': value.telephone,
     };
 }
 

@@ -31,6 +31,31 @@ func (pu *PhysicaltherapyrecordUpdate) Where(ps ...predicate.Physicaltherapyreco
 	return pu
 }
 
+// SetIdnumber sets the "idnumber" field.
+func (pu *PhysicaltherapyrecordUpdate) SetIdnumber(s string) *PhysicaltherapyrecordUpdate {
+	pu.mutation.SetIdnumber(s)
+	return pu
+}
+
+// SetAge sets the "age" field.
+func (pu *PhysicaltherapyrecordUpdate) SetAge(i int) *PhysicaltherapyrecordUpdate {
+	pu.mutation.ResetAge()
+	pu.mutation.SetAge(i)
+	return pu
+}
+
+// AddAge adds i to the "age" field.
+func (pu *PhysicaltherapyrecordUpdate) AddAge(i int) *PhysicaltherapyrecordUpdate {
+	pu.mutation.AddAge(i)
+	return pu
+}
+
+// SetTelephone sets the "telephone" field.
+func (pu *PhysicaltherapyrecordUpdate) SetTelephone(s string) *PhysicaltherapyrecordUpdate {
+	pu.mutation.SetTelephone(s)
+	return pu
+}
+
 // SetAppointtime sets the "appointtime" field.
 func (pu *PhysicaltherapyrecordUpdate) SetAppointtime(t time.Time) *PhysicaltherapyrecordUpdate {
 	pu.mutation.SetAppointtime(t)
@@ -149,12 +174,18 @@ func (pu *PhysicaltherapyrecordUpdate) Save(ctx context.Context) (int, error) {
 		affected int
 	)
 	if len(pu.hooks) == 0 {
+		if err = pu.check(); err != nil {
+			return 0, err
+		}
 		affected, err = pu.sqlSave(ctx)
 	} else {
 		var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 			mutation, ok := m.(*PhysicaltherapyrecordMutation)
 			if !ok {
 				return nil, fmt.Errorf("unexpected mutation type %T", m)
+			}
+			if err = pu.check(); err != nil {
+				return 0, err
 			}
 			pu.mutation = mutation
 			affected, err = pu.sqlSave(ctx)
@@ -193,6 +224,26 @@ func (pu *PhysicaltherapyrecordUpdate) ExecX(ctx context.Context) {
 	}
 }
 
+// check runs all checks and user-defined validators on the builder.
+func (pu *PhysicaltherapyrecordUpdate) check() error {
+	if v, ok := pu.mutation.Idnumber(); ok {
+		if err := physicaltherapyrecord.IdnumberValidator(v); err != nil {
+			return &ValidationError{Name: "idnumber", err: fmt.Errorf("ent: validator failed for field \"idnumber\": %w", err)}
+		}
+	}
+	if v, ok := pu.mutation.Age(); ok {
+		if err := physicaltherapyrecord.AgeValidator(v); err != nil {
+			return &ValidationError{Name: "age", err: fmt.Errorf("ent: validator failed for field \"age\": %w", err)}
+		}
+	}
+	if v, ok := pu.mutation.Telephone(); ok {
+		if err := physicaltherapyrecord.TelephoneValidator(v); err != nil {
+			return &ValidationError{Name: "telephone", err: fmt.Errorf("ent: validator failed for field \"telephone\": %w", err)}
+		}
+	}
+	return nil
+}
+
 func (pu *PhysicaltherapyrecordUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	_spec := &sqlgraph.UpdateSpec{
 		Node: &sqlgraph.NodeSpec{
@@ -210,6 +261,34 @@ func (pu *PhysicaltherapyrecordUpdate) sqlSave(ctx context.Context) (n int, err 
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := pu.mutation.Idnumber(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: physicaltherapyrecord.FieldIdnumber,
+		})
+	}
+	if value, ok := pu.mutation.Age(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: physicaltherapyrecord.FieldAge,
+		})
+	}
+	if value, ok := pu.mutation.AddedAge(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: physicaltherapyrecord.FieldAge,
+		})
+	}
+	if value, ok := pu.mutation.Telephone(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: physicaltherapyrecord.FieldTelephone,
+		})
 	}
 	if value, ok := pu.mutation.Appointtime(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
@@ -376,6 +455,31 @@ type PhysicaltherapyrecordUpdateOne struct {
 	mutation *PhysicaltherapyrecordMutation
 }
 
+// SetIdnumber sets the "idnumber" field.
+func (puo *PhysicaltherapyrecordUpdateOne) SetIdnumber(s string) *PhysicaltherapyrecordUpdateOne {
+	puo.mutation.SetIdnumber(s)
+	return puo
+}
+
+// SetAge sets the "age" field.
+func (puo *PhysicaltherapyrecordUpdateOne) SetAge(i int) *PhysicaltherapyrecordUpdateOne {
+	puo.mutation.ResetAge()
+	puo.mutation.SetAge(i)
+	return puo
+}
+
+// AddAge adds i to the "age" field.
+func (puo *PhysicaltherapyrecordUpdateOne) AddAge(i int) *PhysicaltherapyrecordUpdateOne {
+	puo.mutation.AddAge(i)
+	return puo
+}
+
+// SetTelephone sets the "telephone" field.
+func (puo *PhysicaltherapyrecordUpdateOne) SetTelephone(s string) *PhysicaltherapyrecordUpdateOne {
+	puo.mutation.SetTelephone(s)
+	return puo
+}
+
 // SetAppointtime sets the "appointtime" field.
 func (puo *PhysicaltherapyrecordUpdateOne) SetAppointtime(t time.Time) *PhysicaltherapyrecordUpdateOne {
 	puo.mutation.SetAppointtime(t)
@@ -494,12 +598,18 @@ func (puo *PhysicaltherapyrecordUpdateOne) Save(ctx context.Context) (*Physicalt
 		node *Physicaltherapyrecord
 	)
 	if len(puo.hooks) == 0 {
+		if err = puo.check(); err != nil {
+			return nil, err
+		}
 		node, err = puo.sqlSave(ctx)
 	} else {
 		var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 			mutation, ok := m.(*PhysicaltherapyrecordMutation)
 			if !ok {
 				return nil, fmt.Errorf("unexpected mutation type %T", m)
+			}
+			if err = puo.check(); err != nil {
+				return nil, err
 			}
 			puo.mutation = mutation
 			node, err = puo.sqlSave(ctx)
@@ -538,6 +648,26 @@ func (puo *PhysicaltherapyrecordUpdateOne) ExecX(ctx context.Context) {
 	}
 }
 
+// check runs all checks and user-defined validators on the builder.
+func (puo *PhysicaltherapyrecordUpdateOne) check() error {
+	if v, ok := puo.mutation.Idnumber(); ok {
+		if err := physicaltherapyrecord.IdnumberValidator(v); err != nil {
+			return &ValidationError{Name: "idnumber", err: fmt.Errorf("ent: validator failed for field \"idnumber\": %w", err)}
+		}
+	}
+	if v, ok := puo.mutation.Age(); ok {
+		if err := physicaltherapyrecord.AgeValidator(v); err != nil {
+			return &ValidationError{Name: "age", err: fmt.Errorf("ent: validator failed for field \"age\": %w", err)}
+		}
+	}
+	if v, ok := puo.mutation.Telephone(); ok {
+		if err := physicaltherapyrecord.TelephoneValidator(v); err != nil {
+			return &ValidationError{Name: "telephone", err: fmt.Errorf("ent: validator failed for field \"telephone\": %w", err)}
+		}
+	}
+	return nil
+}
+
 func (puo *PhysicaltherapyrecordUpdateOne) sqlSave(ctx context.Context) (_node *Physicaltherapyrecord, err error) {
 	_spec := &sqlgraph.UpdateSpec{
 		Node: &sqlgraph.NodeSpec{
@@ -554,6 +684,34 @@ func (puo *PhysicaltherapyrecordUpdateOne) sqlSave(ctx context.Context) (_node *
 		return nil, &ValidationError{Name: "ID", err: fmt.Errorf("missing Physicaltherapyrecord.ID for update")}
 	}
 	_spec.Node.ID.Value = id
+	if value, ok := puo.mutation.Idnumber(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: physicaltherapyrecord.FieldIdnumber,
+		})
+	}
+	if value, ok := puo.mutation.Age(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: physicaltherapyrecord.FieldAge,
+		})
+	}
+	if value, ok := puo.mutation.AddedAge(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: physicaltherapyrecord.FieldAge,
+		})
+	}
+	if value, ok := puo.mutation.Telephone(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: physicaltherapyrecord.FieldTelephone,
+		})
+	}
 	if value, ok := puo.mutation.Appointtime(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeTime,

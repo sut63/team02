@@ -93,10 +93,329 @@ func IDLTE(id int) predicate.Physicaltherapyrecord {
 	})
 }
 
+// Idnumber applies equality check predicate on the "idnumber" field. It's identical to IdnumberEQ.
+func Idnumber(v string) predicate.Physicaltherapyrecord {
+	return predicate.Physicaltherapyrecord(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldIdnumber), v))
+	})
+}
+
+// Age applies equality check predicate on the "age" field. It's identical to AgeEQ.
+func Age(v int) predicate.Physicaltherapyrecord {
+	return predicate.Physicaltherapyrecord(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldAge), v))
+	})
+}
+
+// Telephone applies equality check predicate on the "telephone" field. It's identical to TelephoneEQ.
+func Telephone(v string) predicate.Physicaltherapyrecord {
+	return predicate.Physicaltherapyrecord(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldTelephone), v))
+	})
+}
+
 // Appointtime applies equality check predicate on the "appointtime" field. It's identical to AppointtimeEQ.
 func Appointtime(v time.Time) predicate.Physicaltherapyrecord {
 	return predicate.Physicaltherapyrecord(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldAppointtime), v))
+	})
+}
+
+// IdnumberEQ applies the EQ predicate on the "idnumber" field.
+func IdnumberEQ(v string) predicate.Physicaltherapyrecord {
+	return predicate.Physicaltherapyrecord(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldIdnumber), v))
+	})
+}
+
+// IdnumberNEQ applies the NEQ predicate on the "idnumber" field.
+func IdnumberNEQ(v string) predicate.Physicaltherapyrecord {
+	return predicate.Physicaltherapyrecord(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldIdnumber), v))
+	})
+}
+
+// IdnumberIn applies the In predicate on the "idnumber" field.
+func IdnumberIn(vs ...string) predicate.Physicaltherapyrecord {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Physicaltherapyrecord(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.In(s.C(FieldIdnumber), v...))
+	})
+}
+
+// IdnumberNotIn applies the NotIn predicate on the "idnumber" field.
+func IdnumberNotIn(vs ...string) predicate.Physicaltherapyrecord {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Physicaltherapyrecord(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.NotIn(s.C(FieldIdnumber), v...))
+	})
+}
+
+// IdnumberGT applies the GT predicate on the "idnumber" field.
+func IdnumberGT(v string) predicate.Physicaltherapyrecord {
+	return predicate.Physicaltherapyrecord(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldIdnumber), v))
+	})
+}
+
+// IdnumberGTE applies the GTE predicate on the "idnumber" field.
+func IdnumberGTE(v string) predicate.Physicaltherapyrecord {
+	return predicate.Physicaltherapyrecord(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldIdnumber), v))
+	})
+}
+
+// IdnumberLT applies the LT predicate on the "idnumber" field.
+func IdnumberLT(v string) predicate.Physicaltherapyrecord {
+	return predicate.Physicaltherapyrecord(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldIdnumber), v))
+	})
+}
+
+// IdnumberLTE applies the LTE predicate on the "idnumber" field.
+func IdnumberLTE(v string) predicate.Physicaltherapyrecord {
+	return predicate.Physicaltherapyrecord(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldIdnumber), v))
+	})
+}
+
+// IdnumberContains applies the Contains predicate on the "idnumber" field.
+func IdnumberContains(v string) predicate.Physicaltherapyrecord {
+	return predicate.Physicaltherapyrecord(func(s *sql.Selector) {
+		s.Where(sql.Contains(s.C(FieldIdnumber), v))
+	})
+}
+
+// IdnumberHasPrefix applies the HasPrefix predicate on the "idnumber" field.
+func IdnumberHasPrefix(v string) predicate.Physicaltherapyrecord {
+	return predicate.Physicaltherapyrecord(func(s *sql.Selector) {
+		s.Where(sql.HasPrefix(s.C(FieldIdnumber), v))
+	})
+}
+
+// IdnumberHasSuffix applies the HasSuffix predicate on the "idnumber" field.
+func IdnumberHasSuffix(v string) predicate.Physicaltherapyrecord {
+	return predicate.Physicaltherapyrecord(func(s *sql.Selector) {
+		s.Where(sql.HasSuffix(s.C(FieldIdnumber), v))
+	})
+}
+
+// IdnumberEqualFold applies the EqualFold predicate on the "idnumber" field.
+func IdnumberEqualFold(v string) predicate.Physicaltherapyrecord {
+	return predicate.Physicaltherapyrecord(func(s *sql.Selector) {
+		s.Where(sql.EqualFold(s.C(FieldIdnumber), v))
+	})
+}
+
+// IdnumberContainsFold applies the ContainsFold predicate on the "idnumber" field.
+func IdnumberContainsFold(v string) predicate.Physicaltherapyrecord {
+	return predicate.Physicaltherapyrecord(func(s *sql.Selector) {
+		s.Where(sql.ContainsFold(s.C(FieldIdnumber), v))
+	})
+}
+
+// AgeEQ applies the EQ predicate on the "age" field.
+func AgeEQ(v int) predicate.Physicaltherapyrecord {
+	return predicate.Physicaltherapyrecord(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldAge), v))
+	})
+}
+
+// AgeNEQ applies the NEQ predicate on the "age" field.
+func AgeNEQ(v int) predicate.Physicaltherapyrecord {
+	return predicate.Physicaltherapyrecord(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldAge), v))
+	})
+}
+
+// AgeIn applies the In predicate on the "age" field.
+func AgeIn(vs ...int) predicate.Physicaltherapyrecord {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Physicaltherapyrecord(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.In(s.C(FieldAge), v...))
+	})
+}
+
+// AgeNotIn applies the NotIn predicate on the "age" field.
+func AgeNotIn(vs ...int) predicate.Physicaltherapyrecord {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Physicaltherapyrecord(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.NotIn(s.C(FieldAge), v...))
+	})
+}
+
+// AgeGT applies the GT predicate on the "age" field.
+func AgeGT(v int) predicate.Physicaltherapyrecord {
+	return predicate.Physicaltherapyrecord(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldAge), v))
+	})
+}
+
+// AgeGTE applies the GTE predicate on the "age" field.
+func AgeGTE(v int) predicate.Physicaltherapyrecord {
+	return predicate.Physicaltherapyrecord(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldAge), v))
+	})
+}
+
+// AgeLT applies the LT predicate on the "age" field.
+func AgeLT(v int) predicate.Physicaltherapyrecord {
+	return predicate.Physicaltherapyrecord(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldAge), v))
+	})
+}
+
+// AgeLTE applies the LTE predicate on the "age" field.
+func AgeLTE(v int) predicate.Physicaltherapyrecord {
+	return predicate.Physicaltherapyrecord(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldAge), v))
+	})
+}
+
+// TelephoneEQ applies the EQ predicate on the "telephone" field.
+func TelephoneEQ(v string) predicate.Physicaltherapyrecord {
+	return predicate.Physicaltherapyrecord(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldTelephone), v))
+	})
+}
+
+// TelephoneNEQ applies the NEQ predicate on the "telephone" field.
+func TelephoneNEQ(v string) predicate.Physicaltherapyrecord {
+	return predicate.Physicaltherapyrecord(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldTelephone), v))
+	})
+}
+
+// TelephoneIn applies the In predicate on the "telephone" field.
+func TelephoneIn(vs ...string) predicate.Physicaltherapyrecord {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Physicaltherapyrecord(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.In(s.C(FieldTelephone), v...))
+	})
+}
+
+// TelephoneNotIn applies the NotIn predicate on the "telephone" field.
+func TelephoneNotIn(vs ...string) predicate.Physicaltherapyrecord {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Physicaltherapyrecord(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.NotIn(s.C(FieldTelephone), v...))
+	})
+}
+
+// TelephoneGT applies the GT predicate on the "telephone" field.
+func TelephoneGT(v string) predicate.Physicaltherapyrecord {
+	return predicate.Physicaltherapyrecord(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldTelephone), v))
+	})
+}
+
+// TelephoneGTE applies the GTE predicate on the "telephone" field.
+func TelephoneGTE(v string) predicate.Physicaltherapyrecord {
+	return predicate.Physicaltherapyrecord(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldTelephone), v))
+	})
+}
+
+// TelephoneLT applies the LT predicate on the "telephone" field.
+func TelephoneLT(v string) predicate.Physicaltherapyrecord {
+	return predicate.Physicaltherapyrecord(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldTelephone), v))
+	})
+}
+
+// TelephoneLTE applies the LTE predicate on the "telephone" field.
+func TelephoneLTE(v string) predicate.Physicaltherapyrecord {
+	return predicate.Physicaltherapyrecord(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldTelephone), v))
+	})
+}
+
+// TelephoneContains applies the Contains predicate on the "telephone" field.
+func TelephoneContains(v string) predicate.Physicaltherapyrecord {
+	return predicate.Physicaltherapyrecord(func(s *sql.Selector) {
+		s.Where(sql.Contains(s.C(FieldTelephone), v))
+	})
+}
+
+// TelephoneHasPrefix applies the HasPrefix predicate on the "telephone" field.
+func TelephoneHasPrefix(v string) predicate.Physicaltherapyrecord {
+	return predicate.Physicaltherapyrecord(func(s *sql.Selector) {
+		s.Where(sql.HasPrefix(s.C(FieldTelephone), v))
+	})
+}
+
+// TelephoneHasSuffix applies the HasSuffix predicate on the "telephone" field.
+func TelephoneHasSuffix(v string) predicate.Physicaltherapyrecord {
+	return predicate.Physicaltherapyrecord(func(s *sql.Selector) {
+		s.Where(sql.HasSuffix(s.C(FieldTelephone), v))
+	})
+}
+
+// TelephoneEqualFold applies the EqualFold predicate on the "telephone" field.
+func TelephoneEqualFold(v string) predicate.Physicaltherapyrecord {
+	return predicate.Physicaltherapyrecord(func(s *sql.Selector) {
+		s.Where(sql.EqualFold(s.C(FieldTelephone), v))
+	})
+}
+
+// TelephoneContainsFold applies the ContainsFold predicate on the "telephone" field.
+func TelephoneContainsFold(v string) predicate.Physicaltherapyrecord {
+	return predicate.Physicaltherapyrecord(func(s *sql.Selector) {
+		s.Where(sql.ContainsFold(s.C(FieldTelephone), v))
 	})
 }
 

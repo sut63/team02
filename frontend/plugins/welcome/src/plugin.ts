@@ -13,6 +13,7 @@ import SearchSurgeryappointment from './components/SearchSurgeryappointment';
 import Searchtable from './components/SearchChecksymptom';
 import checksymptommain from './components/Checksymptommain';
 import ComponentsTable from './components/TableCheck';
+import Searchphysicaltherapyrecord from './components/Searchphysicaltherapyrecord';
  
 
 export const plugin = createPlugin({
@@ -32,5 +33,8 @@ export const plugin = createPlugin({
     router.registerRoute('/Antenatal', Antenatal);
     router.registerRoute('/Searchdentalappointment', SearchDentalappointment);
     router.registerRoute('/SearchSurgeryappointment', SearchSurgeryappointment);
+    router.registerRoute('/Searchphysicaltherapyrecord', Searchphysicaltherapyrecord);
+
+  
   },
 });
