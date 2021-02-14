@@ -24,10 +24,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import { DefaultApi } from '../../api/apis';
-/* import { EntUser } from '../../api/models/EntUser';
-import { EntDistance } from '../../api/models/EntDistance';
-import { EntUrgent } from '../../api/models/EntUrgent'; */
-//import { EntUser } from '../../api/models/EntUser'; 
+
 import { EntChecksymptom } from './../../api/models/EntChecksymptom';
 import { EntPersonnel } from './../../api/models/EntPersonnel';
 
@@ -89,20 +86,7 @@ export default function Searchtable() {
 
   useEffect(() => {
    
-    const checkJobPosition = async () => {
-      const jobdata = JSON.parse(String(localStorage.getItem("jobpositiondata")));
-      setLoading(false);
-      if (jobdata != "เจ้าหน้าที่โอเปอร์เรเตอร์" ) {
-        localStorage.setItem("userdata",JSON.stringify(null));
-        localStorage.setItem("jobpositiondata",JSON.stringify(null));
-        history.pushState("","","./");
-           
-      }
-      else{
-          setPersonnel(Number(localStorage.getItem("userdata")))
-      }
-    }
-  checkJobPosition();
+    
   }, [loading]);
 
 
@@ -141,34 +125,6 @@ export default function Searchtable() {
         }
     }
 
-
-
-
-    
-
-    
-    
-
-  /* const UrgentSearch = (res: any) => {
-    const data = res.filter((filter: EntCarservice) => filter?.edges?.urgentid?.id == urgentid)
-    console.log(data.length)
-    if (data.length != 0) {
-      return data;
-    }
-    else {
-      return res;
-    }
-  }
-  const DistanceSearch = (res: any) => {
-    const data = res.filter((filter: EntCarservice) => filter?.edges?.disid?.id == disid)
-    console.log(data.length)
-    if (data.length != 0) {
-      return data;
-    }
-    else {
-      return res;
-    }
-  } */
 
   const handleSearchChange = (event: any) => {
     setCarserviceSearch(event.target.value as string);
