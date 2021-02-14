@@ -37,20 +37,7 @@ export default function ComponentsTable() {
    };
    getCarservices();
 
-   const checkJobPosition = async () => {
-    const jobdata = JSON.parse(String(localStorage.getItem("jobpositiondata")));
-    setLoading(false);
-    if (jobdata != "เจ้าหน้าที่โอเปอร์เรเตอร์" ) {
-      localStorage.setItem("userdata",JSON.stringify(null));
-      localStorage.setItem("jobpositiondata",JSON.stringify(null));
-      history.pushState("","","./");
-           
-    }
-    else{
-        setUser(Number(localStorage.getItem("userdata")))
-    }
-  }
-checkJobPosition();
+   
  }, [loading]);
  
  const deleteCarservices = async (id: number) => {
