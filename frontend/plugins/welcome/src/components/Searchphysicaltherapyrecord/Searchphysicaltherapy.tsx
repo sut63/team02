@@ -8,11 +8,7 @@ import {
 } from '@backstage/core';
 import TextField from '@material-ui/core/TextField';
 import FormControl from '@material-ui/core/FormControl';
-
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
-
+import { Link, Link as RouterLink } from 'react-router-dom';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -24,16 +20,13 @@ import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import { DefaultApi } from '../../api/apis';
 import { Alert } from '@material-ui/lab';
-
 import moment from 'moment';
 
 import { EntPhysicaltherapyrecord } from '../../api/models/EntPhysicaltherapyrecord';
 
-
-
 import SearchIcon from '@material-ui/icons/Search';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import SearchPhysicaltherapyrecord from '.';
+
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -47,29 +40,25 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const searchcheck = {
-    personnelcheck: true,
     patientcheck: true,
 }
 
 export default function PhysicaltherapyrecordSearch () {
     const classes = useStyles();
     const api = new DefaultApi();
-    const profile = { givenName: 'ยินดีต้อนรับ' };
+    const profile = { givenName: 'ระบบค้นหาข้อมูลกายกายภาพบำบัด' };
     const [physicaltherapyrecords, setphysicaltherapyrecords] = useState<EntPhysicaltherapyrecord []>([]);
     const [loading, setLoading] = useState(true);
     const [status, setStatus] = useState(false);
     const [alerttype, setAlertType] = useState(String);
     const [errormessege, setErrorMessege] = useState(String);
 
-    const [personnelsearch, setPersonnelSearch] = useState(String);
     const [patientsearch, setPatientSearch] = useState(String);
-
 
     const SearchPhysicaltherapyrecord = async () => {
         const res = await api.listPhysicaltherapyrecord({ limit: 100, offset: 0});
-        console.log(res);
-        const personnelsearch = PersonnelSearch(res);
-        const patientsearch = PatientSearch(personnelsearch);
+        console.log(res);      
+        const patientsearch = PatientSearch(res);
         
         setErrorMessege("ไม่พบข้อมูลที่ค้นหา");
         setAlertType("error");
@@ -87,27 +76,9 @@ export default function PhysicaltherapyrecordSearch () {
         setStatus(true);
         ResetSearchCheck();
     }
-
+    
     const ResetSearchCheck = () => {
-        searchcheck.personnelcheck = true;
         searchcheck.patientcheck = true;
-    }
-
-    const PersonnelSearch = (res: any) => {
-        const data = res.filter((filter: EntPhysicaltherapyrecord) => filter.edges?.personnel?.name?.includes(personnelsearch))
-        console.log(data);
-        if (data.length != 0 && personnelsearch != "") {
-            return data;
-        }
-        else {
-            searchcheck.personnelcheck = false;
-            if(personnelsearch == ""){
-                return res;
-            }
-            else{
-                return data;
-            }
-        }
     }
 
     const PatientSearch = (res: any) => {
@@ -130,10 +101,6 @@ export default function PhysicaltherapyrecordSearch () {
 
 
 
-    const PersonnelSearchhandleChange = (event: any) => {
-        setPersonnelSearch(event.target.value as string);
-    };
-
     const PatientSearchhandleChange = (event: any) => {
         setPatientSearch(event.target.value as string);
     };
@@ -142,10 +109,16 @@ export default function PhysicaltherapyrecordSearch () {
         <Page theme={pageTheme.website}>
             <Header
                 title={`${profile.givenName}`}
-            //subtitle="Some quick intro and links."
-            ></Header>
+            //subtitle="Some quick intro and links."         
+            >
+                   <Link component={RouterLink} to="/WelcomePage">
+                        <Button variant="contained" color="secondary" >
+                            กลับหน้าหลัก
+                        </Button>
+                    </Link>
+            </Header>
             <Content>
-                <ContentHeader title="ค้นหาข้อมูลการนัดผ่าตัด">
+                <ContentHeader title="ค้นหาข้อมูลการกายภาพบำบัด">
                 {status ? (
                         <div>
                             {alerttype != "" ? (
@@ -156,20 +129,7 @@ export default function PhysicaltherapyrecordSearch () {
                         </div>
                     ) : null}
                 </ContentHeader>
-                <FormControl
-                    className={classes.margin}
-                    variant="outlined"
-                >
-                    <TextField
-                        id="search"
-                        label="ค้นหาแพทย์ keyword"
-                        type="string"
-                        size="medium"
-                        value={personnelsearch}
-                        onChange={PersonnelSearchhandleChange}
-                        style={{ width: 200 }}
-                    />
-                </FormControl>
+                
 
                 <FormControl
                     className={classes.margin}
@@ -200,7 +160,7 @@ export default function PhysicaltherapyrecordSearch () {
                     </Button>
                     <Button
                         onClick={() => {
-                            history.pushState("", "", "./Surgeryappointment");
+                            history.pushState("", "", "./Createphysicaltherapyrecord");
                             window.location.reload(false);
                         }}
                         variant="contained"
@@ -210,6 +170,7 @@ export default function PhysicaltherapyrecordSearch () {
                     >
                         กลับ
                     </Button>
+
                 </div>
 
                 <TableContainer component={Paper}>

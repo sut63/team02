@@ -59,11 +59,10 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function AmbulanceCreate() {
   const classes = useStyles();
-  const profile = { givenName: 'ยินดีต้อนรับ' };
+  const profile = { givenName: 'ยินดีต้อนรับสู่ระบบบันทึกนัดกายกายภาพบำบัด' };
   const api = new DefaultApi();
   const [status, setStatus] = useState(false);
-  const [alert, setAlert] = useState(true);
-  const [alert2, setAlerts] = useState(true);
+
   //เก็บข้อมูลที่จะดึงมา
   const [physicaltherapyrecord, setPhysicaltherapyrecords] = useState<EntPhysicaltherapyrecord[]>([]);
   const [personnels, setPersonnels] = useState<EntPersonnel[]>([]);
@@ -78,7 +77,6 @@ export default function AmbulanceCreate() {
 
 
   const [loading, setLoading] = useState(true);
-  const [date, setDate] = useState(String);
 
   const [personnelid, setPersonnelid] = useState(Number);
   const [patientid, setPatientid] = useState(Number);
@@ -230,9 +228,9 @@ export default function AmbulanceCreate() {
       personnel        : personnelid,
       physicaltherapyroom : physicaltherapyroomid,
       status  : statusid,
-      age:Number(ageid),
-      telephone:telephoneid,
-      idnumber: idnumberid,
+      age : Number(ageid),
+      telephone :telephoneid,
+      idnumber  : idnumberid,
     };
 
     console.log(physicaltherapyrecord)
@@ -272,23 +270,12 @@ export default function AmbulanceCreate() {
        <table>
        <tr>
         <th>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <Link component={RouterLink} to="/WelcomePage">
-            <Button variant="contained"style={{ background: 'linear-gradient(45deg, #FFFACD 15%, #9932CC 120%)',height: 40}}>
-              <h3
-              style={
-                {color: "#483D8B",
-                background: 'linear-gradient(45deg, #FFFACD 15%, #9932CC 120%)',
-                borderRadius: 10,
-                height: 25,
-                padding: '0 20px',
-                
-               }
-             }>
-               กลับหน้าหลัก
-            </h3>
-            </Button>
-          </Link>
+  
+        <Link component={RouterLink} to="/WelcomePage">
+                        <Button variant="contained" color="secondary" >
+                            กลับหน้าหลัก
+                        </Button>
+                    </Link>
           </th>
        </tr>
        </table>
@@ -296,7 +283,7 @@ export default function AmbulanceCreate() {
       </Header>
       <Content>
         
-      <ContentHeader title="เพิ่มข้อมูลเข้าสู่ระบบ" >
+      <ContentHeader title="ระบบบันทึกนัดกายกายภาพบำบัด" >
         <Button
                 style={{ marginLeft: 20 }}
                 component={RouterLink}
@@ -306,6 +293,15 @@ export default function AmbulanceCreate() {
               >
                 ค้นหา
              </Button>
+             <Button
+                style={{ marginLeft: 20 }}
+                component={RouterLink}
+                to="/WelcomePage"
+                variant="contained"
+                size="large"
+              >
+                กลับ
+             </Button>    
       {status ? (
                         <div>
                             {alerttype != "" ? (
