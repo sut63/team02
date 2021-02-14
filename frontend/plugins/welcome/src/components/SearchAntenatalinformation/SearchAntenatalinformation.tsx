@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const searchcheck = {
-    personnelcheck: true,
+    patientcheck: true,
     pregnancystatuscheck: true,
 }
 
@@ -61,15 +61,15 @@ export default function AntenatalinformationSearchPage() {
     const [alerttype, setAlertType] = useState(String);
     const [errormessege, setErrorMessege] = useState(String);
 
-    const [personnelsearch, setPersonnelSearch] = useState(String);
+    const [patientsearch, setPatientSearch] = useState(String);
     const [pregnancystatussearch, setPregnancystatusSearch] = useState(String);
 
 
     const SearchAntenatalinformation = async () => {
         const res = await api.listAntenatalinformation({ limit: 100, offset: 0});
         console.log(res);
-        const personnelsearch = PersonnelSearch(res);
-        const pregnancystatussearch = PregnancystatusSearch(personnelsearch);
+        const patientsearch = PatientSearch(res);
+        const pregnancystatussearch = PregnancystatusSearch(patientsearch);
         
         setErrorMessege("ไม่พบข้อมูลที่ค้นหา");
         setAlertType("error");
@@ -89,19 +89,19 @@ export default function AntenatalinformationSearchPage() {
     }
 
     const ResetSearchCheck = () => {
-        searchcheck.personnelcheck = true;
+        searchcheck.patientcheck = true;
         searchcheck.pregnancystatuscheck = true;
     }
 
-    const PersonnelSearch = (res: any) => {
-        const data = res.filter((filter: EntAntenatalinformation) => filter.edges?.personnel?.name?.includes(personnelsearch))
+    const PatientSearch = (res: any) => {
+        const data = res.filter((filter: EntAntenatalinformation) => filter.edges?.patient?.name?.includes(patientsearch))
         console.log(data);
-        if (data.length != 0 && personnelsearch != "") {
+        if (data.length != 0 && patientsearch != "") {
             return data;
         }
         else {
-            searchcheck.personnelcheck = false;
-            if(personnelsearch == ""){
+            searchcheck.patientcheck = false;
+            if(patientsearch == ""){
                 return res;
             }
             else{
@@ -130,8 +130,8 @@ export default function AntenatalinformationSearchPage() {
 
 
 
-    const PersonnelSearchhandleChange = (event: any) => {
-        setPersonnelSearch(event.target.value as string);
+    const PatientSearchhandleChange = (event: any) => {
+        setPatientSearch(event.target.value as string);
     };
 
     const PregnancystatusSearchhandleChange = (event: any) => {
@@ -162,11 +162,11 @@ export default function AntenatalinformationSearchPage() {
                 >
                     <TextField
                         id="search"
-                        label="ค้นหาแพทย์ keyword"
+                        label="ค้นหาผู้รับการตรวจ"
                         type="string"
                         size="medium"
-                        value={personnelsearch}
-                        onChange={PersonnelSearchhandleChange}
+                        value={patientsearch}
+                        onChange={PatientSearchhandleChange}
                         style={{ width: 200 }}
                     />
                 </FormControl>
@@ -177,7 +177,7 @@ export default function AntenatalinformationSearchPage() {
                 >
                     <TextField
                         id="search"
-                        label="ค้นหาสถานะครรภ์ keyword"
+                        label="ค้นหาสถานะครรภ์"
                         type="string"
                         size="medium"
                         value={pregnancystatussearch}

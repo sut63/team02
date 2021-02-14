@@ -234,7 +234,7 @@ export default function createAntenatalinformation() {
                         }}
                         variant="contained"
                         color="primary"
-                        style={{ width: 300, backgroundColor: "#34eb77", color: "#000000", fontSize: 18 }}
+                        style={{ width: 300, backgroundColor: "#54c571", color: "#000000", fontSize: 18 }}
                         startIcon={<SearchIcon />}
                     >
                         <b>ค้นหาผลการตรวจครรภ์</b>
@@ -390,8 +390,16 @@ export default function createAntenatalinformation() {
                                                 variant="contained"
                                                 color="primary"
                                             >
-                                                Create
+                                                บันทึก
                                             </Button>
+
+                                            &nbsp;&nbsp;&nbsp;
+                                            <Link component={RouterLink} to="/WelcomePage">
+                                            <Button variant="contained" color="primary" style={{backgroundColor: "#e55451"}}>
+                                            กลับ
+                                            </Button>
+                                            </Link>
+                                        
                                             </Typography>
                                             </div>
                                     </form>
