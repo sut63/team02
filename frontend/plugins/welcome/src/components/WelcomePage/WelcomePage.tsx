@@ -1,29 +1,20 @@
 import React, { FC } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import {
-  Typography,
   Grid,
-  List,
-  ListItem,
-  ListItemText,
   Link,
 } from '@material-ui/core';
 import {
   Content,
-  InfoCard,
   Header,
   Page,
   pageTheme,
   ContentHeader,
-  SupportButton,
 } from '@backstage/core';
-import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
-import { typography } from '@material-ui/system';
 
 
 const WelcomePage: FC<{}> = () => {
-  const profile = { givenName: '' };
 
   return (
     <Page theme={pageTheme.website}>
@@ -34,18 +25,17 @@ const WelcomePage: FC<{}> = () => {
       <Content>
       <ContentHeader title="ตัวเลือกการนัดหมาย">
       <Link component={RouterLink} to="/">
-         <Button variant="contained" color="secondary">
+         <Button variant="contained" color="secondary" size="large" >
              ออกจากระบบ
            </Button>
            </Link>
-   
        </ContentHeader>
-
+      
        <tr>
          <td>
        <Link component={RouterLink} to="/Checksymptom">
-         <Button variant="contained" color="primary" >
-             ตรวจอาการ
+         <Button variant="contained" color="primary" size="large" style={{ width: 300 , margin: 10}}>
+         ระบบการนัดตรวจอาการ
            </Button>
            </Link>
            </td>
@@ -53,37 +43,37 @@ const WelcomePage: FC<{}> = () => {
       <Grid item xs={3}>
       <tr>
        <Link component={RouterLink} to="/Dentalappointment">
-         <Button variant="contained" color="primary">
-             ทำฟัน
+         <Button variant="contained" color="primary" size="large" style={{ width: 300 , margin: 10}}>
+             ระบบการนัดทำทันตกรรม
            </Button>
            </Link>
       </tr> 
       </Grid>
       <tr>
        <Link component={RouterLink} to="/Antenatal">
-         <Button variant="contained" color="primary">
-             ฝากครรภ์
+         <Button variant="contained" color="primary" size="large" style={{ width: 300 , margin: 10}}>
+         ระบบการนัดฝากครรภ์
            </Button>
            </Link>
       </tr> 
       <tr>
        <Link component={RouterLink} to="/Createphysicaltherapyrecord">
-         <Button variant="contained" color="primary">
-             กายภาพบำบัด
+         <Button variant="contained" color="primary" size="large" style={{ width: 300 , margin: 10}}>
+         ระบบการนัดกายภาพบำบัด
            </Button>
            </Link>
       </tr> 
       <tr>
        <Link component={RouterLink} to="/Bonedisease">
-         <Button variant="contained" color="primary">
-             โรคกระดูก
+         <Button variant="contained" color="primary" size="large" style={{ width: 300 , margin: 10}}>
+         ระบบการนัดโรคกระดูก
            </Button>
            </Link>
       </tr> 
       <tr>
        <Link component={RouterLink} to="/Surgeryappointment">
-         <Button variant="contained" color="primary">
-             ผ่าตัด
+         <Button variant="contained" color="primary" size="large" style={{ width: 300 , margin: 10}}>
+         ระบบการนัดผ่าตัด
            </Button>
            </Link>
       </tr> 

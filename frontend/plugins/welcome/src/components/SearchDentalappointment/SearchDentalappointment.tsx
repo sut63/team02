@@ -22,14 +22,10 @@ import FormControl from '@material-ui/core/FormControl';
 import { Alert } from '@material-ui/lab';
 import { DefaultApi } from '../../api/apis';
 
-import MenuItem from '@material-ui/core/MenuItem';
-//import FormHelperText from '@material-ui/core/FormHelperText';
-import Select from '@material-ui/core/Select';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
-import Swal from 'sweetalert2';
 
-import { EntPatient,EntDentalappointment,EntPersonnel,EntDentalkind, EntPatientEdgesFromJSON } from '../../api';
+import { EntPatient,EntDentalappointment,EntPersonnel } from '../../api';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -63,34 +59,7 @@ export default function SearchTableDentalappointment() {
   const [errormessege, setErrorMessege] = useState(String);
   const [dentalappointment, setDentalappointment] = useState<EntDentalappointment[]>([]);
 
-  const [patients, setPatients] = useState<EntPatient[]>([]);
-  const [personnels, setPersonnels] = useState<EntPersonnel[]>([]);
-
-  const [loading, setLoading] = useState(true);
   const [patientName, setPatient] = useState(String);
-  const [personnelName, setPersonnel] = useState(Number);
-  const [dentalappointmentsearch, setDentalappointmentSearch] = useState(String);
-
-  useEffect(() => {
-
-    const getPatients = async () => {
-      const res = await api.listPatient({ limit: 10, offset: 0 });
-      setLoading(false);
-      setPatients(res);
-      console.log(res);
-    };
-    getPatients();
-
-
-    const getPersonnels = async () => {
-      const res = await api.listPersonnel({ limit: 10, offset: 0 });
-      setLoading(false);
-      setPersonnels(res);
-    };
-    getPersonnels();
-    setPersonnel(Number(localStorage.getItem("personaldata")))
-  }, [loading]);
-
 
 
 
@@ -130,17 +99,14 @@ export default function SearchTableDentalappointment() {
   };
 
 
-
-
-
   return (
     <Page theme={pageTheme.home}>
       <Header
-      title={`${profile.givenName || 'Dentalappointment '}`}
+      title={`${profile.givenName || 'Search Dentalappointment '}`}
       subtitle=""
      ></Header>
       <Content>
-        <ContentHeader title="ค้นหาบันทึกนัดการทำทันตกรรม">
+        <ContentHeader title="ค้นหาบันทึกการนัดทำทันตกรรม">
         {status ? (
                         <div>
                             {alerttype != "" ? (
@@ -162,24 +128,6 @@ export default function SearchTableDentalappointment() {
         <div className={classes.root}>
           <form noValidate autoComplete="off">
           
-            <div>
-              <FormControl
-                className={classes.margin}
-                variant="outlined"
-              >
-                <div><strong>ชื่อทันตแพทย์</strong></div>
-                <TextField
-                                    id="user"
-                                    type="string"
-                                    size="medium"
-                                    value={personnels.filter((filter:EntPersonnel) => filter.id == personnelName).map((item:EntPersonnel) => `${item.name}`)}
-                                    style={{ width: 400 }}
-                                />
-              </FormControl>
-            </div>
-
-
-
             <div>
               <FormControl
                 className={classes.margin}

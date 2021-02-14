@@ -9,14 +9,11 @@ import {
   ContentHeader, 
 } from '@backstage/core';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
-//import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
-import { Alert } from '@material-ui/lab';
 import { DefaultApi } from '../../api/apis';
 
 import MenuItem from '@material-ui/core/MenuItem';
-//import FormHelperText from '@material-ui/core/FormHelperText';
 import Select from '@material-ui/core/Select';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
@@ -61,9 +58,6 @@ export default function createDentalappointment() {
   const profile = { givenName: ''};
   const api = new DefaultApi();
 
-  //const [deceased, setDeceased] = useState(String);
-  const [status, setStatus] = useState(false);
-  const [alert, setAlert] = useState(true);
   const [patients, setPatients] = useState<EntPatient[]>([]);
   const [kindnames, setKindnames] = useState<EntDentalkind[]>([]);
   const [personnels, setPersonnels] = useState<EntPersonnel[]>([]);
@@ -178,9 +172,6 @@ export default function createDentalappointment() {
     setKindname(event.target.value as number);
   };
 
-  const PersonnelhandleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setPersonnel(event.target.value as number);
-  };
   const DateTimehandleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     setDateTime(event.target.value as string);
   };
@@ -207,7 +198,7 @@ export default function createDentalappointment() {
       subtitle=""
      ></Header>
       <Content>
-        <ContentHeader title="บันทึกนัดการทำทันตกรรม">
+        <ContentHeader title="บันทึกการนัดทำทันตกรรม">
         <div>
             <Link component={RouterLink} to="/SearchDentalappointment">
             <Button variant="contained" color="primary" style={{backgroundColor: "#21b6ae"}}>
@@ -239,7 +230,7 @@ export default function createDentalappointment() {
                                     type="string"
                                     size="medium"
                                     value={personnels.filter((filter:EntPersonnel) => filter.id == personnelName).map((item:EntPersonnel) => `${item.name}`)}
-                                    style={{ width: 400 }}
+                                    style={{ width: 200 }}
                                 />
               </FormControl>
             </div>
