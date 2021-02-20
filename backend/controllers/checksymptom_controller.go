@@ -6,6 +6,7 @@ import (
 	"strconv"
 	"time"
 
+
 	"github.com/gin-gonic/gin"
 	"github.com/to63/app/ent"
 	"github.com/to63/app/ent/patient"
@@ -21,6 +22,7 @@ type ChecksymptomController struct {
 	router gin.IRouter
 }
 
+
 // Checksymptom defines the struct for the Checksymptom
 type Checksymptom struct {
 	PatientID			int
@@ -33,6 +35,7 @@ type Checksymptom struct {
 	Identitycard		string
 
 }
+
 
 // CreateChecksymptom handles POST requests for adding Checksymptom entities
 // @Summary Create checksymptom
@@ -53,6 +56,7 @@ func (ctl *ChecksymptomController) CreateChecksymptom(c *gin.Context) {
 		})
 		return
 	}
+
 
 	patient, err := ctl.client.Patient.
 	Query().
