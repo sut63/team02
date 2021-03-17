@@ -9,8 +9,10 @@ import (
 	"github.com/to63/app/ent/bonedisease"
 	"github.com/to63/app/ent/checksymptom"
 	"github.com/to63/app/ent/dentalappointment"
+	"github.com/to63/app/ent/department"
 	"github.com/to63/app/ent/disease"
 	"github.com/to63/app/ent/doctorordersheet"
+	"github.com/to63/app/ent/gender"
 	"github.com/to63/app/ent/patient"
 	"github.com/to63/app/ent/personnel"
 	"github.com/to63/app/ent/physicaltherapyrecord"
@@ -190,6 +192,12 @@ func init() {
 			return nil
 		}
 	}()
+	departmentFields := schema.Department{}.Fields()
+	_ = departmentFields
+	// departmentDescDepartment is the schema descriptor for department field.
+	departmentDescDepartment := departmentFields[0].Descriptor()
+	// department.DepartmentValidator is a validator for the "department" field. It is called by the builders before save.
+	department.DepartmentValidator = departmentDescDepartment.Validators[0].(func(string) error)
 	diseaseFields := schema.Disease{}.Fields()
 	_ = diseaseFields
 	// diseaseDescDisease is the schema descriptor for disease field.
@@ -202,6 +210,12 @@ func init() {
 	doctorordersheetDescName := doctorordersheetFields[0].Descriptor()
 	// doctorordersheet.NameValidator is a validator for the "Name" field. It is called by the builders before save.
 	doctorordersheet.NameValidator = doctorordersheetDescName.Validators[0].(func(string) error)
+	genderFields := schema.Gender{}.Fields()
+	_ = genderFields
+	// genderDescGender is the schema descriptor for gender field.
+	genderDescGender := genderFields[0].Descriptor()
+	// gender.GenderValidator is a validator for the "gender" field. It is called by the builders before save.
+	gender.GenderValidator = genderDescGender.Validators[0].(func(string) error)
 	patientFields := schema.Patient{}.Fields()
 	_ = patientFields
 	// patientDescName is the schema descriptor for name field.
@@ -212,26 +226,18 @@ func init() {
 	patientDescBirthday := patientFields[1].Descriptor()
 	// patient.BirthdayValidator is a validator for the "birthday" field. It is called by the builders before save.
 	patient.BirthdayValidator = patientDescBirthday.Validators[0].(func(string) error)
-	// patientDescGender is the schema descriptor for gender field.
-	patientDescGender := patientFields[2].Descriptor()
-	// patient.GenderValidator is a validator for the "gender" field. It is called by the builders before save.
-	patient.GenderValidator = patientDescGender.Validators[0].(func(string) error)
 	personnelFields := schema.Personnel{}.Fields()
 	_ = personnelFields
 	// personnelDescName is the schema descriptor for name field.
 	personnelDescName := personnelFields[0].Descriptor()
 	// personnel.NameValidator is a validator for the "name" field. It is called by the builders before save.
 	personnel.NameValidator = personnelDescName.Validators[0].(func(string) error)
-	// personnelDescDepartment is the schema descriptor for department field.
-	personnelDescDepartment := personnelFields[1].Descriptor()
-	// personnel.DepartmentValidator is a validator for the "department" field. It is called by the builders before save.
-	personnel.DepartmentValidator = personnelDescDepartment.Validators[0].(func(string) error)
 	// personnelDescUser is the schema descriptor for user field.
-	personnelDescUser := personnelFields[2].Descriptor()
+	personnelDescUser := personnelFields[1].Descriptor()
 	// personnel.UserValidator is a validator for the "user" field. It is called by the builders before save.
 	personnel.UserValidator = personnelDescUser.Validators[0].(func(string) error)
 	// personnelDescPassword is the schema descriptor for password field.
-	personnelDescPassword := personnelFields[3].Descriptor()
+	personnelDescPassword := personnelFields[2].Descriptor()
 	// personnel.PasswordValidator is a validator for the "password" field. It is called by the builders before save.
 	personnel.PasswordValidator = personnelDescPassword.Validators[0].(func(string) error)
 	physicaltherapyrecordFields := schema.Physicaltherapyrecord{}.Fields()

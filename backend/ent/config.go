@@ -29,8 +29,10 @@ type hooks struct {
 	Checksymptom          []ent.Hook
 	Dentalappointment     []ent.Hook
 	Dentalkind            []ent.Hook
+	Department            []ent.Hook
 	Disease               []ent.Hook
 	Doctorordersheet      []ent.Hook
+	Gender                []ent.Hook
 	Patient               []ent.Hook
 	Personnel             []ent.Hook
 	Physicaltherapyrecord []ent.Hook

@@ -39,6 +39,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 
 export default function Login(props: any) {
+
   const classes = useStyles();
   const api = new DefaultApi();
 
@@ -80,6 +81,7 @@ export default function Login(props: any) {
   const LoginChecker = async () => {
     personnels.map((item: any) => {
       console.log(item.user);
+      console.log(LoginChecker);
       if ((item.user == user) && (item.password == password)) {
         setAlert(true);
         if (item.edges.Personnel == item.edges.Personnel) {

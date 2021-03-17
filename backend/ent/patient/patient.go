@@ -11,9 +11,9 @@ const (
 	FieldName = "name"
 	// FieldBirthday holds the string denoting the birthday field in the database.
 	FieldBirthday = "birthday"
-	// FieldGender holds the string denoting the gender field in the database.
-	FieldGender = "gender"
 
+	// EdgeGender holds the string denoting the gender edge name in mutations.
+	EdgeGender = "Gender"
 	// EdgePhysicaltherapyrecord holds the string denoting the physicaltherapyrecord edge name in mutations.
 	EdgePhysicaltherapyrecord = "physicaltherapyrecord"
 	// EdgeBonedisease holds the string denoting the bonedisease edge name in mutations.
@@ -29,6 +29,13 @@ const (
 
 	// Table holds the table name of the patient in the database.
 	Table = "patients"
+	// GenderTable is the table the holds the Gender relation/edge.
+	GenderTable = "patients"
+	// GenderInverseTable is the table name for the Gender entity.
+	// It exists in this package in order to avoid circular dependency with the "gender" package.
+	GenderInverseTable = "genders"
+	// GenderColumn is the table column denoting the Gender relation/edge.
+	GenderColumn = "Gender"
 	// PhysicaltherapyrecordTable is the table the holds the physicaltherapyrecord relation/edge.
 	PhysicaltherapyrecordTable = "physicaltherapyrecords"
 	// PhysicaltherapyrecordInverseTable is the table name for the Physicaltherapyrecord entity.
@@ -78,13 +85,22 @@ var Columns = []string{
 	FieldID,
 	FieldName,
 	FieldBirthday,
-	FieldGender,
+}
+
+// ForeignKeys holds the SQL foreign-keys that are owned by the Patient type.
+var ForeignKeys = []string{
+	"Gender",
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
 func ValidColumn(column string) bool {
 	for i := range Columns {
 		if column == Columns[i] {
+			return true
+		}
+	}
+	for i := range ForeignKeys {
+		if column == ForeignKeys[i] {
 			return true
 		}
 	}
@@ -96,6 +112,4 @@ var (
 	NameValidator func(string) error
 	// BirthdayValidator is a validator for the "birthday" field. It is called by the builders before save.
 	BirthdayValidator func(string) error
-	// GenderValidator is a validator for the "gender" field. It is called by the builders before save.
-	GenderValidator func(string) error
 )

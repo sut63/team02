@@ -13,6 +13,7 @@ import (
 	"github.com/to63/app/ent/bonedisease"
 	"github.com/to63/app/ent/checksymptom"
 	"github.com/to63/app/ent/dentalappointment"
+	"github.com/to63/app/ent/gender"
 	"github.com/to63/app/ent/patient"
 	"github.com/to63/app/ent/physicaltherapyrecord"
 	"github.com/to63/app/ent/surgeryappointment"
@@ -37,10 +38,23 @@ func (pc *PatientCreate) SetBirthday(s string) *PatientCreate {
 	return pc
 }
 
-// SetGender sets the "gender" field.
-func (pc *PatientCreate) SetGender(s string) *PatientCreate {
-	pc.mutation.SetGender(s)
+// SetGenderID sets the "Gender" edge to the Gender entity by ID.
+func (pc *PatientCreate) SetGenderID(id int) *PatientCreate {
+	pc.mutation.SetGenderID(id)
 	return pc
+}
+
+// SetNillableGenderID sets the "Gender" edge to the Gender entity by ID if the given value is not nil.
+func (pc *PatientCreate) SetNillableGenderID(id *int) *PatientCreate {
+	if id != nil {
+		pc = pc.SetGenderID(*id)
+	}
+	return pc
+}
+
+// SetGender sets the "Gender" edge to the Gender entity.
+func (pc *PatientCreate) SetGender(g *Gender) *PatientCreate {
+	return pc.SetGenderID(g.ID)
 }
 
 // AddPhysicaltherapyrecordIDs adds the "physicaltherapyrecord" edge to the Physicaltherapyrecord entity by IDs.
@@ -200,14 +214,6 @@ func (pc *PatientCreate) check() error {
 			return &ValidationError{Name: "birthday", err: fmt.Errorf("ent: validator failed for field \"birthday\": %w", err)}
 		}
 	}
-	if _, ok := pc.mutation.Gender(); !ok {
-		return &ValidationError{Name: "gender", err: errors.New("ent: missing required field \"gender\"")}
-	}
-	if v, ok := pc.mutation.Gender(); ok {
-		if err := patient.GenderValidator(v); err != nil {
-			return &ValidationError{Name: "gender", err: fmt.Errorf("ent: validator failed for field \"gender\": %w", err)}
-		}
-	}
 	return nil
 }
 
@@ -251,13 +257,24 @@ func (pc *PatientCreate) createSpec() (*Patient, *sqlgraph.CreateSpec) {
 		})
 		_node.Birthday = value
 	}
-	if value, ok := pc.mutation.Gender(); ok {
-		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
-			Value:  value,
-			Column: patient.FieldGender,
-		})
-		_node.Gender = value
+	if nodes := pc.mutation.GenderIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   patient.GenderTable,
+			Columns: []string{patient.GenderColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: gender.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
 	}
 	if nodes := pc.mutation.PhysicaltherapyrecordIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{

@@ -16,6 +16,7 @@ import (
 	"github.com/to63/app/ent/bonedisease"
 	"github.com/to63/app/ent/checksymptom"
 	"github.com/to63/app/ent/dentalappointment"
+	"github.com/to63/app/ent/gender"
 	"github.com/to63/app/ent/patient"
 	"github.com/to63/app/ent/physicaltherapyrecord"
 	"github.com/to63/app/ent/predicate"
@@ -31,12 +32,14 @@ type PatientQuery struct {
 	fields     []string
 	predicates []predicate.Patient
 	// eager-loading edges.
+	withGender                *GenderQuery
 	withPhysicaltherapyrecord *PhysicaltherapyrecordQuery
 	withBonedisease           *BonediseaseQuery
 	withChecksymptom          *ChecksymptomQuery
 	withDentalappointment     *DentalappointmentQuery
 	withAntenatalinformation  *AntenatalinformationQuery
 	withSurgeryappointment    *SurgeryappointmentQuery
+	withFKs                   bool
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -64,6 +67,28 @@ func (pq *PatientQuery) Offset(offset int) *PatientQuery {
 func (pq *PatientQuery) Order(o ...OrderFunc) *PatientQuery {
 	pq.order = append(pq.order, o...)
 	return pq
+}
+
+// QueryGender chains the current query on the "Gender" edge.
+func (pq *PatientQuery) QueryGender() *GenderQuery {
+	query := &GenderQuery{config: pq.config}
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := pq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := pq.sqlQuery()
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(patient.Table, patient.FieldID, selector),
+			sqlgraph.To(gender.Table, gender.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, patient.GenderTable, patient.GenderColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(pq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
 }
 
 // QueryPhysicaltherapyrecord chains the current query on the "physicaltherapyrecord" edge.
@@ -379,6 +404,7 @@ func (pq *PatientQuery) Clone() *PatientQuery {
 		offset:                    pq.offset,
 		order:                     append([]OrderFunc{}, pq.order...),
 		predicates:                append([]predicate.Patient{}, pq.predicates...),
+		withGender:                pq.withGender.Clone(),
 		withPhysicaltherapyrecord: pq.withPhysicaltherapyrecord.Clone(),
 		withBonedisease:           pq.withBonedisease.Clone(),
 		withChecksymptom:          pq.withChecksymptom.Clone(),
@@ -389,6 +415,17 @@ func (pq *PatientQuery) Clone() *PatientQuery {
 		sql:  pq.sql.Clone(),
 		path: pq.path,
 	}
+}
+
+// WithGender tells the query-builder to eager-load the nodes that are connected to
+// the "Gender" edge. The optional arguments are used to configure the query builder of the edge.
+func (pq *PatientQuery) WithGender(opts ...func(*GenderQuery)) *PatientQuery {
+	query := &GenderQuery{config: pq.config}
+	for _, opt := range opts {
+		opt(query)
+	}
+	pq.withGender = query
+	return pq
 }
 
 // WithPhysicaltherapyrecord tells the query-builder to eager-load the nodes that are connected to
@@ -521,8 +558,10 @@ func (pq *PatientQuery) prepareQuery(ctx context.Context) error {
 func (pq *PatientQuery) sqlAll(ctx context.Context) ([]*Patient, error) {
 	var (
 		nodes       = []*Patient{}
+		withFKs     = pq.withFKs
 		_spec       = pq.querySpec()
-		loadedTypes = [6]bool{
+		loadedTypes = [7]bool{
+			pq.withGender != nil,
 			pq.withPhysicaltherapyrecord != nil,
 			pq.withBonedisease != nil,
 			pq.withChecksymptom != nil,
@@ -531,6 +570,12 @@ func (pq *PatientQuery) sqlAll(ctx context.Context) ([]*Patient, error) {
 			pq.withSurgeryappointment != nil,
 		}
 	)
+	if pq.withGender != nil {
+		withFKs = true
+	}
+	if withFKs {
+		_spec.Node.Columns = append(_spec.Node.Columns, patient.ForeignKeys...)
+	}
 	_spec.ScanValues = func(columns []string) ([]interface{}, error) {
 		node := &Patient{config: pq.config}
 		nodes = append(nodes, node)
@@ -549,6 +594,31 @@ func (pq *PatientQuery) sqlAll(ctx context.Context) ([]*Patient, error) {
 	}
 	if len(nodes) == 0 {
 		return nodes, nil
+	}
+
+	if query := pq.withGender; query != nil {
+		ids := make([]int, 0, len(nodes))
+		nodeids := make(map[int][]*Patient)
+		for i := range nodes {
+			if fk := nodes[i]._Gender; fk != nil {
+				ids = append(ids, *fk)
+				nodeids[*fk] = append(nodeids[*fk], nodes[i])
+			}
+		}
+		query.Where(gender.IDIn(ids...))
+		neighbors, err := query.All(ctx)
+		if err != nil {
+			return nil, err
+		}
+		for _, n := range neighbors {
+			nodes, ok := nodeids[n.ID]
+			if !ok {
+				return nil, fmt.Errorf(`unexpected foreign-key "_Gender" returned %v`, n.ID)
+			}
+			for i := range nodes {
+				nodes[i].Edges.Gender = n
+			}
+		}
 	}
 
 	if query := pq.withPhysicaltherapyrecord; query != nil {

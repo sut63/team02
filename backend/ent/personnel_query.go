@@ -16,6 +16,7 @@ import (
 	"github.com/to63/app/ent/bonedisease"
 	"github.com/to63/app/ent/checksymptom"
 	"github.com/to63/app/ent/dentalappointment"
+	"github.com/to63/app/ent/department"
 	"github.com/to63/app/ent/personnel"
 	"github.com/to63/app/ent/physicaltherapyrecord"
 	"github.com/to63/app/ent/predicate"
@@ -37,6 +38,8 @@ type PersonnelQuery struct {
 	withDentalappointment     *DentalappointmentQuery
 	withSurgeryappointment    *SurgeryappointmentQuery
 	withAntenatalinformation  *AntenatalinformationQuery
+	withDepartment            *DepartmentQuery
+	withFKs                   bool
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -191,6 +194,28 @@ func (pq *PersonnelQuery) QueryAntenatalinformation() *AntenatalinformationQuery
 			sqlgraph.From(personnel.Table, personnel.FieldID, selector),
 			sqlgraph.To(antenatalinformation.Table, antenatalinformation.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, personnel.AntenatalinformationTable, personnel.AntenatalinformationColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(pq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryDepartment chains the current query on the "Department" edge.
+func (pq *PersonnelQuery) QueryDepartment() *DepartmentQuery {
+	query := &DepartmentQuery{config: pq.config}
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := pq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := pq.sqlQuery()
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(personnel.Table, personnel.FieldID, selector),
+			sqlgraph.To(department.Table, department.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, personnel.DepartmentTable, personnel.DepartmentColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(pq.driver.Dialect(), step)
 		return fromU, nil
@@ -385,6 +410,7 @@ func (pq *PersonnelQuery) Clone() *PersonnelQuery {
 		withDentalappointment:     pq.withDentalappointment.Clone(),
 		withSurgeryappointment:    pq.withSurgeryappointment.Clone(),
 		withAntenatalinformation:  pq.withAntenatalinformation.Clone(),
+		withDepartment:            pq.withDepartment.Clone(),
 		// clone intermediate query.
 		sql:  pq.sql.Clone(),
 		path: pq.path,
@@ -457,6 +483,17 @@ func (pq *PersonnelQuery) WithAntenatalinformation(opts ...func(*Antenatalinform
 	return pq
 }
 
+// WithDepartment tells the query-builder to eager-load the nodes that are connected to
+// the "Department" edge. The optional arguments are used to configure the query builder of the edge.
+func (pq *PersonnelQuery) WithDepartment(opts ...func(*DepartmentQuery)) *PersonnelQuery {
+	query := &DepartmentQuery{config: pq.config}
+	for _, opt := range opts {
+		opt(query)
+	}
+	pq.withDepartment = query
+	return pq
+}
+
 // GroupBy is used to group vertices by one or more fields/columns.
 // It is often used with aggregate functions, like: count, max, mean, min, sum.
 //
@@ -521,16 +558,24 @@ func (pq *PersonnelQuery) prepareQuery(ctx context.Context) error {
 func (pq *PersonnelQuery) sqlAll(ctx context.Context) ([]*Personnel, error) {
 	var (
 		nodes       = []*Personnel{}
+		withFKs     = pq.withFKs
 		_spec       = pq.querySpec()
-		loadedTypes = [6]bool{
+		loadedTypes = [7]bool{
 			pq.withPhysicaltherapyrecord != nil,
 			pq.withBonedisease != nil,
 			pq.withChecksymptom != nil,
 			pq.withDentalappointment != nil,
 			pq.withSurgeryappointment != nil,
 			pq.withAntenatalinformation != nil,
+			pq.withDepartment != nil,
 		}
 	)
+	if pq.withDepartment != nil {
+		withFKs = true
+	}
+	if withFKs {
+		_spec.Node.Columns = append(_spec.Node.Columns, personnel.ForeignKeys...)
+	}
 	_spec.ScanValues = func(columns []string) ([]interface{}, error) {
 		node := &Personnel{config: pq.config}
 		nodes = append(nodes, node)
@@ -722,6 +767,31 @@ func (pq *PersonnelQuery) sqlAll(ctx context.Context) ([]*Personnel, error) {
 				return nil, fmt.Errorf(`unexpected foreign-key "_Personnel_id" returned %v for node %v`, *fk, n.ID)
 			}
 			node.Edges.Antenatalinformation = append(node.Edges.Antenatalinformation, n)
+		}
+	}
+
+	if query := pq.withDepartment; query != nil {
+		ids := make([]int, 0, len(nodes))
+		nodeids := make(map[int][]*Personnel)
+		for i := range nodes {
+			if fk := nodes[i]._Department; fk != nil {
+				ids = append(ids, *fk)
+				nodeids[*fk] = append(nodeids[*fk], nodes[i])
+			}
+		}
+		query.Where(department.IDIn(ids...))
+		neighbors, err := query.All(ctx)
+		if err != nil {
+			return nil, err
+		}
+		for _, n := range neighbors {
+			nodes, ok := nodeids[n.ID]
+			if !ok {
+				return nil, fmt.Errorf(`unexpected foreign-key "_Department" returned %v`, n.ID)
+			}
+			for i := range nodes {
+				nodes[i].Edges.Department = n
+			}
 		}
 	}
 

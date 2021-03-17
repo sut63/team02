@@ -48,12 +48,18 @@ import {
     EntDentalkind,
     EntDentalkindFromJSON,
     EntDentalkindToJSON,
+    EntDepartment,
+    EntDepartmentFromJSON,
+    EntDepartmentToJSON,
     EntDisease,
     EntDiseaseFromJSON,
     EntDiseaseToJSON,
     EntDoctorordersheet,
     EntDoctorordersheetFromJSON,
     EntDoctorordersheetToJSON,
+    EntGender,
+    EntGenderFromJSON,
+    EntGenderToJSON,
     EntPatient,
     EntPatientFromJSON,
     EntPatientToJSON,
@@ -210,11 +216,19 @@ export interface GetDentalkindRequest {
     id: number;
 }
 
+export interface GetDepartmentRequest {
+    id: number;
+}
+
 export interface GetDiseaseRequest {
     id: number;
 }
 
 export interface GetDoctorordersheetRequest {
+    id: number;
+}
+
+export interface GetGenderRequest {
     id: number;
 }
 
@@ -279,12 +293,22 @@ export interface ListDentalkindRequest {
     offset?: number;
 }
 
+export interface ListDepartmentRequest {
+    limit?: number;
+    offset?: number;
+}
+
 export interface ListDiseaseRequest {
     limit?: number;
     offset?: number;
 }
 
 export interface ListDoctorordersheetRequest {
+    limit?: number;
+    offset?: number;
+}
+
+export interface ListGenderRequest {
     limit?: number;
     offset?: number;
 }
@@ -357,11 +381,6 @@ export interface UpdateDiseaseRequest {
 export interface UpdateDoctorordersheetRequest {
     id: number;
     doctorordersheet: EntDoctorordersheet;
-}
-
-export interface UpdatePatientRequest {
-    id: number;
-    patient: EntPatient;
 }
 
 export interface UpdatePersonnelRequest {
@@ -1430,6 +1449,38 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
+     * get department by ID
+     * Get a department entity by ID
+     */
+    async getDepartmentRaw(requestParameters: GetDepartmentRequest): Promise<runtime.ApiResponse<EntDepartment>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getDepartment.');
+        }
+
+        const queryParameters: runtime.HTTPQuery = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/departments/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => EntDepartmentFromJSON(jsonValue));
+    }
+
+    /**
+     * get department by ID
+     * Get a department entity by ID
+     */
+    async getDepartment(requestParameters: GetDepartmentRequest): Promise<EntDepartment> {
+        const response = await this.getDepartmentRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
      * get disease by ID
      * Get a disease entity by ID
      */
@@ -1490,6 +1541,38 @@ export class DefaultApi extends runtime.BaseAPI {
      */
     async getDoctorordersheet(requestParameters: GetDoctorordersheetRequest): Promise<EntDoctorordersheet> {
         const response = await this.getDoctorordersheetRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
+     * get gender by ID
+     * Get a gender entity by ID
+     */
+    async getGenderRaw(requestParameters: GetGenderRequest): Promise<runtime.ApiResponse<EntGender>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getGender.');
+        }
+
+        const queryParameters: runtime.HTTPQuery = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/genders/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => EntGenderFromJSON(jsonValue));
+    }
+
+    /**
+     * get gender by ID
+     * Get a gender entity by ID
+     */
+    async getGender(requestParameters: GetGenderRequest): Promise<EntGender> {
+        const response = await this.getGenderRaw(requestParameters);
         return await response.value();
     }
 
@@ -1962,6 +2045,42 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
+     * list department entities
+     * List department entities
+     */
+    async listDepartmentRaw(requestParameters: ListDepartmentRequest): Promise<runtime.ApiResponse<Array<EntDepartment>>> {
+        const queryParameters: runtime.HTTPQuery = {};
+
+        if (requestParameters.limit !== undefined) {
+            queryParameters['limit'] = requestParameters.limit;
+        }
+
+        if (requestParameters.offset !== undefined) {
+            queryParameters['offset'] = requestParameters.offset;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/departments`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(EntDepartmentFromJSON));
+    }
+
+    /**
+     * list department entities
+     * List department entities
+     */
+    async listDepartment(requestParameters: ListDepartmentRequest): Promise<Array<EntDepartment>> {
+        const response = await this.listDepartmentRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
      * list disease entities
      * List disease entities
      */
@@ -2030,6 +2149,42 @@ export class DefaultApi extends runtime.BaseAPI {
      */
     async listDoctorordersheet(requestParameters: ListDoctorordersheetRequest): Promise<Array<EntDoctorordersheet>> {
         const response = await this.listDoctorordersheetRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
+     * list gender entities
+     * List gender entities
+     */
+    async listGenderRaw(requestParameters: ListGenderRequest): Promise<runtime.ApiResponse<Array<EntGender>>> {
+        const queryParameters: runtime.HTTPQuery = {};
+
+        if (requestParameters.limit !== undefined) {
+            queryParameters['limit'] = requestParameters.limit;
+        }
+
+        if (requestParameters.offset !== undefined) {
+            queryParameters['offset'] = requestParameters.offset;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/genders`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(EntGenderFromJSON));
+    }
+
+    /**
+     * list gender entities
+     * List gender entities
+     */
+    async listGender(requestParameters: ListGenderRequest): Promise<Array<EntGender>> {
+        const response = await this.listGenderRaw(requestParameters);
         return await response.value();
     }
 
@@ -2544,45 +2699,6 @@ export class DefaultApi extends runtime.BaseAPI {
      */
     async updateDoctorordersheet(requestParameters: UpdateDoctorordersheetRequest): Promise<EntDoctorordersheet> {
         const response = await this.updateDoctorordersheetRaw(requestParameters);
-        return await response.value();
-    }
-
-    /**
-     * update patient by ID
-     * Update a patient entity by ID
-     */
-    async updatePatientRaw(requestParameters: UpdatePatientRequest): Promise<runtime.ApiResponse<EntPatient>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling updatePatient.');
-        }
-
-        if (requestParameters.patient === null || requestParameters.patient === undefined) {
-            throw new runtime.RequiredError('patient','Required parameter requestParameters.patient was null or undefined when calling updatePatient.');
-        }
-
-        const queryParameters: runtime.HTTPQuery = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        const response = await this.request({
-            path: `/patients/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
-            method: 'PUT',
-            headers: headerParameters,
-            query: queryParameters,
-            body: EntPatientToJSON(requestParameters.patient),
-        });
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => EntPatientFromJSON(jsonValue));
-    }
-
-    /**
-     * update patient by ID
-     * Update a patient entity by ID
-     */
-    async updatePatient(requestParameters: UpdatePatientRequest): Promise<EntPatient> {
-        const response = await this.updatePatientRaw(requestParameters);
         return await response.value();
     }
 

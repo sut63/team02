@@ -39,12 +39,6 @@ export interface EntPatient {
      */
     edges?: EntPatientEdges;
     /**
-     * Gender holds the value of the "gender" field.
-     * @type {string}
-     * @memberof EntPatient
-     */
-    gender?: string;
-    /**
      * ID of the ent.
      * @type {number}
      * @memberof EntPatient
@@ -70,7 +64,6 @@ export function EntPatientFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         
         'birthday': !exists(json, 'birthday') ? undefined : json['birthday'],
         'edges': !exists(json, 'edges') ? undefined : EntPatientEdgesFromJSON(json['edges']),
-        'gender': !exists(json, 'gender') ? undefined : json['gender'],
         'id': !exists(json, 'id') ? undefined : json['id'],
         'name': !exists(json, 'name') ? undefined : json['name'],
     };
@@ -87,7 +80,6 @@ export function EntPatientToJSON(value?: EntPatient | null): any {
         
         'birthday': value.birthday,
         'edges': EntPatientEdgesToJSON(value.edges),
-        'gender': value.gender,
         'id': value.id,
         'name': value.name,
     };

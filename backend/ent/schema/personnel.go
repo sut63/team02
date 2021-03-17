@@ -15,7 +15,6 @@ type Personnel struct {
 func (Personnel) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("name").NotEmpty(),
-		field.String("department").NotEmpty(),
 		field.String("user").NotEmpty(),
 		field.String("password").NotEmpty(),
 	}
@@ -30,6 +29,8 @@ func (Personnel) Edges() []ent.Edge {
 		edge.To("Dentalappointment", Dentalappointment.Type).StorageKey(edge.Column("Personnel_id")),
 		edge.To("Surgeryappointment", Surgeryappointment.Type).StorageKey(edge.Column("Personnel_id")),
 		edge.To("Antenatalinformation", Antenatalinformation.Type).StorageKey(edge.Column("Personnel_id")),
+		edge.From("Department", Department.Type).Ref("Personnel").Unique(),
 	}
 }
+
 //merge

@@ -8,6 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/to63/app/ent"
 	"github.com/to63/app/ent/personnel"
+	
 )
 
 // PersonnelController defines the struct for the Personnel controller
@@ -39,7 +40,7 @@ func (ctl *PersonnelController) CreatePersonnel(c *gin.Context) {
 	personnel, err := ctl.client.Personnel.
 		Create().
 		SetName(obj.Name).
-		SetDepartment(obj.Department).
+		SetDepartmentID(obj.Edges.Department.ID).
 		SetUser(obj.User).
 		SetPassword(obj.Password).
 		Save(context.Background())
@@ -196,7 +197,7 @@ func (ctl *PersonnelController) UpdatePersonnel(c *gin.Context) {
 	personnel, err := ctl.client.Personnel.
 		UpdateOneID(int(id)).
 		SetName(obj.Name).
-		SetDepartment(obj.Department).
+		SetDepartment(obj.Edges.Department).
 		SetUser(obj.User).
 		SetPassword(obj.Password).
 		Save(context.Background())

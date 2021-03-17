@@ -9,8 +9,6 @@ const (
 	FieldID = "id"
 	// FieldName holds the string denoting the name field in the database.
 	FieldName = "name"
-	// FieldDepartment holds the string denoting the department field in the database.
-	FieldDepartment = "department"
 	// FieldUser holds the string denoting the user field in the database.
 	FieldUser = "user"
 	// FieldPassword holds the string denoting the password field in the database.
@@ -28,6 +26,8 @@ const (
 	EdgeSurgeryappointment = "Surgeryappointment"
 	// EdgeAntenatalinformation holds the string denoting the antenatalinformation edge name in mutations.
 	EdgeAntenatalinformation = "Antenatalinformation"
+	// EdgeDepartment holds the string denoting the department edge name in mutations.
+	EdgeDepartment = "Department"
 
 	// Table holds the table name of the personnel in the database.
 	Table = "personnels"
@@ -73,15 +73,26 @@ const (
 	AntenatalinformationInverseTable = "antenatalinformations"
 	// AntenatalinformationColumn is the table column denoting the Antenatalinformation relation/edge.
 	AntenatalinformationColumn = "Personnel_id"
+	// DepartmentTable is the table the holds the Department relation/edge.
+	DepartmentTable = "personnels"
+	// DepartmentInverseTable is the table name for the Department entity.
+	// It exists in this package in order to avoid circular dependency with the "department" package.
+	DepartmentInverseTable = "departments"
+	// DepartmentColumn is the table column denoting the Department relation/edge.
+	DepartmentColumn = "Department"
 )
 
 // Columns holds all SQL columns for personnel fields.
 var Columns = []string{
 	FieldID,
 	FieldName,
-	FieldDepartment,
 	FieldUser,
 	FieldPassword,
+}
+
+// ForeignKeys holds the SQL foreign-keys that are owned by the Personnel type.
+var ForeignKeys = []string{
+	"Department",
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -91,14 +102,17 @@ func ValidColumn(column string) bool {
 			return true
 		}
 	}
+	for i := range ForeignKeys {
+		if column == ForeignKeys[i] {
+			return true
+		}
+	}
 	return false
 }
 
 var (
 	// NameValidator is a validator for the "name" field. It is called by the builders before save.
 	NameValidator func(string) error
-	// DepartmentValidator is a validator for the "department" field. It is called by the builders before save.
-	DepartmentValidator func(string) error
 	// UserValidator is a validator for the "user" field. It is called by the builders before save.
 	UserValidator func(string) error
 	// PasswordValidator is a validator for the "password" field. It is called by the builders before save.

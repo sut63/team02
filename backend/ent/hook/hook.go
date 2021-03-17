@@ -74,6 +74,19 @@ func (f DentalkindFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, 
 	return f(ctx, mv)
 }
 
+// The DepartmentFunc type is an adapter to allow the use of ordinary
+// function as Department mutator.
+type DepartmentFunc func(context.Context, *ent.DepartmentMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f DepartmentFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	mv, ok := m.(*ent.DepartmentMutation)
+	if !ok {
+		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.DepartmentMutation", m)
+	}
+	return f(ctx, mv)
+}
+
 // The DiseaseFunc type is an adapter to allow the use of ordinary
 // function as Disease mutator.
 type DiseaseFunc func(context.Context, *ent.DiseaseMutation) (ent.Value, error)
@@ -96,6 +109,19 @@ func (f DoctorordersheetFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.V
 	mv, ok := m.(*ent.DoctorordersheetMutation)
 	if !ok {
 		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.DoctorordersheetMutation", m)
+	}
+	return f(ctx, mv)
+}
+
+// The GenderFunc type is an adapter to allow the use of ordinary
+// function as Gender mutator.
+type GenderFunc func(context.Context, *ent.GenderMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f GenderFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	mv, ok := m.(*ent.GenderMutation)
+	if !ok {
+		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.GenderMutation", m)
 	}
 	return f(ctx, mv)
 }

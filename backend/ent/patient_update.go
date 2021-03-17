@@ -13,6 +13,7 @@ import (
 	"github.com/to63/app/ent/bonedisease"
 	"github.com/to63/app/ent/checksymptom"
 	"github.com/to63/app/ent/dentalappointment"
+	"github.com/to63/app/ent/gender"
 	"github.com/to63/app/ent/patient"
 	"github.com/to63/app/ent/physicaltherapyrecord"
 	"github.com/to63/app/ent/predicate"
@@ -44,10 +45,23 @@ func (pu *PatientUpdate) SetBirthday(s string) *PatientUpdate {
 	return pu
 }
 
-// SetGender sets the "gender" field.
-func (pu *PatientUpdate) SetGender(s string) *PatientUpdate {
-	pu.mutation.SetGender(s)
+// SetGenderID sets the "Gender" edge to the Gender entity by ID.
+func (pu *PatientUpdate) SetGenderID(id int) *PatientUpdate {
+	pu.mutation.SetGenderID(id)
 	return pu
+}
+
+// SetNillableGenderID sets the "Gender" edge to the Gender entity by ID if the given value is not nil.
+func (pu *PatientUpdate) SetNillableGenderID(id *int) *PatientUpdate {
+	if id != nil {
+		pu = pu.SetGenderID(*id)
+	}
+	return pu
+}
+
+// SetGender sets the "Gender" edge to the Gender entity.
+func (pu *PatientUpdate) SetGender(g *Gender) *PatientUpdate {
+	return pu.SetGenderID(g.ID)
 }
 
 // AddPhysicaltherapyrecordIDs adds the "physicaltherapyrecord" edge to the Physicaltherapyrecord entity by IDs.
@@ -143,6 +157,12 @@ func (pu *PatientUpdate) AddSurgeryappointment(s ...*Surgeryappointment) *Patien
 // Mutation returns the PatientMutation object of the builder.
 func (pu *PatientUpdate) Mutation() *PatientMutation {
 	return pu.mutation
+}
+
+// ClearGender clears the "Gender" edge to the Gender entity.
+func (pu *PatientUpdate) ClearGender() *PatientUpdate {
+	pu.mutation.ClearGender()
+	return pu
 }
 
 // ClearPhysicaltherapyrecord clears all "physicaltherapyrecord" edges to the Physicaltherapyrecord entity.
@@ -340,11 +360,6 @@ func (pu *PatientUpdate) check() error {
 			return &ValidationError{Name: "birthday", err: fmt.Errorf("ent: validator failed for field \"birthday\": %w", err)}
 		}
 	}
-	if v, ok := pu.mutation.Gender(); ok {
-		if err := patient.GenderValidator(v); err != nil {
-			return &ValidationError{Name: "gender", err: fmt.Errorf("ent: validator failed for field \"gender\": %w", err)}
-		}
-	}
 	return nil
 }
 
@@ -380,12 +395,40 @@ func (pu *PatientUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: patient.FieldBirthday,
 		})
 	}
-	if value, ok := pu.mutation.Gender(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
-			Value:  value,
-			Column: patient.FieldGender,
-		})
+	if pu.mutation.GenderCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   patient.GenderTable,
+			Columns: []string{patient.GenderColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: gender.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := pu.mutation.GenderIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   patient.GenderTable,
+			Columns: []string{patient.GenderColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: gender.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	if pu.mutation.PhysicaltherapyrecordCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -741,10 +784,23 @@ func (puo *PatientUpdateOne) SetBirthday(s string) *PatientUpdateOne {
 	return puo
 }
 
-// SetGender sets the "gender" field.
-func (puo *PatientUpdateOne) SetGender(s string) *PatientUpdateOne {
-	puo.mutation.SetGender(s)
+// SetGenderID sets the "Gender" edge to the Gender entity by ID.
+func (puo *PatientUpdateOne) SetGenderID(id int) *PatientUpdateOne {
+	puo.mutation.SetGenderID(id)
 	return puo
+}
+
+// SetNillableGenderID sets the "Gender" edge to the Gender entity by ID if the given value is not nil.
+func (puo *PatientUpdateOne) SetNillableGenderID(id *int) *PatientUpdateOne {
+	if id != nil {
+		puo = puo.SetGenderID(*id)
+	}
+	return puo
+}
+
+// SetGender sets the "Gender" edge to the Gender entity.
+func (puo *PatientUpdateOne) SetGender(g *Gender) *PatientUpdateOne {
+	return puo.SetGenderID(g.ID)
 }
 
 // AddPhysicaltherapyrecordIDs adds the "physicaltherapyrecord" edge to the Physicaltherapyrecord entity by IDs.
@@ -840,6 +896,12 @@ func (puo *PatientUpdateOne) AddSurgeryappointment(s ...*Surgeryappointment) *Pa
 // Mutation returns the PatientMutation object of the builder.
 func (puo *PatientUpdateOne) Mutation() *PatientMutation {
 	return puo.mutation
+}
+
+// ClearGender clears the "Gender" edge to the Gender entity.
+func (puo *PatientUpdateOne) ClearGender() *PatientUpdateOne {
+	puo.mutation.ClearGender()
+	return puo
 }
 
 // ClearPhysicaltherapyrecord clears all "physicaltherapyrecord" edges to the Physicaltherapyrecord entity.
@@ -1037,11 +1099,6 @@ func (puo *PatientUpdateOne) check() error {
 			return &ValidationError{Name: "birthday", err: fmt.Errorf("ent: validator failed for field \"birthday\": %w", err)}
 		}
 	}
-	if v, ok := puo.mutation.Gender(); ok {
-		if err := patient.GenderValidator(v); err != nil {
-			return &ValidationError{Name: "gender", err: fmt.Errorf("ent: validator failed for field \"gender\": %w", err)}
-		}
-	}
 	return nil
 }
 
@@ -1075,12 +1132,40 @@ func (puo *PatientUpdateOne) sqlSave(ctx context.Context) (_node *Patient, err e
 			Column: patient.FieldBirthday,
 		})
 	}
-	if value, ok := puo.mutation.Gender(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
-			Value:  value,
-			Column: patient.FieldGender,
-		})
+	if puo.mutation.GenderCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   patient.GenderTable,
+			Columns: []string{patient.GenderColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: gender.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := puo.mutation.GenderIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   patient.GenderTable,
+			Columns: []string{patient.GenderColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: gender.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	if puo.mutation.PhysicaltherapyrecordCleared() {
 		edge := &sqlgraph.EdgeSpec{

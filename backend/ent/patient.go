@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/facebook/ent/dialect/sql"
+	"github.com/to63/app/ent/gender"
 	"github.com/to63/app/ent/patient"
 )
 
@@ -19,15 +20,16 @@ type Patient struct {
 	Name string `json:"name,omitempty"`
 	// Birthday holds the value of the "birthday" field.
 	Birthday string `json:"birthday,omitempty"`
-	// Gender holds the value of the "gender" field.
-	Gender string `json:"gender,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the PatientQuery when eager-loading is set.
-	Edges PatientEdges `json:"edges"`
+	Edges   PatientEdges `json:"edges"`
+	_Gender *int
 }
 
 // PatientEdges holds the relations/edges for other nodes in the graph.
 type PatientEdges struct {
+	// Gender holds the value of the Gender edge.
+	Gender *Gender
 	// Physicaltherapyrecord holds the value of the physicaltherapyrecord edge.
 	Physicaltherapyrecord []*Physicaltherapyrecord
 	// Bonedisease holds the value of the Bonedisease edge.
@@ -42,13 +44,27 @@ type PatientEdges struct {
 	Surgeryappointment []*Surgeryappointment
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [6]bool
+	loadedTypes [7]bool
+}
+
+// GenderOrErr returns the Gender value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e PatientEdges) GenderOrErr() (*Gender, error) {
+	if e.loadedTypes[0] {
+		if e.Gender == nil {
+			// The edge Gender was loaded in eager-loading,
+			// but was not found.
+			return nil, &NotFoundError{label: gender.Label}
+		}
+		return e.Gender, nil
+	}
+	return nil, &NotLoadedError{edge: "Gender"}
 }
 
 // PhysicaltherapyrecordOrErr returns the Physicaltherapyrecord value or an error if the edge
 // was not loaded in eager-loading.
 func (e PatientEdges) PhysicaltherapyrecordOrErr() ([]*Physicaltherapyrecord, error) {
-	if e.loadedTypes[0] {
+	if e.loadedTypes[1] {
 		return e.Physicaltherapyrecord, nil
 	}
 	return nil, &NotLoadedError{edge: "physicaltherapyrecord"}
@@ -57,7 +73,7 @@ func (e PatientEdges) PhysicaltherapyrecordOrErr() ([]*Physicaltherapyrecord, er
 // BonediseaseOrErr returns the Bonedisease value or an error if the edge
 // was not loaded in eager-loading.
 func (e PatientEdges) BonediseaseOrErr() ([]*Bonedisease, error) {
-	if e.loadedTypes[1] {
+	if e.loadedTypes[2] {
 		return e.Bonedisease, nil
 	}
 	return nil, &NotLoadedError{edge: "Bonedisease"}
@@ -66,7 +82,7 @@ func (e PatientEdges) BonediseaseOrErr() ([]*Bonedisease, error) {
 // ChecksymptomOrErr returns the Checksymptom value or an error if the edge
 // was not loaded in eager-loading.
 func (e PatientEdges) ChecksymptomOrErr() ([]*Checksymptom, error) {
-	if e.loadedTypes[2] {
+	if e.loadedTypes[3] {
 		return e.Checksymptom, nil
 	}
 	return nil, &NotLoadedError{edge: "Checksymptom"}
@@ -75,7 +91,7 @@ func (e PatientEdges) ChecksymptomOrErr() ([]*Checksymptom, error) {
 // DentalappointmentOrErr returns the Dentalappointment value or an error if the edge
 // was not loaded in eager-loading.
 func (e PatientEdges) DentalappointmentOrErr() ([]*Dentalappointment, error) {
-	if e.loadedTypes[3] {
+	if e.loadedTypes[4] {
 		return e.Dentalappointment, nil
 	}
 	return nil, &NotLoadedError{edge: "Dentalappointment"}
@@ -84,7 +100,7 @@ func (e PatientEdges) DentalappointmentOrErr() ([]*Dentalappointment, error) {
 // AntenatalinformationOrErr returns the Antenatalinformation value or an error if the edge
 // was not loaded in eager-loading.
 func (e PatientEdges) AntenatalinformationOrErr() ([]*Antenatalinformation, error) {
-	if e.loadedTypes[4] {
+	if e.loadedTypes[5] {
 		return e.Antenatalinformation, nil
 	}
 	return nil, &NotLoadedError{edge: "Antenatalinformation"}
@@ -93,7 +109,7 @@ func (e PatientEdges) AntenatalinformationOrErr() ([]*Antenatalinformation, erro
 // SurgeryappointmentOrErr returns the Surgeryappointment value or an error if the edge
 // was not loaded in eager-loading.
 func (e PatientEdges) SurgeryappointmentOrErr() ([]*Surgeryappointment, error) {
-	if e.loadedTypes[5] {
+	if e.loadedTypes[6] {
 		return e.Surgeryappointment, nil
 	}
 	return nil, &NotLoadedError{edge: "Surgeryappointment"}
@@ -106,8 +122,10 @@ func (*Patient) scanValues(columns []string) ([]interface{}, error) {
 		switch columns[i] {
 		case patient.FieldID:
 			values[i] = &sql.NullInt64{}
-		case patient.FieldName, patient.FieldBirthday, patient.FieldGender:
+		case patient.FieldName, patient.FieldBirthday:
 			values[i] = &sql.NullString{}
+		case patient.ForeignKeys[0]: // _Gender
+			values[i] = &sql.NullInt64{}
 		default:
 			return nil, fmt.Errorf("unexpected column %q for type Patient", columns[i])
 		}
@@ -141,15 +159,21 @@ func (pa *Patient) assignValues(columns []string, values []interface{}) error {
 			} else if value.Valid {
 				pa.Birthday = value.String
 			}
-		case patient.FieldGender:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field gender", values[i])
+		case patient.ForeignKeys[0]:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for edge-field _Gender", value)
 			} else if value.Valid {
-				pa.Gender = value.String
+				pa._Gender = new(int)
+				*pa._Gender = int(value.Int64)
 			}
 		}
 	}
 	return nil
+}
+
+// QueryGender queries the "Gender" edge of the Patient entity.
+func (pa *Patient) QueryGender() *GenderQuery {
+	return (&PatientClient{config: pa.config}).QueryGender(pa)
 }
 
 // QueryPhysicaltherapyrecord queries the "physicaltherapyrecord" edge of the Patient entity.
@@ -209,8 +233,6 @@ func (pa *Patient) String() string {
 	builder.WriteString(pa.Name)
 	builder.WriteString(", birthday=")
 	builder.WriteString(pa.Birthday)
-	builder.WriteString(", gender=")
-	builder.WriteString(pa.Gender)
 	builder.WriteByte(')')
 	return builder.String()
 }

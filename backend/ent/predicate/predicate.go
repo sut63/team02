@@ -21,11 +21,17 @@ type Dentalappointment func(*sql.Selector)
 // Dentalkind is the predicate function for dentalkind builders.
 type Dentalkind func(*sql.Selector)
 
+// Department is the predicate function for department builders.
+type Department func(*sql.Selector)
+
 // Disease is the predicate function for disease builders.
 type Disease func(*sql.Selector)
 
 // Doctorordersheet is the predicate function for doctorordersheet builders.
 type Doctorordersheet func(*sql.Selector)
+
+// Gender is the predicate function for gender builders.
+type Gender func(*sql.Selector)
 
 // Patient is the predicate function for patient builders.
 type Patient func(*sql.Selector)

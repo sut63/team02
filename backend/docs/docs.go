@@ -1018,6 +1018,98 @@ var doc = `{
                 }
             }
         },
+        "/departments": {
+            "get": {
+                "description": "list department entities",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "List department entities",
+                "operationId": "list-department",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Limit",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Offset",
+                        "name": "offset",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/ent.Department"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            }
+        },
+        "/departments/{id}": {
+            "get": {
+                "description": "get department by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get a department entity by ID",
+                "operationId": "get-department",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "department ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ent.Department"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            }
+        },
         "/diseases": {
             "get": {
                 "description": "list disease entities",
@@ -1469,6 +1561,98 @@ var doc = `{
                 }
             }
         },
+        "/genders": {
+            "get": {
+                "description": "list gender entities",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "List gender entities",
+                "operationId": "list-gender",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Limit",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Offset",
+                        "name": "offset",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/ent.Gender"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            }
+        },
+        "/genders/{id}": {
+            "get": {
+                "description": "get gender by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get a gender entity by ID",
+                "operationId": "get-gender",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "gender ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ent.Gender"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            }
+        },
         "/patients": {
             "get": {
                 "description": "list patient entities",
@@ -1590,55 +1774,6 @@ var doc = `{
                     },
                     "404": {
                         "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/gin.H"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/gin.H"
-                        }
-                    }
-                }
-            },
-            "put": {
-                "description": "update patient by ID",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "summary": "Update a patient entity by ID",
-                "operationId": "update-patient",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Patient ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "Patient entity",
-                        "name": "Patient",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/ent.Patient"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/ent.Patient"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
                         "schema": {
                             "$ref": "#/definitions/gin.H"
                         }
@@ -3505,6 +3640,36 @@ var doc = `{
                 }
             }
         },
+        "ent.Department": {
+            "type": "object",
+            "properties": {
+                "department": {
+                    "description": "Department holds the value of the \"department\" field.",
+                    "type": "string"
+                },
+                "edges": {
+                    "description": "Edges holds the relations/edges for other nodes in the graph.\nThe values are being populated by the DepartmentQuery when eager-loading is set.",
+                    "type": "object",
+                    "$ref": "#/definitions/ent.DepartmentEdges"
+                },
+                "id": {
+                    "description": "ID of the ent.",
+                    "type": "integer"
+                }
+            }
+        },
+        "ent.DepartmentEdges": {
+            "type": "object",
+            "properties": {
+                "personnel": {
+                    "description": "Personnel holds the value of the Personnel edge.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ent.Personnel"
+                    }
+                }
+            }
+        },
         "ent.Disease": {
             "type": "object",
             "properties": {
@@ -3565,6 +3730,36 @@ var doc = `{
                 }
             }
         },
+        "ent.Gender": {
+            "type": "object",
+            "properties": {
+                "edges": {
+                    "description": "Edges holds the relations/edges for other nodes in the graph.\nThe values are being populated by the GenderQuery when eager-loading is set.",
+                    "type": "object",
+                    "$ref": "#/definitions/ent.GenderEdges"
+                },
+                "gender": {
+                    "description": "Gender holds the value of the \"gender\" field.",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "ID of the ent.",
+                    "type": "integer"
+                }
+            }
+        },
+        "ent.GenderEdges": {
+            "type": "object",
+            "properties": {
+                "patient": {
+                    "description": "Patient holds the value of the Patient edge.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ent.Patient"
+                    }
+                }
+            }
+        },
         "ent.Patient": {
             "type": "object",
             "properties": {
@@ -3576,10 +3771,6 @@ var doc = `{
                     "description": "Edges holds the relations/edges for other nodes in the graph.\nThe values are being populated by the PatientQuery when eager-loading is set.",
                     "type": "object",
                     "$ref": "#/definitions/ent.PatientEdges"
-                },
-                "gender": {
-                    "description": "Gender holds the value of the \"gender\" field.",
-                    "type": "string"
                 },
                 "id": {
                     "description": "ID of the ent.",
@@ -3622,6 +3813,11 @@ var doc = `{
                         "$ref": "#/definitions/ent.Dentalappointment"
                     }
                 },
+                "gender": {
+                    "description": "Gender holds the value of the Gender edge.",
+                    "type": "object",
+                    "$ref": "#/definitions/ent.Gender"
+                },
                 "physicaltherapyrecord": {
                     "description": "Physicaltherapyrecord holds the value of the physicaltherapyrecord edge.",
                     "type": "array",
@@ -3641,10 +3837,6 @@ var doc = `{
         "ent.Personnel": {
             "type": "object",
             "properties": {
-                "department": {
-                    "description": "Department holds the value of the \"department\" field.",
-                    "type": "string"
-                },
                 "edges": {
                     "description": "Edges holds the relations/edges for other nodes in the graph.\nThe values are being populated by the PersonnelQuery when eager-loading is set.",
                     "type": "object",
@@ -3698,6 +3890,11 @@ var doc = `{
                     "items": {
                         "$ref": "#/definitions/ent.Dentalappointment"
                     }
+                },
+                "department": {
+                    "description": "Department holds the value of the Department edge.",
+                    "type": "object",
+                    "$ref": "#/definitions/ent.Department"
                 },
                 "physicaltherapyrecord": {
                     "description": "Physicaltherapyrecord holds the value of the physicaltherapyrecord edge.",

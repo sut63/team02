@@ -1,4 +1,5 @@
 package controllers
+
 import (
 	"context"
 	"fmt"
@@ -14,6 +15,7 @@ type PatientController struct {
 	client *ent.Client
 	router gin.IRouter
 }
+
 
 // CreatePatient handles POST requests for adding Patient entities
 // @Summary Create patient
@@ -35,11 +37,13 @@ func (ctl *PatientController) CreatePatient(c *gin.Context) {
 		return
 	}
 
+	
+
 	patient, err := ctl.client.Patient.
 		Create().
 		SetName(obj.Name).
 		SetBirthday(obj.Birthday).
-		SetGender(obj.Gender).
+		SetGender(obj.Edges.Gender).
 		Save(context.Background())
 
 	if err != nil {
@@ -162,49 +166,6 @@ func (ctl *PatientController) DeletePatient(c *gin.Context) {
 	c.JSON(200, gin.H{"result": fmt.Sprintf("ok deleted %v", id)})
 }
 
-// UpdatePatient handles PUT requests to update a Patient entity
-// @Summary Update a patient entity by ID
-// @Description update patient by ID
-// @ID update-patient
-// @Accept   json
-// @Produce  json
-// @Param id path int true "Patient ID"
-// @Param Patient body ent.Patient true "Patient entity"
-// @Success 200 {object} ent.Patient
-// @Failure 400 {object} gin.H
-// @Failure 500 {object} gin.H
-// @Router /patients/{id} [put]
-func (ctl *PatientController) UpdatePatient(c *gin.Context) {
-	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
-	if err != nil {
-		c.JSON(400, gin.H{
-			"error": err.Error(),
-		})
-		return
-	}
-
-	obj := ent.Patient{}
-	if err := c.ShouldBind(&obj); err != nil {
-		c.JSON(400, gin.H{
-			"error": "Patient binding failed",
-		})
-		return
-	}
-	obj.ID = int(id)
-	patient, err := ctl.client.Patient.
-		UpdateOneID(int(id)).
-		SetName(obj.Name).
-		SetBirthday(obj.Birthday).
-		SetGender(obj.Gender).
-		Save(context.Background())
-	if err != nil {
-		c.JSON(400, gin.H{"error": "update failed"})
-		return
-	}
-
-	c.JSON(200, patient)
-}
-
 // NewPatientController creates and registers handles for the PatientController
 func NewPatientController(router gin.IRouter, client *ent.Client) *PatientController {
 	patientController := &PatientController{
@@ -222,7 +183,7 @@ func (ctl *PatientController) register() {
 	// CRUD
 	Patient.POST("", ctl.CreatePatient)
 	Patient.GET(":id", ctl.GetPatient)
-	Patient.PUT(":id", ctl.UpdatePatient)
 	Patient.DELETE(":id", ctl.DeletePatient)
 }
+
 //merge

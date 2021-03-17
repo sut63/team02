@@ -98,13 +98,6 @@ func Name(v string) predicate.Personnel {
 	})
 }
 
-// Department applies equality check predicate on the "department" field. It's identical to DepartmentEQ.
-func Department(v string) predicate.Personnel {
-	return predicate.Personnel(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldDepartment), v))
-	})
-}
-
 // User applies equality check predicate on the "user" field. It's identical to UserEQ.
 func User(v string) predicate.Personnel {
 	return predicate.Personnel(func(s *sql.Selector) {
@@ -227,117 +220,6 @@ func NameEqualFold(v string) predicate.Personnel {
 func NameContainsFold(v string) predicate.Personnel {
 	return predicate.Personnel(func(s *sql.Selector) {
 		s.Where(sql.ContainsFold(s.C(FieldName), v))
-	})
-}
-
-// DepartmentEQ applies the EQ predicate on the "department" field.
-func DepartmentEQ(v string) predicate.Personnel {
-	return predicate.Personnel(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldDepartment), v))
-	})
-}
-
-// DepartmentNEQ applies the NEQ predicate on the "department" field.
-func DepartmentNEQ(v string) predicate.Personnel {
-	return predicate.Personnel(func(s *sql.Selector) {
-		s.Where(sql.NEQ(s.C(FieldDepartment), v))
-	})
-}
-
-// DepartmentIn applies the In predicate on the "department" field.
-func DepartmentIn(vs ...string) predicate.Personnel {
-	v := make([]interface{}, len(vs))
-	for i := range v {
-		v[i] = vs[i]
-	}
-	return predicate.Personnel(func(s *sql.Selector) {
-		// if not arguments were provided, append the FALSE constants,
-		// since we can't apply "IN ()". This will make this predicate falsy.
-		if len(v) == 0 {
-			s.Where(sql.False())
-			return
-		}
-		s.Where(sql.In(s.C(FieldDepartment), v...))
-	})
-}
-
-// DepartmentNotIn applies the NotIn predicate on the "department" field.
-func DepartmentNotIn(vs ...string) predicate.Personnel {
-	v := make([]interface{}, len(vs))
-	for i := range v {
-		v[i] = vs[i]
-	}
-	return predicate.Personnel(func(s *sql.Selector) {
-		// if not arguments were provided, append the FALSE constants,
-		// since we can't apply "IN ()". This will make this predicate falsy.
-		if len(v) == 0 {
-			s.Where(sql.False())
-			return
-		}
-		s.Where(sql.NotIn(s.C(FieldDepartment), v...))
-	})
-}
-
-// DepartmentGT applies the GT predicate on the "department" field.
-func DepartmentGT(v string) predicate.Personnel {
-	return predicate.Personnel(func(s *sql.Selector) {
-		s.Where(sql.GT(s.C(FieldDepartment), v))
-	})
-}
-
-// DepartmentGTE applies the GTE predicate on the "department" field.
-func DepartmentGTE(v string) predicate.Personnel {
-	return predicate.Personnel(func(s *sql.Selector) {
-		s.Where(sql.GTE(s.C(FieldDepartment), v))
-	})
-}
-
-// DepartmentLT applies the LT predicate on the "department" field.
-func DepartmentLT(v string) predicate.Personnel {
-	return predicate.Personnel(func(s *sql.Selector) {
-		s.Where(sql.LT(s.C(FieldDepartment), v))
-	})
-}
-
-// DepartmentLTE applies the LTE predicate on the "department" field.
-func DepartmentLTE(v string) predicate.Personnel {
-	return predicate.Personnel(func(s *sql.Selector) {
-		s.Where(sql.LTE(s.C(FieldDepartment), v))
-	})
-}
-
-// DepartmentContains applies the Contains predicate on the "department" field.
-func DepartmentContains(v string) predicate.Personnel {
-	return predicate.Personnel(func(s *sql.Selector) {
-		s.Where(sql.Contains(s.C(FieldDepartment), v))
-	})
-}
-
-// DepartmentHasPrefix applies the HasPrefix predicate on the "department" field.
-func DepartmentHasPrefix(v string) predicate.Personnel {
-	return predicate.Personnel(func(s *sql.Selector) {
-		s.Where(sql.HasPrefix(s.C(FieldDepartment), v))
-	})
-}
-
-// DepartmentHasSuffix applies the HasSuffix predicate on the "department" field.
-func DepartmentHasSuffix(v string) predicate.Personnel {
-	return predicate.Personnel(func(s *sql.Selector) {
-		s.Where(sql.HasSuffix(s.C(FieldDepartment), v))
-	})
-}
-
-// DepartmentEqualFold applies the EqualFold predicate on the "department" field.
-func DepartmentEqualFold(v string) predicate.Personnel {
-	return predicate.Personnel(func(s *sql.Selector) {
-		s.Where(sql.EqualFold(s.C(FieldDepartment), v))
-	})
-}
-
-// DepartmentContainsFold applies the ContainsFold predicate on the "department" field.
-func DepartmentContainsFold(v string) predicate.Personnel {
-	return predicate.Personnel(func(s *sql.Selector) {
-		s.Where(sql.ContainsFold(s.C(FieldDepartment), v))
 	})
 }
 
@@ -722,6 +604,34 @@ func HasAntenatalinformationWith(preds ...predicate.Antenatalinformation) predic
 			sqlgraph.From(Table, FieldID),
 			sqlgraph.To(AntenatalinformationInverseTable, FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, AntenatalinformationTable, AntenatalinformationColumn),
+		)
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasDepartment applies the HasEdge predicate on the "Department" edge.
+func HasDepartment() predicate.Personnel {
+	return predicate.Personnel(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(DepartmentTable, FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, DepartmentTable, DepartmentColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasDepartmentWith applies the HasEdge predicate on the "Department" edge with a given conditions (other predicates).
+func HasDepartmentWith(preds ...predicate.Department) predicate.Personnel {
+	return predicate.Personnel(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(DepartmentInverseTable, FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, DepartmentTable, DepartmentColumn),
 		)
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {

@@ -30,6 +30,10 @@ import {
     EntDentalappointmentFromJSON,
     EntDentalappointmentFromJSONTyped,
     EntDentalappointmentToJSON,
+    EntGender,
+    EntGenderFromJSON,
+    EntGenderFromJSONTyped,
+    EntGenderToJSON,
     EntPhysicaltherapyrecord,
     EntPhysicaltherapyrecordFromJSON,
     EntPhysicaltherapyrecordFromJSONTyped,
@@ -71,6 +75,12 @@ export interface EntPatientEdges {
      */
     dentalappointment?: Array<EntDentalappointment>;
     /**
+     * 
+     * @type {EntGender}
+     * @memberof EntPatientEdges
+     */
+    gender?: EntGender;
+    /**
      * Physicaltherapyrecord holds the value of the physicaltherapyrecord edge.
      * @type {Array<EntPhysicaltherapyrecord>}
      * @memberof EntPatientEdges
@@ -98,6 +108,7 @@ export function EntPatientEdgesFromJSONTyped(json: any, ignoreDiscriminator: boo
         'bonedisease': !exists(json, 'bonedisease') ? undefined : ((json['bonedisease'] as Array<any>).map(EntBonediseaseFromJSON)),
         'checksymptom': !exists(json, 'checksymptom') ? undefined : ((json['checksymptom'] as Array<any>).map(EntChecksymptomFromJSON)),
         'dentalappointment': !exists(json, 'dentalappointment') ? undefined : ((json['dentalappointment'] as Array<any>).map(EntDentalappointmentFromJSON)),
+        'gender': !exists(json, 'gender') ? undefined : EntGenderFromJSON(json['gender']),
         'physicaltherapyrecord': !exists(json, 'physicaltherapyrecord') ? undefined : ((json['physicaltherapyrecord'] as Array<any>).map(EntPhysicaltherapyrecordFromJSON)),
         'surgeryappointment': !exists(json, 'surgeryappointment') ? undefined : ((json['surgeryappointment'] as Array<any>).map(EntSurgeryappointmentFromJSON)),
     };
@@ -116,6 +127,7 @@ export function EntPatientEdgesToJSON(value?: EntPatientEdges | null): any {
         'bonedisease': value.bonedisease === undefined ? undefined : ((value.bonedisease as Array<any>).map(EntBonediseaseToJSON)),
         'checksymptom': value.checksymptom === undefined ? undefined : ((value.checksymptom as Array<any>).map(EntChecksymptomToJSON)),
         'dentalappointment': value.dentalappointment === undefined ? undefined : ((value.dentalappointment as Array<any>).map(EntDentalappointmentToJSON)),
+        'gender': EntGenderToJSON(value.gender),
         'physicaltherapyrecord': value.physicaltherapyrecord === undefined ? undefined : ((value.physicaltherapyrecord as Array<any>).map(EntPhysicaltherapyrecordToJSON)),
         'surgeryappointment': value.surgeryappointment === undefined ? undefined : ((value.surgeryappointment as Array<any>).map(EntSurgeryappointmentToJSON)),
     };

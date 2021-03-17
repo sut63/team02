@@ -196,6 +196,18 @@ var (
 		PrimaryKey:  []*schema.Column{DentalkindsColumns[0]},
 		ForeignKeys: []*schema.ForeignKey{},
 	}
+	// DepartmentsColumns holds the columns for the "departments" table.
+	DepartmentsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "department", Type: field.TypeString},
+	}
+	// DepartmentsTable holds the schema information for the "departments" table.
+	DepartmentsTable = &schema.Table{
+		Name:        "departments",
+		Columns:     DepartmentsColumns,
+		PrimaryKey:  []*schema.Column{DepartmentsColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{},
+	}
 	// DiseasesColumns holds the columns for the "diseases" table.
 	DiseasesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
@@ -220,34 +232,62 @@ var (
 		PrimaryKey:  []*schema.Column{DoctorordersheetsColumns[0]},
 		ForeignKeys: []*schema.ForeignKey{},
 	}
+	// GendersColumns holds the columns for the "genders" table.
+	GendersColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "gender", Type: field.TypeString},
+	}
+	// GendersTable holds the schema information for the "genders" table.
+	GendersTable = &schema.Table{
+		Name:        "genders",
+		Columns:     GendersColumns,
+		PrimaryKey:  []*schema.Column{GendersColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{},
+	}
 	// PatientsColumns holds the columns for the "patients" table.
 	PatientsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "name", Type: field.TypeString},
 		{Name: "birthday", Type: field.TypeString},
-		{Name: "gender", Type: field.TypeString},
+		{Name: "Gender", Type: field.TypeInt, Nullable: true},
 	}
 	// PatientsTable holds the schema information for the "patients" table.
 	PatientsTable = &schema.Table{
-		Name:        "patients",
-		Columns:     PatientsColumns,
-		PrimaryKey:  []*schema.Column{PatientsColumns[0]},
-		ForeignKeys: []*schema.ForeignKey{},
+		Name:       "patients",
+		Columns:    PatientsColumns,
+		PrimaryKey: []*schema.Column{PatientsColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:  "patients_genders_Patient",
+				Columns: []*schema.Column{PatientsColumns[3]},
+
+				RefColumns: []*schema.Column{GendersColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+		},
 	}
 	// PersonnelsColumns holds the columns for the "personnels" table.
 	PersonnelsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "name", Type: field.TypeString},
-		{Name: "department", Type: field.TypeString},
 		{Name: "user", Type: field.TypeString},
 		{Name: "password", Type: field.TypeString},
+		{Name: "Department", Type: field.TypeInt, Nullable: true},
 	}
 	// PersonnelsTable holds the schema information for the "personnels" table.
 	PersonnelsTable = &schema.Table{
-		Name:        "personnels",
-		Columns:     PersonnelsColumns,
-		PrimaryKey:  []*schema.Column{PersonnelsColumns[0]},
-		ForeignKeys: []*schema.ForeignKey{},
+		Name:       "personnels",
+		Columns:    PersonnelsColumns,
+		PrimaryKey: []*schema.Column{PersonnelsColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:  "personnels_departments_Personnel",
+				Columns: []*schema.Column{PersonnelsColumns[4]},
+
+				RefColumns: []*schema.Column{DepartmentsColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+		},
 	}
 	// PhysicaltherapyrecordsColumns holds the columns for the "physicaltherapyrecords" table.
 	PhysicaltherapyrecordsColumns = []*schema.Column{
@@ -416,8 +456,10 @@ var (
 		ChecksymptomsTable,
 		DentalappointmentsTable,
 		DentalkindsTable,
+		DepartmentsTable,
 		DiseasesTable,
 		DoctorordersheetsTable,
+		GendersTable,
 		PatientsTable,
 		PersonnelsTable,
 		PhysicaltherapyrecordsTable,
@@ -446,6 +488,8 @@ func init() {
 	DentalappointmentsTable.ForeignKeys[0].RefTable = DentalkindsTable
 	DentalappointmentsTable.ForeignKeys[1].RefTable = PatientsTable
 	DentalappointmentsTable.ForeignKeys[2].RefTable = PersonnelsTable
+	PatientsTable.ForeignKeys[0].RefTable = GendersTable
+	PersonnelsTable.ForeignKeys[0].RefTable = DepartmentsTable
 	PhysicaltherapyrecordsTable.ForeignKeys[0].RefTable = PatientsTable
 	PhysicaltherapyrecordsTable.ForeignKeys[1].RefTable = PersonnelsTable
 	PhysicaltherapyrecordsTable.ForeignKeys[2].RefTable = PhysicaltherapyroomsTable

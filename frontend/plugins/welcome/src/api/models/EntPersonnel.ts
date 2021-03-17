@@ -27,12 +27,6 @@ import {
  */
 export interface EntPersonnel {
     /**
-     * Department holds the value of the "department" field.
-     * @type {string}
-     * @memberof EntPersonnel
-     */
-    department?: string;
-    /**
      * 
      * @type {EntPersonnelEdges}
      * @memberof EntPersonnel
@@ -74,7 +68,6 @@ export function EntPersonnelFromJSONTyped(json: any, ignoreDiscriminator: boolea
     }
     return {
         
-        'department': !exists(json, 'department') ? undefined : json['department'],
         'edges': !exists(json, 'edges') ? undefined : EntPersonnelEdgesFromJSON(json['edges']),
         'id': !exists(json, 'id') ? undefined : json['id'],
         'name': !exists(json, 'name') ? undefined : json['name'],
@@ -92,7 +85,6 @@ export function EntPersonnelToJSON(value?: EntPersonnel | null): any {
     }
     return {
         
-        'department': value.department,
         'edges': EntPersonnelEdgesToJSON(value.edges),
         'id': value.id,
         'name': value.name,

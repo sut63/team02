@@ -21,7 +21,7 @@ type Personnels struct {
 //Personnel with
 type Personnel struct {
 	Name       string
-	Department string
+	Department int
 	User       string
 	Password   string
 }
@@ -35,7 +35,7 @@ type Patients struct {
 type Patient struct {
 	Name     string
 	Birthday string
-	Gender   string
+	Gender   int
 }
 
 //Remedys with
@@ -63,10 +63,9 @@ type Doctorordersheets struct {
 	Doctorordersheet []Doctorordersheet
 }
 
-//Doctorordersheet with 
+//Doctorordersheet with
 type Doctorordersheet struct {
 	Name string
-	
 }
 
 //Deltalkinds with
@@ -127,6 +126,26 @@ type Surgerytypes struct {
 //Surgerytype with
 type Surgerytype struct {
 	Surgerytype string
+}
+
+//Genders with
+type Genders struct {
+	Gender []Gender
+}
+
+//Gender with
+type Gender struct {
+	Gender string
+}
+
+//Departments with
+type Departments struct {
+	Department []Department
+}
+
+//Department with
+type Department struct {
+	Department string
 }
 
 // @title SUT SA Example API
@@ -202,16 +221,53 @@ func main() {
 	controllers.NewStatusController(v1, client)
 	controllers.NewSurgerytypeController(v1, client)
 	controllers.NewSurgeryappointmentController(v1, client)
+	controllers.NewGenderController(v1, client)
+	controllers.NewDepartmentController(v1, client)
+
+	// Set Gender Data
+	genders := Genders{
+		Gender: []Gender{
+			Gender{"ชาย"},
+			Gender{"หญิง"},
+		},
+	}
+
+	for _, genders := range genders.Gender {
+
+		client.Gender.
+			Create().
+			SetGender(genders.Gender).
+			Save(context.Background())
+	}
+
+	// Set Department Data
+	departments := Departments{
+		Department: []Department{
+			Department{"Orthopedics"},
+			Department{"Dentist"},
+			Department{"Doctor"},
+			Department{"Physicaltherapy"},
+			Department{"Obstetrician"},
+		},
+	}
+
+	for _, departments := range departments.Department {
+
+		client.Department.
+			Create().
+			SetDepartment(departments.Department).
+			Save(context.Background())
+	}
 
 	// Set Personnel Data
 	personnels := Personnels{
 		Personnel: []Personnel{
-			Personnel{"Anusorn", "Orthopedics", "Anusorn@email.com", "12321"},
-			Personnel{"Kamkeaw", "Orthopedics", "Kamkeaw@email.com", "12321"},
-			Personnel{"Nutchaya", "Dentist", "nutchaya@email.com", "12321"},
-			Personnel{"Thanawut", "Doctor", "thanawut@email.com", "12321"},
-			Personnel{"Jay", "Physicaltherapy", "Jay@email.com", "12321"},
-			Personnel{"Varissara", "Obstetrician", "Varissara@email.com", "12321"},
+			Personnel{"Anusorn", 1, "Anusorn@email.com", "12321"},
+			Personnel{"Kamkeaw", 1, "Kamkeaw@email.com", "12321"},
+			Personnel{"Nutchaya", 2, "nutchaya@email.com", "12321"},
+			Personnel{"Thanawut", 3, "thanawut@email.com", "12321"},
+			Personnel{"Jay", 4, "Jay@email.com", "12321"},
+			Personnel{"Varissara", 5, "Varissara@email.com", "12321"},
 		},
 	}
 
@@ -219,7 +275,7 @@ func main() {
 		client.Personnel.
 			Create().
 			SetName(personnels.Name).
-			SetDepartment(personnels.Department).
+			SetDepartmentID(personnels.Department).
 			SetUser(personnels.User).
 			SetPassword(personnels.Password).
 			Save(context.Background())
@@ -228,9 +284,9 @@ func main() {
 	// Set Patient Data
 	patients := Patients{
 		Patient: []Patient{
-			Patient{"นายแดง", "15/02/1980", "Male"},
-			Patient{"นายดำ", "11/03/1980", "Male"},
-			Patient{"นางหล่า", "13/11/1980", "Female"},
+			Patient{"นายแดง", "15/02/1980", 1},
+			Patient{"นายดำ", "11/03/1980", 1},
+			Patient{"นางหล่า", "13/11/1980", 2},
 		},
 	}
 
@@ -240,7 +296,7 @@ func main() {
 			Create().
 			SetName(patients.Name).
 			SetBirthday(patients.Birthday).
-			SetGender(patients.Gender).
+			SetGenderID(patients.Gender).
 			Save(context.Background())
 	}
 

@@ -13,6 +13,7 @@ import (
 	"github.com/to63/app/ent/bonedisease"
 	"github.com/to63/app/ent/checksymptom"
 	"github.com/to63/app/ent/dentalappointment"
+	"github.com/to63/app/ent/department"
 	"github.com/to63/app/ent/personnel"
 	"github.com/to63/app/ent/physicaltherapyrecord"
 	"github.com/to63/app/ent/predicate"
@@ -35,12 +36,6 @@ func (pu *PersonnelUpdate) Where(ps ...predicate.Personnel) *PersonnelUpdate {
 // SetName sets the "name" field.
 func (pu *PersonnelUpdate) SetName(s string) *PersonnelUpdate {
 	pu.mutation.SetName(s)
-	return pu
-}
-
-// SetDepartment sets the "department" field.
-func (pu *PersonnelUpdate) SetDepartment(s string) *PersonnelUpdate {
-	pu.mutation.SetDepartment(s)
 	return pu
 }
 
@@ -144,6 +139,25 @@ func (pu *PersonnelUpdate) AddAntenatalinformation(a ...*Antenatalinformation) *
 		ids[i] = a[i].ID
 	}
 	return pu.AddAntenatalinformationIDs(ids...)
+}
+
+// SetDepartmentID sets the "Department" edge to the Department entity by ID.
+func (pu *PersonnelUpdate) SetDepartmentID(id int) *PersonnelUpdate {
+	pu.mutation.SetDepartmentID(id)
+	return pu
+}
+
+// SetNillableDepartmentID sets the "Department" edge to the Department entity by ID if the given value is not nil.
+func (pu *PersonnelUpdate) SetNillableDepartmentID(id *int) *PersonnelUpdate {
+	if id != nil {
+		pu = pu.SetDepartmentID(*id)
+	}
+	return pu
+}
+
+// SetDepartment sets the "Department" edge to the Department entity.
+func (pu *PersonnelUpdate) SetDepartment(d *Department) *PersonnelUpdate {
+	return pu.SetDepartmentID(d.ID)
 }
 
 // Mutation returns the PersonnelMutation object of the builder.
@@ -277,6 +291,12 @@ func (pu *PersonnelUpdate) RemoveAntenatalinformation(a ...*Antenatalinformation
 	return pu.RemoveAntenatalinformationIDs(ids...)
 }
 
+// ClearDepartment clears the "Department" edge to the Department entity.
+func (pu *PersonnelUpdate) ClearDepartment() *PersonnelUpdate {
+	pu.mutation.ClearDepartment()
+	return pu
+}
+
 // Save executes the query and returns the number of nodes affected by the update operation.
 func (pu *PersonnelUpdate) Save(ctx context.Context) (int, error) {
 	var (
@@ -341,11 +361,6 @@ func (pu *PersonnelUpdate) check() error {
 			return &ValidationError{Name: "name", err: fmt.Errorf("ent: validator failed for field \"name\": %w", err)}
 		}
 	}
-	if v, ok := pu.mutation.Department(); ok {
-		if err := personnel.DepartmentValidator(v); err != nil {
-			return &ValidationError{Name: "department", err: fmt.Errorf("ent: validator failed for field \"department\": %w", err)}
-		}
-	}
 	if v, ok := pu.mutation.User(); ok {
 		if err := personnel.UserValidator(v); err != nil {
 			return &ValidationError{Name: "user", err: fmt.Errorf("ent: validator failed for field \"user\": %w", err)}
@@ -382,13 +397,6 @@ func (pu *PersonnelUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Type:   field.TypeString,
 			Value:  value,
 			Column: personnel.FieldName,
-		})
-	}
-	if value, ok := pu.mutation.Department(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
-			Value:  value,
-			Column: personnel.FieldDepartment,
 		})
 	}
 	if value, ok := pu.mutation.User(); ok {
@@ -729,6 +737,41 @@ func (pu *PersonnelUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	if pu.mutation.DepartmentCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   personnel.DepartmentTable,
+			Columns: []string{personnel.DepartmentColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: department.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := pu.mutation.DepartmentIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   personnel.DepartmentTable,
+			Columns: []string{personnel.DepartmentColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: department.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
 	if n, err = sqlgraph.UpdateNodes(ctx, pu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{personnel.Label}
@@ -750,12 +793,6 @@ type PersonnelUpdateOne struct {
 // SetName sets the "name" field.
 func (puo *PersonnelUpdateOne) SetName(s string) *PersonnelUpdateOne {
 	puo.mutation.SetName(s)
-	return puo
-}
-
-// SetDepartment sets the "department" field.
-func (puo *PersonnelUpdateOne) SetDepartment(s string) *PersonnelUpdateOne {
-	puo.mutation.SetDepartment(s)
 	return puo
 }
 
@@ -859,6 +896,25 @@ func (puo *PersonnelUpdateOne) AddAntenatalinformation(a ...*Antenatalinformatio
 		ids[i] = a[i].ID
 	}
 	return puo.AddAntenatalinformationIDs(ids...)
+}
+
+// SetDepartmentID sets the "Department" edge to the Department entity by ID.
+func (puo *PersonnelUpdateOne) SetDepartmentID(id int) *PersonnelUpdateOne {
+	puo.mutation.SetDepartmentID(id)
+	return puo
+}
+
+// SetNillableDepartmentID sets the "Department" edge to the Department entity by ID if the given value is not nil.
+func (puo *PersonnelUpdateOne) SetNillableDepartmentID(id *int) *PersonnelUpdateOne {
+	if id != nil {
+		puo = puo.SetDepartmentID(*id)
+	}
+	return puo
+}
+
+// SetDepartment sets the "Department" edge to the Department entity.
+func (puo *PersonnelUpdateOne) SetDepartment(d *Department) *PersonnelUpdateOne {
+	return puo.SetDepartmentID(d.ID)
 }
 
 // Mutation returns the PersonnelMutation object of the builder.
@@ -992,6 +1048,12 @@ func (puo *PersonnelUpdateOne) RemoveAntenatalinformation(a ...*Antenatalinforma
 	return puo.RemoveAntenatalinformationIDs(ids...)
 }
 
+// ClearDepartment clears the "Department" edge to the Department entity.
+func (puo *PersonnelUpdateOne) ClearDepartment() *PersonnelUpdateOne {
+	puo.mutation.ClearDepartment()
+	return puo
+}
+
 // Save executes the query and returns the updated Personnel entity.
 func (puo *PersonnelUpdateOne) Save(ctx context.Context) (*Personnel, error) {
 	var (
@@ -1056,11 +1118,6 @@ func (puo *PersonnelUpdateOne) check() error {
 			return &ValidationError{Name: "name", err: fmt.Errorf("ent: validator failed for field \"name\": %w", err)}
 		}
 	}
-	if v, ok := puo.mutation.Department(); ok {
-		if err := personnel.DepartmentValidator(v); err != nil {
-			return &ValidationError{Name: "department", err: fmt.Errorf("ent: validator failed for field \"department\": %w", err)}
-		}
-	}
 	if v, ok := puo.mutation.User(); ok {
 		if err := personnel.UserValidator(v); err != nil {
 			return &ValidationError{Name: "user", err: fmt.Errorf("ent: validator failed for field \"user\": %w", err)}
@@ -1095,13 +1152,6 @@ func (puo *PersonnelUpdateOne) sqlSave(ctx context.Context) (_node *Personnel, e
 			Type:   field.TypeString,
 			Value:  value,
 			Column: personnel.FieldName,
-		})
-	}
-	if value, ok := puo.mutation.Department(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
-			Value:  value,
-			Column: personnel.FieldDepartment,
 		})
 	}
 	if value, ok := puo.mutation.User(); ok {
@@ -1434,6 +1484,41 @@ func (puo *PersonnelUpdateOne) sqlSave(ctx context.Context) (_node *Personnel, e
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
 					Column: antenatalinformation.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if puo.mutation.DepartmentCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   personnel.DepartmentTable,
+			Columns: []string{personnel.DepartmentColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: department.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := puo.mutation.DepartmentIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   personnel.DepartmentTable,
+			Columns: []string{personnel.DepartmentColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: department.FieldID,
 				},
 			},
 		}

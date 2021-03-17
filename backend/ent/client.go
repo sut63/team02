@@ -14,8 +14,10 @@ import (
 	"github.com/to63/app/ent/checksymptom"
 	"github.com/to63/app/ent/dentalappointment"
 	"github.com/to63/app/ent/dentalkind"
+	"github.com/to63/app/ent/department"
 	"github.com/to63/app/ent/disease"
 	"github.com/to63/app/ent/doctorordersheet"
+	"github.com/to63/app/ent/gender"
 	"github.com/to63/app/ent/patient"
 	"github.com/to63/app/ent/personnel"
 	"github.com/to63/app/ent/physicaltherapyrecord"
@@ -47,10 +49,14 @@ type Client struct {
 	Dentalappointment *DentalappointmentClient
 	// Dentalkind is the client for interacting with the Dentalkind builders.
 	Dentalkind *DentalkindClient
+	// Department is the client for interacting with the Department builders.
+	Department *DepartmentClient
 	// Disease is the client for interacting with the Disease builders.
 	Disease *DiseaseClient
 	// Doctorordersheet is the client for interacting with the Doctorordersheet builders.
 	Doctorordersheet *DoctorordersheetClient
+	// Gender is the client for interacting with the Gender builders.
+	Gender *GenderClient
 	// Patient is the client for interacting with the Patient builders.
 	Patient *PatientClient
 	// Personnel is the client for interacting with the Personnel builders.
@@ -89,8 +95,10 @@ func (c *Client) init() {
 	c.Checksymptom = NewChecksymptomClient(c.config)
 	c.Dentalappointment = NewDentalappointmentClient(c.config)
 	c.Dentalkind = NewDentalkindClient(c.config)
+	c.Department = NewDepartmentClient(c.config)
 	c.Disease = NewDiseaseClient(c.config)
 	c.Doctorordersheet = NewDoctorordersheetClient(c.config)
+	c.Gender = NewGenderClient(c.config)
 	c.Patient = NewPatientClient(c.config)
 	c.Personnel = NewPersonnelClient(c.config)
 	c.Physicaltherapyrecord = NewPhysicaltherapyrecordClient(c.config)
@@ -138,8 +146,10 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 		Checksymptom:          NewChecksymptomClient(cfg),
 		Dentalappointment:     NewDentalappointmentClient(cfg),
 		Dentalkind:            NewDentalkindClient(cfg),
+		Department:            NewDepartmentClient(cfg),
 		Disease:               NewDiseaseClient(cfg),
 		Doctorordersheet:      NewDoctorordersheetClient(cfg),
+		Gender:                NewGenderClient(cfg),
 		Patient:               NewPatientClient(cfg),
 		Personnel:             NewPersonnelClient(cfg),
 		Physicaltherapyrecord: NewPhysicaltherapyrecordClient(cfg),
@@ -170,8 +180,10 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 		Checksymptom:          NewChecksymptomClient(cfg),
 		Dentalappointment:     NewDentalappointmentClient(cfg),
 		Dentalkind:            NewDentalkindClient(cfg),
+		Department:            NewDepartmentClient(cfg),
 		Disease:               NewDiseaseClient(cfg),
 		Doctorordersheet:      NewDoctorordersheetClient(cfg),
+		Gender:                NewGenderClient(cfg),
 		Patient:               NewPatientClient(cfg),
 		Personnel:             NewPersonnelClient(cfg),
 		Physicaltherapyrecord: NewPhysicaltherapyrecordClient(cfg),
@@ -215,8 +227,10 @@ func (c *Client) Use(hooks ...Hook) {
 	c.Checksymptom.Use(hooks...)
 	c.Dentalappointment.Use(hooks...)
 	c.Dentalkind.Use(hooks...)
+	c.Department.Use(hooks...)
 	c.Disease.Use(hooks...)
 	c.Doctorordersheet.Use(hooks...)
+	c.Gender.Use(hooks...)
 	c.Patient.Use(hooks...)
 	c.Personnel.Use(hooks...)
 	c.Physicaltherapyrecord.Use(hooks...)
@@ -909,6 +923,110 @@ func (c *DentalkindClient) Hooks() []Hook {
 	return c.hooks.Dentalkind
 }
 
+// DepartmentClient is a client for the Department schema.
+type DepartmentClient struct {
+	config
+}
+
+// NewDepartmentClient returns a client for the Department from the given config.
+func NewDepartmentClient(c config) *DepartmentClient {
+	return &DepartmentClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `department.Hooks(f(g(h())))`.
+func (c *DepartmentClient) Use(hooks ...Hook) {
+	c.hooks.Department = append(c.hooks.Department, hooks...)
+}
+
+// Create returns a create builder for Department.
+func (c *DepartmentClient) Create() *DepartmentCreate {
+	mutation := newDepartmentMutation(c.config, OpCreate)
+	return &DepartmentCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of Department entities.
+func (c *DepartmentClient) CreateBulk(builders ...*DepartmentCreate) *DepartmentCreateBulk {
+	return &DepartmentCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for Department.
+func (c *DepartmentClient) Update() *DepartmentUpdate {
+	mutation := newDepartmentMutation(c.config, OpUpdate)
+	return &DepartmentUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *DepartmentClient) UpdateOne(d *Department) *DepartmentUpdateOne {
+	mutation := newDepartmentMutation(c.config, OpUpdateOne, withDepartment(d))
+	return &DepartmentUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *DepartmentClient) UpdateOneID(id int) *DepartmentUpdateOne {
+	mutation := newDepartmentMutation(c.config, OpUpdateOne, withDepartmentID(id))
+	return &DepartmentUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for Department.
+func (c *DepartmentClient) Delete() *DepartmentDelete {
+	mutation := newDepartmentMutation(c.config, OpDelete)
+	return &DepartmentDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a delete builder for the given entity.
+func (c *DepartmentClient) DeleteOne(d *Department) *DepartmentDeleteOne {
+	return c.DeleteOneID(d.ID)
+}
+
+// DeleteOneID returns a delete builder for the given id.
+func (c *DepartmentClient) DeleteOneID(id int) *DepartmentDeleteOne {
+	builder := c.Delete().Where(department.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &DepartmentDeleteOne{builder}
+}
+
+// Query returns a query builder for Department.
+func (c *DepartmentClient) Query() *DepartmentQuery {
+	return &DepartmentQuery{config: c.config}
+}
+
+// Get returns a Department entity by its id.
+func (c *DepartmentClient) Get(ctx context.Context, id int) (*Department, error) {
+	return c.Query().Where(department.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *DepartmentClient) GetX(ctx context.Context, id int) *Department {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// QueryPersonnel queries the Personnel edge of a Department.
+func (c *DepartmentClient) QueryPersonnel(d *Department) *PersonnelQuery {
+	query := &PersonnelQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := d.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(department.Table, department.FieldID, id),
+			sqlgraph.To(personnel.Table, personnel.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, department.PersonnelTable, department.PersonnelColumn),
+		)
+		fromV = sqlgraph.Neighbors(d.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *DepartmentClient) Hooks() []Hook {
+	return c.hooks.Department
+}
+
 // DiseaseClient is a client for the Disease schema.
 type DiseaseClient struct {
 	config
@@ -1117,6 +1235,110 @@ func (c *DoctorordersheetClient) Hooks() []Hook {
 	return c.hooks.Doctorordersheet
 }
 
+// GenderClient is a client for the Gender schema.
+type GenderClient struct {
+	config
+}
+
+// NewGenderClient returns a client for the Gender from the given config.
+func NewGenderClient(c config) *GenderClient {
+	return &GenderClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `gender.Hooks(f(g(h())))`.
+func (c *GenderClient) Use(hooks ...Hook) {
+	c.hooks.Gender = append(c.hooks.Gender, hooks...)
+}
+
+// Create returns a create builder for Gender.
+func (c *GenderClient) Create() *GenderCreate {
+	mutation := newGenderMutation(c.config, OpCreate)
+	return &GenderCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of Gender entities.
+func (c *GenderClient) CreateBulk(builders ...*GenderCreate) *GenderCreateBulk {
+	return &GenderCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for Gender.
+func (c *GenderClient) Update() *GenderUpdate {
+	mutation := newGenderMutation(c.config, OpUpdate)
+	return &GenderUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *GenderClient) UpdateOne(ge *Gender) *GenderUpdateOne {
+	mutation := newGenderMutation(c.config, OpUpdateOne, withGender(ge))
+	return &GenderUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *GenderClient) UpdateOneID(id int) *GenderUpdateOne {
+	mutation := newGenderMutation(c.config, OpUpdateOne, withGenderID(id))
+	return &GenderUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for Gender.
+func (c *GenderClient) Delete() *GenderDelete {
+	mutation := newGenderMutation(c.config, OpDelete)
+	return &GenderDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a delete builder for the given entity.
+func (c *GenderClient) DeleteOne(ge *Gender) *GenderDeleteOne {
+	return c.DeleteOneID(ge.ID)
+}
+
+// DeleteOneID returns a delete builder for the given id.
+func (c *GenderClient) DeleteOneID(id int) *GenderDeleteOne {
+	builder := c.Delete().Where(gender.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &GenderDeleteOne{builder}
+}
+
+// Query returns a query builder for Gender.
+func (c *GenderClient) Query() *GenderQuery {
+	return &GenderQuery{config: c.config}
+}
+
+// Get returns a Gender entity by its id.
+func (c *GenderClient) Get(ctx context.Context, id int) (*Gender, error) {
+	return c.Query().Where(gender.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *GenderClient) GetX(ctx context.Context, id int) *Gender {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// QueryPatient queries the Patient edge of a Gender.
+func (c *GenderClient) QueryPatient(ge *Gender) *PatientQuery {
+	query := &PatientQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := ge.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(gender.Table, gender.FieldID, id),
+			sqlgraph.To(patient.Table, patient.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, gender.PatientTable, gender.PatientColumn),
+		)
+		fromV = sqlgraph.Neighbors(ge.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *GenderClient) Hooks() []Hook {
+	return c.hooks.Gender
+}
+
 // PatientClient is a client for the Patient schema.
 type PatientClient struct {
 	config
@@ -1198,6 +1420,22 @@ func (c *PatientClient) GetX(ctx context.Context, id int) *Patient {
 		panic(err)
 	}
 	return obj
+}
+
+// QueryGender queries the Gender edge of a Patient.
+func (c *PatientClient) QueryGender(pa *Patient) *GenderQuery {
+	query := &GenderQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := pa.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(patient.Table, patient.FieldID, id),
+			sqlgraph.To(gender.Table, gender.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, patient.GenderTable, patient.GenderColumn),
+		)
+		fromV = sqlgraph.Neighbors(pa.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
 }
 
 // QueryPhysicaltherapyrecord queries the physicaltherapyrecord edge of a Patient.
@@ -1473,6 +1711,22 @@ func (c *PersonnelClient) QueryAntenatalinformation(pe *Personnel) *Antenatalinf
 			sqlgraph.From(personnel.Table, personnel.FieldID, id),
 			sqlgraph.To(antenatalinformation.Table, antenatalinformation.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, personnel.AntenatalinformationTable, personnel.AntenatalinformationColumn),
+		)
+		fromV = sqlgraph.Neighbors(pe.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryDepartment queries the Department edge of a Personnel.
+func (c *PersonnelClient) QueryDepartment(pe *Personnel) *DepartmentQuery {
+	query := &DepartmentQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := pe.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(personnel.Table, personnel.FieldID, id),
+			sqlgraph.To(department.Table, department.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, personnel.DepartmentTable, personnel.DepartmentColumn),
 		)
 		fromV = sqlgraph.Neighbors(pe.driver.Dialect(), step)
 		return fromV, nil

@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/facebook/ent/dialect/sql"
+	"github.com/to63/app/ent/department"
 	"github.com/to63/app/ent/personnel"
 )
 
@@ -17,15 +18,14 @@ type Personnel struct {
 	ID int `json:"id,omitempty"`
 	// Name holds the value of the "name" field.
 	Name string `json:"name,omitempty"`
-	// Department holds the value of the "department" field.
-	Department string `json:"department,omitempty"`
 	// User holds the value of the "user" field.
 	User string `json:"user,omitempty"`
 	// Password holds the value of the "password" field.
 	Password string `json:"password,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the PersonnelQuery when eager-loading is set.
-	Edges PersonnelEdges `json:"edges"`
+	Edges       PersonnelEdges `json:"edges"`
+	_Department *int
 }
 
 // PersonnelEdges holds the relations/edges for other nodes in the graph.
@@ -42,9 +42,11 @@ type PersonnelEdges struct {
 	Surgeryappointment []*Surgeryappointment
 	// Antenatalinformation holds the value of the Antenatalinformation edge.
 	Antenatalinformation []*Antenatalinformation
+	// Department holds the value of the Department edge.
+	Department *Department
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [6]bool
+	loadedTypes [7]bool
 }
 
 // PhysicaltherapyrecordOrErr returns the Physicaltherapyrecord value or an error if the edge
@@ -101,6 +103,20 @@ func (e PersonnelEdges) AntenatalinformationOrErr() ([]*Antenatalinformation, er
 	return nil, &NotLoadedError{edge: "Antenatalinformation"}
 }
 
+// DepartmentOrErr returns the Department value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e PersonnelEdges) DepartmentOrErr() (*Department, error) {
+	if e.loadedTypes[6] {
+		if e.Department == nil {
+			// The edge Department was loaded in eager-loading,
+			// but was not found.
+			return nil, &NotFoundError{label: department.Label}
+		}
+		return e.Department, nil
+	}
+	return nil, &NotLoadedError{edge: "Department"}
+}
+
 // scanValues returns the types for scanning values from sql.Rows.
 func (*Personnel) scanValues(columns []string) ([]interface{}, error) {
 	values := make([]interface{}, len(columns))
@@ -108,8 +124,10 @@ func (*Personnel) scanValues(columns []string) ([]interface{}, error) {
 		switch columns[i] {
 		case personnel.FieldID:
 			values[i] = &sql.NullInt64{}
-		case personnel.FieldName, personnel.FieldDepartment, personnel.FieldUser, personnel.FieldPassword:
+		case personnel.FieldName, personnel.FieldUser, personnel.FieldPassword:
 			values[i] = &sql.NullString{}
+		case personnel.ForeignKeys[0]: // _Department
+			values[i] = &sql.NullInt64{}
 		default:
 			return nil, fmt.Errorf("unexpected column %q for type Personnel", columns[i])
 		}
@@ -137,12 +155,6 @@ func (pe *Personnel) assignValues(columns []string, values []interface{}) error 
 			} else if value.Valid {
 				pe.Name = value.String
 			}
-		case personnel.FieldDepartment:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field department", values[i])
-			} else if value.Valid {
-				pe.Department = value.String
-			}
 		case personnel.FieldUser:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field user", values[i])
@@ -154,6 +166,13 @@ func (pe *Personnel) assignValues(columns []string, values []interface{}) error 
 				return fmt.Errorf("unexpected type %T for field password", values[i])
 			} else if value.Valid {
 				pe.Password = value.String
+			}
+		case personnel.ForeignKeys[0]:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for edge-field _Department", value)
+			} else if value.Valid {
+				pe._Department = new(int)
+				*pe._Department = int(value.Int64)
 			}
 		}
 	}
@@ -190,6 +209,11 @@ func (pe *Personnel) QueryAntenatalinformation() *AntenatalinformationQuery {
 	return (&PersonnelClient{config: pe.config}).QueryAntenatalinformation(pe)
 }
 
+// QueryDepartment queries the "Department" edge of the Personnel entity.
+func (pe *Personnel) QueryDepartment() *DepartmentQuery {
+	return (&PersonnelClient{config: pe.config}).QueryDepartment(pe)
+}
+
 // Update returns a builder for updating this Personnel.
 // Note that you need to call Personnel.Unwrap() before calling this method if this Personnel
 // was returned from a transaction, and the transaction was committed or rolled back.
@@ -215,8 +239,6 @@ func (pe *Personnel) String() string {
 	builder.WriteString(fmt.Sprintf("id=%v", pe.ID))
 	builder.WriteString(", name=")
 	builder.WriteString(pe.Name)
-	builder.WriteString(", department=")
-	builder.WriteString(pe.Department)
 	builder.WriteString(", user=")
 	builder.WriteString(pe.User)
 	builder.WriteString(", password=")

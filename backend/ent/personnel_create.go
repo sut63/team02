@@ -13,6 +13,7 @@ import (
 	"github.com/to63/app/ent/bonedisease"
 	"github.com/to63/app/ent/checksymptom"
 	"github.com/to63/app/ent/dentalappointment"
+	"github.com/to63/app/ent/department"
 	"github.com/to63/app/ent/personnel"
 	"github.com/to63/app/ent/physicaltherapyrecord"
 	"github.com/to63/app/ent/surgeryappointment"
@@ -28,12 +29,6 @@ type PersonnelCreate struct {
 // SetName sets the "name" field.
 func (pc *PersonnelCreate) SetName(s string) *PersonnelCreate {
 	pc.mutation.SetName(s)
-	return pc
-}
-
-// SetDepartment sets the "department" field.
-func (pc *PersonnelCreate) SetDepartment(s string) *PersonnelCreate {
-	pc.mutation.SetDepartment(s)
 	return pc
 }
 
@@ -139,6 +134,25 @@ func (pc *PersonnelCreate) AddAntenatalinformation(a ...*Antenatalinformation) *
 	return pc.AddAntenatalinformationIDs(ids...)
 }
 
+// SetDepartmentID sets the "Department" edge to the Department entity by ID.
+func (pc *PersonnelCreate) SetDepartmentID(id int) *PersonnelCreate {
+	pc.mutation.SetDepartmentID(id)
+	return pc
+}
+
+// SetNillableDepartmentID sets the "Department" edge to the Department entity by ID if the given value is not nil.
+func (pc *PersonnelCreate) SetNillableDepartmentID(id *int) *PersonnelCreate {
+	if id != nil {
+		pc = pc.SetDepartmentID(*id)
+	}
+	return pc
+}
+
+// SetDepartment sets the "Department" edge to the Department entity.
+func (pc *PersonnelCreate) SetDepartment(d *Department) *PersonnelCreate {
+	return pc.SetDepartmentID(d.ID)
+}
+
 // Mutation returns the PersonnelMutation object of the builder.
 func (pc *PersonnelCreate) Mutation() *PersonnelMutation {
 	return pc.mutation
@@ -198,14 +212,6 @@ func (pc *PersonnelCreate) check() error {
 			return &ValidationError{Name: "name", err: fmt.Errorf("ent: validator failed for field \"name\": %w", err)}
 		}
 	}
-	if _, ok := pc.mutation.Department(); !ok {
-		return &ValidationError{Name: "department", err: errors.New("ent: missing required field \"department\"")}
-	}
-	if v, ok := pc.mutation.Department(); ok {
-		if err := personnel.DepartmentValidator(v); err != nil {
-			return &ValidationError{Name: "department", err: fmt.Errorf("ent: validator failed for field \"department\": %w", err)}
-		}
-	}
 	if _, ok := pc.mutation.User(); !ok {
 		return &ValidationError{Name: "user", err: errors.New("ent: missing required field \"user\"")}
 	}
@@ -256,14 +262,6 @@ func (pc *PersonnelCreate) createSpec() (*Personnel, *sqlgraph.CreateSpec) {
 			Column: personnel.FieldName,
 		})
 		_node.Name = value
-	}
-	if value, ok := pc.mutation.Department(); ok {
-		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
-			Value:  value,
-			Column: personnel.FieldDepartment,
-		})
-		_node.Department = value
 	}
 	if value, ok := pc.mutation.User(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
@@ -387,6 +385,25 @@ func (pc *PersonnelCreate) createSpec() (*Personnel, *sqlgraph.CreateSpec) {
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
 					Column: antenatalinformation.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := pc.mutation.DepartmentIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   personnel.DepartmentTable,
+			Columns: []string{personnel.DepartmentColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: department.FieldID,
 				},
 			},
 		}
