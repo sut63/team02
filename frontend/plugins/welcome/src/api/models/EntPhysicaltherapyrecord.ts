@@ -27,12 +27,6 @@ import {
  */
 export interface EntPhysicaltherapyrecord {
     /**
-     * Age holds the value of the "age" field.
-     * @type {number}
-     * @memberof EntPhysicaltherapyrecord
-     */
-    age?: number;
-    /**
      * Appointtime holds the value of the "appointtime" field.
      * @type {string}
      * @memberof EntPhysicaltherapyrecord
@@ -51,17 +45,17 @@ export interface EntPhysicaltherapyrecord {
      */
     id?: number;
     /**
-     * Idnumber holds the value of the "idnumber" field.
+     * Note holds the value of the "note" field.
      * @type {string}
      * @memberof EntPhysicaltherapyrecord
      */
-    idnumber?: string;
+    note?: string;
     /**
-     * Telephone holds the value of the "telephone" field.
-     * @type {string}
+     * Price holds the value of the "price" field.
+     * @type {number}
      * @memberof EntPhysicaltherapyrecord
      */
-    telephone?: string;
+    price?: number;
 }
 
 export function EntPhysicaltherapyrecordFromJSON(json: any): EntPhysicaltherapyrecord {
@@ -74,12 +68,11 @@ export function EntPhysicaltherapyrecordFromJSONTyped(json: any, ignoreDiscrimin
     }
     return {
         
-        'age': !exists(json, 'age') ? undefined : json['age'],
         'appointtime': !exists(json, 'appointtime') ? undefined : json['appointtime'],
         'edges': !exists(json, 'edges') ? undefined : EntPhysicaltherapyrecordEdgesFromJSON(json['edges']),
         'id': !exists(json, 'id') ? undefined : json['id'],
-        'idnumber': !exists(json, 'idnumber') ? undefined : json['idnumber'],
-        'telephone': !exists(json, 'telephone') ? undefined : json['telephone'],
+        'note': !exists(json, 'note') ? undefined : json['note'],
+        'price': !exists(json, 'price') ? undefined : json['price'],
     };
 }
 
@@ -92,12 +85,11 @@ export function EntPhysicaltherapyrecordToJSON(value?: EntPhysicaltherapyrecord 
     }
     return {
         
-        'age': value.age,
         'appointtime': value.appointtime,
         'edges': EntPhysicaltherapyrecordEdgesToJSON(value.edges),
         'id': value.id,
-        'idnumber': value.idnumber,
-        'telephone': value.telephone,
+        'note': value.note,
+        'price': value.price,
     };
 }
 

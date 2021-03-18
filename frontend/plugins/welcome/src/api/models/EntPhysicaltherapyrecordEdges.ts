@@ -74,10 +74,10 @@ export function EntPhysicaltherapyrecordEdgesFromJSONTyped(json: any, ignoreDisc
     }
     return {
         
-        'patient': !exists(json, 'patient') ? undefined : EntPatientFromJSON(json['patient']),
-        'personnel': !exists(json, 'personnel') ? undefined : EntPersonnelFromJSON(json['personnel']),
-        'physicaltherapyroom': !exists(json, 'physicaltherapyroom') ? undefined : EntPhysicaltherapyroomFromJSON(json['physicaltherapyroom']),
-        'status': !exists(json, 'status') ? undefined : EntStatusFromJSON(json['status']),
+        'patient': !exists(json, 'Patient') ? undefined : EntPatientFromJSON(json['Patient']),
+        'personnel': !exists(json, 'Personnel') ? undefined : EntPersonnelFromJSON(json['Personnel']),
+        'physicaltherapyroom': !exists(json, 'Physicaltherapyroom') ? undefined : EntPhysicaltherapyroomFromJSON(json['Physicaltherapyroom']),
+        'status': !exists(json, 'Status') ? undefined : EntStatusFromJSON(json['Status']),
     };
 }
 

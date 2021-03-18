@@ -24,21 +24,15 @@ type PhysicaltherapyrecordCreate struct {
 	hooks    []Hook
 }
 
-// SetIdnumber sets the "idnumber" field.
-func (pc *PhysicaltherapyrecordCreate) SetIdnumber(s string) *PhysicaltherapyrecordCreate {
-	pc.mutation.SetIdnumber(s)
+// SetPrice sets the "price" field.
+func (pc *PhysicaltherapyrecordCreate) SetPrice(i int) *PhysicaltherapyrecordCreate {
+	pc.mutation.SetPrice(i)
 	return pc
 }
 
-// SetAge sets the "age" field.
-func (pc *PhysicaltherapyrecordCreate) SetAge(i int) *PhysicaltherapyrecordCreate {
-	pc.mutation.SetAge(i)
-	return pc
-}
-
-// SetTelephone sets the "telephone" field.
-func (pc *PhysicaltherapyrecordCreate) SetTelephone(s string) *PhysicaltherapyrecordCreate {
-	pc.mutation.SetTelephone(s)
+// SetNote sets the "note" field.
+func (pc *PhysicaltherapyrecordCreate) SetNote(s string) *PhysicaltherapyrecordCreate {
+	pc.mutation.SetNote(s)
 	return pc
 }
 
@@ -175,28 +169,20 @@ func (pc *PhysicaltherapyrecordCreate) SaveX(ctx context.Context) *Physicalthera
 
 // check runs all checks and user-defined validators on the builder.
 func (pc *PhysicaltherapyrecordCreate) check() error {
-	if _, ok := pc.mutation.Idnumber(); !ok {
-		return &ValidationError{Name: "idnumber", err: errors.New("ent: missing required field \"idnumber\"")}
+	if _, ok := pc.mutation.Price(); !ok {
+		return &ValidationError{Name: "price", err: errors.New("ent: missing required field \"price\"")}
 	}
-	if v, ok := pc.mutation.Idnumber(); ok {
-		if err := physicaltherapyrecord.IdnumberValidator(v); err != nil {
-			return &ValidationError{Name: "idnumber", err: fmt.Errorf("ent: validator failed for field \"idnumber\": %w", err)}
+	if v, ok := pc.mutation.Price(); ok {
+		if err := physicaltherapyrecord.PriceValidator(v); err != nil {
+			return &ValidationError{Name: "price", err: fmt.Errorf("ent: validator failed for field \"price\": %w", err)}
 		}
 	}
-	if _, ok := pc.mutation.Age(); !ok {
-		return &ValidationError{Name: "age", err: errors.New("ent: missing required field \"age\"")}
+	if _, ok := pc.mutation.Note(); !ok {
+		return &ValidationError{Name: "note", err: errors.New("ent: missing required field \"note\"")}
 	}
-	if v, ok := pc.mutation.Age(); ok {
-		if err := physicaltherapyrecord.AgeValidator(v); err != nil {
-			return &ValidationError{Name: "age", err: fmt.Errorf("ent: validator failed for field \"age\": %w", err)}
-		}
-	}
-	if _, ok := pc.mutation.Telephone(); !ok {
-		return &ValidationError{Name: "telephone", err: errors.New("ent: missing required field \"telephone\"")}
-	}
-	if v, ok := pc.mutation.Telephone(); ok {
-		if err := physicaltherapyrecord.TelephoneValidator(v); err != nil {
-			return &ValidationError{Name: "telephone", err: fmt.Errorf("ent: validator failed for field \"telephone\": %w", err)}
+	if v, ok := pc.mutation.Note(); ok {
+		if err := physicaltherapyrecord.NoteValidator(v); err != nil {
+			return &ValidationError{Name: "note", err: fmt.Errorf("ent: validator failed for field \"note\": %w", err)}
 		}
 	}
 	if _, ok := pc.mutation.Appointtime(); !ok {
@@ -229,29 +215,21 @@ func (pc *PhysicaltherapyrecordCreate) createSpec() (*Physicaltherapyrecord, *sq
 			},
 		}
 	)
-	if value, ok := pc.mutation.Idnumber(); ok {
-		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
-			Value:  value,
-			Column: physicaltherapyrecord.FieldIdnumber,
-		})
-		_node.Idnumber = value
-	}
-	if value, ok := pc.mutation.Age(); ok {
+	if value, ok := pc.mutation.Price(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeInt,
 			Value:  value,
-			Column: physicaltherapyrecord.FieldAge,
+			Column: physicaltherapyrecord.FieldPrice,
 		})
-		_node.Age = value
+		_node.Price = value
 	}
-	if value, ok := pc.mutation.Telephone(); ok {
+	if value, ok := pc.mutation.Note(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: physicaltherapyrecord.FieldTelephone,
+			Column: physicaltherapyrecord.FieldNote,
 		})
-		_node.Telephone = value
+		_node.Note = value
 	}
 	if value, ok := pc.mutation.Appointtime(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{

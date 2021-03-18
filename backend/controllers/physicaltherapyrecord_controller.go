@@ -26,9 +26,8 @@ type PhysicaltherapyrecordController struct {
 type Physicaltherapyrecord struct {
 	Personnel           int
 	Patient             int
-	IDnumber			string
-	Age					int
-	Telephone			string
+	Price				int
+	Note				string
 	Physicaltherapyroom int
 	Status              int
 	Time                string
@@ -103,14 +102,19 @@ func (ctl *PhysicaltherapyrecordController) CreatePhysicaltherapyrecord(c *gin.C
 	}
 
 	times, err := time.Parse(time.RFC3339, obj.Time)
+	if err != nil {
+		c.JSON(400, gin.H{
+			"error": "status not found",
+		})
+		return
+	}
 
 	physicaltherapyrecord, err := ctl.client.Physicaltherapyrecord.
 		Create().
 		SetPatient(patient).
 		SetPersonnel(personnel).
-		SetIdnumber(obj.IDnumber).
-		SetAge(obj.Age).
-		SetTelephone(obj.Telephone).
+		SetPrice(obj.Price).
+		SetNote(obj.Note).
 		SetStatus(status).
 		SetPhysicaltherapyroom(physicaltherapyroom).
 		SetAppointtime(times).
@@ -118,7 +122,9 @@ func (ctl *PhysicaltherapyrecordController) CreatePhysicaltherapyrecord(c *gin.C
 
 	if err != nil {
 		c.JSON(400, gin.H{
-			"error": "saving failed",
+			"status": false,
+			"error":  err,
+		
 		})
 		return
 	}

@@ -31,28 +31,22 @@ func (pu *PhysicaltherapyrecordUpdate) Where(ps ...predicate.Physicaltherapyreco
 	return pu
 }
 
-// SetIdnumber sets the "idnumber" field.
-func (pu *PhysicaltherapyrecordUpdate) SetIdnumber(s string) *PhysicaltherapyrecordUpdate {
-	pu.mutation.SetIdnumber(s)
+// SetPrice sets the "price" field.
+func (pu *PhysicaltherapyrecordUpdate) SetPrice(i int) *PhysicaltherapyrecordUpdate {
+	pu.mutation.ResetPrice()
+	pu.mutation.SetPrice(i)
 	return pu
 }
 
-// SetAge sets the "age" field.
-func (pu *PhysicaltherapyrecordUpdate) SetAge(i int) *PhysicaltherapyrecordUpdate {
-	pu.mutation.ResetAge()
-	pu.mutation.SetAge(i)
+// AddPrice adds i to the "price" field.
+func (pu *PhysicaltherapyrecordUpdate) AddPrice(i int) *PhysicaltherapyrecordUpdate {
+	pu.mutation.AddPrice(i)
 	return pu
 }
 
-// AddAge adds i to the "age" field.
-func (pu *PhysicaltherapyrecordUpdate) AddAge(i int) *PhysicaltherapyrecordUpdate {
-	pu.mutation.AddAge(i)
-	return pu
-}
-
-// SetTelephone sets the "telephone" field.
-func (pu *PhysicaltherapyrecordUpdate) SetTelephone(s string) *PhysicaltherapyrecordUpdate {
-	pu.mutation.SetTelephone(s)
+// SetNote sets the "note" field.
+func (pu *PhysicaltherapyrecordUpdate) SetNote(s string) *PhysicaltherapyrecordUpdate {
+	pu.mutation.SetNote(s)
 	return pu
 }
 
@@ -226,19 +220,14 @@ func (pu *PhysicaltherapyrecordUpdate) ExecX(ctx context.Context) {
 
 // check runs all checks and user-defined validators on the builder.
 func (pu *PhysicaltherapyrecordUpdate) check() error {
-	if v, ok := pu.mutation.Idnumber(); ok {
-		if err := physicaltherapyrecord.IdnumberValidator(v); err != nil {
-			return &ValidationError{Name: "idnumber", err: fmt.Errorf("ent: validator failed for field \"idnumber\": %w", err)}
+	if v, ok := pu.mutation.Price(); ok {
+		if err := physicaltherapyrecord.PriceValidator(v); err != nil {
+			return &ValidationError{Name: "price", err: fmt.Errorf("ent: validator failed for field \"price\": %w", err)}
 		}
 	}
-	if v, ok := pu.mutation.Age(); ok {
-		if err := physicaltherapyrecord.AgeValidator(v); err != nil {
-			return &ValidationError{Name: "age", err: fmt.Errorf("ent: validator failed for field \"age\": %w", err)}
-		}
-	}
-	if v, ok := pu.mutation.Telephone(); ok {
-		if err := physicaltherapyrecord.TelephoneValidator(v); err != nil {
-			return &ValidationError{Name: "telephone", err: fmt.Errorf("ent: validator failed for field \"telephone\": %w", err)}
+	if v, ok := pu.mutation.Note(); ok {
+		if err := physicaltherapyrecord.NoteValidator(v); err != nil {
+			return &ValidationError{Name: "note", err: fmt.Errorf("ent: validator failed for field \"note\": %w", err)}
 		}
 	}
 	return nil
@@ -262,32 +251,25 @@ func (pu *PhysicaltherapyrecordUpdate) sqlSave(ctx context.Context) (n int, err 
 			}
 		}
 	}
-	if value, ok := pu.mutation.Idnumber(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
-			Value:  value,
-			Column: physicaltherapyrecord.FieldIdnumber,
-		})
-	}
-	if value, ok := pu.mutation.Age(); ok {
+	if value, ok := pu.mutation.Price(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeInt,
 			Value:  value,
-			Column: physicaltherapyrecord.FieldAge,
+			Column: physicaltherapyrecord.FieldPrice,
 		})
 	}
-	if value, ok := pu.mutation.AddedAge(); ok {
+	if value, ok := pu.mutation.AddedPrice(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
 			Type:   field.TypeInt,
 			Value:  value,
-			Column: physicaltherapyrecord.FieldAge,
+			Column: physicaltherapyrecord.FieldPrice,
 		})
 	}
-	if value, ok := pu.mutation.Telephone(); ok {
+	if value, ok := pu.mutation.Note(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: physicaltherapyrecord.FieldTelephone,
+			Column: physicaltherapyrecord.FieldNote,
 		})
 	}
 	if value, ok := pu.mutation.Appointtime(); ok {
@@ -455,28 +437,22 @@ type PhysicaltherapyrecordUpdateOne struct {
 	mutation *PhysicaltherapyrecordMutation
 }
 
-// SetIdnumber sets the "idnumber" field.
-func (puo *PhysicaltherapyrecordUpdateOne) SetIdnumber(s string) *PhysicaltherapyrecordUpdateOne {
-	puo.mutation.SetIdnumber(s)
+// SetPrice sets the "price" field.
+func (puo *PhysicaltherapyrecordUpdateOne) SetPrice(i int) *PhysicaltherapyrecordUpdateOne {
+	puo.mutation.ResetPrice()
+	puo.mutation.SetPrice(i)
 	return puo
 }
 
-// SetAge sets the "age" field.
-func (puo *PhysicaltherapyrecordUpdateOne) SetAge(i int) *PhysicaltherapyrecordUpdateOne {
-	puo.mutation.ResetAge()
-	puo.mutation.SetAge(i)
+// AddPrice adds i to the "price" field.
+func (puo *PhysicaltherapyrecordUpdateOne) AddPrice(i int) *PhysicaltherapyrecordUpdateOne {
+	puo.mutation.AddPrice(i)
 	return puo
 }
 
-// AddAge adds i to the "age" field.
-func (puo *PhysicaltherapyrecordUpdateOne) AddAge(i int) *PhysicaltherapyrecordUpdateOne {
-	puo.mutation.AddAge(i)
-	return puo
-}
-
-// SetTelephone sets the "telephone" field.
-func (puo *PhysicaltherapyrecordUpdateOne) SetTelephone(s string) *PhysicaltherapyrecordUpdateOne {
-	puo.mutation.SetTelephone(s)
+// SetNote sets the "note" field.
+func (puo *PhysicaltherapyrecordUpdateOne) SetNote(s string) *PhysicaltherapyrecordUpdateOne {
+	puo.mutation.SetNote(s)
 	return puo
 }
 
@@ -650,19 +626,14 @@ func (puo *PhysicaltherapyrecordUpdateOne) ExecX(ctx context.Context) {
 
 // check runs all checks and user-defined validators on the builder.
 func (puo *PhysicaltherapyrecordUpdateOne) check() error {
-	if v, ok := puo.mutation.Idnumber(); ok {
-		if err := physicaltherapyrecord.IdnumberValidator(v); err != nil {
-			return &ValidationError{Name: "idnumber", err: fmt.Errorf("ent: validator failed for field \"idnumber\": %w", err)}
+	if v, ok := puo.mutation.Price(); ok {
+		if err := physicaltherapyrecord.PriceValidator(v); err != nil {
+			return &ValidationError{Name: "price", err: fmt.Errorf("ent: validator failed for field \"price\": %w", err)}
 		}
 	}
-	if v, ok := puo.mutation.Age(); ok {
-		if err := physicaltherapyrecord.AgeValidator(v); err != nil {
-			return &ValidationError{Name: "age", err: fmt.Errorf("ent: validator failed for field \"age\": %w", err)}
-		}
-	}
-	if v, ok := puo.mutation.Telephone(); ok {
-		if err := physicaltherapyrecord.TelephoneValidator(v); err != nil {
-			return &ValidationError{Name: "telephone", err: fmt.Errorf("ent: validator failed for field \"telephone\": %w", err)}
+	if v, ok := puo.mutation.Note(); ok {
+		if err := physicaltherapyrecord.NoteValidator(v); err != nil {
+			return &ValidationError{Name: "note", err: fmt.Errorf("ent: validator failed for field \"note\": %w", err)}
 		}
 	}
 	return nil
@@ -684,32 +655,25 @@ func (puo *PhysicaltherapyrecordUpdateOne) sqlSave(ctx context.Context) (_node *
 		return nil, &ValidationError{Name: "ID", err: fmt.Errorf("missing Physicaltherapyrecord.ID for update")}
 	}
 	_spec.Node.ID.Value = id
-	if value, ok := puo.mutation.Idnumber(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
-			Value:  value,
-			Column: physicaltherapyrecord.FieldIdnumber,
-		})
-	}
-	if value, ok := puo.mutation.Age(); ok {
+	if value, ok := puo.mutation.Price(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeInt,
 			Value:  value,
-			Column: physicaltherapyrecord.FieldAge,
+			Column: physicaltherapyrecord.FieldPrice,
 		})
 	}
-	if value, ok := puo.mutation.AddedAge(); ok {
+	if value, ok := puo.mutation.AddedPrice(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
 			Type:   field.TypeInt,
 			Value:  value,
-			Column: physicaltherapyrecord.FieldAge,
+			Column: physicaltherapyrecord.FieldPrice,
 		})
 	}
-	if value, ok := puo.mutation.Telephone(); ok {
+	if value, ok := puo.mutation.Note(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: physicaltherapyrecord.FieldTelephone,
+			Column: physicaltherapyrecord.FieldNote,
 		})
 	}
 	if value, ok := puo.mutation.Appointtime(); ok {

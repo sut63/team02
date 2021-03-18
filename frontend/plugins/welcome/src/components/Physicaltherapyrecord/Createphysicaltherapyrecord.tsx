@@ -69,9 +69,8 @@ export default function AmbulanceCreate() {
   const [patients, setPatients] = useState<EntPatient[]>([]);
   const [physicaltherapyrooms, setPhysicaltherapyrooms] = useState<EntPhysicaltherapyroom[]>([]);
   const [statuss, setStatuss] = useState<EntStatus[]>([]); 
-  const [idnumbererror, setIdnumbererror] = React.useState('');
-  const [ageerror, setAgeerror] = React.useState('');
-  const [telophoneerror, setTelophoneerror] = React.useState('');
+  const [priceerror, setPriceerror] = React.useState('');
+  const [noteerror, setNoteerror] = React.useState('');
   const [errormessege, setErrorMessege] = useState(String);
   const [alerttype, setAlertType] = useState(String);
 
@@ -83,9 +82,9 @@ export default function AmbulanceCreate() {
   const [physicaltherapyroomid, setPhysicaltherapyroomid] = useState(Number);
   const [statusid, setStatusid] = useState(Number);
   const [addedTime, setAddedTime] = useState(String);
-  const [idnumberid, setIDnumberid] = useState(String);
-  const [ageid, setAgeid] = useState(Number);
-  const [telephoneid, setTelephoneid] = useState(String);
+  const [priceid, setPriceid] = useState(Number);
+  const [noteid, setNoteid] = useState(String);
+
 
 
 
@@ -129,35 +128,7 @@ export default function AmbulanceCreate() {
       
  
   }, [loading]);
-  const idnumber = (val: string) => {
-    return val.match("[0-9]\\d{12}") && val.length == 13 ? true:false;
-  
-  }
 
-  const age = (val: number) => {
-    return val <= 1 && val >=99 ? true:false
-  }
-
-  const telephone = (val: string) => {
-    return val.match("[0]\\d{9}") && val.length == 10 ? true:false;
-  }
-  const checkPattern  = (id: string, value:string) => {
-    console.log(value);
-    switch(id) {
-      case 'idnumber':
-        idnumber(value) ? setIdnumbererror('') : setIdnumbererror('เลขเลขบัตรประชาชน 13 ตัว');
-        return;
-      case 'age':
-        age(Number(value)) ? setAgeerror('') : setAgeerror('อายุ');
-      return;
-      case 'telephone':
-        telephone(value) ? setTelophoneerror('') : setTelophoneerror('เบอร์โทรศัพท์');
-      return;
-        default:
-          return;
-    }
-  }
- 
   console.log(personnelid)
 
   const PersonnelhandleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
@@ -179,17 +150,14 @@ export default function AmbulanceCreate() {
       setAddedTime(event.target.value as string);
     };
 
-  const IDnumberhandleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setIDnumberid(event.target.value as string);
+  const PricehandleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    setPriceid(event.target.value as number);
   };
 
-  const AgehandleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setAgeid(event.target.value as number);
+  const NotehandleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    setNoteid(event.target.value as string);
   };
 
-  const TelephonehandleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setTelephoneid(event.target.value as string);
-  };
 
 
 
@@ -200,23 +168,12 @@ export default function AmbulanceCreate() {
     }
   };
 
- 
-  const IDnumberhandlehange = (event: React.ChangeEvent<{ id?: string; value: any }>) => {
-    const id = event.target.id as  typeof idnumberid;
-    const { value } = event.target;
-    const validateValue = value.toString()
-    checkPattern(id, validateValue)
-    setIDnumberid(event.target.value as string);
-    
-  };
-  
-  
   
  
   const checkCaseSaveError = (field: string) => {
-    if (field == "idnumber") { setErrorMessege("ข้อมูลfield เลขบัตรประชาชนผิด"); }
-        else if (field == "age") { setErrorMessege("ข้อมูลfield อายุผิด"); }
-        else if (field == "telephone") { setErrorMessege("ข้อมูลfield โทรศัพท์ผิด"); }
+    
+    if (field == "price") { setErrorMessege("กรอกจำนวนเงินให้ถูกต้อง"); }
+        else if (field == "note") { setErrorMessege("กรอกหมายเหตุให้ถูกต้อง"); }
         else { setErrorMessege("บันทึกไม่สำเร็จใส่ข้อมูลไม่ครบ"); }
   }
   const CreatePhysicaltherapyrecord = async ()=>{
@@ -228,9 +185,8 @@ export default function AmbulanceCreate() {
       personnel        : personnelid,
       physicaltherapyroom : physicaltherapyroomid,
       status  : statusid,
-      age : Number(ageid),
-      telephone :telephoneid,
-      idnumber  : idnumberid,
+      note : noteid,
+      price  : Number(priceid) ,
     };
 
     console.log(physicaltherapyrecord)
@@ -400,55 +356,40 @@ export default function AmbulanceCreate() {
 
 
 
-          <div className={classes.paper}><strong>เลขเลขบัตรประชาชน</strong></div>
+          <div className={classes.paper}><strong>จำนวนเงิน</strong></div>
 
             <TextField className={classes.textField}
             style={{ width: 400 ,marginLeft:20,marginRight:-10}}
       
-              id="idnumberid"
-              error = {idnumbererror ? true : false}
+              id="priceid"
+              error = {priceerror ? true : false}
               label=""
               variant="standard"
               color="secondary"
               type="string"
               size="medium"
-              helperText= {idnumbererror}
-              value={idnumberid}
-              onChange={IDnumberhandlehange}
+              helperText= {priceerror}
+              value={priceid}
+              onChange={PricehandleChange}
             />
             
-            <div className={classes.paper}><strong>อายุ</strong></div>
+            <div className={classes.paper}><strong>หมายเหตุ</strong></div>
 
 <TextField className={classes.textField}
 style={{ width: 400 ,marginLeft:20,marginRight:-10}}
 
-  id="ageid"
-  error = {ageerror ? true : false}
+  id="noteid"
+  error = {noteerror ? true : false}
   label=""
   variant="standard"
   color="secondary"
   type="string"
   size="medium"
-  helperText= {ageerror}
-  value={ageid}
-  onChange={AgehandleChange}
+  helperText= {noteerror}
+  value={noteid}
+  onChange={NotehandleChange}
 />
-<div className={classes.paper}><strong>เบอร์โทรศัพท์</strong></div>
 
-<TextField className={classes.textField}
-style={{ width: 400 ,marginLeft:20,marginRight:-10}}
-
-  id="telephoneid"
-  error = {telophoneerror ? true : false}
-  label=""
-  variant="standard"
-  color="secondary"
-  type="string"
-  size="medium"
-  helperText= {telophoneerror}
-  value={telephoneid}
-  onChange={TelephonehandleChange}
-/>
 
 
             

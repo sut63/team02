@@ -1,8 +1,8 @@
 package schema
 
 import (
-	"errors"
 	"regexp"
+	"errors"
 
 	"github.com/facebook/ent"
 	"github.com/facebook/ent/schema/edge"
@@ -17,16 +17,14 @@ type Physicaltherapyrecord struct {
 // Fields of the Physicaltherapyrecord.
 func (Physicaltherapyrecord) Fields() []ent.Field {
 	return []ent.Field{
-		field.String("idnumber").MaxLen(13).MinLen(13),
-		field.Int("age").Min(1),
-
-		field.String("telephone").Validate(func(s string) error {
-			match, _ := regexp.MatchString("^[0]{1}[869]{1}[0-9]{8}$", s)
+		field.Int("price").Min(1),
+		field.String("note").
+		Validate(func(s string) error {
+			match, _ := regexp.MatchString("[ก-๙]", s)
 			if !match {
-				return errors.New("ใส่เบอร์โทรไม่ถูกต้อง")
+				return errors.New("รูปแบบไม่ถูกต้อง")
 			}
 			return nil
-
 		}),
 		field.Time("appointtime"),
 	}

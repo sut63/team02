@@ -74,9 +74,7 @@ definitions:
     type: object
   controllers.Physicaltherapyrecord:
     properties:
-      age:
-        type: integer
-      idnumber:
+      note:
         type: string
       patient:
         type: integer
@@ -84,10 +82,10 @@ definitions:
         type: integer
       physicaltherapyroom:
         type: integer
+      price:
+        type: integer
       status:
         type: integer
-      telephone:
-        type: string
       time:
         type: string
     type: object
@@ -510,9 +508,6 @@ definitions:
     type: object
   ent.Physicaltherapyrecord:
     properties:
-      age:
-        description: Age holds the value of the "age" field.
-        type: integer
       appointtime:
         description: Appointtime holds the value of the "appointtime" field.
         type: string
@@ -525,12 +520,12 @@ definitions:
       id:
         description: ID of the ent.
         type: integer
-      idnumber:
-        description: Idnumber holds the value of the "idnumber" field.
+      note:
+        description: Note holds the value of the "note" field.
         type: string
-      telephone:
-        description: Telephone holds the value of the "telephone" field.
-        type: string
+      price:
+        description: Price holds the value of the "price" field.
+        type: integer
     type: object
   ent.PhysicaltherapyrecordEdges:
     properties:
@@ -2899,6 +2894,7 @@ securityDefinitions:
     tokenUrl: https://example.com/oauth/token
     type: oauth2
   OAuth2Application:
+    authorizationUrl: ""
     flow: application
     scopes:
       admin: ' Grants read and write access to administrative information'
@@ -2913,6 +2909,7 @@ securityDefinitions:
       write: ' Grants write access'
     type: oauth2
   OAuth2Password:
+    authorizationUrl: ""
     flow: password
     scopes:
       admin: ' Grants read and write access to administrative information'

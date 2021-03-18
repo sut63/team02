@@ -178,28 +178,31 @@ export default function PhysicaltherapyrecordSearch () {
                         <TableHead>
                             <TableRow>
                             <TableCell align="center">อันดับที่</TableCell>
-                <TableCell align="center">เลขเลขบัตรประชาชน</TableCell>
-                <TableCell align="center">อายุ</TableCell>
-                <TableCell align="center">วัน-เวลา</TableCell>
-                <TableCell align="center">เบอร์โทรผู้ป่วย</TableCell>
+                
                 <TableCell align="center">ผู้ป่วยที่มารับการตรวจ</TableCell>
                 <TableCell align="center">ผู้บันทึกข้อมูล</TableCell>
                 <TableCell align="center">ห้องกายภาพบำบัด</TableCell>
                 <TableCell align="center">อาการ</TableCell>
+                <TableCell align="center">จำนวนเงิน</TableCell>
+                <TableCell align="center">หมายเหตุ</TableCell>
+                <TableCell align="center">วัน-เวลา</TableCell>
+
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             {physicaltherapyrecords.map((item: EntPhysicaltherapyrecord) => (
                                 <TableRow key={item.id}>
                                     <TableCell align="center">{item.id}</TableCell>
-                  <TableCell align="center">{item.idnumber}</TableCell>
-                  <TableCell align="center">{item.age}</TableCell>
-                  <TableCell align="center">{moment(item.appointtime).format('DD/MM/YYYY HH.mm น.')}</TableCell>
-                  <TableCell align="center">{item.telephone}</TableCell>  
+
                   <TableCell align="center">{item.edges?.patient?.name}</TableCell>
                   <TableCell align="center">{item.edges?.personnel?.name}</TableCell>
                   <TableCell align="center">{item.edges?.physicaltherapyroom?.physicaltherapyroomname}</TableCell>
                   <TableCell align="center">{item.edges?.status?.statusname}</TableCell>
+                  <TableCell align="center">{item.price}</TableCell>
+                  <TableCell align="center">{item.note}</TableCell>
+                  <TableCell align="center">{moment(item.appointtime).format('DD/MM/YYYY HH.mm น.')}</TableCell>
+
+                  
                                 </TableRow>
                             ))}
                         </TableBody>

@@ -3348,10 +3348,7 @@ var doc = `{
         "controllers.Physicaltherapyrecord": {
             "type": "object",
             "properties": {
-                "age": {
-                    "type": "integer"
-                },
-                "idnumber": {
+                "note": {
                     "type": "string"
                 },
                 "patient": {
@@ -3363,11 +3360,11 @@ var doc = `{
                 "physicaltherapyroom": {
                     "type": "integer"
                 },
-                "status": {
+                "price": {
                     "type": "integer"
                 },
-                "telephone": {
-                    "type": "string"
+                "status": {
+                    "type": "integer"
                 },
                 "time": {
                     "type": "string"
@@ -3915,10 +3912,6 @@ var doc = `{
         "ent.Physicaltherapyrecord": {
             "type": "object",
             "properties": {
-                "age": {
-                    "description": "Age holds the value of the \"age\" field.",
-                    "type": "integer"
-                },
                 "appointtime": {
                     "description": "Appointtime holds the value of the \"appointtime\" field.",
                     "type": "string"
@@ -3932,13 +3925,13 @@ var doc = `{
                     "description": "ID of the ent.",
                     "type": "integer"
                 },
-                "idnumber": {
-                    "description": "Idnumber holds the value of the \"idnumber\" field.",
+                "note": {
+                    "description": "Note holds the value of the \"note\" field.",
                     "type": "string"
                 },
-                "telephone": {
-                    "description": "Telephone holds the value of the \"telephone\" field.",
-                    "type": "string"
+                "price": {
+                    "description": "Price holds the value of the \"price\" field.",
+                    "type": "integer"
                 }
             }
         },
@@ -4223,6 +4216,7 @@ var doc = `{
         "OAuth2Application": {
             "type": "oauth2",
             "flow": "application",
+            "authorizationUrl": "",
             "tokenUrl": "https://example.com/oauth/token",
             "scopes": {
                 "admin": " Grants read and write access to administrative information",
@@ -4241,6 +4235,7 @@ var doc = `{
         "OAuth2Password": {
             "type": "oauth2",
             "flow": "password",
+            "authorizationUrl": "",
             "tokenUrl": "https://example.com/oauth/token",
             "scopes": {
                 "admin": " Grants read and write access to administrative information",
