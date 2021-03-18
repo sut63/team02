@@ -274,7 +274,7 @@ export default function createAntenatalinformation() {
                                                         value={patientid}
                                                         onChange={PatienthandleChange}
                                                     >
-                                                        {patients.map((item: EntPatient) =>
+                                                        {patients.filter((filter: EntPatient) => filter.id == 3).map((item: EntPatient) =>
                                                         <MenuItem value ={(item.id)}>{item.name}</MenuItem>)
                                                         }
                                                     </Select>
