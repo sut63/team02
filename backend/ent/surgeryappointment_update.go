@@ -48,16 +48,16 @@ func (su *SurgeryappointmentUpdate) SetNote(s string) *SurgeryappointmentUpdate 
 	return su
 }
 
-// SetAge sets the "age" field.
-func (su *SurgeryappointmentUpdate) SetAge(i int) *SurgeryappointmentUpdate {
-	su.mutation.ResetAge()
-	su.mutation.SetAge(i)
+// SetCost sets the "cost" field.
+func (su *SurgeryappointmentUpdate) SetCost(i int) *SurgeryappointmentUpdate {
+	su.mutation.ResetCost()
+	su.mutation.SetCost(i)
 	return su
 }
 
-// AddAge adds i to the "age" field.
-func (su *SurgeryappointmentUpdate) AddAge(i int) *SurgeryappointmentUpdate {
-	su.mutation.AddAge(i)
+// AddCost adds i to the "cost" field.
+func (su *SurgeryappointmentUpdate) AddCost(i int) *SurgeryappointmentUpdate {
+	su.mutation.AddCost(i)
 	return su
 }
 
@@ -210,9 +210,9 @@ func (su *SurgeryappointmentUpdate) check() error {
 			return &ValidationError{Name: "note", err: fmt.Errorf("ent: validator failed for field \"note\": %w", err)}
 		}
 	}
-	if v, ok := su.mutation.Age(); ok {
-		if err := surgeryappointment.AgeValidator(v); err != nil {
-			return &ValidationError{Name: "age", err: fmt.Errorf("ent: validator failed for field \"age\": %w", err)}
+	if v, ok := su.mutation.Cost(); ok {
+		if err := surgeryappointment.CostValidator(v); err != nil {
+			return &ValidationError{Name: "cost", err: fmt.Errorf("ent: validator failed for field \"cost\": %w", err)}
 		}
 	}
 	return nil
@@ -257,18 +257,18 @@ func (su *SurgeryappointmentUpdate) sqlSave(ctx context.Context) (n int, err err
 			Column: surgeryappointment.FieldNote,
 		})
 	}
-	if value, ok := su.mutation.Age(); ok {
+	if value, ok := su.mutation.Cost(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeInt,
 			Value:  value,
-			Column: surgeryappointment.FieldAge,
+			Column: surgeryappointment.FieldCost,
 		})
 	}
-	if value, ok := su.mutation.AddedAge(); ok {
+	if value, ok := su.mutation.AddedCost(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
 			Type:   field.TypeInt,
 			Value:  value,
-			Column: surgeryappointment.FieldAge,
+			Column: surgeryappointment.FieldCost,
 		})
 	}
 	if su.mutation.PersonnelCleared() {
@@ -412,16 +412,16 @@ func (suo *SurgeryappointmentUpdateOne) SetNote(s string) *SurgeryappointmentUpd
 	return suo
 }
 
-// SetAge sets the "age" field.
-func (suo *SurgeryappointmentUpdateOne) SetAge(i int) *SurgeryappointmentUpdateOne {
-	suo.mutation.ResetAge()
-	suo.mutation.SetAge(i)
+// SetCost sets the "cost" field.
+func (suo *SurgeryappointmentUpdateOne) SetCost(i int) *SurgeryappointmentUpdateOne {
+	suo.mutation.ResetCost()
+	suo.mutation.SetCost(i)
 	return suo
 }
 
-// AddAge adds i to the "age" field.
-func (suo *SurgeryappointmentUpdateOne) AddAge(i int) *SurgeryappointmentUpdateOne {
-	suo.mutation.AddAge(i)
+// AddCost adds i to the "cost" field.
+func (suo *SurgeryappointmentUpdateOne) AddCost(i int) *SurgeryappointmentUpdateOne {
+	suo.mutation.AddCost(i)
 	return suo
 }
 
@@ -574,9 +574,9 @@ func (suo *SurgeryappointmentUpdateOne) check() error {
 			return &ValidationError{Name: "note", err: fmt.Errorf("ent: validator failed for field \"note\": %w", err)}
 		}
 	}
-	if v, ok := suo.mutation.Age(); ok {
-		if err := surgeryappointment.AgeValidator(v); err != nil {
-			return &ValidationError{Name: "age", err: fmt.Errorf("ent: validator failed for field \"age\": %w", err)}
+	if v, ok := suo.mutation.Cost(); ok {
+		if err := surgeryappointment.CostValidator(v); err != nil {
+			return &ValidationError{Name: "cost", err: fmt.Errorf("ent: validator failed for field \"cost\": %w", err)}
 		}
 	}
 	return nil
@@ -619,18 +619,18 @@ func (suo *SurgeryappointmentUpdateOne) sqlSave(ctx context.Context) (_node *Sur
 			Column: surgeryappointment.FieldNote,
 		})
 	}
-	if value, ok := suo.mutation.Age(); ok {
+	if value, ok := suo.mutation.Cost(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeInt,
 			Value:  value,
-			Column: surgeryappointment.FieldAge,
+			Column: surgeryappointment.FieldCost,
 		})
 	}
-	if value, ok := suo.mutation.AddedAge(); ok {
+	if value, ok := suo.mutation.AddedCost(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
 			Type:   field.TypeInt,
 			Value:  value,
-			Column: surgeryappointment.FieldAge,
+			Column: surgeryappointment.FieldCost,
 		})
 	}
 	if suo.mutation.PersonnelCleared() {

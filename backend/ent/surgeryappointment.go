@@ -25,8 +25,8 @@ type Surgeryappointment struct {
 	Phone string `json:"phone,omitempty"`
 	// Note holds the value of the "note" field.
 	Note string `json:"note,omitempty"`
-	// Age holds the value of the "age" field.
-	Age int `json:"age,omitempty"`
+	// Cost holds the value of the "cost" field.
+	Cost int `json:"cost,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the SurgeryappointmentQuery when eager-loading is set.
 	Edges         SurgeryappointmentEdges `json:"edges"`
@@ -95,7 +95,7 @@ func (*Surgeryappointment) scanValues(columns []string) ([]interface{}, error) {
 	values := make([]interface{}, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case surgeryappointment.FieldID, surgeryappointment.FieldAge:
+		case surgeryappointment.FieldID, surgeryappointment.FieldCost:
 			values[i] = &sql.NullInt64{}
 		case surgeryappointment.FieldPhone, surgeryappointment.FieldNote:
 			values[i] = &sql.NullString{}
@@ -146,11 +146,11 @@ func (s *Surgeryappointment) assignValues(columns []string, values []interface{}
 			} else if value.Valid {
 				s.Note = value.String
 			}
-		case surgeryappointment.FieldAge:
+		case surgeryappointment.FieldCost:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field age", values[i])
+				return fmt.Errorf("unexpected type %T for field cost", values[i])
 			} else if value.Valid {
-				s.Age = int(value.Int64)
+				s.Cost = int(value.Int64)
 			}
 		case surgeryappointment.ForeignKeys[0]:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -222,8 +222,8 @@ func (s *Surgeryappointment) String() string {
 	builder.WriteString(s.Phone)
 	builder.WriteString(", note=")
 	builder.WriteString(s.Note)
-	builder.WriteString(", age=")
-	builder.WriteString(fmt.Sprintf("%v", s.Age))
+	builder.WriteString(", cost=")
+	builder.WriteString(fmt.Sprintf("%v", s.Cost))
 	builder.WriteByte(')')
 	return builder.String()
 }

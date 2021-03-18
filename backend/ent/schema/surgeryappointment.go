@@ -32,7 +32,7 @@ func (Surgeryappointment) Fields() []ent.Field {
 			}
 			return nil
 		}),
-		field.Int("age").Range(1, 100),
+		field.Int("cost").Range(0, 1000000),
 	}
 }
 

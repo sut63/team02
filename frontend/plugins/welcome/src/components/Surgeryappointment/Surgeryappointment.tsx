@@ -63,7 +63,7 @@ export default function Create() {
   const [surgerytypeid, setSurgerytypeID] = useState(Number);
   const [addtime, setAddtime] = useState(String);
   const [phone, setPhone] = useState(String);
-  const [age, setAge] = useState(Number);
+  const [cost, setCost] = useState(Number);
   const [note, setNote] = useState(String);
 
   useEffect(() => {
@@ -99,8 +99,8 @@ export default function Create() {
     setPhone(event.target.value as string);
    };
 
-   const AgehandleChange = (event: React.ChangeEvent<{ value: any }>) => {
-    setAge(event.target.value as number);
+   const CosthandleChange = (event: React.ChangeEvent<{ value: any }>) => {
+    setCost(event.target.value as number);
    };
 
    const NotehandleChange = (event: any) => {
@@ -129,7 +129,7 @@ export default function Create() {
       appointtime: addtime + ":00+07:00" ,
       phone: phone,
       note: note,
-      age: Number(age)
+      cost: Number(cost)
     };
     console.log(surgeryappointment);
     console.log(ErrorCaseCheck);
@@ -158,7 +158,7 @@ export default function Create() {
   };
 
   const ErrorCaseCheck = (casename: string) => {
-    if (casename == "age") { setErrorMessege("กรุณาใส่อายุให้ถูกต้อง"); }
+    if (casename == "cost") { setErrorMessege("กรุณาใส่ค่าใช้จ่ายให้ถูกต้อง"); }
     else if (casename == "phone") { setErrorMessege("กรุณาใส่เบอร์โทรศัพท์ให้ถูกต้อง"); }
     else if (casename == "note") { setErrorMessege("กรุณณาใส่หมายเหตุให้ถูกต้อง"); }
     else { setErrorMessege("บันทึกไม่สำเร็จ"); }
@@ -247,17 +247,17 @@ export default function Create() {
               </Select>
             </FormControl>
           </div>
-          <p><font size='2'><b>อายุผู้เข้ารับการผ่าตัด</b></font></p>  
+          <p><font size='2'><b>ค่าใช้จ่ายในการผ่าตัด</b></font></p>  
           <TextField className={classes.textField}
                 style={{ width:  200 ,marginLeft:20,marginRight:-10}}
-              id="age"
+              id="cost"
               label=""
               variant="standard"
               color="secondary"
               type="string"
               size="medium"
-              value={age}
-              onChange={AgehandleChange}
+              value={cost}
+              onChange={CosthandleChange}
             /> 
           <div>
           <p><font size='2'><b>เวลา</b></font></p> 

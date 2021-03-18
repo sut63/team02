@@ -91,10 +91,10 @@ definitions:
     type: object
   controllers.Surgeryappointment:
     properties:
-      age:
-        type: integer
       appointtime:
         type: string
+      cost:
+        type: integer
       note:
         type: string
       patientid:
@@ -669,12 +669,12 @@ definitions:
     type: object
   ent.Surgeryappointment:
     properties:
-      age:
-        description: Age holds the value of the "age" field.
-        type: integer
       appoint_time:
         description: AppointTime holds the value of the "appoint_time" field.
         type: string
+      cost:
+        description: Cost holds the value of the "cost" field.
+        type: integer
       edges:
         $ref: '#/definitions/ent.SurgeryappointmentEdges'
         description: |-
@@ -2894,7 +2894,6 @@ securityDefinitions:
     tokenUrl: https://example.com/oauth/token
     type: oauth2
   OAuth2Application:
-    authorizationUrl: ""
     flow: application
     scopes:
       admin: ' Grants read and write access to administrative information'
@@ -2909,7 +2908,6 @@ securityDefinitions:
       write: ' Grants write access'
     type: oauth2
   OAuth2Password:
-    authorizationUrl: ""
     flow: password
     scopes:
       admin: ' Grants read and write access to administrative information'

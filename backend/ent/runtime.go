@@ -318,10 +318,10 @@ func init() {
 			return nil
 		}
 	}()
-	// surgeryappointmentDescAge is the schema descriptor for age field.
-	surgeryappointmentDescAge := surgeryappointmentFields[3].Descriptor()
-	// surgeryappointment.AgeValidator is a validator for the "age" field. It is called by the builders before save.
-	surgeryappointment.AgeValidator = surgeryappointmentDescAge.Validators[0].(func(int) error)
+	// surgeryappointmentDescCost is the schema descriptor for cost field.
+	surgeryappointmentDescCost := surgeryappointmentFields[3].Descriptor()
+	// surgeryappointment.CostValidator is a validator for the "cost" field. It is called by the builders before save.
+	surgeryappointment.CostValidator = surgeryappointmentDescCost.Validators[0].(func(int) error)
 	surgerytypeFields := schema.Surgerytype{}.Fields()
 	_ = surgerytypeFields
 	// surgerytypeDescTypename is the schema descriptor for typename field.

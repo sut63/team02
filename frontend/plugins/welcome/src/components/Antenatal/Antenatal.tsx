@@ -23,6 +23,7 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { DefaultApi } from '../../api/apis';
 import { EntPersonnel } from '../../api/models/EntPersonnel';
 import { EntPatient } from '../../api/models/EntPatient';
+import { EntGender } from '../../api/models/EntGender';
 import { EntPregnancystatus } from '../../api/models/EntPregnancystatus';
 import { EntRisks } from '../../api/models/EntRisks';
 import { Alert } from '@material-ui/lab';
@@ -84,6 +85,7 @@ export default function createAntenatalinformation() {
 
     const [personnels, setPersonnel] = useState<EntPersonnel[]>([]);
     const [patients, setPatient] = useState<EntPatient[]>([]);
+    const [genders, setGender] = useState<EntGender[]>([]);
     const [pregnancystatuss, setPregnancystatus] = useState<EntPregnancystatus[]>([]);
     const [riskss, setRisks] = useState<EntRisks[]>([]);
 
@@ -99,6 +101,7 @@ export default function createAntenatalinformation() {
     const [examinationresult, setExaminationresult] = useState(String);
     const [advice, setAdvice] = useState(String);
     const [time, setTime] = useState(String);
+
 
     useEffect(() => {
         const getPersonnel = async () => {
@@ -272,7 +275,7 @@ export default function createAntenatalinformation() {
                                                         onChange={PatienthandleChange}
                                                     >
                                                         {patients.map((item: EntPatient) =>
-                                                        <MenuItem value={item.id}>{item.name}</MenuItem>)
+                                                        <MenuItem value ={(item.id)}>{item.name}</MenuItem>)
                                                         }
                                                     </Select>
                                                 </FormControl>

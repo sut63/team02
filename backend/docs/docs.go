@@ -3374,11 +3374,11 @@ var doc = `{
         "controllers.Surgeryappointment": {
             "type": "object",
             "properties": {
-                "age": {
-                    "type": "integer"
-                },
                 "appointtime": {
                     "type": "string"
+                },
+                "cost": {
+                    "type": "integer"
                 },
                 "note": {
                     "type": "string"
@@ -4113,13 +4113,13 @@ var doc = `{
         "ent.Surgeryappointment": {
             "type": "object",
             "properties": {
-                "age": {
-                    "description": "Age holds the value of the \"age\" field.",
-                    "type": "integer"
-                },
                 "appoint_time": {
                     "description": "AppointTime holds the value of the \"appoint_time\" field.",
                     "type": "string"
+                },
+                "cost": {
+                    "description": "Cost holds the value of the \"cost\" field.",
+                    "type": "integer"
                 },
                 "edges": {
                     "description": "Edges holds the relations/edges for other nodes in the graph.\nThe values are being populated by the SurgeryappointmentQuery when eager-loading is set.",
@@ -4216,7 +4216,6 @@ var doc = `{
         "OAuth2Application": {
             "type": "oauth2",
             "flow": "application",
-            "authorizationUrl": "",
             "tokenUrl": "https://example.com/oauth/token",
             "scopes": {
                 "admin": " Grants read and write access to administrative information",
@@ -4235,7 +4234,6 @@ var doc = `{
         "OAuth2Password": {
             "type": "oauth2",
             "flow": "password",
-            "authorizationUrl": "",
             "tokenUrl": "https://example.com/oauth/token",
             "scopes": {
                 "admin": " Grants read and write access to administrative information",

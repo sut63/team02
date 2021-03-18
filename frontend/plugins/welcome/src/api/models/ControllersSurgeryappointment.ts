@@ -21,16 +21,16 @@ import { exists, mapValues } from '../runtime';
 export interface ControllersSurgeryappointment {
     /**
      * 
-     * @type {number}
-     * @memberof ControllersSurgeryappointment
-     */
-    age?: number;
-    /**
-     * 
      * @type {string}
      * @memberof ControllersSurgeryappointment
      */
     appointtime?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof ControllersSurgeryappointment
+     */
+    cost?: number;
     /**
      * 
      * @type {string}
@@ -73,8 +73,8 @@ export function ControllersSurgeryappointmentFromJSONTyped(json: any, ignoreDisc
     }
     return {
         
-        'age': !exists(json, 'age') ? undefined : json['age'],
         'appointtime': !exists(json, 'appointtime') ? undefined : json['appointtime'],
+        'cost': !exists(json, 'cost') ? undefined : json['cost'],
         'note': !exists(json, 'note') ? undefined : json['note'],
         'patientid': !exists(json, 'patientid') ? undefined : json['patientid'],
         'personelid': !exists(json, 'personelid') ? undefined : json['personelid'],
@@ -92,8 +92,8 @@ export function ControllersSurgeryappointmentToJSON(value?: ControllersSurgeryap
     }
     return {
         
-        'age': value.age,
         'appointtime': value.appointtime,
+        'cost': value.cost,
         'note': value.note,
         'patientid': value.patientid,
         'personelid': value.personelid,

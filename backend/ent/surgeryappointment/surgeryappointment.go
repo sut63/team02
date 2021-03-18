@@ -13,8 +13,8 @@ const (
 	FieldPhone = "phone"
 	// FieldNote holds the string denoting the note field in the database.
 	FieldNote = "note"
-	// FieldAge holds the string denoting the age field in the database.
-	FieldAge = "age"
+	// FieldCost holds the string denoting the cost field in the database.
+	FieldCost = "cost"
 
 	// EdgePersonnel holds the string denoting the personnel edge name in mutations.
 	EdgePersonnel = "Personnel"
@@ -54,7 +54,7 @@ var Columns = []string{
 	FieldAppointTime,
 	FieldPhone,
 	FieldNote,
-	FieldAge,
+	FieldCost,
 }
 
 // ForeignKeys holds the SQL foreign-keys that are owned by the Surgeryappointment type.
@@ -84,6 +84,6 @@ var (
 	PhoneValidator func(string) error
 	// NoteValidator is a validator for the "note" field. It is called by the builders before save.
 	NoteValidator func(string) error
-	// AgeValidator is a validator for the "age" field. It is called by the builders before save.
-	AgeValidator func(int) error
+	// CostValidator is a validator for the "cost" field. It is called by the builders before save.
+	CostValidator func(int) error
 )

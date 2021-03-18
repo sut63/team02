@@ -402,7 +402,7 @@ var (
 		{Name: "appoint_time", Type: field.TypeTime},
 		{Name: "phone", Type: field.TypeString},
 		{Name: "note", Type: field.TypeString},
-		{Name: "age", Type: field.TypeInt},
+		{Name: "cost", Type: field.TypeInt},
 		{Name: "Patient_id", Type: field.TypeInt, Nullable: true},
 		{Name: "Personnel_id", Type: field.TypeInt, Nullable: true},
 		{Name: "Surgerytype", Type: field.TypeInt, Nullable: true},

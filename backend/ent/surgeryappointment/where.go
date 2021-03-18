@@ -114,10 +114,10 @@ func Note(v string) predicate.Surgeryappointment {
 	})
 }
 
-// Age applies equality check predicate on the "age" field. It's identical to AgeEQ.
-func Age(v int) predicate.Surgeryappointment {
+// Cost applies equality check predicate on the "cost" field. It's identical to CostEQ.
+func Cost(v int) predicate.Surgeryappointment {
 	return predicate.Surgeryappointment(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldAge), v))
+		s.Where(sql.EQ(s.C(FieldCost), v))
 	})
 }
 
@@ -419,22 +419,22 @@ func NoteContainsFold(v string) predicate.Surgeryappointment {
 	})
 }
 
-// AgeEQ applies the EQ predicate on the "age" field.
-func AgeEQ(v int) predicate.Surgeryappointment {
+// CostEQ applies the EQ predicate on the "cost" field.
+func CostEQ(v int) predicate.Surgeryappointment {
 	return predicate.Surgeryappointment(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldAge), v))
+		s.Where(sql.EQ(s.C(FieldCost), v))
 	})
 }
 
-// AgeNEQ applies the NEQ predicate on the "age" field.
-func AgeNEQ(v int) predicate.Surgeryappointment {
+// CostNEQ applies the NEQ predicate on the "cost" field.
+func CostNEQ(v int) predicate.Surgeryappointment {
 	return predicate.Surgeryappointment(func(s *sql.Selector) {
-		s.Where(sql.NEQ(s.C(FieldAge), v))
+		s.Where(sql.NEQ(s.C(FieldCost), v))
 	})
 }
 
-// AgeIn applies the In predicate on the "age" field.
-func AgeIn(vs ...int) predicate.Surgeryappointment {
+// CostIn applies the In predicate on the "cost" field.
+func CostIn(vs ...int) predicate.Surgeryappointment {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -446,12 +446,12 @@ func AgeIn(vs ...int) predicate.Surgeryappointment {
 			s.Where(sql.False())
 			return
 		}
-		s.Where(sql.In(s.C(FieldAge), v...))
+		s.Where(sql.In(s.C(FieldCost), v...))
 	})
 }
 
-// AgeNotIn applies the NotIn predicate on the "age" field.
-func AgeNotIn(vs ...int) predicate.Surgeryappointment {
+// CostNotIn applies the NotIn predicate on the "cost" field.
+func CostNotIn(vs ...int) predicate.Surgeryappointment {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -463,35 +463,35 @@ func AgeNotIn(vs ...int) predicate.Surgeryappointment {
 			s.Where(sql.False())
 			return
 		}
-		s.Where(sql.NotIn(s.C(FieldAge), v...))
+		s.Where(sql.NotIn(s.C(FieldCost), v...))
 	})
 }
 
-// AgeGT applies the GT predicate on the "age" field.
-func AgeGT(v int) predicate.Surgeryappointment {
+// CostGT applies the GT predicate on the "cost" field.
+func CostGT(v int) predicate.Surgeryappointment {
 	return predicate.Surgeryappointment(func(s *sql.Selector) {
-		s.Where(sql.GT(s.C(FieldAge), v))
+		s.Where(sql.GT(s.C(FieldCost), v))
 	})
 }
 
-// AgeGTE applies the GTE predicate on the "age" field.
-func AgeGTE(v int) predicate.Surgeryappointment {
+// CostGTE applies the GTE predicate on the "cost" field.
+func CostGTE(v int) predicate.Surgeryappointment {
 	return predicate.Surgeryappointment(func(s *sql.Selector) {
-		s.Where(sql.GTE(s.C(FieldAge), v))
+		s.Where(sql.GTE(s.C(FieldCost), v))
 	})
 }
 
-// AgeLT applies the LT predicate on the "age" field.
-func AgeLT(v int) predicate.Surgeryappointment {
+// CostLT applies the LT predicate on the "cost" field.
+func CostLT(v int) predicate.Surgeryappointment {
 	return predicate.Surgeryappointment(func(s *sql.Selector) {
-		s.Where(sql.LT(s.C(FieldAge), v))
+		s.Where(sql.LT(s.C(FieldCost), v))
 	})
 }
 
-// AgeLTE applies the LTE predicate on the "age" field.
-func AgeLTE(v int) predicate.Surgeryappointment {
+// CostLTE applies the LTE predicate on the "cost" field.
+func CostLTE(v int) predicate.Surgeryappointment {
 	return predicate.Surgeryappointment(func(s *sql.Selector) {
-		s.Where(sql.LTE(s.C(FieldAge), v))
+		s.Where(sql.LTE(s.C(FieldCost), v))
 	})
 }
 

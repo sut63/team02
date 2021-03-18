@@ -219,7 +219,7 @@ export default function SurgeryappointmentSearchPage() {
                                 <TableCell align="center">แพทย์</TableCell>
                                 <TableCell align="center">คนไข้</TableCell>
                                 <TableCell align="center">ประเภทการผ่าตัด</TableCell>
-                                <TableCell align="center">อายุผู้เข้ารับการผ่าตัด</TableCell>
+                                <TableCell align="center">ค่าใช้จ่ายในการผ่าตัด</TableCell>
                                 <TableCell align="center">เวลานัดหมาย</TableCell>
                                 <TableCell align="center">เบอร์โทรศัพท์</TableCell>
                                 <TableCell align="center">หมายเหตุ</TableCell>
@@ -231,7 +231,7 @@ export default function SurgeryappointmentSearchPage() {
                                     <TableCell align="center">{item.edges?.personnel?.name}</TableCell>
                                     <TableCell align="center">{item.edges?.patient?.name}</TableCell>
                                     <TableCell align="center">{item.edges?.surgerytype?.typename}</TableCell>
-                                    <TableCell align="center">{item.age}</TableCell>
+                                    <TableCell align="center">{item.cost}</TableCell>
                                     <TableCell align="center">{moment(item.appointTime).format('DD/MM/YYYY HH.mm น.')}</TableCell>
                                     <TableCell align="center">{item.phone}</TableCell>
                                     <TableCell align="center">{item.note}</TableCell>

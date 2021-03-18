@@ -41,9 +41,9 @@ func (sc *SurgeryappointmentCreate) SetNote(s string) *SurgeryappointmentCreate 
 	return sc
 }
 
-// SetAge sets the "age" field.
-func (sc *SurgeryappointmentCreate) SetAge(i int) *SurgeryappointmentCreate {
-	sc.mutation.SetAge(i)
+// SetCost sets the "cost" field.
+func (sc *SurgeryappointmentCreate) SetCost(i int) *SurgeryappointmentCreate {
+	sc.mutation.SetCost(i)
 	return sc
 }
 
@@ -174,12 +174,12 @@ func (sc *SurgeryappointmentCreate) check() error {
 			return &ValidationError{Name: "note", err: fmt.Errorf("ent: validator failed for field \"note\": %w", err)}
 		}
 	}
-	if _, ok := sc.mutation.Age(); !ok {
-		return &ValidationError{Name: "age", err: errors.New("ent: missing required field \"age\"")}
+	if _, ok := sc.mutation.Cost(); !ok {
+		return &ValidationError{Name: "cost", err: errors.New("ent: missing required field \"cost\"")}
 	}
-	if v, ok := sc.mutation.Age(); ok {
-		if err := surgeryappointment.AgeValidator(v); err != nil {
-			return &ValidationError{Name: "age", err: fmt.Errorf("ent: validator failed for field \"age\": %w", err)}
+	if v, ok := sc.mutation.Cost(); ok {
+		if err := surgeryappointment.CostValidator(v); err != nil {
+			return &ValidationError{Name: "cost", err: fmt.Errorf("ent: validator failed for field \"cost\": %w", err)}
 		}
 	}
 	return nil
@@ -233,13 +233,13 @@ func (sc *SurgeryappointmentCreate) createSpec() (*Surgeryappointment, *sqlgraph
 		})
 		_node.Note = value
 	}
-	if value, ok := sc.mutation.Age(); ok {
+	if value, ok := sc.mutation.Cost(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeInt,
 			Value:  value,
-			Column: surgeryappointment.FieldAge,
+			Column: surgeryappointment.FieldCost,
 		})
-		_node.Age = value
+		_node.Cost = value
 	}
 	if nodes := sc.mutation.PersonnelIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{

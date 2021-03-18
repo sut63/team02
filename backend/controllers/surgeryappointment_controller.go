@@ -26,7 +26,7 @@ type Surgeryappointment struct {
 	Patientid     int
 	Surgerytypeid int
 	Phone         string
-	Age           int
+	Cost          int
 	Note          string
 }
 
@@ -94,7 +94,7 @@ func (ctl *SurgeryappointmentController) CreateSurgeryappointment(c *gin.Context
 		SetPatient(s).
 		SetSurgerytype(ar).
 		SetPhone(obj.Phone).
-		SetAge(obj.Age).
+		SetCost(obj.Cost).
 		SetNote(obj.Note).
 		Save(context.Background())
 
