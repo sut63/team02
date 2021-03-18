@@ -134,7 +134,7 @@ export default function SearchTableDentalappointment() {
                 variant="outlined"
               >
                 <div>ค้นหาจากชื่อผู้ป่วย</div>
-                <TextField id="searchnote" type='string' 
+                <TextField id="searchname" type='string' 
                   onChange={SearchhandleChange}
                   value={patientName}
                 />
