@@ -73,13 +73,13 @@ export function ControllersDentalappointmentFromJSONTyped(json: any, ignoreDiscr
     }
     return {
         
-        'amount': !exists(json, 'amount') ? undefined : json['amount'],
-        'appointTime': !exists(json, 'appointTime') ? undefined : json['appointTime'],
-        'kindName': !exists(json, 'kindName') ? undefined : json['kindName'],
-        'note': !exists(json, 'note') ? undefined : json['note'],
-        'patientID': !exists(json, 'patientID') ? undefined : json['patientID'],
-        'personnelID': !exists(json, 'personnelID') ? undefined : json['personnelID'],
-        'price': !exists(json, 'price') ? undefined : json['price'],
+        'amount': !exists(json, 'Amount') ? undefined : json['Amount'],
+        'appointTime': !exists(json, 'AppointTime') ? undefined : json['AppointTime'],
+        'kindName': !exists(json, 'KindName') ? undefined : json['KindName'],
+        'note': !exists(json, 'Note') ? undefined : json['Note'],
+        'patientID': !exists(json, 'PatientID') ? undefined : json['PatientID'],
+        'personnelID': !exists(json, 'PersonnelID') ? undefined : json['PersonnelID'],
+        'price': !exists(json, 'Price') ? undefined : json['Price'],
     };
 }
 

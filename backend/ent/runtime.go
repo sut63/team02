@@ -246,8 +246,26 @@ func init() {
 	physicaltherapyrecordDescPrice := physicaltherapyrecordFields[0].Descriptor()
 	// physicaltherapyrecord.PriceValidator is a validator for the "price" field. It is called by the builders before save.
 	physicaltherapyrecord.PriceValidator = physicaltherapyrecordDescPrice.Validators[0].(func(int) error)
+	// physicaltherapyrecordDescPhone is the schema descriptor for phone field.
+	physicaltherapyrecordDescPhone := physicaltherapyrecordFields[1].Descriptor()
+	// physicaltherapyrecord.PhoneValidator is a validator for the "phone" field. It is called by the builders before save.
+	physicaltherapyrecord.PhoneValidator = func() func(string) error {
+		validators := physicaltherapyrecordDescPhone.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(phone string) error {
+			for _, fn := range fns {
+				if err := fn(phone); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
 	// physicaltherapyrecordDescNote is the schema descriptor for note field.
-	physicaltherapyrecordDescNote := physicaltherapyrecordFields[1].Descriptor()
+	physicaltherapyrecordDescNote := physicaltherapyrecordFields[2].Descriptor()
 	// physicaltherapyrecord.NoteValidator is a validator for the "note" field. It is called by the builders before save.
 	physicaltherapyrecord.NoteValidator = physicaltherapyrecordDescNote.Validators[0].(func(string) error)
 	physicaltherapyroomFields := schema.Physicaltherapyroom{}.Fields()

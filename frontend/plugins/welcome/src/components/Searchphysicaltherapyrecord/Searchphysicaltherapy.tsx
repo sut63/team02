@@ -184,6 +184,7 @@ export default function PhysicaltherapyrecordSearch () {
                 <TableCell align="center">ห้องกายภาพบำบัด</TableCell>
                 <TableCell align="center">อาการ</TableCell>
                 <TableCell align="center">จำนวนเงิน</TableCell>
+                <TableCell align="center">เบอร์โทร</TableCell>
                 <TableCell align="center">หมายเหตุ</TableCell>
                 <TableCell align="center">วัน-เวลา</TableCell>
 
@@ -199,6 +200,7 @@ export default function PhysicaltherapyrecordSearch () {
                   <TableCell align="center">{item.edges?.physicaltherapyroom?.physicaltherapyroomname}</TableCell>
                   <TableCell align="center">{item.edges?.status?.statusname}</TableCell>
                   <TableCell align="center">{item.price}</TableCell>
+                  <TableCell align="center">{item.phone}</TableCell>
                   <TableCell align="center">{item.note}</TableCell>
                   <TableCell align="center">{moment(item.appointtime).format('DD/MM/YYYY HH.mm น.')}</TableCell>
 

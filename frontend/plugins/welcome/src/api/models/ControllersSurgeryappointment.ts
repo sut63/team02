@@ -73,13 +73,13 @@ export function ControllersSurgeryappointmentFromJSONTyped(json: any, ignoreDisc
     }
     return {
         
-        'appointtime': !exists(json, 'appointtime') ? undefined : json['appointtime'],
-        'cost': !exists(json, 'cost') ? undefined : json['cost'],
-        'note': !exists(json, 'note') ? undefined : json['note'],
-        'patientid': !exists(json, 'patientid') ? undefined : json['patientid'],
-        'personelid': !exists(json, 'personelid') ? undefined : json['personelid'],
-        'phone': !exists(json, 'phone') ? undefined : json['phone'],
-        'surgerytypeid': !exists(json, 'surgerytypeid') ? undefined : json['surgerytypeid'],
+        'appointtime': !exists(json, 'Appointtime') ? undefined : json['Appointtime'],
+        'cost': !exists(json, 'Cost') ? undefined : json['Cost'],
+        'note': !exists(json, 'Note') ? undefined : json['Note'],
+        'patientid': !exists(json, 'Patientid') ? undefined : json['Patientid'],
+        'personelid': !exists(json, 'Personelid') ? undefined : json['Personelid'],
+        'phone': !exists(json, 'Phone') ? undefined : json['Phone'],
+        'surgerytypeid': !exists(json, 'Surgerytypeid') ? undefined : json['Surgerytypeid'],
     };
 }
 

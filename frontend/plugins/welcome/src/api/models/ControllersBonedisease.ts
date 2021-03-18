@@ -73,13 +73,13 @@ export function ControllersBonediseaseFromJSONTyped(json: any, ignoreDiscriminat
     }
     return {
         
-        'addedTime': !exists(json, 'addedTime') ? undefined : json['addedTime'],
-        'advice': !exists(json, 'advice') ? undefined : json['advice'],
-        'identificationCard': !exists(json, 'identificationCard') ? undefined : json['identificationCard'],
-        'patientID': !exists(json, 'patientID') ? undefined : json['patientID'],
-        'personnelID': !exists(json, 'personnelID') ? undefined : json['personnelID'],
-        'remedyID': !exists(json, 'remedyID') ? undefined : json['remedyID'],
-        'tel': !exists(json, 'tel') ? undefined : json['tel'],
+        'addedTime': !exists(json, 'AddedTime') ? undefined : json['AddedTime'],
+        'advice': !exists(json, 'Advice') ? undefined : json['Advice'],
+        'identificationCard': !exists(json, 'IdentificationCard') ? undefined : json['IdentificationCard'],
+        'patientID': !exists(json, 'PatientID') ? undefined : json['PatientID'],
+        'personnelID': !exists(json, 'PersonnelID') ? undefined : json['PersonnelID'],
+        'remedyID': !exists(json, 'RemedyID') ? undefined : json['RemedyID'],
+        'tel': !exists(json, 'Tel') ? undefined : json['Tel'],
     };
 }
 

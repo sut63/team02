@@ -39,6 +39,12 @@ export interface ControllersPhysicaltherapyrecord {
     personnel?: number;
     /**
      * 
+     * @type {string}
+     * @memberof ControllersPhysicaltherapyrecord
+     */
+    phone?: string;
+    /**
+     * 
      * @type {number}
      * @memberof ControllersPhysicaltherapyrecord
      */
@@ -76,6 +82,7 @@ export function ControllersPhysicaltherapyrecordFromJSONTyped(json: any, ignoreD
         'note': !exists(json, 'note') ? undefined : json['note'],
         'patient': !exists(json, 'patient') ? undefined : json['patient'],
         'personnel': !exists(json, 'personnel') ? undefined : json['personnel'],
+        'phone': !exists(json, 'phone') ? undefined : json['phone'],
         'physicaltherapyroom': !exists(json, 'physicaltherapyroom') ? undefined : json['physicaltherapyroom'],
         'price': !exists(json, 'price') ? undefined : json['price'],
         'status': !exists(json, 'status') ? undefined : json['status'],
@@ -95,6 +102,7 @@ export function ControllersPhysicaltherapyrecordToJSON(value?: ControllersPhysic
         'note': value.note,
         'patient': value.patient,
         'personnel': value.personnel,
+        'phone': value.phone,
         'physicaltherapyroom': value.physicaltherapyroom,
         'price': value.price,
         'status': value.status,

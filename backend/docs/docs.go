@@ -3357,6 +3357,9 @@ var doc = `{
                 "personnel": {
                     "type": "integer"
                 },
+                "phone": {
+                    "type": "string"
+                },
                 "physicaltherapyroom": {
                     "type": "integer"
                 },
@@ -3929,6 +3932,10 @@ var doc = `{
                     "description": "Note holds the value of the \"note\" field.",
                     "type": "string"
                 },
+                "phone": {
+                    "description": "Phone holds the value of the \"phone\" field.",
+                    "type": "string"
+                },
                 "price": {
                     "description": "Price holds the value of the \"price\" field.",
                     "type": "integer"
@@ -4216,6 +4223,7 @@ var doc = `{
         "OAuth2Application": {
             "type": "oauth2",
             "flow": "application",
+            "authorizationUrl": "",
             "tokenUrl": "https://example.com/oauth/token",
             "scopes": {
                 "admin": " Grants read and write access to administrative information",
@@ -4234,6 +4242,7 @@ var doc = `{
         "OAuth2Password": {
             "type": "oauth2",
             "flow": "password",
+            "authorizationUrl": "",
             "tokenUrl": "https://example.com/oauth/token",
             "scopes": {
                 "admin": " Grants read and write access to administrative information",

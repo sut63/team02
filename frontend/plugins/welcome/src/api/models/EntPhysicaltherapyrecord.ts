@@ -51,6 +51,12 @@ export interface EntPhysicaltherapyrecord {
      */
     note?: string;
     /**
+     * Phone holds the value of the "phone" field.
+     * @type {string}
+     * @memberof EntPhysicaltherapyrecord
+     */
+    phone?: string;
+    /**
      * Price holds the value of the "price" field.
      * @type {number}
      * @memberof EntPhysicaltherapyrecord
@@ -72,6 +78,7 @@ export function EntPhysicaltherapyrecordFromJSONTyped(json: any, ignoreDiscrimin
         'edges': !exists(json, 'edges') ? undefined : EntPhysicaltherapyrecordEdgesFromJSON(json['edges']),
         'id': !exists(json, 'id') ? undefined : json['id'],
         'note': !exists(json, 'note') ? undefined : json['note'],
+        'phone': !exists(json, 'phone') ? undefined : json['phone'],
         'price': !exists(json, 'price') ? undefined : json['price'],
     };
 }
@@ -89,6 +96,7 @@ export function EntPhysicaltherapyrecordToJSON(value?: EntPhysicaltherapyrecord 
         'edges': EntPhysicaltherapyrecordEdgesToJSON(value.edges),
         'id': value.id,
         'note': value.note,
+        'phone': value.phone,
         'price': value.price,
     };
 }

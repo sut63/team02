@@ -44,6 +44,12 @@ func (pu *PhysicaltherapyrecordUpdate) AddPrice(i int) *PhysicaltherapyrecordUpd
 	return pu
 }
 
+// SetPhone sets the "phone" field.
+func (pu *PhysicaltherapyrecordUpdate) SetPhone(s string) *PhysicaltherapyrecordUpdate {
+	pu.mutation.SetPhone(s)
+	return pu
+}
+
 // SetNote sets the "note" field.
 func (pu *PhysicaltherapyrecordUpdate) SetNote(s string) *PhysicaltherapyrecordUpdate {
 	pu.mutation.SetNote(s)
@@ -225,6 +231,11 @@ func (pu *PhysicaltherapyrecordUpdate) check() error {
 			return &ValidationError{Name: "price", err: fmt.Errorf("ent: validator failed for field \"price\": %w", err)}
 		}
 	}
+	if v, ok := pu.mutation.Phone(); ok {
+		if err := physicaltherapyrecord.PhoneValidator(v); err != nil {
+			return &ValidationError{Name: "phone", err: fmt.Errorf("ent: validator failed for field \"phone\": %w", err)}
+		}
+	}
 	if v, ok := pu.mutation.Note(); ok {
 		if err := physicaltherapyrecord.NoteValidator(v); err != nil {
 			return &ValidationError{Name: "note", err: fmt.Errorf("ent: validator failed for field \"note\": %w", err)}
@@ -263,6 +274,13 @@ func (pu *PhysicaltherapyrecordUpdate) sqlSave(ctx context.Context) (n int, err 
 			Type:   field.TypeInt,
 			Value:  value,
 			Column: physicaltherapyrecord.FieldPrice,
+		})
+	}
+	if value, ok := pu.mutation.Phone(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: physicaltherapyrecord.FieldPhone,
 		})
 	}
 	if value, ok := pu.mutation.Note(); ok {
@@ -450,6 +468,12 @@ func (puo *PhysicaltherapyrecordUpdateOne) AddPrice(i int) *Physicaltherapyrecor
 	return puo
 }
 
+// SetPhone sets the "phone" field.
+func (puo *PhysicaltherapyrecordUpdateOne) SetPhone(s string) *PhysicaltherapyrecordUpdateOne {
+	puo.mutation.SetPhone(s)
+	return puo
+}
+
 // SetNote sets the "note" field.
 func (puo *PhysicaltherapyrecordUpdateOne) SetNote(s string) *PhysicaltherapyrecordUpdateOne {
 	puo.mutation.SetNote(s)
@@ -631,6 +655,11 @@ func (puo *PhysicaltherapyrecordUpdateOne) check() error {
 			return &ValidationError{Name: "price", err: fmt.Errorf("ent: validator failed for field \"price\": %w", err)}
 		}
 	}
+	if v, ok := puo.mutation.Phone(); ok {
+		if err := physicaltherapyrecord.PhoneValidator(v); err != nil {
+			return &ValidationError{Name: "phone", err: fmt.Errorf("ent: validator failed for field \"phone\": %w", err)}
+		}
+	}
 	if v, ok := puo.mutation.Note(); ok {
 		if err := physicaltherapyrecord.NoteValidator(v); err != nil {
 			return &ValidationError{Name: "note", err: fmt.Errorf("ent: validator failed for field \"note\": %w", err)}
@@ -667,6 +696,13 @@ func (puo *PhysicaltherapyrecordUpdateOne) sqlSave(ctx context.Context) (_node *
 			Type:   field.TypeInt,
 			Value:  value,
 			Column: physicaltherapyrecord.FieldPrice,
+		})
+	}
+	if value, ok := puo.mutation.Phone(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: physicaltherapyrecord.FieldPhone,
 		})
 	}
 	if value, ok := puo.mutation.Note(); ok {

@@ -293,6 +293,7 @@ var (
 	PhysicaltherapyrecordsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "price", Type: field.TypeInt},
+		{Name: "phone", Type: field.TypeString},
 		{Name: "note", Type: field.TypeString},
 		{Name: "appointtime", Type: field.TypeTime},
 		{Name: "Patient_id", Type: field.TypeInt, Nullable: true},
@@ -308,28 +309,28 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:  "physicaltherapyrecords_patients_physicaltherapyrecord",
-				Columns: []*schema.Column{PhysicaltherapyrecordsColumns[4]},
+				Columns: []*schema.Column{PhysicaltherapyrecordsColumns[5]},
 
 				RefColumns: []*schema.Column{PatientsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:  "physicaltherapyrecords_personnels_physicaltherapyrecord",
-				Columns: []*schema.Column{PhysicaltherapyrecordsColumns[5]},
+				Columns: []*schema.Column{PhysicaltherapyrecordsColumns[6]},
 
 				RefColumns: []*schema.Column{PersonnelsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:  "physicaltherapyrecords_physicaltherapyrooms_physicaltherapyrecord",
-				Columns: []*schema.Column{PhysicaltherapyrecordsColumns[6]},
+				Columns: []*schema.Column{PhysicaltherapyrecordsColumns[7]},
 
 				RefColumns: []*schema.Column{PhysicaltherapyroomsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:  "physicaltherapyrecords_status_physicaltherapyrecord",
-				Columns: []*schema.Column{PhysicaltherapyrecordsColumns[7]},
+				Columns: []*schema.Column{PhysicaltherapyrecordsColumns[8]},
 
 				RefColumns: []*schema.Column{StatusColumns[0]},
 				OnDelete:   schema.SetNull,

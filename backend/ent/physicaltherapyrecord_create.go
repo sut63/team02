@@ -30,6 +30,12 @@ func (pc *PhysicaltherapyrecordCreate) SetPrice(i int) *PhysicaltherapyrecordCre
 	return pc
 }
 
+// SetPhone sets the "phone" field.
+func (pc *PhysicaltherapyrecordCreate) SetPhone(s string) *PhysicaltherapyrecordCreate {
+	pc.mutation.SetPhone(s)
+	return pc
+}
+
 // SetNote sets the "note" field.
 func (pc *PhysicaltherapyrecordCreate) SetNote(s string) *PhysicaltherapyrecordCreate {
 	pc.mutation.SetNote(s)
@@ -177,6 +183,14 @@ func (pc *PhysicaltherapyrecordCreate) check() error {
 			return &ValidationError{Name: "price", err: fmt.Errorf("ent: validator failed for field \"price\": %w", err)}
 		}
 	}
+	if _, ok := pc.mutation.Phone(); !ok {
+		return &ValidationError{Name: "phone", err: errors.New("ent: missing required field \"phone\"")}
+	}
+	if v, ok := pc.mutation.Phone(); ok {
+		if err := physicaltherapyrecord.PhoneValidator(v); err != nil {
+			return &ValidationError{Name: "phone", err: fmt.Errorf("ent: validator failed for field \"phone\": %w", err)}
+		}
+	}
 	if _, ok := pc.mutation.Note(); !ok {
 		return &ValidationError{Name: "note", err: errors.New("ent: missing required field \"note\"")}
 	}
@@ -222,6 +236,14 @@ func (pc *PhysicaltherapyrecordCreate) createSpec() (*Physicaltherapyrecord, *sq
 			Column: physicaltherapyrecord.FieldPrice,
 		})
 		_node.Price = value
+	}
+	if value, ok := pc.mutation.Phone(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: physicaltherapyrecord.FieldPhone,
+		})
+		_node.Phone = value
 	}
 	if value, ok := pc.mutation.Note(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{

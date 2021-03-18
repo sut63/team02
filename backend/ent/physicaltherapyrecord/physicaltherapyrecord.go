@@ -9,6 +9,8 @@ const (
 	FieldID = "id"
 	// FieldPrice holds the string denoting the price field in the database.
 	FieldPrice = "price"
+	// FieldPhone holds the string denoting the phone field in the database.
+	FieldPhone = "phone"
 	// FieldNote holds the string denoting the note field in the database.
 	FieldNote = "note"
 	// FieldAppointtime holds the string denoting the appointtime field in the database.
@@ -59,6 +61,7 @@ const (
 var Columns = []string{
 	FieldID,
 	FieldPrice,
+	FieldPhone,
 	FieldNote,
 	FieldAppointtime,
 }
@@ -89,6 +92,8 @@ func ValidColumn(column string) bool {
 var (
 	// PriceValidator is a validator for the "price" field. It is called by the builders before save.
 	PriceValidator func(int) error
+	// PhoneValidator is a validator for the "phone" field. It is called by the builders before save.
+	PhoneValidator func(string) error
 	// NoteValidator is a validator for the "note" field. It is called by the builders before save.
 	NoteValidator func(string) error
 )

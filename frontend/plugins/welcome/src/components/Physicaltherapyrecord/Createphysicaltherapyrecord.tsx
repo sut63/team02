@@ -70,6 +70,7 @@ export default function AmbulanceCreate() {
   const [physicaltherapyrooms, setPhysicaltherapyrooms] = useState<EntPhysicaltherapyroom[]>([]);
   const [statuss, setStatuss] = useState<EntStatus[]>([]); 
   const [priceerror, setPriceerror] = React.useState('');
+  const [phoneerror, setPhoneerror] = React.useState('');
   const [noteerror, setNoteerror] = React.useState('');
   const [errormessege, setErrorMessege] = useState(String);
   const [alerttype, setAlertType] = useState(String);
@@ -83,6 +84,7 @@ export default function AmbulanceCreate() {
   const [statusid, setStatusid] = useState(Number);
   const [addedTime, setAddedTime] = useState(String);
   const [priceid, setPriceid] = useState(Number);
+  const [phoneid, setPhoneid] = useState(String);
   const [noteid, setNoteid] = useState(String);
 
 
@@ -153,7 +155,9 @@ export default function AmbulanceCreate() {
   const PricehandleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     setPriceid(event.target.value as number);
   };
-
+  const PhonehandleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    setPhoneid(event.target.value as string);
+  };
   const NotehandleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     setNoteid(event.target.value as string);
   };
@@ -173,6 +177,7 @@ export default function AmbulanceCreate() {
   const checkCaseSaveError = (field: string) => {
     
     if (field == "price") { setErrorMessege("กรอกจำนวนเงินให้ถูกต้อง"); }
+        else if (field == "phone") { setErrorMessege("กรอกเบอร์โทรให้ถูกต้อง"); }
         else if (field == "note") { setErrorMessege("กรอกหมายเหตุให้ถูกต้อง"); }
         else { setErrorMessege("บันทึกไม่สำเร็จใส่ข้อมูลไม่ครบ"); }
   }
@@ -185,6 +190,7 @@ export default function AmbulanceCreate() {
       personnel        : personnelid,
       physicaltherapyroom : physicaltherapyroomid,
       status  : statusid,
+      phone : phoneid,
       note : noteid,
       price  : Number(priceid) ,
     };
@@ -373,6 +379,25 @@ export default function AmbulanceCreate() {
               onChange={PricehandleChange}
             />
             
+            <div className={classes.paper}><strong>เบอร์โทร</strong></div>
+
+<TextField className={classes.textField}
+style={{ width: 400 ,marginLeft:20,marginRight:-10}}
+
+  id="phoneid"
+  error = {phoneerror ? true : false}
+  label=""
+  variant="standard"
+  color="secondary"
+  type="string"
+  size="medium"
+  helperText= {phoneerror}
+  value={phoneid}
+  onChange={PhonehandleChange}
+/>
+
+
+
             <div className={classes.paper}><strong>หมายเหตุ</strong></div>
 
 <TextField className={classes.textField}

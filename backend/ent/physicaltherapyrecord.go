@@ -22,6 +22,8 @@ type Physicaltherapyrecord struct {
 	ID int `json:"id,omitempty"`
 	// Price holds the value of the "price" field.
 	Price int `json:"price,omitempty"`
+	// Phone holds the value of the "phone" field.
+	Phone string `json:"phone,omitempty"`
 	// Note holds the value of the "note" field.
 	Note string `json:"note,omitempty"`
 	// Appointtime holds the value of the "appointtime" field.
@@ -113,7 +115,7 @@ func (*Physicaltherapyrecord) scanValues(columns []string) ([]interface{}, error
 		switch columns[i] {
 		case physicaltherapyrecord.FieldID, physicaltherapyrecord.FieldPrice:
 			values[i] = &sql.NullInt64{}
-		case physicaltherapyrecord.FieldNote:
+		case physicaltherapyrecord.FieldPhone, physicaltherapyrecord.FieldNote:
 			values[i] = &sql.NullString{}
 		case physicaltherapyrecord.FieldAppointtime:
 			values[i] = &sql.NullTime{}
@@ -151,6 +153,12 @@ func (ph *Physicaltherapyrecord) assignValues(columns []string, values []interfa
 				return fmt.Errorf("unexpected type %T for field price", values[i])
 			} else if value.Valid {
 				ph.Price = int(value.Int64)
+			}
+		case physicaltherapyrecord.FieldPhone:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field phone", values[i])
+			} else if value.Valid {
+				ph.Phone = value.String
 			}
 		case physicaltherapyrecord.FieldNote:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -242,6 +250,8 @@ func (ph *Physicaltherapyrecord) String() string {
 	builder.WriteString(fmt.Sprintf("id=%v", ph.ID))
 	builder.WriteString(", price=")
 	builder.WriteString(fmt.Sprintf("%v", ph.Price))
+	builder.WriteString(", phone=")
+	builder.WriteString(ph.Phone)
 	builder.WriteString(", note=")
 	builder.WriteString(ph.Note)
 	builder.WriteString(", appointtime=")
